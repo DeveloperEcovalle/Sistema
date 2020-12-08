@@ -312,4 +312,15 @@ function WinMove() {
         .disableSelection();
 }
 
+// Language Data-Table
+var español = {"sProcessing": "Procesando...",
+    "sLengthMenu": "Mostrar _MENU_ registros",
+    "sZeroRecords": "No se encontraron resultados",
+    "sInfo": "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "No existen registros",
+    "sInfoFiltered": "(filtrado de un total de _MAX_ líneas)",
+    "sInfoPostFix": "",
+    "sSearch": "Buscar:",
+    "sUrl": ""
+};
 
