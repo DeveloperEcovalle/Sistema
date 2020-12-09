@@ -17,7 +17,7 @@
 
     
     <li class="active">
-        <a href="layouts.html"><i class="fa fa-th-large"></i> <span class="nav-label">Panel de control</span></a>
+        <a href="{{route('home')}}"><i class="fa fa-th-large"></i> <span class="nav-label">Panel de control</span></a>
     </li>
 
 
@@ -136,6 +136,7 @@
             <li><a href="lockscreen.html">Tipos de Pago</a></li>
             <li><a href="lockscreen.html">Origen de Documentos</a></li>
             <li><a href="lockscreen.html">Tipos de Documentos</a></li>
+            <li><a href="{{route('mantenimiento.tabla.general.index')}}">Tablas Generales</a></li>
             
         </ul>
     </li>
