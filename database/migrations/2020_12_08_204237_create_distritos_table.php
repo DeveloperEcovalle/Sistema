@@ -16,16 +16,10 @@ class CreateDistritosTable extends Migration
         Schema::create('distritos', function (Blueprint $table) {
             $table->char('id', 6)->primary();
             $table->char('departamento_id', 2);
-            $table->foreign('departamento_id')
-                    ->references('id')
-                    ->on('departamentos')
-                    ->onDelete('cascade');;
+            $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
             $table->string('departamento');
             $table->char('provincia_id', 4);
-            $table->foreign('provincia_id')
-                    ->references('id')
-                    ->on('provincias')
-                    ->onDelete('cascade');
+            $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
             $table->string('provincia');
             $table->string('nombre');
             $table->string('nombre_legal');

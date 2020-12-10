@@ -1,6 +1,6 @@
 <?php
 
-use App\Distrito;
+use App\Mantenimiento\Ubigeo\Distrito;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

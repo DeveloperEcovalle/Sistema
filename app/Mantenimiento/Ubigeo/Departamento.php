@@ -1,20 +1,21 @@
 <?php
 
-namespace App;
+namespace App\Mantenimiento\Ubigeo;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Departamento extends Model
 {
     protected $table = 'departamentos';
+    public $timestamps = false;
 
     public function provincias()
     {
-        return $this->hasMany('App\Provincia');
+        return $this->hasMany('App\Mantenimiento\Ubigeo\Provincia');
     }
 
     public function distritos()
     {
-        return $this->hasMany('App\Distrito');
+        return $this->hasMany('App\Mantenimiento\Ubigeo\Distrito');
     }
 }

@@ -24,7 +24,12 @@ class CreatePersonasTable extends Migration
             $table->date('fecha_nacimiento');
             $table->string('sexo');
             $table->string('estado_civil')->nullable();
-            $table->char('codigo_ubigeo', 6)->nullable();
+            $table->char('departamento_id', 2)->nullable();
+            $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
+            $table->char('provincia_id', 4)->nullable();
+            $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
+            $table->char('distrito_id', 6)->nullable();
+            $table->foreign('distrito_id')->references('id')->on('distritos')->onDelete('cascade');
             $table->string('direccion')->nullable();
             $table->string('correo_electronico')->nullable();
             $table->string('telefono_movil', 50)->nullable();

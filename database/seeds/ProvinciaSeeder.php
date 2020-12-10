@@ -1,6 +1,6 @@
 <?php
 
-use App\Provincia;
+use App\Mantenimiento\Ubigeo\Provincia;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

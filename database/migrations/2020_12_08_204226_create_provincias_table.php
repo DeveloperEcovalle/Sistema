@@ -17,10 +17,7 @@ class CreateProvinciasTable extends Migration
             $table->char('id', 4)->primary();
             $table->string('nombre');
             $table->char('departamento_id', 2);
-            $table->foreign('departamento_id')
-                    ->references('id')
-                    ->on('departamentos')
-                    ->onDelete('cascade');
+            $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
         });
     }
 
