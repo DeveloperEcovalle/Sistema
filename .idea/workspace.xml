@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d3fee18-a3c2-46f4-8f87-6116d6ccbf3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Helpers/Helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Mantenimiento/Tabla/Detalle.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mantenimiento/Tabla/Detalle.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Mantenimiento/Tabla/General.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mantenimiento/Tabla/General.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_08_232227_create_personas_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_08_232227_create_personas_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_08_232242_create_empleados_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_08_232242_create_empleados_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_09_180626_create_vendedores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_09_180626_create_vendedores_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/data/tabla/tablas_detalles.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +173,7 @@
       <workItem from="1607451840920" duration="15013000" />
       <workItem from="1607529385920" duration="27542000" />
       <workItem from="1607649371424" duration="7205000" />
-      <workItem from="1607702708367" duration="1897000" />
+      <workItem from="1607702708367" duration="2712000" />
     </task>
     <servers />
   </component>
