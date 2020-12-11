@@ -9,5 +9,10 @@ class General extends Model
     protected $table = 'tablas';
     protected $fillable = ['descripcion','sigla'];
     public $timestamps = true;
-    
+
+    public function detalles()
+    {
+        return $this->hasMany('App\Mantenimiento\Tabla\Detalle', 'tabla_id');
+    }
+
 }

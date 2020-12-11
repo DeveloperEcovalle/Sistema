@@ -36,7 +36,7 @@ class CreateEmpleadosTable extends Migration
             $table->date('fecha_inicio_planilla');
             $table->date('fecha_fin_planilla')->nullable();
             $table->string('ruta_imagen')->nullable();
-            $table->boolean('estado')->default(true);
+            $table->enum('estado',['ACTIVO','INACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class CreateVendedoresTable extends Migration
             $table->string('zona');
             $table->unsignedDecimal('comision', 15,2);
             $table->string('moneda_comision');
-            $table->boolean('estado')->default(true);
+            $table->enum('estado',['ACTIVO','INACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
     }

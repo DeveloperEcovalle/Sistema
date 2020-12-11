@@ -54,10 +54,9 @@
                                     <div class="form-group col-lg-4 col-xs-12">
                                         <label class="required">Tipo de documento</label>
                                         <select id="tipo_documento" class="form-control">
-                                            <option></option>
-                                            <option value="1">D.N.I</option>
-                                            <option value="2">R.U.C</option>
-                                            <option value="3">Pasaporte</option>
+                                            @foreach(tipos_documento() as $tipo_documento)
+                                                <option value="{{ $tipo_documento->simbolo }}">{{ $tipo_documento->descripcion }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group col-lg-4 col-xs-12">
