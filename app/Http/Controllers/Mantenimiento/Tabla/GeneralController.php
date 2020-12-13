@@ -53,7 +53,7 @@ class GeneralController extends Controller
         $tabla->update();
 
         Session::flash('success','Tabla General modificado.');
-        return redirect()->route('mantenimiento.tabla.general.index');
+        return redirect()->route('mantenimiento.tabla.general.index')->with('modificar', 'success');
     }
 
 }

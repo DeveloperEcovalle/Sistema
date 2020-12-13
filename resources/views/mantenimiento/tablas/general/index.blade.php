@@ -29,11 +29,11 @@
                     <table class="table dataTables-tabla-general table-striped table-bordered table-hover" style="text-transform:uppercase;">
                     <thead>
                         <tr>
-                            <th class="text-center">ID</th>
+                            <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">SIGLA</th>
                             <th class="text-center">ACTUALIZADO</th>
-                            <th class="text-center">ACCION</th>
+                            <th class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,18 +70,6 @@
             "dom": '<"html5buttons"B>lTfgitp',
             "buttons": [
                 {
-                    extend:    'copyHtml5',
-                    text:      '<i class="fa fa-files-o"></i> Copiar',
-                    titleAttr: 'Copiar'
-                
-                },
-                {
-                    extend:    'csvHtml5',
-                    text:      '<i class="fa fa-file-text-o"></i> Csv',
-                    titleAttr: 'CSV'
-                    
-                },
-                {
                     extend:    'excelHtml5',
                     text:      '<i class="fa fa-file-excel-o"></i> Excel',
                     titleAttr: 'Excel',
@@ -111,7 +99,7 @@
             "ajax": "{{route ('getTable')}}",
             "columns": [
                 //Tabla General
-                {data: 'id', className:"text-center" },
+                {data: 'id', className:"text-center" , "visible": false},
                 {data: 'descripcion', className:"text-center"},
                 {data: 'sigla', className:"text-center"},
                 {data: 'fecha_actualizacion', className:"text-center"},

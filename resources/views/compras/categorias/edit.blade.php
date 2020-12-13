@@ -1,4 +1,4 @@
-<div class="modal inmodal" id="modal_editar_tabla_detalle" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="modal_editar_categoria" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
@@ -7,18 +7,17 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Tabla Detalle</h4>
-                <small class="font-bold" style="text-transform:uppercase;">Modificar registro de la Tabla General: <strong>{{$tabla->descripcion}}</strong>.</small>
+                <h4 class="modal-title">Categoría</h4>
+                <small class="font-bold" style="text-transform:uppercase;">Modificar categoría.</small>
             </div>
             <div class="modal-body">
-                <form role="form" action="{{route('mantenimiento.tabla.detalle.update')}}" method="POST" id="editar_tabla_detalle">
+                <form role="form" action="{{route('compras.categoria.update')}}" method="POST" id="editar_categoria">
                     {{ csrf_field() }} {{method_field('PUT')}}
-
-                   <input type="hidden" name="tabla_id" id="tabla_id_editar" value="{{old('tabla_id')}}">
-                   
+                    
+                    <input type="hidden" name="tabla_id" id="tabla_id_editar" value="{{old('tabla_id')}}">
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" required>
+                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" style="text-transform:uppercase;"required>
                         
                         @if ($errors->has('descripcion'))
                         <span class="invalid-feedback" role="alert">
@@ -27,17 +26,6 @@
                         @endif
                     </div>
 
-                    <div class="form-group">
-                        
-                        <label class="required">Símbolo:</label>
-                        <input type="text" class="form-control {{ $errors->has('simbolo') ? ' is-invalid' : '' }}" id="simbolo_editar" name="simbolo" value="{{old('simbolo')}}" required>
-
-                        @if ($errors->has('simbolo'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong id="error-simbolo">{{ $errors->first('simbolo') }}</strong>
-                        </span>
-                        @endif
-                    </div>
             </div>
                 
                     <div class="modal-footer">

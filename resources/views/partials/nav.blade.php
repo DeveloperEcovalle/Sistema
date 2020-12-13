@@ -30,10 +30,9 @@
     <li>
         <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Compras</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="ecommerce_product.html">Articulo</a></li>
-            <li><a href="ecommerce_products_grid.html">Categoria</a></li>
-            <li><a href="ecommerce_product_detail.html">Proveedor</a></li>
-            <li><a href="ecommerce_product_list.html">Presentación</a></li>
+            <li><a href="{{route('compras.articulo.index')}}">Artículos</a></li>
+            <li><a href="{{route('compras.categoria.index')}}">Categorias</a></li>
+            <li><a href="{{route('compras.proveedor.index')}}">Proveedores</a></li>
             <li><a href="ecommerce-cart.html">Ordenes</a></li>
             <li><a href="ecommerce-orders.html">Documentos</a></li>
         </ul>
@@ -69,7 +68,7 @@
     <li>
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="search_results.html">Principal</a></li>
+            <li><a href="{{route('almacenes.almacen.index')}}">Almacen</a></li>
             <li><a href="search_results.html">Transferencias</a></li>
             <li>
                 <a href="#">Consultas <span class="fa arrow"></span></a>
@@ -130,7 +129,7 @@
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li><a href="search_results.html">Empleados</a></li>
-            <li><a href="lockscreen.html">Empresas</a></li>
+            <li><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             <li><a href="lockscreen.html">Parametros</a></li>
             <li><a href="lockscreen.html">Metodos de Pago</a></li>
             <li><a href="lockscreen.html">Tipos de Pago</a></li>

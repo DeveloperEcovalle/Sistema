@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTablaDetallesTable extends Migration
+class CreateAlmacenesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateTablaDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tabladetalles', function (Blueprint $table) {
+        Schema::create('almacenes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->Increments('id');
             $table->string('descripcion');
-            $table->string('simbolo')->nullable();
-            $table->unsignedInteger('tabla_id')->unsigned();
-            $table->foreign('tabla_id')
-                  ->references('id')->on('tablas')
-                  ->onDelete('cascade');
+            $table->string('ubicacion');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
@@ -34,6 +30,6 @@ class CreateTablaDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tabladetalles');
+        Schema::dropIfExists('almacenes');
     }
 }

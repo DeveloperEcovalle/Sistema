@@ -9,4 +9,9 @@ class Detalle extends Model
     protected $table = 'tabladetalles';
     public $timestamps = true;
     protected $fillable = ['tabla_id','descripcion','simbolo','estado'];
+
+    public function tabla()
+    {
+        return $this->belongsTo('App\Mantenimiento\Tabla\General');
+    }
 }

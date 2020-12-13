@@ -1,4 +1,4 @@
-<div class="modal inmodal" id="modal_editar_tabla_detalle" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="modal_crear_almacen" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
@@ -7,34 +7,32 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Tabla Detalle</h4>
-                <small class="font-bold" style="text-transform:uppercase;">Modificar registro de la Tabla General: <strong>{{$tabla->descripcion}}</strong>.</small>
+                <h4 class="modal-title">Almacen</h4>
+                <small class="font-bold">Crear nuevo Almacen.</small>
             </div>
             <div class="modal-body">
-                <form role="form" action="{{route('mantenimiento.tabla.detalle.update')}}" method="POST" id="editar_tabla_detalle">
-                    {{ csrf_field() }} {{method_field('PUT')}}
+                <form role="form" action="{{route('almacenes.almacen.store')}}" method="POST" id="crear_almacen">
+                    {{ csrf_field() }} {{method_field('POST')}}
 
-                   <input type="hidden" name="tabla_id" id="tabla_id_editar" value="{{old('tabla_id')}}">
-                   
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" required>
-                        
-                        @if ($errors->has('descripcion'))
+                        <input type="text" class="form-control {{ $errors->has('descripcion_guardar') ? ' is-invalid' : '' }}" name="descripcion_guardar" id="descripcion_guardar" value="{{old('descripcion_guardar')}}" style="text-transform:uppercase" required>
+
+                        @if ($errors->has('descripcion_guardar'))
                         <span class="invalid-feedback" role="alert">
-                            <strong id="error-descripcion">{{ $errors->first('descripcion') }}</strong>
+                            <strong id="error-descripcion-guardar">{{ $errors->first('descripcion_guardar') }}</strong>
                         </span>
                         @endif
                     </div>
 
                     <div class="form-group">
                         
-                        <label class="required">Símbolo:</label>
-                        <input type="text" class="form-control {{ $errors->has('simbolo') ? ' is-invalid' : '' }}" id="simbolo_editar" name="simbolo" value="{{old('simbolo')}}" required>
-
-                        @if ($errors->has('simbolo'))
+                        <label class="required">Ubicación:</label>
+                        <input type="text" class="form-control {{ $errors->has('ubicacion_guardar') ? ' is-invalid' : '' }}" id="ubicacion_guardar" name="ubicacion_guardar" value="{{old('ubicacion_guardar')}}" style="text-transform:uppercase" required>
+                        
+                        @if ($errors->has('ubicacion_guardar'))
                         <span class="invalid-feedback" role="alert">
-                            <strong id="error-simbolo">{{ $errors->first('simbolo') }}</strong>
+                            <strong id="error-ubicacion-guardar">{{ $errors->first('ubicacion_guardar') }}</strong>
                         </span>
                         @endif
                     </div>
