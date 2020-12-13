@@ -59,3 +59,9 @@ Route::prefix('mantenimiento/empleados')->group(function() {
     Route::put('/activate/{id}', 'Mantenimiento\Empleado\EmpleadoController@active')->name('mantenimiento.empleado.activate');
     Route::put('/deactivate/{id}', 'Mantenimiento\Empleado\EmpleadoController@deactivate')->name('mantenimiento.empleado.deactivate');
 });
+
+// Ubigeo
+Route::prefix('mantenimiento/ubigeo')->group(function() {
+    Route::post('/provincias', 'Mantenimiento\Ubigeo\UbigeoController@provincias')->name('mantenimiento.ubigeo.provincias');
+    Route::post('/distritos', 'Mantenimiento\Ubigeo\UbigeoController@distritos')->name('mantenimiento.ubigeo.distritos');
+});

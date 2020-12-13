@@ -23,7 +23,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('telefono_referencia');
             $table->string('contacto_referencia');
             $table->string('grupo_sanguineo')->nullable();
-            $table->string('alergias')->nullable();
+            $table->text('alergias')->nullable();
             $table->unsignedTinyInteger('numero_hijos');
             $table->unsignedDecimal('sueldo', 15,2);
             $table->unsignedDecimal('sueldo_bruto', 15,2);

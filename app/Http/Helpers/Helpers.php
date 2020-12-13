@@ -1,7 +1,9 @@
 <?php
 
 use App\Mantenimiento\Tabla\General;
+use App\Mantenimiento\Ubigeo\Departamento;
 
+// TABLAS-DETALLES
 if (!function_exists('tipos_moneda')) {
     function tipos_moneda()
     {
@@ -64,3 +66,20 @@ if (!function_exists('profesiones')) {
         return General::find(9)->detalles;
     }
 }
+
+if (!function_exists('grupos_sanguineos')) {
+    function grupos_sanguineos()
+    {
+        return General::find(10)->detalles;
+    }
+}
+
+// UBIGEO
+if (!function_exists('departamentos')) {
+    function departamentos()
+    {
+        return Departamento::all();
+    }
+}
+
+

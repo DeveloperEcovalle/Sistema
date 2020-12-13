@@ -13,7 +13,7 @@
 
     <link href="{{asset('Inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('Inspinia/css/style.css')}}" rel="stylesheet">
-    
+
 
 
     <!-- Toastr style -->
@@ -91,12 +91,15 @@
 
     <!-- jQuery UI -->
     <script src="{{asset('Inspinia/js/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-    
+
     <!-- Toastr script -->
     <script src="{{asset('Inspinia/js/plugins/toastr/toastr.min.js')}}"></script>
 
+    <!-- Propio scripts -->
+    <script src="{{ asset('Inspinia/js/scripts.js') }}"></script>
+
     @stack('scripts')
-    
+
     <script>
 
         @if(Session::has('success'))
@@ -104,6 +107,6 @@
         @endif
 
     </script>
-    
+
 </body>
 </html>

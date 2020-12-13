@@ -60,5 +60,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'PROFESIONES';
         $tabla->sigla = 'PROFESIONES';
         $tabla->save();
+
+        // 10
+        $tabla = new General();
+        $tabla->descripcion = 'GRUPOS SANGUINEOS';
+        $tabla->sigla = 'GRUPOS SANGUINEOS';
+        $tabla->save();
     }
 }
