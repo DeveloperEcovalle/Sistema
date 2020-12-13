@@ -1,12 +1,14 @@
 @extends('layout') @section('content')
 @include('mantenimiento.tablas.detalle.create')
 @include('mantenimiento.tablas.detalle.edit')
+@section('mantenimiento-active', 'active')
+@section('tablas-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
         <h2 style="text-transform:uppercase;"><b>Tabla Detalle: {{$tabla->descripcion}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="index.html">Mantenimiento</a>
+                <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('mantenimiento.tabla.general.index') }}">Tablas Generales</a>

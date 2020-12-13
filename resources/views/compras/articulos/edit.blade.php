@@ -1,10 +1,14 @@
 @extends('layout') @section('content')
-
+@section('compras-active', 'active')
+@section('articulo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     
     <div class="col-lg-12">
         <h2 style="text-transform:uppercase;"><b>MODIFICAR ARTÍCULO #{{$articulo->id}}</b></h2>
         <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('home') }}">Panel de Control</a>
+            </li>
             <li class="breadcrumb-item">
                 <a href="{{route('compras.articulo.index')}}">Artículos</a>
             </li>
@@ -115,8 +119,8 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label class="required">Stock:</label> 
-                                            <input type="text" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" id="stock" style="text-transform:uppercase;" value="{{old('stock',$articulo->stock)}}" required>
+                                            <label >Stock:</label> 
+                                            <input type="text" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" id="stock" style="text-transform:uppercase;" value="{{old('stock',$articulo->stock)}}" disabled>
                                             @if ($errors->has('stock'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('stock') }}</strong>

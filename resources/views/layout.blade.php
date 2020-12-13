@@ -102,10 +102,11 @@
 
     <!-- SweetAlert -->
     <script src="{{asset('SweetAlert/sweetalert2@10.js')}}"></script>
-
-    @stack('scripts')
     
+    @stack('scripts')
+
     <script>
+
 
         @if(Session::has('success'))
             toastr.success("{{ Session::get('success') }}")

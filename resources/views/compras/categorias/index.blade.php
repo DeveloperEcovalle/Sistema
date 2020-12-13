@@ -1,6 +1,8 @@
 @extends('layout') @section('content')
 @include('compras.categorias.create')
 @include('compras.categorias.edit')
+@section('compras-active', 'active')
+@section('categoria-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
         <h2 style="text-transform:uppercase;"><b>Listado de Categorias</b></h2>
@@ -36,6 +38,7 @@
                         <tr>
                             <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
+                            <th class="text-center">CREADO</th>
                             <th class="text-center">ACTUALIZADO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>

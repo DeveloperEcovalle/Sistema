@@ -27,11 +27,11 @@
     </li>
 
 
-    <li>
+    <li class="@yield('compras-active')">
         <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Compras</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{route('compras.articulo.index')}}">Artículos</a></li>
-            <li><a href="{{route('compras.categoria.index')}}">Categorias</a></li>
+            <li class="@yield('articulo-active')"><a href="{{route('compras.articulo.index')}}">Artículos</a></li>
+            <li class="@yield('categoria-active')"><a href="{{route('compras.categoria.index')}}">Categorias</a></li>
             <li><a href="{{route('compras.proveedor.index')}}">Proveedores</a></li>
             <li><a href="ecommerce-cart.html">Ordenes</a></li>
             <li><a href="ecommerce-orders.html">Documentos</a></li>
@@ -65,10 +65,10 @@
         </ul>
     </li>
 
-    <li>
+    <li class="@yield('almacenes-active')">
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="{{route('almacenes.almacen.index')}}">Almacen</a></li>
+            <li class="@yield('almacen-active')"><a href="{{route('almacenes.almacen.index')}}">Almacen</a></li>
             <li><a href="search_results.html">Transferencias</a></li>
             <li>
                 <a href="#">Consultas <span class="fa arrow"></span></a>
@@ -129,7 +129,7 @@
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
-            <li><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
+            <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             <li><a href="lockscreen.html">Parametros</a></li>
             <li><a href="lockscreen.html">Metodos de Pago</a></li>
             <li><a href="lockscreen.html">Tipos de Pago</a></li>

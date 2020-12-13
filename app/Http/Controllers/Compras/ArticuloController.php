@@ -28,7 +28,7 @@ class ArticuloController extends Controller
                 'id' => $articulo->id,
                 'descripcion' => $articulo->descripcion,
                 'categoria' => $articulo->categoria->descripcion,
-                'stock' => $articulo->stock,
+                'presentacion' => $articulo->presentacion,
                 'stock_min' => $articulo->stock_min,
                 'precio_compra'=> $articulo->precio_compra,
             ]);
@@ -73,7 +73,7 @@ class ArticuloController extends Controller
             'categoria' => 'required',
             'presentacion' => 'required',
             'almacen' => 'required',
-            'stock' => 'required|integer',
+            'stock' => 'nullable|integer',
             'stock_min' => 'required|integer',
             'precio_compra' => 'required|numeric',
 
@@ -85,7 +85,6 @@ class ArticuloController extends Controller
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
             'almacen.required'=>'El campo Almacen es obligatorio.',
             'stock.integer' => 'El campo Stock debe ser Entero.',
-            'stock.required' => 'El campo Stock es obligatorio.',
 
             'stock_min.integer' => 'El campo Stock Min. debe ser Entero.',
             'stock_min.required' => 'El campo Stock Min. es obligatorio.',
@@ -118,7 +117,7 @@ class ArticuloController extends Controller
             'categoria' => 'required',
             'presentacion' => 'required',
             'almacen' => 'required',
-            'stock' => 'required|integer',
+            'stock' => 'nullable|integer',
             'stock_min' => 'required|integer',
             'precio_compra' => 'required|numeric',
 
@@ -130,7 +129,6 @@ class ArticuloController extends Controller
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
             'almacen.required'=>'El campo Almacen es obligatorio.',
             'stock.integer' => 'El campo Stock debe ser Entero.',
-            'stock.required' => 'El campo Stock es obligatorio.',
 
             'stock_min.integer' => 'El campo Stock Min. debe ser Entero.',
             'stock_min.required' => 'El campo Stock Min. es obligatorio.',

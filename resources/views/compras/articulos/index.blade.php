@@ -1,5 +1,6 @@
 @extends('layout') @section('content')
-
+@section('compras-active', 'active')
+@section('articulo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
         <h2 style="text-transform:uppercase;"><b>Listado de Articulos</b></h2>
@@ -36,7 +37,7 @@
                         <tr>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">CATEGORIA</th>
-                            <th class="text-center">STOCK</th>
+                            <th class="text-center">PRESENTACION</th>
                             <th class="text-center">STOCK MIN.</th>
                             <th class="text-center">PREC. COMPRA</th>
                             <th class="text-center">ACCIONES</th>
@@ -107,8 +108,8 @@
             "columns": [
                 //Articulo
                 {data: 'descripcion' },
-                {data: 'categoria' },
-                {data: 'stock', className:"text-center"},
+                {data: 'categoria' , className:"text-center" },
+                {data: 'presentacion', className:"text-center"},
                 {data: 'stock_min', className:"text-center"},
                 {data: 'precio_compra', className:"text-center"},
                 {
