@@ -130,4 +130,14 @@ Route::post('almacenes/almacen/store', 'almacenes\AlmacenController@store')->nam
 Route::put('almacenes/almacen/update', 'almacenes\AlmacenController@update')->name('almacenes.almacen.update');
 
 
-
+// Empleados
+Route::prefix('mantenimiento/empleados')->group(function() {
+    Route::get('/', 'Mantenimiento\Empleado\EmpleadoController@index')->name('mantenimiento.empleado.index');
+    Route::get('/getTable', 'Mantenimiento\Empleado\EmpleadoController@getTable')->name('mantenimiento.empleado.getTable');
+    Route::get('/registrar', 'Mantenimiento\Empleado\EmpleadoController@create')->name('mantenimiento.empleado.create');
+    Route::post('/registrar', 'Mantenimiento\Empleado\EmpleadoController@store')->name('mantenimiento.empleado.store');
+    Route::get('/actualizar/{id}', 'Mantenimiento\Empleado\EmpleadoController@edit')->name('mantenimiento.empleado.edit');
+    Route::post('/actualizar/{id}', 'Mantenimiento\Empleado\EmpleadoController@update')->name('mantenimiento.empleado.update');
+    Route::put('/activate/{id}', 'Mantenimiento\Empleado\EmpleadoController@active')->name('mantenimiento.empleado.activate');
+    Route::put('/deactivate/{id}', 'Mantenimiento\Empleado\EmpleadoController@deactivate')->name('mantenimiento.empleado.deactivate');
+});

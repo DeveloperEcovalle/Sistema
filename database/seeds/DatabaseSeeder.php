@@ -1,16 +1,10 @@
 <?php
 
+
 use Illuminate\Database\Seeder;
-use App\User;
-use App\Mantenimiento\Tabla\General;
-use App\Mantenimiento\Tabla\Detalle;
+
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
         $this->call(UserSeeder::class);
@@ -18,5 +12,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TablaDetalleSeeder::class);
         $this->call(ParametroSeeder::class);
 
+        $this->call(DepartamentoSeeder::class);
+        $this->call(ProvinciaSeeder::class);
+        $this->call(DistritoSeeder::class);
     }
 }

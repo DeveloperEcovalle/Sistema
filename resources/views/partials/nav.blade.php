@@ -15,8 +15,8 @@
     </li>
 
 
-    
-    <li class="active">
+
+    <li>
         <a href="{{route('home')}}"><i class="fa fa-th-large"></i> <span class="nav-label">Panel de control</span></a>
     </li>
 
@@ -26,7 +26,7 @@
         <a href="layouts.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Estadisticas</span></a>
     </li>
 
-    
+
     <li>
         <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Compras</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -45,11 +45,11 @@
             <li><a href="lockscreen.html">Cotizaciones</a></li>
             <li><a href="lockscreen.html">Pedidos</a></li>
             <li><a href="lockscreen.html">Documentos</a></li>
-            
+
         </ul>
     </li>
 
-    
+
     <li>
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -125,18 +125,18 @@
         </ul>
     </li>
 
-    <li>
+    <li class="@yield('mantenimiento-active')">
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="search_results.html">Empleados</a></li>
+            <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
             <li><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             <li><a href="lockscreen.html">Parametros</a></li>
             <li><a href="lockscreen.html">Metodos de Pago</a></li>
             <li><a href="lockscreen.html">Tipos de Pago</a></li>
             <li><a href="lockscreen.html">Origen de Documentos</a></li>
             <li><a href="lockscreen.html">Tipos de Documentos</a></li>
-            <li><a href="{{route('mantenimiento.tabla.general.index')}}">Tablas Generales</a></li>
-            
+            <li class="@yield('tablas-active')"><a href="{{route('mantenimiento.tabla.general.index')}}">Tablas Generales</a></li>
+
         </ul>
     </li>
 

@@ -37,7 +37,7 @@ class DetalleController extends Controller
 
     public function destroy($id)
     {
-        
+
         $detalle = Detalle::findOrFail($id);
         $detalle->estado = 'ANULADO';
         $detalle->update();
@@ -48,7 +48,7 @@ class DetalleController extends Controller
     }
 
     public function store(Request $request){
-        
+
         $data = $request->all();
 
         $rules = [
@@ -56,7 +56,7 @@ class DetalleController extends Controller
             'descripcion_guardar' => 'required',
             'simbolo_guardar' => 'required'
         ];
-        
+
         $message = [
             'descripcion_guardar.required' => 'El campo Descripción es obligatorio.',
             'simbolo_guardar.required' => 'El campo Simbolo es obligatorio.',
@@ -75,7 +75,7 @@ class DetalleController extends Controller
     }
 
     public function update(Request $request){
-        
+
         $data = $request->all();
 
         $rules = [
@@ -83,14 +83,14 @@ class DetalleController extends Controller
             'descripcion' => 'required',
             'simbolo' => 'required'
         ];
-        
+
         $message = [
             'descripcion.required' => 'El campo Descripción es obligatorio.',
             'simbolo.required' => 'El campo Simbolo es obligatorio.',
         ];
 
         Validator::make($data, $rules, $message)->validate();
-        
+
         $detalle = Detalle::findOrFail($request->get('tabla_id'));
         $detalle->descripcion = $request->get('descripcion');
         $detalle->simbolo = $request->get('simbolo');
