@@ -40,8 +40,8 @@
                 
             </div>
                     <div class="modal-footer">
-                        <div class="col-md-6 text-left">
-                            <label class="required">Campos Obligatorios</label>
+                        <div class="col-md-6 text-left" style="color:#fcbc6c">
+                            <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
                         </div>
 
                         <div class="col-md-6 text-right">

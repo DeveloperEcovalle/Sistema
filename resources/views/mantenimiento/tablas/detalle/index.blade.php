@@ -38,7 +38,7 @@
                     <table class="table dataTables-tabla-detalle table-striped table-bordered table-hover" style="text-transform:uppercase;">
                     <thead>
                         <tr>
-                            <th class="text-center">ID</th>
+                            <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">SIMBOLO</th>
                             <th class="text-center">CREADO</th>
@@ -64,6 +64,12 @@
 @push('styles')
 <!-- DataTable -->
 <link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+
+<style>
+    .my-swal {
+        z-index: 3000 !important;
+    }
+</style>
 @endpush 
 
 @push('scripts')
@@ -83,18 +89,6 @@
         $('.dataTables-tabla-detalle').DataTable({
             "dom": '<"html5buttons"B>lTfgitp',
             "buttons": [
-                {
-                    extend:    'copyHtml5',
-                    text:      '<i class="fa fa-files-o"></i> Copiar',
-                    titleAttr: 'Copiar'
-                
-                },
-                {
-                    extend:    'csvHtml5',
-                    text:      '<i class="fa fa-file-text-o"></i> Csv',
-                    titleAttr: 'CSV'
-                    
-                },
                 {
                     extend:    'excelHtml5',
                     text:      '<i class="fa fa-file-excel-o"></i> Excel',
@@ -125,7 +119,7 @@
             "ajax": url,
             "columns": [
                 //Tabla General
-                {data: 'id', className:"text-center"},
+                {data: 'id', className:"text-center", "visible":false},
                 {data: 'descripcion', className:"text-center"},
                 {data: 'simbolo', className:"text-center"},
                 {data: 'fecha_creacion', className:"text-center"},
@@ -134,11 +128,8 @@
                     data: null,
                     className:"text-center",
                     render: function (data) {
-                        //Ruta Eliminar
-                        var url_eliminar = '{{ route("mantenimiento.tabla.detalle.destroy", ":id")}}';
-                        url_eliminar = url_eliminar.replace(':id',data.id);
-
-                        return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='"+url_eliminar+"' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
+                        
+                        return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
                 }
 
@@ -147,7 +138,7 @@
                         "url": "{{asset('Spanish.json')}}"
             },
 
-            "order": [[ 0, "desc" ]],
+           
 
         });
 
@@ -207,6 +198,117 @@
         $('#simbolo_guardar').val('')
 
     });
+
+    function eliminar(id) {
+        
+        Swal.fire({
+            title: 'Opción Eliminar',
+            text: "¿Seguro que desea eliminar registro?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                //Ruta Eliminar
+                var url_eliminar = '{{ route("mantenimiento.tabla.detalle.destroy", ":id")}}';
+                url_eliminar = url_eliminar.replace(':id',id);
+                $(location).attr('href',url_eliminar);
+
+                }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+                )
+
+            }
+        })
+        
+    }
+
+    $('#editar_tabla_detalle').submit(function(e){
+        e.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                container: 'my-swal',
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+            
+        })
+
+        Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Opción Modificar',
+            text: "¿Seguro que desea modificar los cambios?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                    this.submit();
+                }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+                )
+                
+            }
+            })
+    })
+
+    $('#enviar_tabla').submit(function(e){
+        e.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                container: 'my-swal',
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
+
+        Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Opción Guardar',
+            text: "¿Seguro que desea guardar cambios?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                    this.submit();
+                }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+                )
+            }
+            })
+    })
+
 
 
 </script>

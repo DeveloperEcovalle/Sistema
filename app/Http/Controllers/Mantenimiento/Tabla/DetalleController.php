@@ -43,7 +43,7 @@ class DetalleController extends Controller
         $detalle->update();
 
         Session::flash('success','Detalle eliminado.');
-        return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id);
+        return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('eliminar', 'success');
 
     }
 
@@ -71,7 +71,7 @@ class DetalleController extends Controller
         $detalle->save();
 
         Session::flash('success','Detalle creado.');
-        return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id);
+        return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('guardar', 'success');
     }
 
     public function update(Request $request){
@@ -97,7 +97,7 @@ class DetalleController extends Controller
         $detalle->update();
 
         Session::flash('success','Detalle modificado.');
-        return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id);
+        return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('modificar', 'success');
     }
 
 }

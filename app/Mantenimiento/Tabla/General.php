@@ -14,5 +14,5 @@ class General extends Model
     {
         return $this->hasMany('App\Mantenimiento\Tabla\Detalle', 'tabla_id');
     }
-
+    
 }

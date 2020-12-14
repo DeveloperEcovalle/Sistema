@@ -19,6 +19,10 @@
     <!-- Toastr style -->
     <link href="{{asset('Inspinia/css/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
 
+
+
+
+
     @stack('styles')
 
 </head>
@@ -74,6 +78,7 @@
                 <strong>Copyright</strong> Example Company &copy; 2014-2018
             </div>
         </div>
+
         </div>
 
     </div>
@@ -98,6 +103,9 @@
     <!-- Propio scripts -->
     <script src="{{ asset('Inspinia/js/scripts.js') }}"></script>
 
+    <!-- SweetAlert -->
+    <script src="{{asset('SweetAlert/sweetalert2@10.js')}}"></script>
+
     @stack('scripts')
 
     <script>
@@ -105,6 +113,49 @@
         @if(Session::has('success'))
             toastr.success("{{ Session::get('success') }}")
         @endif
+
+        //Mensaje de Session
+        @if (session('guardar') == 'success' )
+            Swal.fire({
+                    icon: 'success',
+                    title: 'Guardado',
+                    text: '¡Acción realizada satisfactoriamente!',
+                    showConfirmButton: false,
+                    timer: 1500
+            })
+        @endif
+
+        @if (session('eliminar') == 'success' )
+            Swal.fire({
+                    icon: 'success',
+                    title: 'Eliminado',
+                    text: '¡Acción realizada satisfactoriamente!',
+                    showConfirmButton: false,
+                    timer: 1500
+            })
+        @endif
+
+        @if (session('modificar') == 'success' )
+            Swal.fire({
+                    icon: 'success',
+                    title: 'Modificado',
+                    text: '¡Acción realizada satisfactoriamente!',
+                    showConfirmButton: false,
+                    timer: 1500
+            })
+        @endif
+
+
+    </script>
+
+    <script>
+        function consultaExitosa() {
+            Swal.fire(
+                '¡Búsqueda Exitosa!',
+                'Datos ingresados.',
+                'success'
+            )
+        }
 
     </script>
 

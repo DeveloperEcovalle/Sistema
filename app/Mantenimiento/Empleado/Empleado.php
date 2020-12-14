@@ -7,6 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class Empleado extends Model
 {
     protected $table = 'empleados';
+    protected $fillable =[
+        'persona_id',
+        'area',
+        'profesion',
+        'cargo',
+        'telefono_referencia',
+        'contacto_referencia',
+        'grupo_sanguineo',
+        'alergias',
+        'numero_hijos',
+        'sueldo',
+        'sueldo_bruto',
+        'sueldo_neto',
+        'moneda_sueldo',
+        'tipo_banco',
+        'numero_cuenta',
+        'fecha_inicio_actividad',
+        'fecha_fin_actividad',
+        'fecha_inicio_planilla',
+        'fecha_fin_planilla',
+        'ruta_imagen',
+        'estado'
+    ];
 
     public function persona()
     {
@@ -16,5 +39,14 @@ class Empleado extends Model
     public function vendedor()
     {
         return $this->hasOne('App\Mantenimiento\Vendedor\Vendedor');
+    }
+
+    public function getBanco(): string
+    {
+        $banco = bancos()->where('simbolo', $this->tipo_banco)->first();
+        if (is_null($banco))
+            return "-";
+        else
+            return $banco->descripcion;
     }
 }

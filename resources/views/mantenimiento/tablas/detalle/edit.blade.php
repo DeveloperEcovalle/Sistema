@@ -11,7 +11,7 @@
                 <small class="font-bold" style="text-transform:uppercase;">Modificar registro de la Tabla General: <strong>{{$tabla->descripcion}}</strong>.</small>
             </div>
             <div class="modal-body">
-                <form role="form" action="{{route('mantenimiento.tabla.detalle.update')}}" method="POST">
+                <form role="form" action="{{route('mantenimiento.tabla.detalle.update')}}" method="POST" id="editar_tabla_detalle">
                     {{ csrf_field() }} {{method_field('PUT')}}
 
                    <input type="hidden" name="tabla_id" id="tabla_id_editar" value="{{old('tabla_id')}}">
@@ -41,8 +41,8 @@
             </div>
                 
                     <div class="modal-footer">
-                        <div class="col-md-6 text-left">
-                            <label class="required">Campos Obligatorios</label>
+                        <div class="col-md-6 text-left" style="color:#fcbc6c">
+                            <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
                         </div>
                         <div class="col-md-6 text-right">
                             <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</button>

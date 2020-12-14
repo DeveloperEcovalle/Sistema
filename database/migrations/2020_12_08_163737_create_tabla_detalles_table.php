@@ -22,7 +22,7 @@ class CreateTablaDetallesTable extends Migration
             $table->foreign('tabla_id')
                   ->references('id')->on('tablas')
                   ->onDelete('cascade');
-            $table->enum('estado',['ACTIVO','INACTIVO','ANULADO'])->default('ACTIVO');
+            $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
     }

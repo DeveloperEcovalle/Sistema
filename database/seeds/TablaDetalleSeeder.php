@@ -1,28 +1,35 @@
 <?php
-
 use App\Mantenimiento\Tabla\Detalle;
 use Illuminate\Database\Seeder;
 
 class TablaDetalleSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
         //Bancos
 
         $detalle = new Detalle();
         $detalle->descripcion = "BANCO DE LA NACION";
+        $detalle->simbolo = "BN";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "INTERCONTINENTAL";
+        $detalle->simbolo = "INTERCONTINENTAL";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "MI BANCO";
+        $detalle->simbolo = "MI BANCO";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
         $detalle->save();
@@ -275,47 +282,89 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 9;
         $detalle->save();
 
+        $detalle = new Detalle();
+        $detalle->descripcion = "1 KG";
+        $detalle->simbolo = '1 KG';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 10;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "500 GR";
+        $detalle->simbolo = '500 GR';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 10;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "250 GR";
+        $detalle->simbolo = '250 GR';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 10;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PERSONA NATURAL";
+        $detalle->simbolo = 'PERSONA NATURAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 11;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PERSONA JURIDICA";
+        $detalle->simbolo = 'PERSONA JURIDICA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 11;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PERSONA";
+        $detalle->simbolo = 'PERSONA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 11;
+        $detalle->save();
+
         // Grupos sanguíneos
         $detalle = new Detalle();
         $detalle->descripcion = "O NEGATIVO";
         $detalle->simbolo = 'O-';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
+        $detalle->tabla_id = 12;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "O POSITIVO";
         $detalle->simbolo = 'O+';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
+        $detalle->tabla_id = 12;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "A NEGATIVO";
         $detalle->simbolo = 'A-';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
+        $detalle->tabla_id = 12;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "A POSITIVO";
         $detalle->simbolo = 'A+';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
+        $detalle->tabla_id = 12;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "B NEGATIVO";
         $detalle->simbolo = 'B-';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
+        $detalle->tabla_id = 12;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "B POSITIVO";
         $detalle->simbolo = 'B+';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
+        $detalle->tabla_id = 12;
         $detalle->save();
     }
 }
