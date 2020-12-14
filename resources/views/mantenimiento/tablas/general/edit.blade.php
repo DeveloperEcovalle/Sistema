@@ -18,7 +18,7 @@
                     <div class="form-group">
                         <label class="required">Descripción </label>
 
-                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" required>
+                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" required style="text-transform:uppercase">
                         
                         @if ($errors->has('descripcion'))
                         <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group">
                         <label class="required"> Sigla </label>
-                        <input type="text" class="form-control {{ $errors->has('sigla') ? ' is-invalid' : '' }}" name="sigla" id="sigla_editar" value="{{old('sigla')}}" required>
+                        <input type="text" class="form-control {{ $errors->has('sigla') ? ' is-invalid' : '' }}" name="sigla" id="sigla_editar" value="{{old('sigla')}}" required style="text-transform:uppercase">
                         
                         @if ($errors->has('sigla'))
                         <span class="invalid-feedback" role="alert">

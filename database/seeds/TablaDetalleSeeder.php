@@ -283,22 +283,22 @@ class TablaDetalleSeeder extends Seeder
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "1 KG";
-        $detalle->simbolo = '1 KG';
+        $detalle->descripcion = "KILOGRAMO";
+        $detalle->simbolo = 'KG';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 10;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "500 GR";
-        $detalle->simbolo = '500 GR';
+        $detalle->descripcion = "TONELADA";
+        $detalle->simbolo = 'TMB';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 10;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "250 GR";
-        $detalle->simbolo = '250 GR';
+        $detalle->descripcion = "LITRO";
+        $detalle->simbolo = 'L';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 10;
         $detalle->save();
