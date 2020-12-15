@@ -2057,8 +2057,8 @@
         "departamento" : "ANCASH",
         "provincia_id" : "0218",
         "provincia" : "SANTA",
-        "nombre" : "NEPE?A",
-        "nombre_legal" : "NEPE?A"
+        "nombre" : "NEPEÑA",
+        "nombre_legal" : "NEPEÑA"
     },
     {
         "id" : "021807",
@@ -2669,8 +2669,8 @@
         "departamento" : "APURIMAC",
         "provincia_id" : "0304",
         "provincia" : "AYMARAES",
-        "nombre" : "SAN JUAN DE CHAC?A",
-        "nombre_legal" : "SAN JUAN DE CHAC?A"
+        "nombre" : "SAN JUAN DE CHACÑA",
+        "nombre_legal" : "SAN JUAN DE CHACÑA"
     },
     {
         "id" : "030412",
@@ -2678,8 +2678,8 @@
         "departamento" : "APURIMAC",
         "provincia_id" : "0304",
         "provincia" : "AYMARAES",
-        "nombre" : "SA?AYCA",
-        "nombre_legal" : "SA?AYCA"
+        "nombre" : "SAÑAYCA",
+        "nombre_legal" : "SAÑAYCA"
     },
     {
         "id" : "030413",
@@ -3137,8 +3137,8 @@
         "departamento" : "AREQUIPA",
         "provincia_id" : "0401",
         "provincia" : "AREQUIPA",
-        "nombre" : "QUEQUE?A",
-        "nombre_legal" : "QUEQUE?A"
+        "nombre" : "QUEQUEÑA",
+        "nombre_legal" : "QUEQUEÑA"
     },
     {
         "id" : "040116",
@@ -3317,8 +3317,8 @@
         "departamento" : "AREQUIPA",
         "provincia_id" : "0402",
         "provincia" : "CAMANA",
-        "nombre" : "OCO?A",
-        "nombre_legal" : "OCO?A"
+        "nombre" : "OCOÑA",
+        "nombre_legal" : "OCOÑA"
     },
     {
         "id" : "040207",
@@ -3560,8 +3560,8 @@
         "departamento" : "AREQUIPA",
         "provincia_id" : "0404",
         "provincia" : "CASTILLA",
-        "nombre" : "U?ON",
-        "nombre_legal" : "U?ON"
+        "nombre" : "UÑON",
+        "nombre_legal" : "UÑON"
     },
     {
         "id" : "040413",
@@ -4469,8 +4469,8 @@
         "departamento" : "AYACUCHO",
         "provincia_id" : "0506",
         "provincia" : "LUCANAS",
-        "nombre" : "CHAVI?A",
-        "nombre_legal" : "CHAVI?A"
+        "nombre" : "CHAVIÑA",
+        "nombre_legal" : "CHAVIÑA"
     },
     {
         "id" : "050606",
@@ -4532,8 +4532,8 @@
         "departamento" : "AYACUCHO",
         "provincia_id" : "0506",
         "provincia" : "LUCANAS",
-        "nombre" : "OCA?A",
-        "nombre_legal" : "OCA?A"
+        "nombre" : "OCAÑA",
+        "nombre_legal" : "OCAÑA"
     },
     {
         "id" : "050613",
@@ -4640,7 +4640,7 @@
         "departamento" : "AYACUCHO",
         "provincia_id" : "0507",
         "provincia" : "PARINACOCHAS",
-        "nombre" : "CORONEL CASTA?EDA",
+        "nombre" : "CORONEL CASTAÑEDA",
         "nombre_legal" : "ANISO"
     },
     {
@@ -4820,8 +4820,8 @@
         "departamento" : "AYACUCHO",
         "provincia_id" : "0509",
         "provincia" : "SUCRE",
-        "nombre" : "HUACA?A",
-        "nombre_legal" : "HUACA?A"
+        "nombre" : "HUACAÑA",
+        "nombre_legal" : "HUACAÑA"
     },
     {
         "id" : "050906",
@@ -5099,8 +5099,8 @@
         "departamento" : "CAJAMARCA",
         "provincia_id" : "0601",
         "provincia" : "CAJAMARCA",
-        "nombre" : "ENCA?ADA",
-        "nombre_legal" : "ENCA?ADA"
+        "nombre" : "ENCAÑADA",
+        "nombre_legal" : "ENCAÑADA"
     },
     {
         "id" : "060106",
@@ -5126,8 +5126,8 @@
         "departamento" : "CAJAMARCA",
         "provincia_id" : "0601",
         "provincia" : "CAJAMARCA",
-        "nombre" : "LOS BA?OS DEL INCA",
-        "nombre_legal" : "LOS BA?OS DEL INCA"
+        "nombre" : "LOS BAÑOS DEL INCA",
+        "nombre_legal" : "LOS BAÑOS DEL INCA"
     },
     {
         "id" : "060109",
@@ -6134,8 +6134,8 @@
         "departamento" : "CAJAMARCA",
         "provincia_id" : "0613",
         "provincia" : "SANTA CRUZ",
-        "nombre" : "CHANCAYBA?OS",
-        "nombre_legal" : "CHANCAYBA?OS"
+        "nombre" : "CHANCAYBAÑOS",
+        "nombre_legal" : "CHANCAYBAÑOS"
     },
     {
         "id" : "061305",
@@ -6755,8 +6755,8 @@
         "departamento" : "CUSCO",
         "provincia_id" : "0807",
         "provincia" : "CHUMBIVILCAS",
-        "nombre" : "QUI?OTA",
-        "nombre_legal" : "QUI?OTA"
+        "nombre" : "QUIÑOTA",
+        "nombre_legal" : "QUIÑOTA"
     },
     {
         "id" : "080708",
@@ -7097,7 +7097,7 @@
         "departamento" : "CUSCO",
         "provincia_id" : "0811",
         "provincia" : "PAUCARTAMBO",
-        "nombre" : "KOS?IPATA",
+        "nombre" : "KOSÑIPATA",
         "nombre_legal" : "PILLCOPATA"
     },
     {
@@ -8060,8 +8060,8 @@
         "departamento" : "HUANCAVELICA",
         "provincia_id" : "0907",
         "provincia" : "TAYACAJA",
-        "nombre" : "?AHUIMPUQUIO",
-        "nombre_legal" : "?AHUIMPUQUIO"
+        "nombre" : "ÑAHUIMPUQUIO",
+        "nombre_legal" : "ÑAHUIMPUQUIO"
     },
     {
         "id" : "090711",
@@ -8555,8 +8555,8 @@
         "departamento" : "HUANUCO",
         "provincia_id" : "1005",
         "provincia" : "HUAMALIES",
-        "nombre" : "PU?OS",
-        "nombre_legal" : "PU?OS"
+        "nombre" : "PUÑOS",
+        "nombre_legal" : "PUÑOS"
     },
     {
         "id" : "100510",
@@ -8671,7 +8671,7 @@
         "departamento_id" : "10",
         "departamento" : "HUANUCO",
         "provincia_id" : "1007",
-        "provincia" : "MARA?ON",
+        "provincia" : "MARAÑON",
         "nombre" : "HUACRACHUCO",
         "nombre_legal" : "HUACRACHUCO"
     },
@@ -8680,7 +8680,7 @@
         "departamento_id" : "10",
         "departamento" : "HUANUCO",
         "provincia_id" : "1007",
-        "provincia" : "MARA?ON",
+        "provincia" : "MARAÑON",
         "nombre" : "CHOLON",
         "nombre_legal" : "SAN PEDRO DE CHONTA"
     },
@@ -8689,7 +8689,7 @@
         "departamento_id" : "10",
         "departamento" : "HUANUCO",
         "provincia_id" : "1007",
-        "provincia" : "MARA?ON",
+        "provincia" : "MARAÑON",
         "nombre" : "SAN BUENAVENTURA",
         "nombre_legal" : "SAN BUENAVENTURA"
     },
@@ -8698,7 +8698,7 @@
         "departamento_id" : "10",
         "departamento" : "HUANUCO",
         "provincia_id" : "1007",
-        "provincia" : "MARA?ON",
+        "provincia" : "MARAÑON",
         "nombre" : "LA MORADA",
         "nombre_legal" : "LA MORADA"
     },
@@ -8707,7 +8707,7 @@
         "departamento_id" : "10",
         "departamento" : "HUANUCO",
         "provincia_id" : "1007",
-        "provincia" : "MARA?ON",
+        "provincia" : "MARAÑON",
         "nombre" : "SANTA ROSA DE ALTO YANAJANCA",
         "nombre_legal" : "SANTA ROSA DE ALTO YANAJANCA"
     },
@@ -8807,8 +8807,8 @@
         "departamento" : "HUANUCO",
         "provincia_id" : "1010",
         "provincia" : "LAURICOCHA",
-        "nombre" : "BA?OS",
-        "nombre_legal" : "BA?OS"
+        "nombre" : "BAÑOS",
+        "nombre_legal" : "BAÑOS"
     },
     {
         "id" : "101003",
@@ -8942,8 +8942,8 @@
         "departamento" : "ICA",
         "provincia_id" : "1101",
         "provincia" : "ICA",
-        "nombre" : "LA TINGUI?A",
-        "nombre_legal" : "LA TINGUI?A"
+        "nombre" : "LA TINGUIÑA",
+        "nombre_legal" : "LA TINGUIÑA"
     },
     {
         "id" : "110103",
@@ -9527,8 +9527,8 @@
         "departamento" : "JUNIN",
         "provincia_id" : "1201",
         "provincia" : "HUANCAYO",
-        "nombre" : "SA?O",
-        "nombre_legal" : "SA?O"
+        "nombre" : "SAÑO",
+        "nombre_legal" : "SAÑO"
     },
     {
         "id" : "120133",
@@ -9869,7 +9869,7 @@
         "departamento" : "JUNIN",
         "provincia_id" : "1204",
         "provincia" : "JAUJA",
-        "nombre" : "LEONOR ORDO?EZ",
+        "nombre" : "LEONOR ORDOÑEZ",
         "nombre_legal" : "HUANCANI"
     },
     {
@@ -11309,8 +11309,8 @@
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1401",
         "provincia" : "CHICLAYO",
-        "nombre" : "SA?A",
-        "nombre_legal" : "SA?A"
+        "nombre" : "SAÑA",
+        "nombre_legal" : "SAÑA"
     },
     {
         "id" : "140116",
@@ -11362,25 +11362,25 @@
         "departamento_id" : "14",
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1402",
-        "provincia" : "FERRE?AFE",
-        "nombre" : "FERRE?AFE",
-        "nombre_legal" : "FERRE?AFE"
+        "provincia" : "FERREÑAFE",
+        "nombre" : "FERREÑAFE",
+        "nombre_legal" : "FERREÑAFE"
     },
     {
         "id" : "140202",
         "departamento_id" : "14",
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1402",
-        "provincia" : "FERRE?AFE",
-        "nombre" : "CA?ARIS",
-        "nombre_legal" : "CA?ARIS"
+        "provincia" : "FERREÑAFE",
+        "nombre" : "CAÑARIS",
+        "nombre_legal" : "CAÑARIS"
     },
     {
         "id" : "140203",
         "departamento_id" : "14",
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1402",
-        "provincia" : "FERRE?AFE",
+        "provincia" : "FERREÑAFE",
         "nombre" : "INCAHUASI",
         "nombre_legal" : "INCAHUASI"
     },
@@ -11389,7 +11389,7 @@
         "departamento_id" : "14",
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1402",
-        "provincia" : "FERRE?AFE",
+        "provincia" : "FERREÑAFE",
         "nombre" : "MANUEL ANTONIO MESONES MURO",
         "nombre_legal" : "MANUEL ANTONIO MESONES MURO"
     },
@@ -11398,7 +11398,7 @@
         "departamento_id" : "14",
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1402",
-        "provincia" : "FERRE?AFE",
+        "provincia" : "FERREÑAFE",
         "nombre" : "PITIPO",
         "nombre_legal" : "PITIPO"
     },
@@ -11407,7 +11407,7 @@
         "departamento_id" : "14",
         "departamento" : "LAMBAYEQUE",
         "provincia_id" : "1402",
-        "provincia" : "FERRE?AFE",
+        "provincia" : "FERREÑAFE",
         "nombre" : "PUEBLO NUEVO",
         "nombre_legal" : "PUEBLO NUEVO"
     },
@@ -11561,8 +11561,8 @@
         "departamento" : "LIMA",
         "provincia_id" : "1501",
         "provincia" : "LIMA",
-        "nombre" : "BRE?A",
-        "nombre_legal" : "BRE?A"
+        "nombre" : "BREÑA",
+        "nombre_legal" : "BREÑA"
     },
     {
         "id" : "150106",
@@ -12064,16 +12064,16 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
-        "nombre" : "SAN VICENTE DE CA?ETE",
-        "nombre_legal" : "SAN VICENTE DE CA?ETE"
+        "provincia" : "CAÑETE",
+        "nombre" : "SAN VICENTE DE CAÑETE",
+        "nombre_legal" : "SAN VICENTE DE CAÑETE"
     },
     {
         "id" : "150502",
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "ASIA",
         "nombre_legal" : "ASIA"
     },
@@ -12082,7 +12082,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "CALANGO",
         "nombre_legal" : "CALANGO"
     },
@@ -12091,7 +12091,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "CERRO AZUL",
         "nombre_legal" : "CERRO AZUL"
     },
@@ -12100,7 +12100,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "CHILCA",
         "nombre_legal" : "CHILCA"
     },
@@ -12109,7 +12109,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "COAYLLO",
         "nombre_legal" : "COAYLLO"
     },
@@ -12118,7 +12118,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "IMPERIAL",
         "nombre_legal" : "IMPERIAL"
     },
@@ -12127,7 +12127,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "LUNAHUANA",
         "nombre_legal" : "LUNAHUANA"
     },
@@ -12136,7 +12136,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "MALA",
         "nombre_legal" : "MALA"
     },
@@ -12145,7 +12145,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "NUEVO IMPERIAL",
         "nombre_legal" : "NUEVO IMPERIAL"
     },
@@ -12154,7 +12154,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "PACARAN",
         "nombre_legal" : "PACARAN"
     },
@@ -12163,7 +12163,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "QUILMANA",
         "nombre_legal" : "QUILMANA"
     },
@@ -12172,7 +12172,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "SAN ANTONIO",
         "nombre_legal" : "SAN ANTONIO"
     },
@@ -12181,7 +12181,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "SAN LUIS",
         "nombre_legal" : "SAN LUIS"
     },
@@ -12190,7 +12190,7 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
+        "provincia" : "CAÑETE",
         "nombre" : "SANTA CRUZ DE FLORES",
         "nombre_legal" : "SANTA CRUZ DE FLORES"
     },
@@ -12199,9 +12199,9 @@
         "departamento_id" : "15",
         "departamento" : "LIMA",
         "provincia_id" : "1505",
-        "provincia" : "CA?ETE",
-        "nombre" : "ZU?IGA",
-        "nombre_legal" : "ZU?IGA"
+        "provincia" : "CAÑETE",
+        "nombre" : "ZUÑIGA",
+        "nombre_legal" : "ZUÑIGA"
     },
     {
         "id" : "150601",
@@ -12911,8 +12911,8 @@
         "departamento" : "LIMA",
         "provincia_id" : "1510",
         "provincia" : "YAUYOS",
-        "nombre" : "HUA?EC",
-        "nombre_legal" : "HUA?EC"
+        "nombre" : "HUAÑEC",
+        "nombre_legal" : "HUAÑEC"
     },
     {
         "id" : "151018",
@@ -13046,8 +13046,8 @@
         "departamento" : "LIMA",
         "provincia_id" : "1510",
         "provincia" : "YAUYOS",
-        "nombre" : "VI?AC",
-        "nombre_legal" : "VI?AC"
+        "nombre" : "VIÑAC",
+        "nombre_legal" : "VIÑAC"
     },
     {
         "id" : "151033",
@@ -13344,7 +13344,7 @@
         "provincia_id" : "1605",
         "provincia" : "REQUENA",
         "nombre" : "PUINAHUA",
-        "nombre_legal" : "BRETA?A"
+        "nombre_legal" : "BRETAÑA"
     },
     {
         "id" : "160507",
@@ -13450,7 +13450,7 @@
         "departamento_id" : "16",
         "departamento" : "LORETO",
         "provincia_id" : "1607",
-        "provincia" : "DATEM DEL MARA?ON",
+        "provincia" : "DATEM DEL MARAÑON",
         "nombre" : "BARRANCA",
         "nombre_legal" : "SAN LORENZO"
     },
@@ -13459,7 +13459,7 @@
         "departamento_id" : "16",
         "departamento" : "LORETO",
         "provincia_id" : "1607",
-        "provincia" : "DATEM DEL MARA?ON",
+        "provincia" : "DATEM DEL MARAÑON",
         "nombre" : "CAHUAPANAS",
         "nombre_legal" : "SANTA MARIA DE CAHUAPANAS"
     },
@@ -13468,7 +13468,7 @@
         "departamento_id" : "16",
         "departamento" : "LORETO",
         "provincia_id" : "1607",
-        "provincia" : "DATEM DEL MARA?ON",
+        "provincia" : "DATEM DEL MARAÑON",
         "nombre" : "MANSERICHE",
         "nombre_legal" : "SARAMIRIZA"
     },
@@ -13477,7 +13477,7 @@
         "departamento_id" : "16",
         "departamento" : "LORETO",
         "provincia_id" : "1607",
-        "provincia" : "DATEM DEL MARA?ON",
+        "provincia" : "DATEM DEL MARAÑON",
         "nombre" : "MORONA",
         "nombre_legal" : "PUERTO ALEGRIA"
     },
@@ -13486,7 +13486,7 @@
         "departamento_id" : "16",
         "departamento" : "LORETO",
         "provincia_id" : "1607",
-        "provincia" : "DATEM DEL MARA?ON",
+        "provincia" : "DATEM DEL MARAÑON",
         "nombre" : "PASTAZA",
         "nombre_legal" : "ULLPAYACU"
     },
@@ -13495,7 +13495,7 @@
         "departamento_id" : "16",
         "departamento" : "LORETO",
         "provincia_id" : "1607",
-        "provincia" : "DATEM DEL MARA?ON",
+        "provincia" : "DATEM DEL MARAÑON",
         "nombre" : "ANDOAS",
         "nombre_legal" : "ALIANZA CRISTIANA"
     },
@@ -13613,8 +13613,8 @@
         "departamento" : "MADRE DE DIOS",
         "provincia_id" : "1703",
         "provincia" : "TAHUAMANU",
-        "nombre" : "I?APARI",
-        "nombre_legal" : "I?APARI"
+        "nombre" : "IÑAPARI",
+        "nombre_legal" : "IÑAPARI"
     },
     {
         "id" : "170302",
@@ -13721,8 +13721,8 @@
         "departamento" : "MOQUEGUA",
         "provincia_id" : "1802",
         "provincia" : "GENERAL SANCHEZ CERRO",
-        "nombre" : "ICHU?A",
-        "nombre_legal" : "ICHU?A"
+        "nombre" : "ICHUÑA",
+        "nombre_legal" : "ICHUÑA"
     },
     {
         "id" : "180205",
@@ -14558,7 +14558,7 @@
         "departamento" : "PIURA",
         "provincia_id" : "2007",
         "provincia" : "TALARA",
-        "nombre" : "PARI?AS",
+        "nombre" : "PARIÑAS",
         "nombre_legal" : "TALARA"
     },
     {
@@ -14738,8 +14738,8 @@
         "departamento" : "PUNO",
         "provincia_id" : "2101",
         "provincia" : "PUNO",
-        "nombre" : "MA?AZO",
-        "nombre_legal" : "MA?AZO"
+        "nombre" : "MAÑAZO",
+        "nombre_legal" : "MAÑAZO"
     },
     {
         "id" : "210110",
@@ -14864,8 +14864,8 @@
         "departamento" : "PUNO",
         "provincia_id" : "2102",
         "provincia" : "AZANGARO",
-        "nombre" : "MU?ANI",
-        "nombre_legal" : "MU?ANI"
+        "nombre" : "MUÑANI",
+        "nombre_legal" : "MUÑANI"
     },
     {
         "id" : "210209",
@@ -15341,8 +15341,8 @@
         "departamento" : "PUNO",
         "provincia_id" : "2108",
         "provincia" : "MELGAR",
-        "nombre" : "NU?OA",
-        "nombre_legal" : "NU?OA"
+        "nombre" : "NUÑOA",
+        "nombre_legal" : "NUÑOA"
     },
     {
         "id" : "210807",
@@ -15899,8 +15899,8 @@
         "departamento" : "SAN MARTIN",
         "provincia_id" : "2205",
         "provincia" : "LAMAS",
-        "nombre" : "CU?UMBUQUI",
-        "nombre_legal" : "CU?UMBUQUI"
+        "nombre" : "CUÑUMBUQUI",
+        "nombre_legal" : "CUÑUMBUQUI"
     },
     {
         "id" : "220506",
@@ -16665,7 +16665,7 @@
         "provincia_id" : "2402",
         "provincia" : "CONTRALMIRANTE VILLAR",
         "nombre" : "CASITAS",
-        "nombre_legal" : "CA?AVERAL"
+        "nombre_legal" : "CAÑAVERAL"
     },
     {
         "id" : "240203",

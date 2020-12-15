@@ -9560,3 +9560,7 @@ body.md-skin {
     content: ' *';
     display:inline;
 }
+
+.leyenda-required {
+    color: #ff9d32;
+}

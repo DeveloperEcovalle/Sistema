@@ -114,21 +114,31 @@
                     data: 'estado',
                     className:"text-center",
                     render: function(data) {
-                        return (data.estado === 1) ? "<div class='badge badge-success'>Activo</div>" : "<div class='badge badge-danger'>Inactivo</div>";
+                        return (data === "ACTIVO") ? "<div class='badge badge-success'>Activo</div>" : "<div class='badge badge-danger'>Inactivo</div>";
                     }
                 },
                 {
                     data: null,
                     className:"text-center",
                     render: function(data) {
+                        //Ruta Detalle
+                        var url_detalle = '{{ route("mantenimiento.empleado.show", ":id")}}';
+                        url_detalle = url_detalle.replace(':id',data.id);
+
+                        //Ruta Modificar
                         var url_editar = '{{ route("mantenimiento.empleado.edit", ":id")}}';
                         url_editar = url_editar.replace(':id',data.id);
 
                         return "<div class='btn-group'>" +
+                                    "<a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a>" +
+                                    "<a class='btn btn-warning btn-sm modificarDetalle' href='"+url_editar+"' title='Modificar'><i class='fa fa-edit'></i></a>" +
+                                    "<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                                "</div>"
+                        /*return "<div class='btn-group'>" +
                                     "<button type='button' class='btn btn-warning btn-sm mr-1' onclick='editarEmpleado("+url_editar+")'  title='Modificar'>" +
                                         "<i class='fa fa-edit'></i>" +
                                     "</button>" +
-                                    (data.estado === 1) ?
+                                    (data.estado === "ACTIVO") ?
                                     "<button type='button' class='btn btn-warning btn-sm mr-1 btn-desactivar-empleado' data-toggle='modal' data-target='#deactive'  title='Desactivar'>" +
                                         "<i class='fa fa-trash'></i>" +
                                     "</button>"
@@ -136,7 +146,7 @@
                                     "<button type='button' class='btn btn-warning btn-sm mr-1 btn-desactivar-empleado' data-toggle='modal' data-target='#activate'  title='Desactivar'>" +
                                         "<i class='fa fa-check'></i>" +
                                     "</button>" +
-                                "</div>"
+                                "</div>"*/
                     }
                 }
 
@@ -161,6 +171,35 @@
 
     function editarEmpleado(url) {
         window.location = url;
+    }
+
+    function eliminar(id) {
+        Swal.fire({
+            title: 'Opción Eliminar',
+            text: "¿Seguro que desea guardar cambios?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                //Ruta Eliminar
+                var url_eliminar = '{{ route("mantenimiento.empleado.destroy", ":id")}}';
+                url_eliminar = url_eliminar.replace(':id',id);
+                $(location).attr('href',url_eliminar);
+
+            }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                )
+            }
+        })
     }
 
 </script>

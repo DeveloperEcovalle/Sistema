@@ -14,19 +14,22 @@ class TablaDetalleSeeder extends Seeder
         //Bancos
 
         $detalle = new Detalle();
-        $detalle->descripcion = "Banco de la Nación";
+        $detalle->descripcion = "BANCO DE LA NACION";
+        $detalle->simbolo = "BN";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "Intercontinental";
+        $detalle->descripcion = "INTERCONTINENTAL";
+        $detalle->simbolo = "INTERCONTINENTAL";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "Mi Banco";
+        $detalle->descripcion = "MI BANCO";
+        $detalle->simbolo = "MI BANCO";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
         $detalle->save();
@@ -312,6 +315,56 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'PERSONA JURIDICA';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 11;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PERSONA";
+        $detalle->simbolo = 'PERSONA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 11;
+        $detalle->save();
+
+        // Grupos sanguíneos
+        $detalle = new Detalle();
+        $detalle->descripcion = "O NEGATIVO";
+        $detalle->simbolo = 'O-';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 12;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "O POSITIVO";
+        $detalle->simbolo = 'O+';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 12;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "A NEGATIVO";
+        $detalle->simbolo = 'A-';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 12;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "A POSITIVO";
+        $detalle->simbolo = 'A+';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 12;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "B NEGATIVO";
+        $detalle->simbolo = 'B-';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 12;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "B POSITIVO";
+        $detalle->simbolo = 'B+';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 12;
         $detalle->save();
     }
 }

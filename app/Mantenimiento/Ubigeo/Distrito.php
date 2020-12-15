@@ -9,12 +9,12 @@ class Distrito extends Model
     protected $table = 'distritos';
     public $timestamps = false;
 
-    public function provincias()
+    public function provincia()
     {
         return $this->belongsTo('App\Mantenimiento\Ubigeo\Provincia');
     }
 
-    public function departamentos()
+    public function departamento()
     {
         return $this->belongsTo('App\Mantenimiento\Ubigeo\Departamento');
     }

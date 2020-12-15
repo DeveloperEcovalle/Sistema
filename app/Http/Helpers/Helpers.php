@@ -1,8 +1,13 @@
 <?php
 
 use App\Mantenimiento\Tabla\General;
+use App\Mantenimiento\Ubigeo\Departamento;
+use App\Mantenimiento\Ubigeo\Distrito;
+use App\Mantenimiento\Ubigeo\Provincia;
 use App\Parametro;
+use Carbon\Carbon;
 
+// TABLAS-DETALLES
 if (!function_exists('tipos_moneda')) {
     function tipos_moneda()
     {
@@ -80,6 +85,73 @@ if (!function_exists('personas')) {
     }
 }
 
+if (!function_exists('grupos_sanguineos')) {
+    function grupos_sanguineos()
+    {
+        return General::find(12)->detalles;
+    }
+}
+
+// UBIGEO
+if (!function_exists('departamentos')) {
+    function departamentos($id = null)
+    {
+        if (is_null($id)) {
+            return Departamento::all();
+        } else {
+            $departamento_id = str_pad($id, 2, "0", STR_PAD_LEFT);
+            return Departamento::where('id', $id)->get();
+        }
+    }
+}
+
+if (!function_exists('provincias')) {
+    function provincias($id = null)
+    {
+        if (is_null($id)) {
+            return Provincia::all();
+        } else {
+            $provincia_id = str_pad($id, 4, "0", STR_PAD_LEFT);
+            return Provincia::where('id', $provincia_id)->get();
+        }
+    }
+}
+
+if (!function_exists('getProvinciasByDepartamento')) {
+    function getProvinciasByDepartamento($departamento_id)
+    {
+        if (is_null($departamento_id)) {
+            return collect([]);
+        } else {
+            $departamento_id = str_pad($departamento_id, 2, "0", STR_PAD_LEFT);
+            return Provincia::where('departamento_id', $departamento_id)->get();
+        }
+    }
+}
+
+if (!function_exists('distritos')) {
+    function distritos($id = null)
+    {
+        if (is_null($id)) {
+            return Distrito::all();
+        } else {
+            $distrito_id = str_pad($id, 6, "0", STR_PAD_LEFT);
+            return Distrito::where('id', $distrito_id)->get();
+        }
+    }
+}
+
+if (!function_exists('getDistritosByProvincia')) {
+    function getDistritosByProvincia($provincia_id)
+    {
+        if (is_null($provincia_id)) {
+            return collect([]);
+        } else {
+            $provincia_id = str_pad($provincia_id, 4, "0", STR_PAD_LEFT);
+            return Distrito::where('provincia_id', $provincia_id)->get();
+        }
+    }
+}
 
 //Consultas a la Api
 if (!function_exists('consultaRuc')) {
@@ -92,5 +164,16 @@ if (!function_exists('consultaDni')) {
     function consultaDni()
     {
         return Parametro::findOrFail(2);
+    }
+}
+
+if (!function_exists('getFechaFormato')) {
+    function getFechaFormato($fecha, $formato)
+    {
+        if (is_null($fecha) || empty($fecha))
+            return "-";
+
+        $fecha_formato = Carbon::parse($fecha)->format($formato);
+        return ($fecha_formato) ? $fecha_formato : $fecha;
     }
 }

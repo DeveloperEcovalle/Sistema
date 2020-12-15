@@ -2,11 +2,31 @@
 
 namespace App\Mantenimiento\Persona;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Persona extends Model
 {
     protected $table = 'personas';
+    protected $fillable =[
+        'tipo_documento',
+        'documento',
+        'codigo_verificacion',
+        'nombres',
+        'apellidos_paterno',
+        'apellidos_materno',
+        'fecha_nacimiento',
+        'sexo',
+        'estado_civil',
+        'departamento_id',
+        'provincia_id',
+        'distrito_id',
+        'direccion',
+        'correo_electronico',
+        'telefono_movil',
+        'telefono_fijo',
+        'estado'
+    ];
 
     public function empleado()
     {
@@ -22,4 +42,36 @@ class Persona extends Model
     {
         return $this->apellido_paterno . ' ' . $this->apellido_materno . ', ' . $this->nombres;
     }
+
+    public function getTipoDocumento(): string
+    {
+        return tipos_documento()->where('simbolo', $this->tipo_documento)->first()->descripcion;
+    }
+
+    public function getSexo(): string
+    {
+        return tipos_sexo()->where('simbolo', $this->sexo)->first()->descripcion;
+    }
+
+    public function getEstadoCivil(): string
+    {
+        return estados_civiles()->where('simbolo', $this->estado_civil)->first()->descripcion;
+    }
+
+    public function getDepartamento(): string
+    {
+        return departamentos()->where('id', $this->departamento_id)->first()->nombre;
+    }
+
+    public function getProvincia(): string
+    {
+        return provincias($this->provincia_id)->first()->nombre;
+    }
+
+    public function getDistrito(): string
+    {
+        return distritos($this->distrito_id)->first()->nombre;
+    }
+
+
 }

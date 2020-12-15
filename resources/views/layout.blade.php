@@ -13,14 +13,14 @@
 
     <link href="{{asset('Inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('Inspinia/css/style.css')}}" rel="stylesheet">
-    
+
 
 
     <!-- Toastr style -->
     <link href="{{asset('Inspinia/css/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
 
 
-    
+
 
 
     @stack('styles')
@@ -96,13 +96,16 @@
 
     <!-- jQuery UI -->
     <script src="{{asset('Inspinia/js/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-    
+
     <!-- Toastr script -->
     <script src="{{asset('Inspinia/js/plugins/toastr/toastr.min.js')}}"></script>
 
+    <!-- Propio scripts -->
+    <script src="{{ asset('Inspinia/js/scripts.js') }}"></script>
+
     <!-- SweetAlert -->
     <script src="{{asset('SweetAlert/sweetalert2@10.js')}}"></script>
-    
+
     @stack('scripts')
 
     <script>
@@ -152,10 +155,10 @@
                 '¡Búsqueda Exitosa!',
                 'Datos ingresados.',
                 'success'
-            )                   
+            )
         }
 
     </script>
-    
+
 </body>
 </html>

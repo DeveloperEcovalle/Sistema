@@ -2,7 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d3fee18-a3c2-46f4-8f87-6116d6ccbf3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database/data/tabla/tablas_detalles.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_11_184234_create_proveedores_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Compras/ArticuloController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Compras/ArticuloController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_11_184133_create_articulos_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_11_184133_create_articulos_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/TablaDetalleSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TablaDetalleSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/almacenes/almacen/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/almacenes/almacen/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compras/categorias/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/categorias/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/nav.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +38,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="composer.json" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -143,16 +165,16 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="E:/WebProjects/app-cmp8" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="proofread" />
+    <property name="settings.editor.selected.configurable" value="Laravel.SettingsForm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Mantenimiento\Ubigeo" />
       <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Mantenimiento\Empleado" />
       <recent name="C:\laragon\www\app-ecovalle\app\Mantenimiento\Vendedor" />
       <recent name="C:\laragon\www\app-ecovalle\app\Mantenimiento\Empleado" />
       <recent name="C:\laragon\www\app-ecovalle\app\Mantenimiento\Persona" />
-      <recent name="C:\laragon\www\app-ecovalle\app\Mantenimiento\Ubigeo" />
     </key>
   </component>
   <component name="RunManager">
@@ -173,7 +195,12 @@
       <workItem from="1607451840920" duration="15013000" />
       <workItem from="1607529385920" duration="27542000" />
       <workItem from="1607649371424" duration="7205000" />
-      <workItem from="1607702708367" duration="2712000" />
+      <workItem from="1607702708367" duration="3296000" />
+      <workItem from="1607789302393" duration="162000" />
+      <workItem from="1607789507065" duration="33779000" />
+      <workItem from="1607870048377" duration="44973000" />
+      <workItem from="1607966965131" duration="2604000" />
+      <workItem from="1607971555157" duration="7301000" />
     </task>
     <servers />
   </component>
@@ -191,5 +218,20 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php</url>
+          <line>25</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
