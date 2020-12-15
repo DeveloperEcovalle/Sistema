@@ -32,7 +32,7 @@ class CreateEmpresasTable extends Migration
             $table->string('nombre_representante');
             $table->string('num_asiento');
             $table->string('num_partida');
-            
+            $table->boolean('activo');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
 
             $table->timestamps();

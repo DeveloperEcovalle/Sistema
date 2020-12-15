@@ -45,8 +45,8 @@
                                     </div>                                        
 
                                     <div class="form-group row">
-
-                                        <div class="col-md-4">
+                               
+                                        <div class="col-md-6">
                                                 <label class="required">Ruc: </label>                                                     
                                                 <input type="text" class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}" name="ruc" id="ruc"  maxlength="11" value="{{old('ruc', $empresa->ruc)}}" >
 
@@ -59,15 +59,17 @@
                                         </div>
 
 
-                                        <div class="col-md-8">
-                                                <label >Razón Social Abreviada: </label>                                                     
-                                                <input type="text" id="razon_social_abreviada" class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}" name="razon_social_abreviada" value="{{ old('razon_social_abreviada',$empresa->razon_social_abreviada)}}" style="text-transform:uppercase;">
+                                        <div class="col-md-6">
+                                                <label >Estado: </label>
+                                                    
+                                                    <input type="text" id="estado" class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}" name="estado" value="{{ $empresa->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}" style="text-transform:uppercase;" disabled>
+                                                    @if ($errors->has('estado'))
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $errors->first('estado') }}</strong>
+                                                        </span>
+                                                    @endif
 
-                                                @if ($errors->has('razon_social_abreviada'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('razon_social_abreviada') }}</strong>
-                                                    </span>
-                                                @endif
+
 
                                         </div>
 
@@ -84,6 +86,17 @@
                                                 <strong>{{ $errors->first('razon_social') }}</strong>
                                             </span>
                                         @endif
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label >Razón Social Abreviada: </label>                                                     
+                                            <input type="text" id="razon_social_abreviada" class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}" name="razon_social_abreviada" value="{{ old('razon_social_abreviada',$empresa->razon_social_abreviada)}}" style="text-transform:uppercase;">
+
+                                            @if ($errors->has('razon_social_abreviada'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('razon_social_abreviada') }}</strong>
+                                                </span>
+                                            @endif
                                     </div>
 
 
@@ -351,6 +364,10 @@
         }
     });
 
+    $("#ruc").keyup(function(){ 
+        $('#estado').val('INACTIVO');
+    }) 
+
     $('#enviar_empresa_editar').submit(function(e){
         e.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
@@ -371,7 +388,14 @@
             cancelButtonText: "No, Cancelar",
             }).then((result) => {
             if (result.isConfirmed) {
-                    this.submit();
+                    if ($('#estado').val() == "ACTIVO") {
+                        $("#estado").prop('disabled', false)
+                        this.submit();    
+                    }else{
+                        toastr.error('Ingrese una empresa activa','Error');
+                        var ruc = $("#ruc").val()
+                        evaluarRuc(ruc);
+                    }
                 }else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
@@ -441,7 +465,8 @@
         var departamento = objeto.value.departamento;
         var provincia = objeto.value.provincia;
         var distrito = objeto.value.distrito;
-        
+        var estado = objeto.value.estado;
+       
         if (razonsocial!='-' && razonsocial!="NULL" ) {
             $('#razon_social').val(razonsocial)    
         }
@@ -450,6 +475,11 @@
             $('#razon_social_abreviada').val(nombrecorto)    
         }else{
             $('#razon_social_abreviada').val(razonsocial)  
+        }
+        if (estado=="ACTIVO" ) {
+            $('#estado').val(estado)    
+        }else{
+            toastr.error('Empresa no se encuentra "Activa"','Error');
         }
 
         if (direccion!='-' && direccion!="NULL" ) {

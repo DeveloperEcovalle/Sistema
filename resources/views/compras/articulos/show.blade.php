@@ -18,7 +18,7 @@
     </div>
 </div>
 <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-9">
                 <div class="wrapper wrapper-content animated fadeInUp">
                     <div class="ibox">
                         <div class="ibox-content">
@@ -28,7 +28,7 @@
                                         <a href="{{route('compras.articulo.edit',$articulo->id)}}" class="btn btn-warning btn-xs float-right"><i class='fa fa-edit'></i>Editar Artículo</a>
                                         <h2 style="text-transform:uppercase;">{{$articulo->descripcion}}</h2>
                                     </div>
-                                    <p><strong><i class="fa fa-caret-right"></i> Información general del Artículo:</strong></p>
+                                    <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información general del Artículo:</strong></p>
 
                                 </div>
                             </div>
@@ -60,7 +60,12 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label><strong>Stock: </strong></label> 
-                                            <p>{{$articulo->stock}}</p>
+                                            @if($articulo->stock)
+                                                <p>{{$articulo->stock}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                            
                                         </div>
                                         <div class="col-md-6">
                                             <label><strong>Stock Min.: </strong></label> 
@@ -88,6 +93,31 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3">
+                <div class="wrapper wrapper-content project-manager" style="text-transform:uppercase;">
+                    <h4>Registro</h4>
+                    <p><b>Información del registro:<b></p>
+                    <p class="text-center">
+                        <i class="fa fa-tag big-icon"></i>
+                        
+                    </p>
+                    <hr>
+                    <div class="row">
+                                <div class="col-lg-12">
+                                    <dl class="row mb-0">
+                                        <div class="col-sm-4 text-sm-left"><dt>CREADO:</dt> </div>
+                                        <div class="col-sm-8 text-sm-right"><dd class="mb-1">  {{ Carbon\Carbon::parse($articulo->created_at)->format('d/m/y - G:i:s') }}</dd> </div>
+                                    </dl>
+                                    <dl class="row mb-0">
+                                        <div class="col-sm-4 text-sm-left"><dt>ACTUALIZADO:</dt> </div>
+                                        <div class="col-sm-8 text-sm-right"> <dd class="mb-1">  {{ Carbon\Carbon::parse($articulo->updated_at)->format('d/m/y - G:i:s') }}</dd></div>
+                                    </dl>
+
+                                </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
 @stop

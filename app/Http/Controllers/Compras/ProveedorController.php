@@ -1,0 +1,340 @@
+<?php
+
+namespace App\Http\Controllers\Compras;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Compras\Proveedor;
+use DataTables;
+use Carbon\Carbon;
+use Session;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\RequiredIf;
+
+class ProveedorController extends Controller
+{
+    public function index()
+    {
+        return view('compras.proveedores.index');
+    }
+
+    public function getProvider(){
+        $proveedores = Proveedor::where('estado','ACTIVO')->get();
+        $coleccion = collect([]);
+        foreach($proveedores as $proveedor){
+            if ($proveedor->dni) {
+                $dni = $proveedor->dni;
+            }else{
+                $dni = '-';
+            }
+
+            if ($proveedor->ruc) {
+                $ruc = $proveedor->ruc;
+            }else{
+                $ruc = '-';
+            }
+
+            $coleccion->push([
+                'id' => $proveedor->id,
+                'descripcion' => $proveedor->descripcion,
+                'dni' => $dni,
+                'ruc' => $ruc,
+                'tipo' => $proveedor->tipo_persona, 
+            ]);
+        }
+        return DataTables::of($coleccion)->toJson();
+    }
+
+    public function create()
+    {
+        $tipos = personas();
+        $zonas = zonas();
+        return view('compras.proveedores.create',[
+            'tipos' => $tipos,
+            'zonas' => $zonas,
+        ]);
+    }
+
+    public function store(Request $request){
+
+        $data = $request->all();
+        $rules = [
+            'tipo_documento' => 'required',
+        ];
+        $message = [
+            'tipo_documento.required' => 'El campo Tipo es obligatorio.',
+        ];
+        Validator::make($data, $rules, $message)->validate();
+        if ($request->input('tipo_documento') == '1') {
+            $rules = [
+                'ruc' => [
+                    new RequiredIf($request->input('tipo_documento') == '1'),
+                    'numeric',
+                    'digits:11',
+                    Rule::unique('proveedores','ruc')->where(function ($query) {
+                        $query->whereIn('estado',["ACTIVO"])->whereNotNull('ruc');
+                    })
+                ],
+                'tipo_persona'=> 'required',
+            ];
+            $message = [
+                'ruc.required' => 'El campo Ruc es obligatorio.',
+                'ruc.unique'=> 'El campo Ruc debe de ser campo único.',
+                'ruc.numeric'=> 'El campo Ruc debe se numérico.',
+                'ruc.digits'=>'El campo Ruc debe tener 11 dígitos.',
+                'tipo_persona.required' => 'El campo Tipo es obligatorio.',
+            ];
+            Validator::make($data, $rules, $message)->validate();
+        }else{
+            $rules = [
+                'dni' => [
+                    new RequiredIf($request->input('tipo_documento') == '2'),
+                    'numeric',
+                    'digits:8',
+                    Rule::unique('proveedores','dni')->where(function ($query) {
+                        $query->whereIn('estado',["ACTIVO"])->whereNotNull('dni');
+                    })
+                ],
+                'tipo_persona_dni'=> 'required',
+            ];
+            $message = [
+                'dni.digits' => 'El campo Dni debe tener 8 dígitos.',
+                'dni.numeric' => 'El campo Dni debe ser numérico.',
+                'dni.required' => 'El campo Dni es obligatorio.',
+                'dni.unique'=> 'El campo Dni debe de ser campo único.',
+                'tipo_persona_dni.required' => 'El campo Tipo es obligatorio.',
+            ];
+            Validator::make($data, $rules, $message)->validate();
+        }
+        
+        $rules = [
+
+            'descripcion' => 'required',
+            'direccion' => 'required',
+            'zona' => 'required',
+
+            'telefono' => 'nullable|numeric',
+            'celular' => 'nullable|numeric',
+            'web' => 'nullable',
+            'correo' => 'required|email',
+
+            'contacto' => 'nullable',
+            'telefono_contacto' => 'nullable|numeric',
+            'celular_contacto' => 'nullable|numeric',
+
+            'transporte' => 'nullable',
+            'direccion_transporte' => 'nullable',
+            'direccion_almacen' => 'nullable',
+
+        ];
+        
+        $message = [
+            'descripcion.required' => 'El campo Descripción es obligatorio.',
+            'direccion.required' => 'El campo Dirección es obligatorio.',
+            'zona.required' => 'El campo Zona es obligatorio.',
+
+            'correo.required' => 'El campo Correo es obligatorio.',
+            'correo.email' => 'El campo Correo debe ser email.',
+            'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
+            'celular.numeric' => 'El campo Celular debe ser numérico.',
+            'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
+            'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            
+
+        ];
+
+        Validator::make($data, $rules, $message)->validate();
+
+        $proveedor = new Proveedor();
+        $proveedor->ruc = $request->get('ruc');
+        $proveedor->dni = $request->get('dni');
+        $proveedor->descripcion = $request->get('descripcion');
+        $proveedor->tipo_documento= $request->get('tipo_documento');
+
+        if ($data['tipo_documento'] == "1") {
+            $proveedor->tipo_persona = $request->get('tipo_persona');
+        }else{
+            $proveedor->tipo_persona = $request->get('tipo_persona_dni');
+        }
+        $proveedor->direccion = $request->get('direccion');
+        $proveedor->correo = $request->get('correo');
+
+        $proveedor->web = $request->get('web');
+        $proveedor->zona = $request->get('zona');
+        $proveedor->telefono = $request->get('telefono');
+        $proveedor->celular = $request->get('celular');
+
+
+        $proveedor->contacto = $request->get('contacto');
+        $proveedor->celular_contacto = $request->get('celular_contacto');
+        $proveedor->telefono_contacto = $request->get('telefono_contacto');
+        
+        $proveedor->transporte = $request->get('transporte');
+        $proveedor->direccion_transporte = $request->get('direccion_transporte');
+        $proveedor->direccion_almacen = $request->get('direccion_almacen');
+        $proveedor->save();
+
+        Session::flash('success','Proveedor creada.');
+        return redirect()->route('compras.proveedor.index')->with('guardar', 'success');
+    }
+
+    public function destroy($id)
+    {
+        
+        $proveedor = Proveedor::findOrFail($id);
+        $proveedor->estado = 'ANULADO';
+        $proveedor->update();
+
+        Session::flash('success','Proveedor eliminado.');
+        return redirect()->route('compras.proveedor.index')->with('eliminar', 'success');
+
+    }
+
+    public function show($id)
+    {
+        $proveedor = Proveedor::findOrFail($id);
+        return view('compras.proveedores.show', [
+            'proveedor' => $proveedor
+        ]);
+
+    }
+
+    public function edit($id)
+    {
+        $proveedor = Proveedor::findOrFail($id);
+        $tipos = personas();
+        $zonas = zonas();
+        return view('compras.proveedores.edit', [
+            'proveedor' => $proveedor,
+            'tipos' => $tipos,
+            'zonas' => $zonas, 
+        ]);
+
+    }
+
+    public function update(Request $request, $id){
+
+        $data = $request->all();
+        $rules = [
+            'tipo_documento' => 'required',
+        ];
+        $message = [
+            'tipo_documento.required' => 'El campo Tipo es obligatorio.',
+        ];
+        Validator::make($data, $rules, $message)->validate();
+        if ($request->input('tipo_documento') == '1') {
+            $rules = [
+                'ruc' => [
+                    new RequiredIf($request->input('tipo_documento') == '1'),
+                    'numeric',
+                    'digits:11',
+                    Rule::unique('proveedores','ruc')->where(function ($query) {
+                        $query->whereIn('estado',["ACTIVO"])->whereNotNull('ruc');
+                    })->ignore($id)
+                ],
+                'tipo_persona'=> 'required',
+            ];
+            $message = [
+                'ruc.required' => 'El campo Ruc es obligatorio.',
+                'ruc.unique'=> 'El campo Ruc debe de ser campo único.',
+                'ruc.numeric'=> 'El campo Ruc debe se numérico.',
+                'ruc.digits'=>'El campo Ruc debe tener 11 dígitos.',
+                'tipo_persona.required' => 'El campo Tipo es obligatorio.',
+            ];
+            Validator::make($data, $rules, $message)->validate();
+        }else{
+            $rules = [
+                'dni' => [
+                    new RequiredIf($request->input('tipo_documento') == '2'),
+                    'numeric',
+                    'digits:8',
+                    Rule::unique('proveedores','dni')->where(function ($query) {
+                        $query->whereIn('estado',["ACTIVO"])->whereNotNull('dni');
+                    })->ignore($id)
+                ],
+                'tipo_persona_dni'=> 'required',
+            ];
+            $message = [
+                'dni.digits' => 'El campo Dni debe tener 8 dígitos.',
+                'dni.numeric' => 'El campo Dni debe ser numérico.',
+                'dni.required' => 'El campo Dni es obligatorio.',
+                'dni.unique'=> 'El campo Dni debe de ser campo único.',
+                'tipo_persona_dni.required' => 'El campo Tipo es obligatorio.',
+            ];
+            Validator::make($data, $rules, $message)->validate();
+        }
+        
+        $rules = [
+
+            'descripcion' => 'required',
+            'direccion' => 'required',
+            'zona' => 'required',
+
+            'telefono' => 'nullable|numeric',
+            'celular' => 'nullable|numeric',
+            'web' => 'nullable',
+            'correo' => 'required|email',
+
+            'contacto' => 'nullable',
+            'telefono_contacto' => 'nullable|numeric',
+            'celular_contacto' => 'nullable|numeric',
+
+            'transporte' => 'nullable',
+            'direccion_transporte' => 'nullable',
+            'direccion_almacen' => 'nullable',
+
+        ];
+        
+        $message = [
+            'descripcion.required' => 'El campo Descripción es obligatorio.',
+            'direccion.required' => 'El campo Dirección es obligatorio.',
+            'zona.required' => 'El campo Zona es obligatorio.',
+
+            'correo.required' => 'El campo Correo es obligatorio.',
+            'correo.email' => 'El campo Correo debe ser email.',
+            'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
+            'celular.numeric' => 'El campo Celular debe ser numérico.',
+            'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
+            'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            
+
+        ];
+
+        Validator::make($data, $rules, $message)->validate();
+
+        $proveedor = Proveedor::findOrFail($id);
+        $proveedor->ruc = $request->get('ruc');
+        $proveedor->dni = $request->get('dni');
+        $proveedor->descripcion = $request->get('descripcion');
+        $proveedor->tipo_documento= $request->get('tipo_documento');
+
+        if ($data['tipo_documento'] == "1") {
+            $proveedor->tipo_persona = $request->get('tipo_persona');
+        }else{
+            $proveedor->tipo_persona = $request->get('tipo_persona_dni');
+        }
+        $proveedor->direccion = $request->get('direccion');
+        $proveedor->correo = $request->get('correo');
+
+        $proveedor->web = $request->get('web');
+        $proveedor->zona = $request->get('zona');
+        $proveedor->telefono = $request->get('telefono');
+        $proveedor->celular = $request->get('celular');
+
+
+        $proveedor->contacto = $request->get('contacto');
+        $proveedor->celular_contacto = $request->get('celular_contacto');
+        $proveedor->telefono_contacto = $request->get('telefono_contacto');
+        
+        $proveedor->transporte = $request->get('transporte');
+        $proveedor->direccion_transporte = $request->get('direccion_transporte');
+        $proveedor->direccion_almacen = $request->get('direccion_almacen');
+        $proveedor->update();
+
+        Session::flash('success','Proveedor modificada.');
+        return redirect()->route('compras.proveedor.index')->with('modificar', 'success');
+
+    }
+}

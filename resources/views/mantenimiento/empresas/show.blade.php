@@ -28,7 +28,7 @@
                                         <a href="{{route('mantenimiento.empresas.edit',$empresa->id)}}" class="btn btn-warning btn-xs float-right"><i class='fa fa-edit'></i>Editar Empresa</a>
                                         <h2 style="text-transform:uppercase;">{{$empresa->razon_social}}</h2>
                                     </div>
-                                    <p><strong><i class="fa fa-caret-right"></i> Información general de la empresa:</strong></p>
+                                    <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información general de la empresa:</strong></p>
 
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
 
                             <hr>
 
-                            <p><strong> <i class="fa fa-caret-right"></i> Representante de la empresa:</strong></p>
+                            <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Representante de la empresa:</strong></p>
                             <div class="row" style="text-transform:uppercase;">
 
                                     <div class="col-md-6 b-r">
@@ -122,7 +122,7 @@
                             </div>
 
                             <hr>
-                            <p><strong><i class="fa fa-caret-right"></i> Registros Públicos:</strong></p>
+                            <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Registros Públicos:</strong></p>
                             <div class="row" style="text-transform:uppercase;">
 
                                     <div class="col-md-6 b-r">
@@ -155,8 +155,9 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="wrapper wrapper-content project-manager">
+                <div class="wrapper wrapper-content project-manager" style="text-transform:uppercase;">
                     <h4>Empresa</h4>
+                    <p><b>Información adicional:</b><p>
                     <div class="text-center">
                         
                         @if($empresa->ruta_logo)

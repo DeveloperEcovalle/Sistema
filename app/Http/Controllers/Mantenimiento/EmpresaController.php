@@ -30,13 +30,14 @@ class EmpresaController extends Controller
     }
 
     public function store(Request $request){
-
+   
         $data = $request->all();
 
         $rules = [
             'ruc' => ['required','numeric','min:11', Rule::unique('empresas','ruc')->where(function ($query) {
                         $query->whereIn('estado',["ACTIVO"]);
                     })],
+            'estado' => 'required',
             'razon_social' => 'required',
             'direccion_fiscal' => 'required',
             'direccion_llegada' => 'required',
@@ -67,7 +68,8 @@ class EmpresaController extends Controller
             'num_asiento.required' => 'El campo N° Asiento es obligatorio.',
             'num_partida.required' => 'El campo N° Partida es obligatorio.',
             'telefono.numeric' => 'El campo Teléfono es obligatorio.',
-            'celular.numeric' => 'El campo Celular es obligatorio.',
+            'estado.required' => 'El campo Estado es obligatorio.',
+
             
 
         ];
@@ -95,6 +97,9 @@ class EmpresaController extends Controller
 
         $empresa->num_partida = $request->get('num_partida');
         $empresa->num_asiento = $request->get('num_asiento');
+        if ($request->get('estado') == "ACTIVO") {
+            $empresa->activo = "1";
+        };
         $empresa->save();
 
         Session::flash('success','Empresa creada.');
@@ -133,12 +138,13 @@ class EmpresaController extends Controller
 
     public function update(Request $request, $id){
         $data = $request->all();
-
+        
         $rules = [
             'ruc' => ['required','numeric','min:11', Rule::unique('empresas','ruc')->where(function ($query) {
                         $query->whereIn('estado',["ACTIVO"]);
                     })->ignore($id)],
             'razon_social' => 'required',
+            'estado' => 'required',
             'direccion_fiscal' => 'required',
             'direccion_llegada' => 'required',
             'logo' => 'image|mimetypes:image/jpeg,image/png,image/jpg|max:40000',
@@ -146,8 +152,8 @@ class EmpresaController extends Controller
             'nombre_representante' => 'required',
             'num_asiento' => 'required',
             'num_partida' => 'required',
-            'telefono' => 'numeric',
-            'celular' => 'numeric',
+            'telefono' => 'nullable|numeric',
+            'celular' => 'nullable|numeric',
 
         ];
         
@@ -169,6 +175,7 @@ class EmpresaController extends Controller
             'num_partida.required' => 'El campo N° Partida es obligatorio.',
             'telefono.numeric' => 'El campo Teléfono es obligatorio.',
             'celular.numeric' => 'El campo Celular es obligatorio.',
+            'estado.required' => 'El campo Estado es obligatorio.',
 
         ];
 
@@ -205,6 +212,9 @@ class EmpresaController extends Controller
 
         $empresa->num_partida = $request->get('num_partida');
         $empresa->num_asiento = $request->get('num_asiento');
+        if ($request->get('estado') == "ACTIVO") {
+            $empresa->activo = "1";
+        };
         $empresa->update();
 
         Session::flash('success','Empresa modificada.');

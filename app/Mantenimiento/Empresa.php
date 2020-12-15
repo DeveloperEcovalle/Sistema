@@ -24,6 +24,7 @@ class Empresa extends Model
 
         'num_asiento',
         'num_partida',
+        'activo',
         'estado'
     ];
 }

@@ -313,12 +313,5 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 11;
         $detalle->save();
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "PERSONA";
-        $detalle->simbolo = 'PERSONA';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 11;
-        $detalle->save();
     }
 }
