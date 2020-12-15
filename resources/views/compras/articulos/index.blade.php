@@ -35,6 +35,7 @@
                     <table class="table dataTables-articulos table-striped table-bordered table-hover" style="text-transform:uppercase;">
                     <thead>
                         <tr>
+                            <th class="text-center">CODIGO</th>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">CATEGORIA</th>
                             <th class="text-center">PRESENTACION</th>
@@ -107,6 +108,7 @@
             "ajax": '{{ route("getArticle")}}',
             "columns": [
                 //Articulo
+                {data: 'codigo' , className:"text-center" },
                 {data: 'descripcion' },
                 {data: 'categoria' , className:"text-center" },
                 {data: 'presentacion', className:"text-center"},

@@ -41,18 +41,35 @@
                                         <div class="col-md-12">
                                             <p>Modificar datos del artículo:</p>
                                         </div>
-                                    </div>                                        
+                                    </div>   
 
-                                    <div class="form-group">    
-                                        <label class="required">Descripción: </label>                                                     
-                                        <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion',$articulo->descripcion)}}"  style="text-transform:uppercase;" required>
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label class="required">Código de Fábrica: </label>                                                     
+                                            <input type="text" id="codigo_fabrica" class="form-control {{ $errors->has('codigo_fabrica') ? ' is-invalid' : '' }}" name="codigo_fabrica" value="{{ old('codigo_fabrica',$articulo->codigo_fabrica)}}"  style="text-transform:uppercase;" required>
 
-                                        @if ($errors->has('descripcion'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('descripcion') }}</strong>
-                                            </span>
-                                        @endif                                        
-                                    </div>
+                                            @if ($errors->has('codigo_fabrica'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('codigo_fabrica') }}</strong>
+                                                </span>
+                                            @endif 
+                                        
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <label class="required">Descripción: </label>                                                     
+                                            <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion',$articulo->descripcion)}}"  style="text-transform:uppercase;" required>
+
+                                            @if ($errors->has('descripcion'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('descripcion') }}</strong>
+                                                </span>
+                                            @endif
+                                        
+                                        
+                                        </div>    
+                                       
+                                    </div>                                     
 
                                     <div class="form-group row" >
                                         <div class="col-md-6">

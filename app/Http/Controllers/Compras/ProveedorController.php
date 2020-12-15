@@ -67,10 +67,10 @@ class ProveedorController extends Controller
             'tipo_documento.required' => 'El campo Tipo es obligatorio.',
         ];
         Validator::make($data, $rules, $message)->validate();
-        if ($request->input('tipo_documento') == '1') {
+        if ($request->input('tipo_documento') == 'RUC') {
             $rules = [
                 'ruc' => [
-                    new RequiredIf($request->input('tipo_documento') == '1'),
+                    new RequiredIf($request->input('tipo_documento') == 'RUC'),
                     'numeric',
                     'digits:11',
                     Rule::unique('proveedores','ruc')->where(function ($query) {
@@ -90,7 +90,7 @@ class ProveedorController extends Controller
         }else{
             $rules = [
                 'dni' => [
-                    new RequiredIf($request->input('tipo_documento') == '2'),
+                    new RequiredIf($request->input('tipo_documento') == 'DNI'),
                     'numeric',
                     'digits:8',
                     Rule::unique('proveedores','dni')->where(function ($query) {
@@ -127,6 +127,7 @@ class ProveedorController extends Controller
             'transporte' => 'nullable',
             'direccion_transporte' => 'nullable',
             'direccion_almacen' => 'nullable',
+            'estado' => 'required',
 
         ];
         
@@ -141,6 +142,7 @@ class ProveedorController extends Controller
             'celular.numeric' => 'El campo Celular debe ser numérico.',
             'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            'estado.required' => 'El campo Estado es obligatorio.',
             
 
         ];
@@ -153,7 +155,7 @@ class ProveedorController extends Controller
         $proveedor->descripcion = $request->get('descripcion');
         $proveedor->tipo_documento= $request->get('tipo_documento');
 
-        if ($data['tipo_documento'] == "1") {
+        if ($data['tipo_documento'] == "RUC") {
             $proveedor->tipo_persona = $request->get('tipo_persona');
         }else{
             $proveedor->tipo_persona = $request->get('tipo_persona_dni');
@@ -174,6 +176,9 @@ class ProveedorController extends Controller
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
         $proveedor->direccion_almacen = $request->get('direccion_almacen');
+        if ($request->get('estado') == "ACTIVO") {
+            $proveedor->activo = "1";
+        };
         $proveedor->save();
 
         Session::flash('success','Proveedor creada.');
@@ -224,10 +229,10 @@ class ProveedorController extends Controller
             'tipo_documento.required' => 'El campo Tipo es obligatorio.',
         ];
         Validator::make($data, $rules, $message)->validate();
-        if ($request->input('tipo_documento') == '1') {
+        if ($request->input('tipo_documento') == 'RUC') {
             $rules = [
                 'ruc' => [
-                    new RequiredIf($request->input('tipo_documento') == '1'),
+                    new RequiredIf($request->input('tipo_documento') == 'RUC'),
                     'numeric',
                     'digits:11',
                     Rule::unique('proveedores','ruc')->where(function ($query) {
@@ -247,7 +252,7 @@ class ProveedorController extends Controller
         }else{
             $rules = [
                 'dni' => [
-                    new RequiredIf($request->input('tipo_documento') == '2'),
+                    new RequiredIf($request->input('tipo_documento') == 'DNI'),
                     'numeric',
                     'digits:8',
                     Rule::unique('proveedores','dni')->where(function ($query) {
@@ -284,6 +289,7 @@ class ProveedorController extends Controller
             'transporte' => 'nullable',
             'direccion_transporte' => 'nullable',
             'direccion_almacen' => 'nullable',
+            'estado' => 'required',
 
         ];
         
@@ -298,6 +304,7 @@ class ProveedorController extends Controller
             'celular.numeric' => 'El campo Celular debe ser numérico.',
             'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            'estado.required' => 'El campo Estado es obligatorio.',
             
 
         ];
@@ -310,7 +317,7 @@ class ProveedorController extends Controller
         $proveedor->descripcion = $request->get('descripcion');
         $proveedor->tipo_documento= $request->get('tipo_documento');
 
-        if ($data['tipo_documento'] == "1") {
+        if ($data['tipo_documento'] == "RUC") {
             $proveedor->tipo_persona = $request->get('tipo_persona');
         }else{
             $proveedor->tipo_persona = $request->get('tipo_persona_dni');
@@ -331,6 +338,10 @@ class ProveedorController extends Controller
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
         $proveedor->direccion_almacen = $request->get('direccion_almacen');
+
+        if ($request->get('estado') == "ACTIVO") {
+            $proveedor->activo = "1";
+        };
         $proveedor->update();
 
         Session::flash('success','Proveedor modificada.');
