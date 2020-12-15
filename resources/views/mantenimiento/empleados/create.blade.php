@@ -31,7 +31,8 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Tipo de documento</label>
-                    <select id="tipo_documento" name="tipo_documento" class="form-control {{ $errors->has('tipo_documento') ? ' is-invalid' : '' }}">
+                    <select id="tipo_documento" name="tipo_documento" class="select2_form form-control {{ $errors->has('tipo_documento') ? ' is-invalid' : '' }}">
+                        <option></option>
                         @foreach(tipos_documento() as $tipo_documento)
                             @if ($tipo_documento->simbolo != 'RUC')
                                 <option value="{{ $tipo_documento->simbolo }}" {{ (old('tipo_documento') == $tipo_documento->simbolo ? "selected" : "") }} >{{ $tipo_documento->descripcion }}</option>
@@ -66,7 +67,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control {{ $errors->has('fecha_nacimiento') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento')}}" autocomplete="off" required >
+                        <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control {{ $errors->has('fecha_nacimiento') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento')}}" autocomplete="off" disabled required >
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
@@ -92,7 +93,8 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label>Estado Civil</label>
-                    <select id="estado_civil" name="estado_civil" class="form-control {{ $errors->has('estado_civil') ? ' is-invalid' : '' }}">
+                    <select id="estado_civil" name="estado_civil" class="select2_form form-control {{ $errors->has('estado_civil') ? ' is-invalid' : '' }}">
+                        <option></option>
                         @foreach(estados_civiles() as $estado_civil)
                             <option value="{{ $estado_civil->simbolo }}" {{ (old('estado_civil') == $estado_civil->simbolo ? "selected" : "") }}>{{ $estado_civil->descripcion }}</option>
                         @endforeach
@@ -110,7 +112,7 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Departamento</label>
-                    <select id="departamento" name="departamento" class="form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="departamento" name="departamento" class="select2_form form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(departamentos() as $departamento)
                             <option value="{{ $departamento->id }}" {{ (old('departamento') == $departamento->id ? "selected" : "") }} >{{ $departamento->nombre }}</option>
@@ -119,13 +121,13 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Provincia</label>
-                    <select id="provincia" name="provincia" class="form-control {{ $errors->has('provincia') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="provincia" name="provincia" class="select2_form form-control {{ $errors->has('provincia') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                     </select>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Distrito</label>
-                    <select id="distrito" name="distrito" class="form-control {{ $errors->has('distrito') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="distrito" name="distrito" class="select2_form form-control {{ $errors->has('distrito') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                     </select>
                 </div>
@@ -139,7 +141,7 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Correo electrónico</label>
-                    <input type="correo_electronico" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico')}}" maxlength="100" onkeyup="return mayus(this)" required>
+                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico')}}" maxlength="100" onkeyup="return mayus(this)" required>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Teléfono móvil</label>
@@ -161,7 +163,7 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Área</label>
-                    <select id="area" name="area" class="form-control {{ $errors->has('area') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="area" name="area" class="select2_form form-control {{ $errors->has('area') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(areas() as $area)
                             <option value="{{ $area->simbolo }}" {{ (old('area') == $area->simbolo ? "selected" : "") }} >{{ $area->descripcion }}</option>
@@ -170,7 +172,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Profesión</label>
-                    <select id="profesion" name="profesion" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="profesion" name="profesion" class="select2_form form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(profesiones() as $profesion)
                             <option value="{{ $profesion->simbolo }}" {{ (old('profesion') == $profesion->simbolo ? "selected" : "") }} >{{ $profesion->descripcion }}</option>
@@ -179,7 +181,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Cargo</label>
-                    <select id="cargo" name="cargo" class="form-control {{ $errors->has('cargo') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="cargo" name="cargo" class="select2_form form-control {{ $errors->has('cargo') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(cargos() as $cargo)
                             <option value="{{ $cargo->simbolo }}" {{ (old('cargo') == $cargo->simbolo ? "selected" : "") }} >{{ $cargo->descripcion }}</option>
@@ -204,7 +206,7 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Moneda sueldo</label>
-                    <select id="moneda_sueldo" name="moneda_sueldo" class="form-control {{ $errors->has('moneda_sueldo') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="moneda_sueldo" name="moneda_sueldo" class="select2_form form-control {{ $errors->has('moneda_sueldo') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(tipos_moneda() as $moneda)
                             <option value="{{ $moneda->simbolo }}" {{ (old('moneda_sueldo') == $moneda->simbolo ? "selected" : "") }}>{{ $moneda->descripcion }}</option>
@@ -232,7 +234,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_inicio_actividad" name="fecha_inicio_actividad" class="form-control {{ $errors->has('fecha_inicio_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_actividad')}}" autocomplete="off" >
+                        <input type="text" id="fecha_inicio_actividad" name="fecha_inicio_actividad" class="form-control {{ $errors->has('fecha_inicio_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_actividad')}}" disabled >
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12" id="fecha_fin_actividad">
@@ -241,7 +243,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_fin_actividad" name="fecha_fin_actividad" class="form-control {{ $errors->has('fecha_fin_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_actividad')}}" autocomplete="off" >
+                        <input type="text" id="fecha_fin_actividad" name="fecha_fin_actividad" class="form-control {{ $errors->has('fecha_fin_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_actividad')}}" disabled >
                     </div>
                 </div>
             </div>
@@ -252,7 +254,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_inicio_planilla" name="fecha_inicio_planilla" class="form-control {{ $errors->has('fecha_inicio_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_planilla')}}" autocomplete="off" >
+                        <input type="text" id="fecha_inicio_planilla" name="fecha_inicio_planilla" class="form-control {{ $errors->has('fecha_inicio_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_planilla')}}" disabled >
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12" id="fecha_fin_planilla">
@@ -261,7 +263,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_fin_planilla" name="fecha_fin_planilla" class="form-control {{ $errors->has('fecha_fin_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_planilla')}}" autocomplete="off" >
+                        <input type="text" id="fecha_fin_planilla" name="fecha_fin_planilla" class="form-control {{ $errors->has('fecha_fin_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_planilla')}}" disabled >
                     </div>
                 </div>
             </div>
@@ -290,7 +292,7 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label>Grupo sanguíneo</label>
-                    <select id="grupo_sanguineo" name="grupo_sanguineo" class="form-control {{ $errors->has('grupo_sanguineo') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="grupo_sanguineo" name="grupo_sanguineo" class="select2_form form-control {{ $errors->has('grupo_sanguineo') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(grupos_sanguineos() as $grupo_sanguineo)
                             <option value="{{ $grupo_sanguineo->simbolo }}" {{ (old('grupo_sanguineo') == $grupo_sanguineo->simbolo ? "selected" : "") }} >{{ $grupo_sanguineo->descripcion }} ({{ $grupo_sanguineo->simbolo }})</option>
@@ -343,32 +345,18 @@
                 radioClass: 'iradio_square-green',
             });
 
-            $("#tipo_documento").select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            }).on('change', setLongitudDocumento);
+            $(".select2_form").select2({
+                placeholder: "SELECCIONAR",
+                allowClear: true,
+                height: '200px',
+                width: '100%',
+            });
+
+            $("#tipo_documento").on('change', setLongitudDocumento);
 
             $("#documento").on('change', consultarDocumento);
 
-            $("#estado_civil").select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $("#departamento").select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $("#departamento").select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $("#departamento").select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            }).on("change", function (e) {
+            $("#departamento").on("change", function (e) {
                 var departamento_id = this.value;
                 if (departamento_id !== "" || departamento_id.length > 0) {
                     $.ajax({
@@ -402,10 +390,7 @@
                 }
             });
 
-            $('#provincia').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            }).on("change", function (e) {
+            $('#provincia').on("change", function (e) {
                 var provincia_id = this.value;
                 if (provincia_id !== "" || provincia_id.length > 0) {
                     $.ajax({
@@ -438,42 +423,7 @@
                 }
             });
 
-            $('#distrito').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
             $("#correo_electronico").on('change', validarEmail);
-
-            $('#area').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $('#profesion').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $('#cargo').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $('#moneda_sueldo').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $('#tipo_banco').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
-
-            $('#grupo_sanguineo').select2({
-                placeholder: "Seleccione",
-                allowClear: true
-            });
 
             $('#fecha_nacimiento .input-group.date').datepicker({
                 todayBtn: "linked",

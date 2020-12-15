@@ -2,28 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d3fee18-a3c2-46f4-8f87-6116d6ccbf3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_11_184234_create_proveedores_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Compras/ArticuloController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Compras/ArticuloController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_11_184133_create_articulos_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_11_184133_create_articulos_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/TablaDetalleSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TablaDetalleSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/almacenes/almacen/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/almacenes/almacen/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compras/articulos/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/articulos/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compras/categorias/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compras/categorias/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empresas/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/detalle/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/tablas/general/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +180,8 @@
       <workItem from="1607789507065" duration="33779000" />
       <workItem from="1607870048377" duration="44973000" />
       <workItem from="1607966965131" duration="2604000" />
-      <workItem from="1607971555157" duration="7301000" />
+      <workItem from="1607971555157" duration="8099000" />
+      <workItem from="1608003235674" duration="3999000" />
     </task>
     <servers />
   </component>
