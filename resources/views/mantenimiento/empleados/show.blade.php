@@ -10,7 +10,7 @@
         <h2 style="text-transform:uppercase;"><b>Datos del Empleado: {{ $empleado->persona->getApellidosYNombres() }}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mantenimiento</a>
+                <a href="#">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
                 <a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a>
@@ -201,7 +201,25 @@
             </div>
         </div>
         <div class="col-lg-4 col-xs-12">
-
+            <div class="container m-b-xl">
+                <a href="{{route('mantenimiento.empleado.edit',$empleado->id)}}" class="btn btn-block btn-warning btn-xs float-right"><i class='fa fa-edit'></i>EDITAR EMPRESA</a>
+            </div>
+            <div class="container" style="text-transform:uppercase;">
+                <div class="text-center">
+                    @if($empleado->ruta_imagen)
+                        <img  src="{{Storage::url($empleado->ruta_imagen)}}" class="img-fluid">
+                    @else
+                        <img  src="{{asset('storage/empresas/logos/default.png')}}" class="img-fluid">
+                    @endif
+                <div>
+                <div class="text-center m-t-md">
+                    @if($empleado->ruta_imagen)
+                        <a title="{{$empleado->nombre_imagen}}" download="{{$empleado->nombre_imagen}}" href="{{Storage::url($empleado->ruta_imagen)}}" class="btn btn-xs btn-block btn-primary"><i class="fa fa-download"></i> Descargar Imagen</a>
+                    @else
+                        <a title="Imagen por defecto" download="Imagen por defecto" href="{{asset('storage/empresas/logos/default.png')}}" class="btn btn-xs btn-block btn-primary"><i class="fa fa-download"></i> Descargar Imagen</a>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>

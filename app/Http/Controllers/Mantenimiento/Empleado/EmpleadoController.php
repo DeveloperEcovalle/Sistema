@@ -30,8 +30,9 @@ class EmpleadoController extends Controller
                 'id' => $empleado->id,
                 'documento' => $empleado->persona->getDocumento(),
                 'apellidos_nombres' => $empleado->persona->getApellidosYNombres(),
-                'cargo' => $empleado->cargo,
-                'estado' => $empleado->estado,
+                'telefono_movil' => $empleado->persona->telefono_movil,
+                'area' => $empleado->area,
+                'cargo' => $empleado->cargo
             ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -46,7 +47,6 @@ class EmpleadoController extends Controller
     {
         $data = $request->all();
         //dd($data);
-
         DB::transaction(function () use ($request) {
 
             $persona = new Persona();
@@ -85,12 +85,20 @@ class EmpleadoController extends Controller
             $empleado->tipo_banco = $request->get('tipo_banco');
             $empleado->numero_cuenta = $request->get('numero_cuenta');
 
+            if($request->hasFile('imagen')){
+                $file = $request->file('imagen');
+                $name = $file->getClientOriginalName();
+                $empleado->nombre_imagen = $name;
+                $empleado->ruta_imagen = $request->file('imagen')->store('public/empleados/imagenes');
+            }
+
             $empleado->fecha_inicio_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_actividad'))->format('Y-m-d') ;
             if (!is_null($request->get('fecha_fin_actividad'))) {
                 $empleado->fecha_fin_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_actividad'))->format('Y-m-d') ;
             }
-
-            $empleado->fecha_inicio_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_planilla'))->format('Y-m-d') ;
+            if (!is_null($request->get('fecha_inicio_planilla'))) {
+                $empleado->fecha_inicio_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_planilla'))->format('Y-m-d') ;
+            }
             if (!is_null($request->get('fecha_fin_planilla'))) {
                 $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
@@ -152,12 +160,30 @@ class EmpleadoController extends Controller
             $empleado->tipo_banco = $request->get('tipo_banco');
             $empleado->numero_cuenta = $request->get('numero_cuenta');
 
+            if($request->hasFile('imagen')){
+                //Eliminar Archivo anterior
+                Storage::delete($empleado->ruta_imagen);
+                //Agregar nuevo archivo
+                $file = $request->file('imagen');
+                $name = $file->getClientOriginalName();
+                $empleado->nombre_imagen = $name;
+                $empleado->ruta_imagen = $request->file('imagen')->store('public/empleados/imagenes');
+            }else{
+                if ($empleado->ruta_imagen) {
+                    //Eliminar Archivo anterior
+                    Storage::delete($empleado->ruta_imagen);
+                    $empleado->nombre_imagen = '';
+                    $empleado->ruta_imagen = '';
+                }
+            }
+
             $empleado->fecha_inicio_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_actividad'))->format('Y-m-d') ;
             if (!is_null($request->get('fecha_fin_actividad'))) {
                 $empleado->fecha_fin_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_actividad'))->format('Y-m-d') ;
             }
-
-            $empleado->fecha_inicio_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_planilla'))->format('Y-m-d') ;
+            if (!is_null($request->get('fecha_inicio_planilla'))) {
+                $empleado->fecha_inicio_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_planilla'))->format('Y-m-d') ;
+            }
             if (!is_null($request->get('fecha_fin_planilla'))) {
                 $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
