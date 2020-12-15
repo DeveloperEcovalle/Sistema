@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Mantenimiento\Empleado;
+namespace App\Http\Controllers\Mantenimiento\Vendedor;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Mantenimiento\Vendedor\Vendedor;
 use App\Mantenimiento\Empleado\Empleado;
 use App\Mantenimiento\Persona\Persona;
 use Carbon\Carbon;
@@ -14,27 +15,25 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
-class EmpleadoController extends Controller
+class VendedorController extends Controller
 {
     public function index()
     {
-        return view('mantenimiento.empleados.index');
+        return view('mantenimiento.vendedores.index');
     }
 
     public function getTable()
     {
-        $empleados = Empleado::where('estado','ACTIVO')->get();
+        $vendedores = Vendedor::where('estado','ACTIVO')->get();
         $coleccion = collect([]);
-        foreach($empleados as $empleado) {
-            if ($empleado->vendedor)
-                continue;
+        foreach($vendedores as $vendedor){
             $coleccion->push([
-                'id' => $empleado->id,
-                'documento' => $empleado->persona->getDocumento(),
-                'apellidos_nombres' => $empleado->persona->getApellidosYNombres(),
-                'telefono_movil' => $empleado->persona->telefono_movil,
-                'area' => $empleado->area,
-                'cargo' => $empleado->cargo
+                'id' => $vendedor->id,
+                'documento' => $vendedor->empleado->persona->getDocumento(),
+                'apellidos_nombres' => $vendedor->empleado->persona->getApellidosYNombres(),
+                'telefono_movil' => $vendedor->empleado->persona->telefono_movil,
+                'area' => $vendedor->empleado->area,
+                'zona' => $vendedor->zona
             ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -42,13 +41,14 @@ class EmpleadoController extends Controller
 
     public function create()
     {
-        return view('mantenimiento.empleados.create');
+        return view('mantenimiento.vendedores.create');
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         //dd($data);
+
         DB::transaction(function () use ($request) {
 
             $persona = new Persona();
@@ -91,7 +91,7 @@ class EmpleadoController extends Controller
                 $file = $request->file('imagen');
                 $name = $file->getClientOriginalName();
                 $empleado->nombre_imagen = $name;
-                $empleado->ruta_imagen = $request->file('imagen')->store('public/empleados/imagenes');
+                $empleado->ruta_imagen = $request->file('imagen')->store('public/vendedores/imagenes');
             }
 
             $empleado->fecha_inicio_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_actividad'))->format('Y-m-d') ;
@@ -105,17 +105,25 @@ class EmpleadoController extends Controller
                 $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
             $empleado->save();
+
+            $vendedor = new Vendedor();
+            $vendedor->empleado_id = $empleado->id;
+            $vendedor->zona = $request->get('zona');
+            $vendedor->comision = $request->get('comision');
+            $vendedor->moneda_comision = $request->get('moneda_comision');
+            $vendedor->save();
+
         });
 
-        Session::flash('success','Empleado creado.');
-        return redirect()->route('mantenimiento.empleado.index')->with('guardar', 'success');
+        Session::flash('success','Vendedor creado.');
+        return redirect()->route('mantenimiento.vendedor.index')->with('guardar', 'success');
     }
 
     public function edit($id)
     {
-        $empleado = Empleado::findOrFail($id);
-        return view('mantenimiento.empleados.edit', [
-            'empleado' => $empleado
+        $vendedor = Vendedor::findOrFail($id);
+        return view('mantenimiento.vendedores.edit', [
+            'vendedor' => $vendedor
         ]);
     }
 
@@ -123,11 +131,11 @@ class EmpleadoController extends Controller
     {
         $data = $request->all();
         //dd($data);
-        $empleado = Empleado::findOrFail($id);
+        $vendedor = Vendedor::findOrFail($id);
 
-        DB::transaction(function () use ($request, $empleado) {
+        DB::transaction(function () use ($request, $vendedor) {
 
-            $persona =  $empleado->persona;
+            $persona =  $vendedor->empleado->persona;
             $persona->tipo_documento = $request->get('tipo_documento');
             $persona->documento = $request->get('documento');
             $persona->codigo_verificacion = $request->get('codigo_verificacion');
@@ -146,6 +154,7 @@ class EmpleadoController extends Controller
             $persona->telefono_fijo = $request->get('telefono_fijo');
             $persona->update();
 
+            $empleado = $persona->empleado;
             $empleado->persona_id = $persona->id;
             $empleado->area = $request->get('area');
             $empleado->profesion = $request->get('profesion');
@@ -164,12 +173,12 @@ class EmpleadoController extends Controller
 
             if($request->hasFile('imagen')){
                 //Eliminar Archivo anterior
-                Storage::delete($empleado->ruta_imagen);
+                Storage::delete($vendedor->empleado->ruta_imagen);
                 //Agregar nuevo archivo
                 $file = $request->file('imagen');
                 $name = $file->getClientOriginalName();
                 $empleado->nombre_imagen = $name;
-                $empleado->ruta_imagen = $request->file('imagen')->store('public/empleados/imagenes');
+                $empleado->ruta_imagen = $request->file('imagen')->store('public/vendedores/imagenes');
             }else{
                 if ($empleado->ruta_imagen) {
                     //Eliminar Archivo anterior
@@ -190,17 +199,24 @@ class EmpleadoController extends Controller
                 $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
             $empleado->update();
+
+            $vendedor->empleado_id = $vendedor->empleado->id;
+            $vendedor->zona = $request->get('zona');
+            $vendedor->comision = $request->get('comision');
+            $vendedor->moneda_comision = $request->get('moneda_comision');
+            $vendedor->update();
+
         });
 
-        Session::flash('success','Empleado modificado.');
-        return redirect()->route('mantenimiento.empleado.index')->with('modificar', 'success');
+        Session::flash('success','Vendedor modificado.');
+        return redirect()->route('mantenimiento.vendedor.index')->with('modificar', 'success');
     }
 
     public function show($id)
     {
-        $empleado = Empleado::findOrFail($id);
-        return view('mantenimiento.empleados.show', [
-            'empleado' => $empleado
+        $vendedor = Vendedor::findOrFail($id);
+        return view('mantenimiento.vendedores.show', [
+            'vendedor' => $vendedor
         ]);
     }
 
@@ -208,18 +224,22 @@ class EmpleadoController extends Controller
     {
         DB::transaction(function() use ($id) {
 
-            $empleado = Empleado::findOrFail($id);
+            $vendedor = Vendedor::findOrFail($id);
+            $vendedor->estado = 'ANULADO';
+            $vendedor->update();
+
+            $empleado = $vendedor->empleado;
             $empleado->estado = 'ANULADO';
             $empleado->update();
 
-            $persona = $empleado->persona;
+            $persona = $vendedor->empleado->persona;
             $persona->estado = 'ANULADO';
             $persona->update();
 
         });
 
-        Session::flash('success','Empleado eliminado.');
-        return redirect()->route('mantenimiento.empleado.index')->with('eliminar', 'success');
+        Session::flash('success','Vendedor eliminado.');
+        return redirect()->route('mantenimiento.vendedor.index')->with('eliminar', 'success');
     }
 
     public function getDni(Request $request)
@@ -247,7 +267,7 @@ class EmpleadoController extends Controller
                 ])->first();
             }
 
-            if (!is_null($persona) && !is_null($persona->empleado)) {
+            if (!is_null($persona) && !is_null($persona->empleado->vendedor)) {
                 $existe = true;
             }
         }

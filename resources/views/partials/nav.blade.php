@@ -129,6 +129,7 @@
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
+            <li class="@yield('vendedores-active')"><a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a></li>
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             <li><a href="lockscreen.html">Parametros</a></li>
             <li><a href="lockscreen.html">Metodos de Pago</a></li>
