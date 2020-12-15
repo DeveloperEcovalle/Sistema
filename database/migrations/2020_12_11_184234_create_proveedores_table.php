@@ -18,7 +18,7 @@ class CreateProveedoresTable extends Migration
             $table->Increments('id');
             $table->bigInteger('ruc')->nullable();
             $table->bigInteger('dni')->nullable();
-            $table->char('tipo_documento');
+            $table->char('tipo_documento',3);
             $table->string('tipo_persona');
             $table->string('descripcion');
             $table->mediumText('direccion')->nullable();
@@ -38,6 +38,7 @@ class CreateProveedoresTable extends Migration
 
             $table->mediumText('direccion_almacen')->nullable();
 
+            $table->boolean('activo');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

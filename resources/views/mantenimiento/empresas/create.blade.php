@@ -385,8 +385,6 @@
                         this.submit();    
                     }else{
                         toastr.error('Ingrese una empresa activa','Error');
-                        var ruc = $("#ruc").val()
-                        evaluarRuc(ruc);
                     }
                     
                 }else if (
@@ -411,6 +409,12 @@
             evaluarRuc(ruc);
         }
     })
+    $("#ruc").keyup(function(){ 
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('INACTIVO');
+        }
+    })
+    
     function evaluarRuc(ruc) {
         if (ruc.length == 11) {
             
@@ -434,8 +438,9 @@
                         return response.json()
                     })
                     .catch(error => {
+                        console.log(error)
                         Swal.showValidationMessage(
-                        `Ruc erróneo: ${error}`
+                            `Ruc Inválido`
                         )
                     })
                 },
@@ -513,8 +518,9 @@
                         return response.json()
                     })
                     .catch(error => {
+                        console.log(error)
                         Swal.showValidationMessage(
-                        `Dni erróneo: ${error}`
+                            `Dni Inválido`
                         )
                     })
                 },

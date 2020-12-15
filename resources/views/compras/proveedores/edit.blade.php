@@ -45,14 +45,14 @@
 
                                 <div class="form-group row">
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label class="required">Documento: </label>
                                         <div class="row mt-1" align="center">
                                             <div class="col">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                             name="tipo_documento" id="tipo_documento_ruc"
-                                                            value="1" @if(old('tipo_documento', $proveedor->tipo_documento) == "1") {{'checked'}}@endif>
+                                                            value="RUC" @if(old('tipo_documento', $proveedor->tipo_documento) == "RUC") {{'checked'}}@endif>
                                                     <label class="form-check-label">Ruc</label>
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                             name="tipo_documento" id="tipo_documento_dni"
-                                                            value="2" @if(old('tipo_documento', $proveedor->tipo_documento) == "2") {{'checked'}}@endif>
+                                                            value="DNI" @if(old('tipo_documento', $proveedor->tipo_documento) == "DNI") {{'checked'}}@endif>
                                                     <label class="form-check-label">Dni</label>
                                                 </div>
                                             </div>
@@ -69,7 +69,7 @@
                                     </div>
 
 
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                             <label class="required">Tipo: </label>      
                                             <select class="select2_form form-control {{ $errors->has('tipo_persona') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('tipo_persona',$proveedor->tipo_persona)}}" name="tipo_persona" id="tipo_persona" required>
                                                 <option></option>
@@ -93,7 +93,7 @@
 
                                 <div class="form-group row" >
 
-                                    <div class="col-md-4" id="ruc_requerido">
+                                    <div class="col-md-6" id="ruc_requerido">
                                             <label class="required">Ruc: </label>                                                     
                                             <input type="text" id="ruc" class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}" name="ruc" maxlength="11" value="{{old('ruc', $proveedor->ruc)}}"   style="text-transform:uppercase;">
 
@@ -105,7 +105,7 @@
 
                                     </div>
 
-                                    <div class="col-md-4" id="dni_requerido" style="display:none;">
+                                    <div class="col-md-6" id="dni_requerido" style="display:none;">
                                             <label class="required">Dni: </label>                                                     
                                             <input type="text" id="dni" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" name="dni" value="{{ old('dni',$proveedor->dni)}}" maxlength="8"  style="text-transform:uppercase;">
 
@@ -117,9 +117,25 @@
 
                                     </div>
                                     
-                                    <div class="col-md-8">
-                                        <label class="required">Descripción: </label> 
+                                    <div class="col-md-6">
+                                        <label class="">Estado: </label> 
+                                        <input type="text" id="estado" class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}" name="estado" value="{{ $proveedor->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}" style="text-transform:uppercase;" disabled>
+                                                    @if ($errors->has('estado'))
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $errors->first('estado') }}</strong>
+                                                        </span>
+                                                    @endif
+                                    </div>
+
+
+
                                     
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label class="required">Descripción: </label> 
+                                        
                                         <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion',$proveedor->descripcion)}}" id="descripcion" style="text-transform:uppercase;" required>
 
                                         @if ($errors->has('descripcion'))
@@ -128,11 +144,9 @@
                                             </span>
                                         @endif
                                     </div>
-
-
-
-                                    
                                 </div>
+
+
 
                                 <div class="form-group row">
                                     <div class="col-md-12">
@@ -443,7 +457,7 @@
         $('#tipo_persona_dni').hide();    
     @endif
 
-    @if (old('tipo_documento',$proveedor->tipo_documento) == "1")
+    @if (old('tipo_documento',$proveedor->tipo_documento) == "RUC")
         //Ocultar Tipo de Persona
         $('#ruc_requerido').show();
         $("#tipo_persona").select2().next().show();
@@ -460,7 +474,7 @@
 
     @endif
 
-    @if (old('tipo_documento',$proveedor->tipo_documento) == "2")
+    @if (old('tipo_documento',$proveedor->tipo_documento) == "DNI")
 
         //Ocultar Tipo de Persona
         $('#ruc_requerido').hide();
@@ -474,7 +488,10 @@
     
     
     $('input:radio[name="tipo_documento"]').change(function () {
-        if ($(this).val() == '1') {
+        // Cambiar el estado
+        $('#estado').val('INACTIVO')    
+        /////////////////////////////
+        if ($(this).val() == 'RUC') {
             //Limpiar Inputs
             $('#ruc').val('');
             $('#dni').val('');
@@ -520,7 +537,17 @@
 
         }
     });
-    
+
+    $("#ruc").keyup(function(){ 
+        $('#estado').val('INACTIVO');
+    }) 
+
+    $("#dni").keyup(function(){ 
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('INACTIVO');
+        }
+    }) 
+
 
     $('#enviar_proveedor').submit(function(e){
         e.preventDefault();
@@ -542,9 +569,15 @@
             cancelButtonText: "No, Cancelar",
             }).then((result) => {
             if (result.isConfirmed) {
-                    $("#tipo_persona").prop('disabled', false);
-                    $("#tipo_persona_dni").prop('disabled', false);
-                    this.submit();
+
+                    if ($('#estado').val() == "ACTIVO") {
+                        $("#estado").prop('disabled', false)
+                        $("#tipo_persona").prop('disabled', false);
+                        $("#tipo_persona_dni").prop('disabled', false);
+                        this.submit(); 
+                    }else{
+                        toastr.error('Ingrese un proveedor activo','Error');
+                    }
                 }else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
@@ -585,13 +618,16 @@
                     return fetch(url)
                     .then(response => {
                         if (!response.ok) {
+                            
                         throw new Error(response.statusText)
                         }
+                        
                         return response.json()
                     })
                     .catch(error => {
+                        console.log(error)
                         Swal.showValidationMessage(
-                        `Ruc erróneo: ${error}`
+                            `Ruc Inválido`
                         )
                     })
                 },
@@ -614,6 +650,7 @@
         var departamento = objeto.value.departamento;
         var provincia = objeto.value.provincia;
         var distrito = objeto.value.distrito;
+        var estado = objeto.value.estado;
         
         if (razonsocial!='-' && razonsocial!="NULL" ) {
             $('#descripcion').val(razonsocial)    
@@ -621,6 +658,11 @@
 
         if (direccion!='-' && direccion!="NULL" ) {
             $('#direccion').val(direccion+" - "+departamento+" - "+provincia+" - "+distrito)    
+        }
+        if (estado=="ACTIVO" ) {
+            $('#estado').val(estado)    
+        }else{
+            toastr.error('Proveedor no se encuentra "Activo"','Error');
         }
     }
     
@@ -657,8 +699,10 @@
                         return response.json()
                     })
                     .catch(error => {
+                        console.log(error)
+                        $('#estado').val('INACTIVO')
                         Swal.showValidationMessage(
-                        `Dni erróneo: ${error}`
+                            `Dni Inválido`
                         )
                     })
                 },
@@ -692,7 +736,8 @@
         if(apellidoma!="-" && apellidoma!=null ) {
             nombre_completo.push(apellidoma)        
         }
-    
+
+        $('#estado').val('ACTIVO')    
         $('#descripcion').val(nombre_completo.join(' '))
 
     }
