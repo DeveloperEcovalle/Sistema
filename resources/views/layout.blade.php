@@ -21,9 +21,10 @@
 
 
 
-
-
     @stack('styles')
+
+    <!-- Styles -->
+    <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
 </head>
 

@@ -207,53 +207,6 @@
         height: 200px;
         border-radius: 10%;
     }
-    
-    /*Select 2*/
-    .select2-container--default .select2-selection--single {
-        background-color: #fff;
-        border: 1px solid #e5e6e7;
-        border-radius: 0px;
-       
-    }
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: inherit;
-        font-size: 13.5px;
-        line-height: 1.6;
-        text-transform: uppercase;
-    }
-    .select2-container .select2-selection--single {
-        background-color: #FFFFFF;
-        background-image: none;
-        border: 1px solid #e5e6e7;
-        border-radius: 1px;
-        color: inherit;
-        display: block;
-        padding: 6px 10px;
-        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-        width: 100%;
-        height: 2.05rem;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 28px;
-        width: 22px;
-    }
-
-    .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-        background-color: #042b63;
-    }
-    select.form-control:not([size]):not([multiple]) {
-        height: calc(2.25rem + 2px);
-    }
-    .select2-container--default .select2-results>.select2-results__options {
-        text-transform: uppercase;
-    }
-
-    
-    .select2-container--default .select2-results__option--highlighted[aria-selected] {
-        background-color: #1ab394;
-        color: white;
-    }
     </style>
 @endpush 
 

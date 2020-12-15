@@ -282,6 +282,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 9;
         $detalle->save();
 
+        //PRESENTACIONES
         $detalle = new Detalle();
         $detalle->descripcion = "KILOGRAMO";
         $detalle->simbolo = 'KG';
@@ -303,6 +304,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 10;
         $detalle->save();
 
+        //TIPOS DE PERSONAS
         $detalle = new Detalle();
         $detalle->descripcion = "PERSONA NATURAL";
         $detalle->simbolo = 'PERSONA NATURAL';
@@ -313,13 +315,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle = new Detalle();
         $detalle->descripcion = "PERSONA JURIDICA";
         $detalle->simbolo = 'PERSONA JURIDICA';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 11;
-        $detalle->save();
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "PERSONA";
-        $detalle->simbolo = 'PERSONA';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 11;
         $detalle->save();
