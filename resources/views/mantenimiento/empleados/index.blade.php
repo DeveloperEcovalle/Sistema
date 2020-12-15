@@ -5,10 +5,10 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Gestión de Empleados</b></h2>
+        <h2 style="text-transform:uppercase;"><b>Mantenimiento de Empleados</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mantenimiento</a>
+                <a href="#">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Empleados</strong>
@@ -31,11 +31,11 @@
                         <table class="table dataTables-empleado table-striped table-bordered table-hover" style="text-transform:uppercase;">
                             <thead>
                             <tr>
-                                <th class="text-center">ID</th>
                                 <th class="text-center">DOCUMENTO</th>
                                 <th class="text-center">APELLIDOS Y NOMBRES</th>
+                                <th class="text-center">T. MÓVIL</th>
+                                <th class="text-center">ÁREA</th>
                                 <th class="text-center">CARGO</th>
-                                <th class="text-center">ESTADO</th>
                                 <th class="text-center">ACCIONES</th>
                             </tr>
                             </thead>
@@ -106,17 +106,11 @@
             "processing":true,
             "ajax": "{{ route('mantenimiento.empleado.getTable')}}",
             "columns": [
-                {data: 'id', className:"text-center"},
                 {data: 'documento', className:"text-center"},
                 {data: 'apellidos_nombres', className:"text-left"},
+                {data: 'telefono_movil', className:"text-center"},
+                {data: 'area', className:"text-center"},
                 {data: 'cargo', className:"text-center"},
-                {
-                    data: 'estado',
-                    className:"text-center",
-                    render: function(data) {
-                        return (data === "ACTIVO") ? "<div class='badge badge-success'>Activo</div>" : "<div class='badge badge-danger'>Inactivo</div>";
-                    }
-                },
                 {
                     data: null,
                     className:"text-center",
@@ -133,20 +127,7 @@
                                     "<a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a>" +
                                     "<a class='btn btn-warning btn-sm modificarDetalle' href='"+url_editar+"' title='Modificar'><i class='fa fa-edit'></i></a>" +
                                     "<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a>" +
-                                "</div>"
-                        /*return "<div class='btn-group'>" +
-                                    "<button type='button' class='btn btn-warning btn-sm mr-1' onclick='editarEmpleado("+url_editar+")'  title='Modificar'>" +
-                                        "<i class='fa fa-edit'></i>" +
-                                    "</button>" +
-                                    (data.estado === "ACTIVO") ?
-                                    "<button type='button' class='btn btn-warning btn-sm mr-1 btn-desactivar-empleado' data-toggle='modal' data-target='#deactive'  title='Desactivar'>" +
-                                        "<i class='fa fa-trash'></i>" +
-                                    "</button>"
-                                    :
-                                    "<button type='button' class='btn btn-warning btn-sm mr-1 btn-desactivar-empleado' data-toggle='modal' data-target='#activate'  title='Desactivar'>" +
-                                        "<i class='fa fa-check'></i>" +
-                                    "</button>" +
-                                "</div>"*/
+                                "</div>";
                     }
                 }
 

@@ -7,10 +7,10 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Registrar Empleado</b></h2>
+        <h2 style="text-transform:uppercase;"><b>Registrar Nuevo Empleado</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mantenimiento</a>
+                <a href="#">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
                 <a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a>
@@ -24,7 +24,7 @@
 
 
 <div class="wrapper wrapper-content animated fadeIn">
-    <form class="wizard-big" action="{{ route('mantenimiento.empleado.create') }}" method="POST" id="form_registrar_empleado">
+    <form class="wizard-big" action="{{ route('mantenimiento.empleado.create') }}" method="POST" enctype="multipart/form-data" id="form_registrar_empleado">
         @csrf
         <h1>Datos Personales</h1>
         <fieldset>
@@ -67,7 +67,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control {{ $errors->has('fecha_nacimiento') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento')}}" autocomplete="off" disabled required >
+                        <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control {{ $errors->has('fecha_nacimiento') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento')}}" autocomplete="off" readonly required >
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
@@ -215,7 +215,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label>Banco</label>
-                    <select id="tipo_banco" name="tipo_banco" class="form-control {{ $errors->has('tipo_banco') ? ' is-invalid' : '' }}" style="width: 100%">
+                    <select id="tipo_banco" name="tipo_banco" class="select2_form form-control {{ $errors->has('tipo_banco') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(bancos() as $banco)
                             <option value="{{ $banco->simbolo }}" {{ (old('tipo_banco') == $banco->simbolo ? "selected" : "") }} >{{ $banco->descripcion }}</option>
@@ -224,7 +224,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label>Número de cuenta</label>
-                    <input type="text" id="numero_cuenta" name="numero_cuenta" class="form-control {{ $errors->has('numero_cuenta') ? ' is-invalid' : '' }}" value="{{old('numero_cuenta')}}" maxlength="20" onkeypress="return isNumber(event)" onkeyup="return mayus(this)">
+                    <input type="text" id="numero_cuenta" name="numero_cuenta" class="form-control {{ $errors->has('numero_cuenta') ? ' is-invalid' : '' }}" value="{{old('numero_cuenta')}}" maxlength="20" onkeypress="return isNroCuenta(event)" onkeyup="return mayus(this)">
                 </div>
             </div>
             <div class="row">
@@ -234,7 +234,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_inicio_actividad" name="fecha_inicio_actividad" class="form-control {{ $errors->has('fecha_inicio_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_actividad')}}" disabled >
+                        <input type="text" id="fecha_inicio_actividad" name="fecha_inicio_actividad" class="form-control {{ $errors->has('fecha_inicio_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_actividad')}}" readonly required>
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12" id="fecha_fin_actividad">
@@ -243,18 +243,18 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_fin_actividad" name="fecha_fin_actividad" class="form-control {{ $errors->has('fecha_fin_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_actividad')}}" disabled >
+                        <input type="text" id="fecha_fin_actividad" name="fecha_fin_actividad" class="form-control {{ $errors->has('fecha_fin_actividad') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_actividad')}}" readonly >
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12" id="fecha_inicio_planilla">
-                    <label class="required">Fecha inicio planilla</label>
+                    <label>Fecha inicio planilla</label>
                     <div class="input-group date">
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_inicio_planilla" name="fecha_inicio_planilla" class="form-control {{ $errors->has('fecha_inicio_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_planilla')}}" disabled >
+                        <input type="text" id="fecha_inicio_planilla" name="fecha_inicio_planilla" class="form-control {{ $errors->has('fecha_inicio_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_inicio_planilla')}}" readonly >
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-xs-12" id="fecha_fin_planilla">
@@ -263,7 +263,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
-                        <input type="text" id="fecha_fin_planilla" name="fecha_fin_planilla" class="form-control {{ $errors->has('fecha_fin_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_planilla')}}" disabled >
+                        <input type="text" id="fecha_fin_planilla" name="fecha_fin_planilla" class="form-control {{ $errors->has('fecha_fin_planilla') ? ' is-invalid' : '' }}" value="{{old('fecha_fin_planilla')}}" readonly >
                     </div>
                 </div>
             </div>
@@ -276,32 +276,71 @@
         <h1>Datos Adicionales</h1>
         <fieldset>
             <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Teléfono de referencia</label>
-                    <input type="text" id="telefono_referencia" name="telefono_referencia" class="form-control {{ $errors->has('telefono_referencia') ? ' is-invalid' : '' }}" value="{{old('telefono_referencia')}}" maxlength="50" onkeyup="return mayus(this)">
+                <div class="col-lg-8 col-xs-12">
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-xs-12">
+                            <label>Teléfono de referencia</label>
+                            <input type="text" id="telefono_referencia" name="telefono_referencia" class="form-control {{ $errors->has('telefono_referencia') ? ' is-invalid' : '' }}" value="{{old('telefono_referencia')}}" maxlength="50" onkeyup="return mayus(this)">
+                        </div>
+                        <div class="form-group col-lg-6 col-xs-12">
+                            <label>Contacto de referencia</label>
+                            <input type="text" id="contacto_referencia" name="contacto_referencia" class="form-control {{ $errors->has('contacto_referencia') ? ' is-invalid' : '' }}" value="{{old('contacto_referencia')}}" maxlength="191" onkeyup="return mayus(this)">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-xs-12">
+                            <label>Número de hijos</label>
+                            <input type="text" id="numero_hijos" name="numero_hijos" class="form-control {{ $errors->has('numero_hijos') ? ' is-invalid' : '' }}" value="{{old('numero_hijos')}}" onkeypress="return isNumber(event)" maxlength="2" >
+                        </div>
+                        <div class="form-group col-lg-6 col-xs-12">
+                            <label>Grupo sanguíneo</label>
+                            <select id="grupo_sanguineo" name="grupo_sanguineo" class="select2_form form-control {{ $errors->has('grupo_sanguineo') ? ' is-invalid' : '' }}" style="width: 100%">
+                                <option></option>
+                                @foreach(grupos_sanguineos() as $grupo_sanguineo)
+                                    <option value="{{ $grupo_sanguineo->simbolo }}" {{ (old('grupo_sanguineo') == $grupo_sanguineo->simbolo ? "selected" : "") }} >{{ $grupo_sanguineo->descripcion }} ({{ $grupo_sanguineo->simbolo }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12 col-xs-12">
+                            <label>Alergias</label>
+                            <textarea type="text" id="alergias" name="alergias" class="form-control {{ $errors->has('alergias') ? ' is-invalid' : '' }}" value="{{old('alergias')}}" rows="3" onkeyup="return mayus(this)"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Contacto de referencia</label>
-                    <input type="text" id="contacto_referencia" name="contacto_referencia" class="form-control {{ $errors->has('contacto_referencia') ? ' is-invalid' : '' }}" value="{{old('contacto_referencia')}}" maxlength="191" onkeyup="return mayus(this)">
-                </div>
-                <div class="form-group col-lg-2 col-xs-12">
-                    <label>Número de hijos</label>
-                    <input type="text" id="numero_hijos" name="numero_hijos" class="form-control {{ $errors->has('numero_hijos') ? ' is-invalid' : '' }}" value="{{old('numero_hijos')}}" onkeypress="return isNumber(event)" maxlength="2" >
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Grupo sanguíneo</label>
-                    <select id="grupo_sanguineo" name="grupo_sanguineo" class="select2_form form-control {{ $errors->has('grupo_sanguineo') ? ' is-invalid' : '' }}" style="width: 100%">
-                        <option></option>
-                        @foreach(grupos_sanguineos() as $grupo_sanguineo)
-                            <option value="{{ $grupo_sanguineo->simbolo }}" {{ (old('grupo_sanguineo') == $grupo_sanguineo->simbolo ? "selected" : "") }} >{{ $grupo_sanguineo->descripcion }} ({{ $grupo_sanguineo->simbolo }})</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group col-lg-8 col-xs-12">
-                    <label>Alergias</label>
-                    <input type="text" id="alergias" name="alergias" class="form-control {{ $errors->has('alergias') ? ' is-invalid' : '' }}" value="{{old('alergias')}}" onkeyup="return mayus(this)">
+                <div class="col-lg-4 col-xs-12">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Imagen:</label>
+                                <div class="custom-file">
+                                    <input id="imagen" type="file" name="imagen" class="custom-file-input {{ $errors->has('imagen') ? ' is-invalid' : '' }}"  accept="image/*">
+                                    <label for="imagen" id="ruta_imagen" class="custom-file-label selected {{ $errors->has('ruta_imagen') ? ' is-invalid' : '' }}">Seleccionar</label>
+                                    @if ($errors->has('imagen'))
+                                        <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('imagen') }}</strong>
+                                </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group justify-content-center">
+                            <div class="col-6 align-content-center">
+                                <div class="row justify-content-end">
+                                    <a href="javascript:void(0);" id="limpiar_logo">
+                                        <span class="badge badge-danger">x</span>
+                                    </a>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <p>
+                                        <img class="logo" src="{{asset('storage/empresas/logos/default.png')}}" alt="">
+                                        <input id="url_logo" name="url_logo" type="hidden" value="">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -320,6 +359,14 @@
     <link href="{{ asset('Inspinia/css/plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">
     <link href="{{ asset('Inspinia/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('Inspinia/css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
+    <style>
+        .logo {
+            width: 190px;
+            height: 190px;
+            border-radius: 10%;
+            position: absolute;
+        }
+    </style>
 @endpush
 
 @push('scripts')
@@ -430,7 +477,8 @@
                 keyboardNavigation: false,
                 forceParse: false,
                 autoclose: true,
-                language: 'es'
+                language: 'es',
+                format: "dd/mm/yyyy"
             });
 
             $('#fecha_inicio_actividad .input-group.date').datepicker({
@@ -438,7 +486,8 @@
                 keyboardNavigation: false,
                 forceParse: false,
                 autoclose: true,
-                language: 'es'
+                language: 'es',
+                format: "dd/mm/yyyy"
             });
 
             $('#fecha_fin_actividad .input-group.date').datepicker({
@@ -446,7 +495,8 @@
                 keyboardNavigation: false,
                 forceParse: false,
                 autoclose: true,
-                language: 'es'
+                language: 'es',
+                format: "dd/mm/yyyy"
             });
 
             $('#fecha_inicio_planilla .input-group.date').datepicker({
@@ -454,7 +504,8 @@
                 keyboardNavigation: false,
                 forceParse: false,
                 autoclose: true,
-                language: 'es'
+                language: 'es',
+                format: "dd/mm/yyyy"
             });
 
             $('#fecha_fin_planilla .input-group.date').datepicker({
@@ -462,7 +513,8 @@
                 keyboardNavigation: false,
                 forceParse: false,
                 autoclose: true,
-                language: 'es'
+                language: 'es',
+                format: "dd/mm/yyyy"
             });
 
         })
@@ -644,7 +696,7 @@
         });
 
         function validarDatos(paso) {
-            console.log("paso: " + paso);
+            //console.log("paso: " + paso);
             switch (paso) {
                 case 1:
                     return validarDatosPersonales();
@@ -670,15 +722,44 @@
             var nombres = $("#nombres").val();
             var apellido_paterno = $("#apellido_paterno").val();
             var apellido_materno = $("#apellido_materno").val();
-            var fechaNacimiento = $("#fecha_nacimiento").datepicker("getDate");
-            var fecha_nacimiento = (fechaNacimiento instanceof Date && !isNaN(fechaNacimiento.getTime())) ? $.datepicker.formatDate("yy-mm-dd", fechaNacimiento) : "";
+            var fecha_nacimiento = $("#fecha_nacimiento").find("input").val();
             $('.datepicker-days').removeAttr("style").hide();
             var sexo = $("#sexo_hombre").is(':checked') ? 'H' : 'M';
 
             if ((tipo_documento !== null && tipo_documento.length === 0) || documento.length === 0 || nombres.length === 0 || apellido_paterno.length === 0
-                || apellido_materno.length === 0 || sexo.length === 0 ) {
+                || apellido_materno.length === 0 || sexo.length === 0 || fecha_nacimiento.length === 0 ) {
                 toastr.error('Complete la información de los campos obligatorios (*)','Error');
                 return false;
+            }
+
+            switch (tipo_documento) {
+                case 'DNI':
+                    if (documento.length !== 8) {
+                        toastr.error('El DNI debe de contar con 8 dígitos','Error');
+                        return false;
+                    }
+                    break;
+
+                case 'CARNET EXT.':
+                    if (documento.length !== 20) {
+                        toastr.error('El CARNET DE EXTRANJERIA debe de contar con 20 dígitos','Error');
+                        return false;
+                    }
+                    break;
+
+                case 'PASAPORTE':
+                    if (documento.length !== 20) {
+                        toastr.error('El PASAPORTE debe de contar con 20 dígitos','Error');
+                        return false;
+                    }
+                    break;
+
+                case 'P. NAC.':
+                    if (documento.length !== 25) {
+                        toastr.error('La PARTIDAD DE NACIMIENTO debe de contar con 25 dígitos','Error');
+                        return false;
+                    }
+                    break;
             }
 
             return true;
@@ -713,24 +794,19 @@
             var tipo_banco = $("#tipo_banco").val();
             var numero_cuenta = $("#numero_cuenta").val();
 
-            var fechaInicioActividad = $("#fecha_inicio_actividad").datepicker("getDate");
-            var fechaFinActividad = $("#fecha_fin_actividad").datepicker("getDate");
-            var fecha_inicio_actividad = (fechaInicioActividad instanceof Date && !isNaN(fechaInicioActividad.getTime())) ? $.datepicker.formatDate("yy-mm-dd", fechaInicioActividad) : "";
-            var fecha_fin_actividad = (fechaFinActividad instanceof Date && !isNaN(fechaFinActividad.getTime())) ? $.datepicker.formatDate("yy-mm-dd", fechaFinActividad) : "";
-
-            var fechaInicioPlanilla = $("#fecha_inicio_planilla").datepicker("getDate");
-            var fechaFinPlanilla = $("#fecha_fin_planilla").datepicker("getDate");
-            var fecha_inicio_planilla = (fechaInicioPlanilla instanceof Date && !isNaN(fechaInicioPlanilla.getTime())) ? $.datepicker.formatDate("yy-mm-dd", fechaInicioPlanilla) :  "";
-            var fecha_fin_planilla = (fechaFinPlanilla instanceof Date && !isNaN(fechaFinPlanilla.getTime())) ? $.datepicker.formatDate("yy-mm-dd", fechaFinPlanilla) : "";
+            var fecha_inicio_actividad = $("#fecha_inicio_actividad").find("input").val();
+            var fecha_fin_actividad = $("#fecha_fin_actividad").find("input").val();
+            var fecha_inicio_planilla = $("#fecha_inicio_planilla").find("input").val();
+            var fecha_fin_planilla = $("#fecha_fin_planilla").find("input").val();
             $('.datepicker-days').removeAttr("style").hide();
 
             if ((area === null || area.length === 0) || (profesion === null || profesion.length === 0) || (cargo === null || cargo.length === 0)
                 || sueldo.length === 0 || sueldo_bruto.length === 0 || sueldo_neto.length === 0 || (moneda_sueldo === null || moneda_sueldo.length === 0)
-                ) {
+                || fecha_inicio_actividad.length === 0) {
                 toastr.error('Complete la información de los campos obligatorios (*)','Error');
                 return false;
             }
-            if (fecha_inicio_actividad.length > 0 && fecha_fin_actividad.length > 0) {
+            /*if (fecha_inicio_actividad.length > 0 && fecha_fin_actividad.length > 0) {
                 if (fechaInicioActividad > fechaFinActividad) {
                     toastr.error('La fecha de inicio de actividad no debe ser mayor a la fecha fin de actividad','Error');
                     return false;
@@ -741,7 +817,7 @@
                     toastr.error('La fecha de inicio de planilla no debe ser mayor a la fecha fin de planilla','Error');
                     return false;
                 }
-            }
+            }*/
 
             return true;
         }
@@ -752,6 +828,33 @@
                 $('#correo_electronico').focus();
             }
         }
+
+        /* Limpiar imagen */
+        $('#limpiar_logo').click(function () {
+            $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
+            var fileName="Seleccionar"
+            $('.custom-file-label').addClass("selected").html(fileName);
+            $('#imagen').val('')
+        })
+
+        $('.custom-file-input').on('change', function() {
+            var fileInput = document.getElementById('imagen');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
+            $imagenPrevisualizacion = document.querySelector(".logo");
+
+            if(allowedExtensions.exec(filePath)){
+                var userFile = document.getElementById('imagen');
+                userFile.src = URL.createObjectURL(event.target.files[0]);
+                var data = userFile.src;
+                $imagenPrevisualizacion.src = data
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+            }else{
+                toastr.error('Extensión inválida, formatos admitidos (.jpg . jpeg . png)','Error');
+                $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
+            }
+        });
 
     </script>
 @endpush

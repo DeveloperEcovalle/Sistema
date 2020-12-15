@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9d3fee18-a3c2-46f4-8f87-6116d6ccbf3b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Mantenimiento/Empleado/EmpleadoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Mantenimiento/Empleado/EmpleadoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_08_232227_create_personas_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_08_232227_create_personas_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_08_232242_create_empleados_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_08_232242_create_empleados_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_09_180626_create_vendedores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_09_180626_create_vendedores_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/show.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +188,7 @@
       <workItem from="1607870048377" duration="44973000" />
       <workItem from="1607966965131" duration="2604000" />
       <workItem from="1607971555157" duration="8099000" />
-      <workItem from="1608003235674" duration="3999000" />
+      <workItem from="1608003235674" duration="15350000" />
     </task>
     <servers />
   </component>

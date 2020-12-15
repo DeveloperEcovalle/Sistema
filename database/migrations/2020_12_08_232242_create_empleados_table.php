@@ -33,10 +33,11 @@ class CreateEmpleadosTable extends Migration
             $table->string('numero_cuenta', 20)->nullable();
             $table->date('fecha_inicio_actividad');
             $table->date('fecha_fin_actividad')->nullable();
-            $table->date('fecha_inicio_planilla');
+            $table->date('fecha_inicio_planilla')->nullable();
             $table->date('fecha_fin_planilla')->nullable();
             $table->string('ruta_imagen')->nullable();
-            $table->enum('estado',['ACTIVO','INACTIVO','ANULADO'])->default('ACTIVO');
+            $table->string('nombre_imagen')->nullable();
+            $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
     }
