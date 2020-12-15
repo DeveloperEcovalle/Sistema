@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Articulo extends Model
 {
     protected $table = 'articulos';
-    protected $fillable =['categoria_id', 'almacen_id','presentacion','descripcion','stock','stock_min','precio_compra','estado'];
+    protected $fillable =['categoria_id', 'codigo_fabrica' ,'almacen_id','presentacion','descripcion','stock','stock_min','precio_compra','estado'];
     public $timestamps = true;
     
     public function categoria()

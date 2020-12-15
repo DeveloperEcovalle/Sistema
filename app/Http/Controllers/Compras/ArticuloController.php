@@ -26,6 +26,7 @@ class ArticuloController extends Controller
         foreach($articulos as $articulo){
             $coleccion->push([
                 'id' => $articulo->id,
+                'codigo' => $articulo->codigo_fabrica,
                 'descripcion' => $articulo->descripcion,
                 'categoria' => $articulo->categoria->descripcion,
                 'presentacion' => $articulo->presentacion,
@@ -70,6 +71,7 @@ class ArticuloController extends Controller
 
         $rules = [
             'descripcion' => 'required',
+            'codigo_fabrica' => 'required',
             'categoria' => 'required',
             'presentacion' => 'required',
             'almacen' => 'required',
@@ -80,6 +82,7 @@ class ArticuloController extends Controller
         ];
         
         $message = [
+            'codigo_fabrica.required' => 'El campo Codigo es obligatorio.',
             'descripcion.required' => 'El campo Descripción es obligatorio.',
             'categoria.required'=> 'El campo Categoria es obligatorio.',
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
@@ -97,6 +100,7 @@ class ArticuloController extends Controller
 
         $articulo = new Articulo();
         $articulo->descripcion = $request->get('descripcion');
+        $articulo->codigo_fabrica = $request->get('codigo_fabrica');
         $articulo->categoria_id = $request->get('categoria');
         $articulo->almacen_id = $request->get('almacen');
         $articulo->presentacion = $request->get('presentacion');
@@ -114,6 +118,7 @@ class ArticuloController extends Controller
 
         $rules = [
             'descripcion' => 'required',
+            'codigo_fabrica' => 'required',
             'categoria' => 'required',
             'presentacion' => 'required',
             'almacen' => 'required',
@@ -125,6 +130,7 @@ class ArticuloController extends Controller
         
         $message = [
             'descripcion.required' => 'El campo Descripción es obligatorio.',
+            'codigo_fabrica.required'=> 'El campo Codigo es obligatorio.',
             'categoria.required'=> 'El campo Categoria es obligatorio.',
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
             'almacen.required'=>'El campo Almacen es obligatorio.',
@@ -141,6 +147,7 @@ class ArticuloController extends Controller
         
         $articulo = Articulo::findOrFail($id);
         $articulo->descripcion = $request->get('descripcion');
+        $articulo->codigo_fabrica = $request->get('codigo_fabrica');
         $articulo->categoria_id = $request->get('categoria');
         $articulo->almacen_id = $request->get('almacen');
         $articulo->presentacion = $request->get('presentacion');
