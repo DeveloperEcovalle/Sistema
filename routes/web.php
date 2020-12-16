@@ -88,9 +88,21 @@ Route::prefix('compras/proveedores')->group(function() {
     Route::post('store', 'Compras\ProveedorController@store')->name('compras.proveedor.store');
     Route::get('edit/{id}','Compras\ProveedorController@edit')->name('compras.proveedor.edit');
     Route::get('show/{id}','Compras\ProveedorController@show')->name('compras.proveedor.show');
-    Route::post('update/{id}', 'Compras\ProveedorController@update')->name('compras.proveedor.update');
+    Route::put('update/{id}', 'Compras\ProveedorController@update')->name('compras.proveedor.update');
     Route::get('destroy/{id}', 'Compras\ProveedorController@destroy')->name('compras.proveedor.destroy');
 });
+
+//Ordenes de Compra
+// Route::prefix('compras/ordenes')->group(function() {
+//     Route::get('index', 'Compras\OrdenController@index')->name('compras.orden.index');
+//     Route::get('getOrder','Compras\OrdenController@getOrder')->name('getOrder');
+//     Route::get('create','Compras\OrdenController@create')->name('compras.orden.create');
+//     Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store');
+//     Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit');
+//     Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show');
+//     Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update');
+//     Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy');
+// });
 
 
 //Almacenes
