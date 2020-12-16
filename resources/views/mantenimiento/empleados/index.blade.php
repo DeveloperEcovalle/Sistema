@@ -8,7 +8,7 @@
         <h2 style="text-transform:uppercase;"><b>Mantenimiento de Empleados</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Panel de Control</a>
+                <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Empleados</strong>
