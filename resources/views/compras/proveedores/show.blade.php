@@ -52,8 +52,8 @@
                                     @else
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label><strong>Dni: </strong></label>
-                                            <p class="text-navy">{{$proveedor->dni}}</p>
+                                            <label><strong>Documento: </strong></label>
+                                            <p class="text-navy">Dni</p>
                                         </div>
                                         <div class="col-md-6">
                                             <label><strong>Tipo: </strong></label>
@@ -117,59 +117,6 @@
 
        
                                 
-                            </div>
-
-                            <hr>
-
-                            <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Información del calidad:</strong></p>
-                            <div class="row" style="text-transform:uppercase;">
-
-                                    <div class="col-md-6 b-r">
-
-                                        <div class="form-group">
-                                            <label><strong>Nombre: </strong></label>
-                                            @if($proveedor->calidad != "")
-                                                <p>{{$proveedor->calidad}}</p>
-                                            @else
-                                                <p>-</p>
-                                            @endif
-                                            
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Correo: </strong></label>
-                                            @if($proveedor->correo != "")
-                                                <p>{{$proveedor->correo}}</p>
-                                            @else
-                                                <p>-</p>
-                                            @endif
-                                            
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label><strong>Telefono: </strong></label> 
-                                                @if($proveedor->telefono_calidad != "")
-                                                    <p>{{$proveedor->telefono_calidad}}</p>
-                                                @else
-                                                    <p>-</p>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label><strong>Celular: </strong></label> 
-                                                @if($proveedor->celular_calidad != "")
-                                                    <p>{{$proveedor->celular_calidad}}</p>
-                                                @else
-                                                    <p>-</p>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                    </div>
-
                             </div>
 
                             <hr>

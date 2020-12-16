@@ -162,37 +162,35 @@
                                         
                                     </div>
 
-                                    <div class="form-group row">
-                                            <div class="col-md-6">
-                                                <label class="required">Zona: </label>      
-                                                <select class="select2_form form-control {{ $errors->has('zona') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('zona')}}" name="zona" id="zona" required >
-                                                    <option></option>
-                                                    @foreach ($zonas as $zona)   
-                                                        <option value="{{$zona->descripcion}}" @if(old('zona') == $zona->descripcion ) {{'selected'}} @endif >{{$zona->descripcion}}</option>
-                                                    @endforeach
-                                                </select>
+                                    <div class="form-group">
+                                            <label class="required">Zona: </label>      
+                                            <select class="select2_form form-control {{ $errors->has('zona') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('zona')}}" name="zona" id="zona" required >
+                                                <option></option>
+                                                @foreach ($zonas as $zona)   
+                                                    <option value="{{$zona->descripcion}}" @if(old('zona') == $zona->descripcion ) {{'selected'}} @endif >{{$zona->descripcion}}</option>
+                                                @endforeach
+                                            </select>
 
-                                                @if ($errors->has('zona'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('zona') }}</strong>
-                                                    </span>
-                                                @endif
-                                            
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="required">Correo:</label> 
-                                                <input type="email" placeholder="" class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}" name="correo" id="correo" style="text-transform:uppercase;" value="{{old('correo')}}" required>
-                                                @if ($errors->has('correo'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('correo') }}</strong>
-                                                    </span>
-                                                @endif
-                                            
-                                            </div>
-
+                                            @if ($errors->has('zona'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('zona') }}</strong>
+                                                </span>
+                                            @endif
 
                                     </div>
 
+                                    <div class="form-group">
+
+                                        <label class="required">Correo:</label> 
+                                        <input type="email" placeholder="" class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}" name="correo" id="correo" style="text-transform:uppercase;" value="{{old('correo')}}" required>
+                                        @if ($errors->has('correo'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('correo') }}</strong>
+                                            </span>
+                                        @endif
+
+
+                                    </div> 
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
@@ -233,166 +231,84 @@
                             </div>
 
                             <div class="col-sm-6">
-                                <h4><b>Datos Adicionales</b></h4>
-                                <p>Registrar datos adicionales del proveedor:</p>
-                                
-                                                    
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="tabs-container">
-                                                <ul class="nav nav-tabs">
-                                                    <li title="Datos de Calidad"><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-check-square"></i> Calidad</a></li>
-                                                    <li title="Datos de Contacto"><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-user"></i>  Contacto</a></li>
-                                                    <li title="Datos de Tranporte"><a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-bus"></i> Transporte</a></li>
-                                                    <li title="Datos de Almacen"><a class="nav-link" data-toggle="tab" href="#tab-4"> <i class="fa fa-building"></i> Almacen</a></li>
-                                                </ul>
-                                                <div class="tab-content">
-                                                    <div id="tab-1" class="tab-pane active">
-                                                        <div class="panel-body">
-                                                            <p><b>Registrar datos del calidad:</b></p>
-                                                            <div class="form-group">
+                                <h4><b>Datos del Contacto</b></h4>
+                                <p>Registrar datos del contacto:</p>
+                                <div class="form-group">
 
-                                                                <label>Nombre Completo:</label> 
-                                                                <input type="text" placeholder="" class="form-control {{ $errors->has('calidad') ? ' is-invalid' : '' }}" name="calidad" id="calidad" style="text-transform:uppercase;" value="{{old('calidad')}}">
-                                                                @if ($errors->has('calidad'))
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $errors->first('calidad') }}</strong>
-                                                                    </span>
-                                                                @endif
-
-                                                            </div> 
-
-                                                            <div class="form-group row">
-                                                                <div class="col-md-6">
-                                                                    <label>Teléfono:</label> 
-                                                                    <input type="text" placeholder="" class="form-control {{ $errors->has('telefono_calidad') ? ' is-invalid' : '' }}" name="telefono_calidad" id="telefono_calidad" style="text-transform:uppercase;" value="{{old('telefono_calidad')}}">
-                                                                    @if ($errors->has('telefono_calidad'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('telefono_calidad') }}</strong>
-                                                                        </span>
-                                                                    @endif
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label>Celular:</label> 
-                                                                    <input type="text" placeholder="" class="form-control {{ $errors->has('celular_calidad') ? ' is-invalid' : '' }}" name="celular_calidad" id="celular_calidad" style="text-transform:uppercase;" value="{{old('celular_calidad')}}">
-                                                                    @if ($errors->has('celular_calidad'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('celular_calidad') }}</strong>
-                                                                        </span>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-
-                                                                <label>Correo:</label> 
-                                                                <input type="email" placeholder="" class="form-control {{ $errors->has('correo_calidad') ? ' is-invalid' : '' }}" name="correo_calidad" id="correo_calidad" style="text-transform:uppercase;" value="{{old('correo_calidad')}}">
-                                                                @if ($errors->has('correo_calidad'))
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $errors->first('correo_calidad') }}</strong>
-                                                                    </span>
-                                                                @endif
-
-                                                            </div> 
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div id="tab-2" class="tab-pane">
-                                                        <div class="panel-body">
-                                                            <p><b>Registrar datos del contacto:</b></p>
-                                                            <div class="form-group">
-
-                                                                <label>Nombre Completo:</label> 
-                                                                <input type="text" placeholder="" class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" name="contacto" id="contacto" style="text-transform:uppercase;" value="{{old('contacto')}}">
-                                                                @if ($errors->has('contacto'))
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $errors->first('contacto') }}</strong>
-                                                                    </span>
-                                                                @endif
-
-                                                            </div> 
-
-                                                            <div class="form-group row">
-                                                                <div class="col-md-6">
-                                                                    <label>Teléfono:</label> 
-                                                                    <input type="text" placeholder="" class="form-control {{ $errors->has('telefono_contacto') ? ' is-invalid' : '' }}" name="telefono_contacto" id="telefono_contacto" style="text-transform:uppercase;" value="{{old('telefono_contacto')}}">
-                                                                    @if ($errors->has('telefono_contacto'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('telefono_contacto') }}</strong>
-                                                                        </span>
-                                                                    @endif
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label>Celular:</label> 
-                                                                    <input type="text" placeholder="" class="form-control {{ $errors->has('celular_contacto') ? ' is-invalid' : '' }}" name="celular_contacto" id="celular_contacto" style="text-transform:uppercase;" value="{{old('celular_contacto')}}">
-                                                                    @if ($errors->has('celular_contacto'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('celular_contacto') }}</strong>
-                                                                        </span>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div id="tab-3" class="tab-pane">
-                                                        <div class="panel-body">
-
-                                                        <p><b>Registrar datos del transporte:</b></p>
-                                                            <div class="form-group">
-
-                                                                <label>Nombre Completo:</label> 
-                                                                <input type="text" placeholder="" class="form-control {{ $errors->has('transporte') ? ' is-invalid' : '' }}" name="transporte" id="transporte" style="text-transform:uppercase;" value="{{old('transporte')}}">
-                                                                @if ($errors->has('transporte'))
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $errors->first('transporte') }}</strong>
-                                                                    </span>
-                                                                @endif
+                                    <label>Nombre Completo:</label> 
+                                    <input type="text" placeholder="" class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" name="contacto" id="contacto" style="text-transform:uppercase;" value="{{old('contacto')}}">
+                                    @if ($errors->has('contacto'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('contacto') }}</strong>
+                                        </span>
+                                    @endif
 
 
-                                                            </div> 
+                                </div> 
 
-                                                            <div class="form-group">
-                                                                    <label>Dirección:</label> 
-                                                                    <textarea type="text" placeholder="" class="form-control {{ $errors->has('direccion_transporte') ? ' is-invalid' : '' }}" name="direccion_transporte" id="direccion_transporte" style="text-transform:uppercase;" value="{{old('direccion_transporte')}}">{{old('direccion_transporte')}}</textarea>
-                                                                    @if ($errors->has('direccion_transporte'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('direccion_transporte') }}</strong>
-                                                                        </span>
-                                                                    @endif
-                                                            
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div id="tab-4" class="tab-pane">
-                                                        <div class="panel-body">
-
-                                                            <p><b>Registrar datos del almacen:</b></p>
-
-                                                            <div class="form-group">
-                                                                    <label>Dirección:</label> 
-                                                                    <textarea type="text" placeholder="" class="form-control {{ $errors->has('direccion_almacen') ? ' is-invalid' : '' }}" name="direccion_almacen" id="direccion_almacen" style="text-transform:uppercase;" value="{{old('direccion_almacen')}}">{{old('direccion_almacen')}}</textarea>
-                                                                    @if ($errors->has('direccion_almacen'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('direccion_almacen') }}</strong>
-                                                                        </span>
-                                                                    @endif
-
-
-                                                            </div>
-
-
-
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </div>
-                                        </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label>Teléfono:</label> 
+                                        <input type="text" placeholder="" class="form-control {{ $errors->has('telefono_contacto') ? ' is-invalid' : '' }}" name="telefono_contacto" id="telefono_contacto" style="text-transform:uppercase;" value="{{old('telefono_contacto')}}">
+                                        @if ($errors->has('telefono_contacto'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('telefono_contacto') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
+                                    <div class="col-md-6">
+                                        <label>Celular:</label> 
+                                        <input type="text" placeholder="" class="form-control {{ $errors->has('celular_contacto') ? ' is-invalid' : '' }}" name="celular_contacto" id="celular_contacto" style="text-transform:uppercase;" value="{{old('celular_contacto')}}">
+                                        @if ($errors->has('celular_contacto'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('celular_contacto') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                </div>
+
+                                <hr>
+                                <h4><b>Datos del Transporte</b></h4>
+                                <p>Registrar datos del transporte:</p>
+                                <div class="form-group">
+
+                                    <label>Nombre Completo:</label> 
+                                    <input type="text" placeholder="" class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" name="contacto" id="contacto" style="text-transform:uppercase;" value="{{old('contacto')}}">
+                                    @if ($errors->has('contacto'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('contacto') }}</strong>
+                                        </span>
+                                    @endif
+
+
+                                </div> 
+
+                                <div class="form-group">
+                                        <label>Dirección:</label> 
+                                        <textarea type="text" placeholder="" class="form-control {{ $errors->has('direccion_transporte') ? ' is-invalid' : '' }}" name="direccion_transporte" id="direccion_transporte" style="text-transform:uppercase;" value="{{old('direccion_transporte')}}">{{old('direccion_transporte')}}</textarea>
+                                        @if ($errors->has('direccion_transporte'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('direccion_transporte') }}</strong>
+                                            </span>
+                                        @endif
+                                
+
+                                </div>
+                                <hr>
+                                <h4><b>Datos del Almacen</b></h4>
+                                <p>Registrar datos del almacen:</p>
+
+                                <div class="form-group">
+                                        <label>Dirección:</label> 
+                                        <textarea type="text" placeholder="" class="form-control {{ $errors->has('direccion_almacen') ? ' is-invalid' : '' }}" name="direccion_almacen" id="direccion_almacen" style="text-transform:uppercase;" value="{{old('direccion_almacen')}}">{{old('direccion_almacen')}}</textarea>
+                                        @if ($errors->has('direccion_almacen'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('direccion_almacen') }}</strong>
+                                            </span>
+                                        @endif
+                                
+
                                 </div>
 
                             </div>
@@ -532,15 +448,6 @@
     });
 
     $('#celular_contacto').on('input', function () { 
-        this.value = this.value.replace(/[^0-9]/g,'');
-    });
-
-
-    $('#telefono_calidad').on('input', function () { 
-        this.value = this.value.replace(/[^0-9]/g,'');
-    });
-
-    $('#celular_calidad').on('input', function () { 
         this.value = this.value.replace(/[^0-9]/g,'');
     });
 

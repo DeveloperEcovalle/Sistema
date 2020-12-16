@@ -54,10 +54,3 @@ select.form-control:not([size]):not([multiple]) {
     background-color: #1ab394;
     color: white;
 }
-
-/* Estilos Active */
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: #fff;
-    background-color: #1ab394;
-    border-color: #1ab394;
-  }
