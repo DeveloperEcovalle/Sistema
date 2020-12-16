@@ -38,6 +38,12 @@ class CreateProveedoresTable extends Migration
 
             $table->mediumText('direccion_almacen')->nullable();
 
+            $table->string('calidad')->nullable();
+            $table->string('celular_calidad')->nullable();
+            $table->string('telefono_calidad')->nullable();
+            $table->string('correo_calidad')->nullable();
+
+
             $table->boolean('activo');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();

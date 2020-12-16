@@ -28,9 +28,12 @@ class Proveedor extends Model
         'transporte',
         'direccion_transporte',
 
-        'direccion_almacen'
+        'direccion_almacen',
 
-
+        'calidad',
+        'celular_calidad',
+        'telefono_calidad',
+        'correo_calidad',
 
 
 

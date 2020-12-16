@@ -129,6 +129,11 @@ class ProveedorController extends Controller
             'direccion_almacen' => 'nullable',
             'estado' => 'required',
 
+            'calidad' => 'nullable',
+            'telefono_calidad' => 'nullable|numeric',
+            'celular_calidad' => 'nullable|numeric',
+            'correo_calidad' => 'nullable|email',
+
         ];
         
         $message = [
@@ -142,6 +147,11 @@ class ProveedorController extends Controller
             'celular.numeric' => 'El campo Celular debe ser numérico.',
             'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            
+            'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
+            'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
+            'correo_calidad.email' => 'El campo Correo debe ser email.',
+            
             'estado.required' => 'El campo Estado es obligatorio.',
             
 
@@ -172,6 +182,11 @@ class ProveedorController extends Controller
         $proveedor->contacto = $request->get('contacto');
         $proveedor->celular_contacto = $request->get('celular_contacto');
         $proveedor->telefono_contacto = $request->get('telefono_contacto');
+
+        $proveedor->calidad = $request->get('calidad');
+        $proveedor->celular_calidad = $request->get('celular_calidad');
+        $proveedor->telefono_calidad = $request->get('telefono_calidad');
+        $proveedor->correo_calidad = $request->get('correo_calidad');
         
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
@@ -291,6 +306,12 @@ class ProveedorController extends Controller
             'direccion_almacen' => 'nullable',
             'estado' => 'required',
 
+            'calidad' => 'nullable',
+            'telefono_calidad' => 'nullable|numeric',
+            'celular_calidad' => 'nullable|numeric',
+            'correo_calidad' => 'nullable|email',
+
+
         ];
         
         $message = [
@@ -305,6 +326,10 @@ class ProveedorController extends Controller
             'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
             'estado.required' => 'El campo Estado es obligatorio.',
+
+            'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
+            'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
+            'correo_calidad.email' => 'El campo Correo debe ser email.',
             
 
         ];
@@ -334,6 +359,11 @@ class ProveedorController extends Controller
         $proveedor->contacto = $request->get('contacto');
         $proveedor->celular_contacto = $request->get('celular_contacto');
         $proveedor->telefono_contacto = $request->get('telefono_contacto');
+
+        $proveedor->calidad = $request->get('calidad');
+        $proveedor->celular_calidad = $request->get('celular_calidad');
+        $proveedor->telefono_calidad = $request->get('telefono_calidad');
+        $proveedor->correo_calidad = $request->get('correo_calidad');
         
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
