@@ -119,6 +119,7 @@ Route::prefix('almacenes/almacen')->group(function() {
 Route::prefix('mantenimiento/ubigeo')->group(function() {
     Route::post('/provincias', 'Mantenimiento\Ubigeo\UbigeoController@provincias')->name('mantenimiento.ubigeo.provincias');
     Route::post('/distritos', 'Mantenimiento\Ubigeo\UbigeoController@distritos')->name('mantenimiento.ubigeo.distritos');
+    Route::post('/api_ruc', 'Mantenimiento\Ubigeo\UbigeoController@api_ruc')->name('mantenimiento.ubigeo.api_ruc');
 });
 
 // Empleados
@@ -146,3 +147,17 @@ Route::prefix('mantenimiento/vendedores')->group(function() {
     Route::get('/destroy/{id}', 'Mantenimiento\Vendedor\VendedorController@destroy')->name('mantenimiento.vendedor.destroy');
     Route::post('/getDNI', 'Mantenimiento\Vendedor\VendedorController@getDNI')->name('mantenimiento.vendedor.getDni');
 });
+
+// Ventas
+Route::prefix('ventas/clientes')->group(function() {
+    Route::get('/', 'Ventas\Cliente\ClienteController@index')->name('ventas.cliente.index');
+    Route::get('/getTable', 'Ventas\Cliente\ClienteController@getTable')->name('ventas.cliente.getTable');
+    Route::get('/registrar', 'Ventas\Cliente\ClienteController@create')->name('ventas.cliente.create');
+    Route::post('/registrar', 'Ventas\Cliente\ClienteController@store')->name('ventas.cliente.store');
+    Route::get('/actualizar/{id}', 'Ventas\Cliente\ClienteController@edit')->name('ventas.cliente.edit');
+    Route::put('/actualizar/{id}', 'Ventas\Cliente\ClienteController@update')->name('ventas.cliente.update');
+    Route::get('/datos/{id}', 'Ventas\Cliente\ClienteController@show')->name('ventas.cliente.show');
+    Route::get('/destroy/{id}', 'Ventas\Cliente\ClienteController@destroy')->name('ventas.cliente.destroy');
+    Route::post('/getDocumento', 'Ventas\Cliente\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
+});
+

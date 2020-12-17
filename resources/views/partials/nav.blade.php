@@ -38,10 +38,10 @@
         </ul>
     </li>
 
-    <li>
+    <li class="@yield('ventas-active')">
         <a href="#"><i class="fa fa-signal"></i> <span class="nav-label">Ventas</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="search_results.html">Clientes</a></li>
+            <li class="@yield('clientes-active')"><a href="{{ route('ventas.cliente.index') }}">Clientes</a></li>
             <li><a href="lockscreen.html">Cotizaciones</a></li>
             <li><a href="lockscreen.html">Pedidos</a></li>
             <li><a href="lockscreen.html">Documentos</a></li>

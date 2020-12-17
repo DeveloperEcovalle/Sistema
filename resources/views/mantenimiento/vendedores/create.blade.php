@@ -10,7 +10,7 @@
         <h2 style="text-transform:uppercase;"><b>Registrar Nuevo Vendedor</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Panel de Control</a>
+                <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
                 <a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a>

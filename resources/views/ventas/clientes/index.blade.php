@@ -1,11 +1,11 @@
 @extends('layout') @section('content')
 
-@section('mantenimiento-active', 'active')
+@section('ventas-active', 'active')
 @section('clientes-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Mantenimiento de Clientes</b></h2>
+        <h2 style="text-transform:uppercase;"><b>Listado de Clientes</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="#">Panel de Control</a>
@@ -103,7 +103,7 @@
                 "bInfo": true,
                 "bAutoWidth": false,
                 "processing":true,
-                "ajax": "{{ route('mantenimiento.empleado.getTable')}}",
+                "ajax": "{{ route('ventas.cliente.getTable')}}",
                 "columns": [
                     {data: 'documento', className:"text-center"},
                     {data: 'nombre', className:"text-left"},
@@ -114,11 +114,11 @@
                         className:"text-center",
                         render: function(data) {
                             //Ruta Detalle
-                            var url_detalle = '{{ route("mantenimiento.cliente.show", ":id")}}';
+                            var url_detalle = '{{ route("ventas.cliente.show", ":id")}}';
                             url_detalle = url_detalle.replace(':id',data.id);
 
                             //Ruta Modificar
-                            var url_editar = '{{ route("mantenimiento.cliente.edit", ":id")}}';
+                            var url_editar = '{{ route("ventas.cliente.edit", ":id")}}';
                             url_editar = url_editar.replace(':id',data.id);
 
                             return "<div class='btn-group'>" +
@@ -145,7 +145,7 @@
 
         // Funciones de Eventos
         function añadirCliente() {
-            window.location = "{{ route('mantenimiento.cliente.create')  }}";
+            window.location = "{{ route('ventas.cliente.create')  }}";
         }
 
         function editarCliente(url) {
@@ -164,7 +164,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     //Ruta Eliminar
-                    var url_eliminar = '{{ route("mantenimiento.cliente.destroy", ":id")}}';
+                    var url_eliminar = '{{ route("ventas.cliente.destroy", ":id")}}';
                     url_eliminar = url_eliminar.replace(':id',id);
                     $(location).attr('href',url_eliminar);
 
