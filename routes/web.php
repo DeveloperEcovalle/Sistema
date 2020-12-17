@@ -146,3 +146,12 @@ Route::prefix('mantenimiento/vendedores')->group(function() {
     Route::get('/destroy/{id}', 'Mantenimiento\Vendedor\VendedorController@destroy')->name('mantenimiento.vendedor.destroy');
     Route::post('/getDNI', 'Mantenimiento\Vendedor\VendedorController@getDNI')->name('mantenimiento.vendedor.getDni');
 });
+
+//Familias
+Route::prefix('produccion/familias')->group(function() {
+    Route::get('index', 'Produccion\FamiliaController@index')->name('produccion.familias.index');
+    Route::get('getfamilia','Produccion\FamiliaController@getfamilia')->name('getfamilia');
+    Route::get('destroy/{id}', 'Produccion\FamiliaController@destroy')->name('produccion.familias.destroy');
+    Route::post('store', 'Produccion\FamiliaController@store')->name('produccion.familias.store');
+    Route::put('update', 'Produccion\FamiliaController@update')->name('produccion.familias.update');
+});
