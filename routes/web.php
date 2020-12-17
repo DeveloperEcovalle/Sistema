@@ -63,11 +63,11 @@ Route::prefix('mantenimiento/empresas')->group(function() {
 //Compras
 //Categoria
 Route::prefix('compras/categorias')->group(function() {
-    Route::get('index', 'compras\CategoriaController@index')->name('compras.categoria.index');
-    Route::get('getCategory','compras\CategoriaController@getCategory')->name('getCategory');
-    Route::get('destroy/{id}', 'compras\CategoriaController@destroy')->name('compras.categoria.destroy');
-    Route::post('store', 'compras\CategoriaController@store')->name('compras.categoria.store');
-    Route::put('update', 'compras\CategoriaController@update')->name('compras.categoria.update');
+    Route::get('index', 'Compras\CategoriaController@index')->name('compras.categoria.index');
+    Route::get('getCategory','Compras\CategoriaController@getCategory')->name('getCategory');
+    Route::get('destroy/{id}', 'Compras\CategoriaController@destroy')->name('compras.categoria.destroy');
+    Route::post('store', 'Compras\CategoriaController@store')->name('compras.categoria.store');
+    Route::put('update', 'Compras\CategoriaController@update')->name('compras.categoria.update');
 });
 //Articulos
 Route::prefix('compras/articulos')->group(function() {
