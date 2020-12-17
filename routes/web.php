@@ -108,11 +108,11 @@ Route::prefix('compras/proveedores')->group(function() {
 //Almacenes
 //Almacen
 Route::prefix('almacenes/almacen')->group(function() {
-    Route::get('index', 'almacenes\AlmacenController@index')->name('almacenes.almacen.index');
-    Route::get('getRepository','almacenes\AlmacenController@getRepository')->name('getRepository');
-    Route::get('destroy/{id}', 'almacenes\AlmacenController@destroy')->name('almacenes.almacen.destroy');
-    Route::post('store', 'almacenes\AlmacenController@store')->name('almacenes.almacen.store');
-    Route::put('update', 'almacenes\AlmacenController@update')->name('almacenes.almacen.update');
+    Route::get('index', 'Almacenes\AlmacenController@index')->name('almacenes.almacen.index');
+    Route::get('getRepository','Almacenes\AlmacenController@getRepository')->name('getRepository');
+    Route::get('destroy/{id}', 'Almacenes\AlmacenController@destroy')->name('almacenes.almacen.destroy');
+    Route::post('store', 'Almacenes\AlmacenController@store')->name('almacenes.almacen.store');
+    Route::put('update', 'Almacenes\AlmacenController@update')->name('almacenes.almacen.update');
 });
 
 // Ubigeo
