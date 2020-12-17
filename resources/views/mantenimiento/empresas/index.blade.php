@@ -35,6 +35,7 @@
                     <table class="table dataTables-empresas table-striped table-bordered table-hover" style="text-transform:uppercase;">
                     <thead>
                         <tr>
+                            <th class="text-center"></th>
                             <th class="text-center">RUC</th>
                             <th class="text-center">RAZON SOCIAL</th>
                             <th class="text-center">RAZON SOCIAL ABREVIADA</th>
@@ -105,6 +106,7 @@
             "ajax": '{{ route("getBusiness")}}',
             "columns": [
                 //Empresa
+                {data: 'id', className:"text-center",visible:false},
                 {data: 'ruc', className:"text-center"},
                 {data: 'razon_social'},
                 {data: 'razon_social_abreviada'},
@@ -128,6 +130,7 @@
             "language": {
                         "url": "{{asset('Spanish.json')}}"
             },
+            "order": [[ 0, "desc" ]],
 
         });
 

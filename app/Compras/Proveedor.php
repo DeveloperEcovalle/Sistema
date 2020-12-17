@@ -15,20 +15,20 @@ class Proveedor extends Model
         'tipo_documento',
         'tipo_persona',
         'direccion',
-
         'correo',
         'telefono',
         'web',
         'zona',
-
         'contacto',
         'celular_contacto',
         'telefono_contacto',
-
         'transporte',
         'direccion_transporte',
-
-        'direccion_almacen'
+        'direccion_almacen',
+        'calidad',
+        'celular_calidad',
+        'telefono_calidad',
+        'correo_calidad',
 
 
 

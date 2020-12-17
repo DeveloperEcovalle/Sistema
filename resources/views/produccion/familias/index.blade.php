@@ -1,23 +1,23 @@
 @extends('layout') @section('content')
-@include('compras.categorias.create')
-@include('compras.categorias.edit')
-@section('compras-active', 'active')
-@section('categoria-active', 'active')
+@include('produccion.familias.create')
+@include('produccion.familias.edit')
+@section('produccion-active', 'active')
+@section('familias-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Listado de Categorias</b></h2>
+        <h2 style="text-transform:uppercase;"><b>Listado de Familias</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Categorias</strong>
+                <strong>Familias</strong>
             </li>
 
         </ol>
     </div>
     <div class="col-lg-2 col-md-2">
-        <a data-toggle="modal" data-target="#modal_crear_categoria"  class="btn btn-block btn-w-m btn-primary m-t-md" href="#">
+        <a data-toggle="modal" data-target="#modal_crear_familia"  class="btn btn-block btn-w-m btn-primary m-t-md" href="#">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
@@ -109,11 +109,11 @@
             "bInfo": true,
             "bAutoWidth": false,
             "processing":true,
-            "ajax": '{{ route("getCategory")}}' ,
+            "ajax": '{{ route("getfamilia")}}' ,
             "columns": [
                 //Tabla General
                 {data: 'id', className:"text-center", "visible":false},
-                {data: 'descripcion', className:"text-center"},
+                {data: 'familia', className:"text-center"},
                 {data: 'fecha_creacion', className:"text-center"},
                 {data: 'fecha_actualizacion', className:"text-center"},
                 {
@@ -129,7 +129,6 @@
             "language": {
                         "url": "{{asset('Spanish.json')}}"
             },
-            "order": [[ 0, "desc" ]],
 
            
 
@@ -151,14 +150,14 @@
             }  
         });
 
-        $('#modal_editar_categoria').modal('show');
+        $('#modal_editar_familia').modal('show');
 
         
     }
 
     //Old Modal Editar
     @if ($errors->has('descripcion') )
-        $('#modal_editar_categoria').modal({ show: true });
+        $('#modal_editar_familia').modal({ show: true });
     @endif
 
     function limpiarError() {
@@ -166,13 +165,13 @@
         $('#error-descripcion').text('')
     }
 
-    $('#modal_editar_categoria').on('hidden.bs.modal', function(e) { 
+    $('#modal_editar_familia').on('hidden.bs.modal', function(e) { 
         limpiarError() 
     });
 
     //Old Modal Crear
     @if ($errors->has('descripcion_guardar') )
-        $('#modal_crear_categoria').modal({ show: true });
+        $('#modal_crear_familia').modal({ show: true });
     @endif
 
     function guardarError() {
@@ -199,7 +198,7 @@
             }).then((result) => {
             if (result.isConfirmed) {
                 //Ruta Eliminar
-                var url_eliminar = '{{ route("compras.categoria.destroy", ":id")}}';
+                var url_eliminar = '{{ route("produccion.familias.destroy", ":id")}}';
                 url_eliminar = url_eliminar.replace(':id',id);
                 $(location).attr('href',url_eliminar);
 
@@ -218,7 +217,7 @@
         
     }
 
-    $('#editar_categoria').submit(function(e){
+    $('#editar_familia').submit(function(e){
         e.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -258,7 +257,7 @@
             })
     })
 
-    $('#crear_categoria').submit(function(e){
+    $('#crear_familia').submit(function(e){
         e.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {

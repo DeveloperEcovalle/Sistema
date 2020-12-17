@@ -53,7 +53,7 @@
     <li>
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="search_results.html">Familia</a></li>
+            <li class="@yield('familia-active')"><a href="{{route('produccion.familias.index')}}">Familia</a></li>
             <li><a href="lockscreen.html">Sub Familia</a></li>
             <li><a href="invoice.html">Unidad de Medida</a></li>
             <li><a href="login.html">Producto Terminado</a></li>

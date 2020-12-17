@@ -63,11 +63,11 @@ Route::prefix('mantenimiento/empresas')->group(function() {
 //Compras
 //Categoria
 Route::prefix('compras/categorias')->group(function() {
-    Route::get('index', 'compras\CategoriaController@index')->name('compras.categoria.index');
-    Route::get('getCategory','compras\CategoriaController@getCategory')->name('getCategory');
-    Route::get('destroy/{id}', 'compras\CategoriaController@destroy')->name('compras.categoria.destroy');
-    Route::post('store', 'compras\CategoriaController@store')->name('compras.categoria.store');
-    Route::put('update', 'compras\CategoriaController@update')->name('compras.categoria.update');
+    Route::get('index', 'Compras\CategoriaController@index')->name('compras.categoria.index');
+    Route::get('getCategory','Compras\CategoriaController@getCategory')->name('getCategory');
+    Route::get('destroy/{id}', 'Compras\CategoriaController@destroy')->name('compras.categoria.destroy');
+    Route::post('store', 'Compras\CategoriaController@store')->name('compras.categoria.store');
+    Route::put('update', 'Compras\CategoriaController@update')->name('compras.categoria.update');
 });
 //Articulos
 Route::prefix('compras/articulos')->group(function() {
@@ -108,11 +108,11 @@ Route::prefix('compras/proveedores')->group(function() {
 //Almacenes
 //Almacen
 Route::prefix('almacenes/almacen')->group(function() {
-    Route::get('index', 'almacenes\AlmacenController@index')->name('almacenes.almacen.index');
-    Route::get('getRepository','almacenes\AlmacenController@getRepository')->name('getRepository');
-    Route::get('destroy/{id}', 'almacenes\AlmacenController@destroy')->name('almacenes.almacen.destroy');
-    Route::post('store', 'almacenes\AlmacenController@store')->name('almacenes.almacen.store');
-    Route::put('update', 'almacenes\AlmacenController@update')->name('almacenes.almacen.update');
+    Route::get('index', 'Almacenes\AlmacenController@index')->name('almacenes.almacen.index');
+    Route::get('getRepository','Almacenes\AlmacenController@getRepository')->name('getRepository');
+    Route::get('destroy/{id}', 'Almacenes\AlmacenController@destroy')->name('almacenes.almacen.destroy');
+    Route::post('store', 'Almacenes\AlmacenController@store')->name('almacenes.almacen.store');
+    Route::put('update', 'Almacenes\AlmacenController@update')->name('almacenes.almacen.update');
 });
 
 // Ubigeo
@@ -161,3 +161,12 @@ Route::prefix('ventas/clientes')->group(function() {
     Route::post('/getDocumento', 'Ventas\Cliente\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
 });
 
+
+//Familias
+Route::prefix('produccion/familias')->group(function() {
+    Route::get('index', 'Produccion\FamiliaController@index')->name('produccion.familias.index');
+    Route::get('getfamilia','Produccion\FamiliaController@getfamilia')->name('getfamilia');
+    Route::get('destroy/{id}', 'Produccion\FamiliaController@destroy')->name('produccion.familias.destroy');
+    Route::post('store', 'Produccion\FamiliaController@store')->name('produccion.familias.store');
+    Route::put('update', 'Produccion\FamiliaController@update')->name('produccion.familias.update');
+});
