@@ -170,3 +170,12 @@ Route::prefix('produccion/familias')->group(function() {
     Route::post('store', 'Produccion\FamiliaController@store')->name('produccion.familias.store');
     Route::put('update', 'Produccion\FamiliaController@update')->name('produccion.familias.update');
 });
+
+//SubFamilias
+Route::prefix('produccion/subfamilias')->group(function() {
+    Route::get('index', 'Produccion\SubFamiliaController@index')->name('produccion.subfamilia.index');
+    Route::get('getfamilia','Produccion\SubFamiliaController@getfamilia')->name('getfamilia');
+    Route::get('destroy/{id}', 'Produccion\SubFamiliaController@destroy')->name('produccion.subfamilia.destroy');
+    Route::post('store', 'Produccion\SubFamiliaController@store')->name('produccion.subfamilia.store');
+    Route::put('update', 'Produccion\SubFamiliaController@update')->name('produccion.subfamilia.update');
+});
