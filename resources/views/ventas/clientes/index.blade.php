@@ -1,22 +1,22 @@
 @extends('layout') @section('content')
 
-@section('mantenimiento-active', 'active')
-@section('vendedores-active', 'active')
+@section('ventas-active', 'active')
+@section('clientes-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Mantenimiento de Vendedores</b></h2>
+        <h2 style="text-transform:uppercase;"><b>Listado de Clientes</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Vendedores</strong>
+                <strong>Clientes</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-2 col-md-2">
-        <button id="btn_añadir_vendedor" class="btn btn-block btn-w-m btn-primary m-t-md">
+        <button id="btn_añadir_cliente" class="btn btn-block btn-w-m btn-primary m-t-md">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </button>
     </div>
@@ -28,14 +28,13 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                        <table class="table dataTables-vendedor table-striped table-bordered table-hover" style="text-transform:uppercase;">
+                        <table class="table dataTables-cliente table-striped table-bordered table-hover" style="text-transform:uppercase;">
                             <thead>
                             <tr>
                                 <th class="text-center">DOCUMENTO</th>
-                                <th class="text-center">APELLIDOS Y NOMBRES</th>
-                                <th class="text-center">T. MÓVIL</th>
-                                <th class="text-center">ÁREA</th>
-                                <th class="text-center">ZONA</th>
+                                <th class="text-center">NOMBRE</th>
+                                <th class="text-center">TELÉFONO MÓVIL</th>
+                                <th class="text-center">LÍMITE CRÉDITO</th>
                                 <th class="text-center">ACCIONES</th>
                             </tr>
                             </thead>
@@ -66,7 +65,7 @@
         $(document).ready(function() {
 
             // DataTables
-            $('.dataTables-vendedor').DataTable({
+            $('.dataTables-cliente').DataTable({
                 "dom": '<"html5buttons"B>lTfgitp',
                 "buttons": [
                     {
@@ -94,23 +93,22 @@
                 "bInfo": true,
                 "bAutoWidth": false,
                 "processing":true,
-                "ajax": "{{ route('mantenimiento.vendedor.getTable')}}",
+                "ajax": "{{ route('ventas.cliente.getTable')}}",
                 "columns": [
                     {data: 'documento', className:"text-center"},
-                    {data: 'apellidos_nombres', className:"text-left"},
+                    {data: 'nombre', className:"text-left"},
                     {data: 'telefono_movil', className:"text-center"},
-                    {data: 'area', className:"text-center"},
-                    {data: 'zona', className:"text-center"},
+                    {data: 'limite_credito', className:"text-center"},
                     {
                         data: null,
                         className:"text-center",
                         render: function(data) {
                             //Ruta Detalle
-                            var url_detalle = '{{ route("mantenimiento.vendedor.show", ":id")}}';
+                            var url_detalle = '{{ route("ventas.cliente.show", ":id")}}';
                             url_detalle = url_detalle.replace(':id',data.id);
 
                             //Ruta Modificar
-                            var url_editar = '{{ route("mantenimiento.vendedor.edit", ":id")}}';
+                            var url_editar = '{{ route("ventas.cliente.edit", ":id")}}';
                             url_editar = url_editar.replace(':id',data.id);
 
                             return "<div class='btn-group'>" +
@@ -129,18 +127,18 @@
             });
 
             // Eventos
-            $('#btn_añadir_vendedor').on('click', añadirVendedor);
+            $('#btn_añadir_cliente').on('click', añadirCliente);
         });
 
         //Controlar Error
         $.fn.DataTable.ext.errMode = 'throw';
 
         // Funciones de Eventos
-        function añadirVendedor() {
-            window.location = "{{ route('mantenimiento.vendedor.create')  }}";
+        function añadirCliente() {
+            window.location = "{{ route('ventas.cliente.create')  }}";
         }
 
-        function editarEmpleado(url) {
+        function editarCliente(url) {
             window.location = url;
         }
 
@@ -156,7 +154,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     //Ruta Eliminar
-                    var url_eliminar = '{{ route("mantenimiento.vendedor.destroy", ":id")}}';
+                    var url_eliminar = '{{ route("ventas.cliente.destroy", ":id")}}';
                     url_eliminar = url_eliminar.replace(':id',id);
                     $(location).attr('href',url_eliminar);
 

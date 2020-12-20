@@ -72,13 +72,13 @@
                     <div class="ibox-content">
                         <div class="row">
                         <div class="col-lg-9 text-center">
-                            
+
                             <h2><b>Ventas por departamentos</b></h2>
-                            
+
                             <div class="flot-chart">
                                 <div class="flot-chart-content" id="ventas_mensuales"></div>
                             </div>
-                            
+
 
                         </div>
                         <div class="col-lg-3">
@@ -172,7 +172,7 @@
                 </div>
 
 
-                    
+
             </div>
 
             <div class="col-lg-12">
@@ -226,11 +226,11 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
-                    
+
             </div>
 
             <div class="col-lg-12">
@@ -243,13 +243,13 @@
                             </a>
 
                         </div>
-                        
+
                     </div>
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-lg-9 text-center">
                                 <h2><b>Cuentas por cobrar en departamentos</b></h2>
-                                <div class="flot-chart">    
+                                <div class="flot-chart">
                                     <div class="flot-chart-content" id="cuentas_mensuales"></div>
                                 </div>
                             </div>
@@ -292,12 +292,12 @@
 
 
 </div>
-            
+
 
 @stop
 @push('styles')
 <link href="{{asset('Inspinia/css/plugins/morris/morris-0.4.3.min.css')}}" rel="stylesheet">
-@endpush 
+@endpush
 @push('scripts')
 
 <script src="{{asset('Inspinia/js/plugins/morris/raphael-2.1.0.min.js')}}"></script>
@@ -336,10 +336,10 @@
         { departamento: 'Ucayali', clientes: 20 },
     ],
     xkey: 'departamento',
-    
+
     ykeys: ['clientes'],
 
-    labels: ["Clientes"],
+    labels: ["Ventas"],
     hideHover: 'auto',
     resize: true,
     barColors: ['#1ab394'],
@@ -379,7 +379,7 @@
         { departamento: 'Ucayali', deuda: 20000 },
     ],
     xkey: 'departamento',
-    
+
     ykeys: ['deuda'],
 
     labels: ["deuda"],
@@ -409,7 +409,7 @@
         { categoria: 'Belleza', productos: 20000 },
     ],
     xkey: 'categoria',
-    
+
     ykeys: ['productos'],
 
     labels: ["productos"],

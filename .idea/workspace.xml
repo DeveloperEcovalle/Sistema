@@ -2,14 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d3fee18-a3c2-46f4-8f87-6116d6ccbf3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/mantenimiento/vendedores/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/mantenimiento/vendedores/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/mantenimiento/vendedores/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/mantenimiento/vendedores/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Produccion/ProductoController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Ventas/CotizacionController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Produccion/Producto.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Produccion/ProductoDetalle.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Ventas/Cotizacion.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Ventas/CotizacionDetalle.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_17_044556_create_productos_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_17_045905_create_producto_detalles_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_17_064248_create_cotizaciones_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_12_18_005323_create_cotizacion_detalles_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/produccion/productos/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/produccion/productos/edit-detalle.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/produccion/productos/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/produccion/productos/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/produccion/productos/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ventas/cotizaciones/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ventas/cotizaciones/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ventas/cotizaciones/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ventas/cotizaciones/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Mantenimiento/Empleado/EmpleadoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Mantenimiento/Empleado/EmpleadoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ParametroController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ParametroController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Compras/Articulo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Compras/Articulo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Ventas/Cliente/ClienteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Ventas/ClienteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Mantenimiento/Empresa.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mantenimiento/Empresa.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Produccion/Familia.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Produccion/Familia.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Produccion/SubFamilia.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Produccion/SubFamilia.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ventas/Cliente/Cliente.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ventas/Cliente.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_08_232242_create_empleados_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_08_232242_create_empleados_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_09_180626_create_vendedores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_09_180626_create_vendedores_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/TablaDetalleSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TablaDetalleSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/TablaSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TablaSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/empleados/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mantenimiento/vendedores/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mantenimiento/vendedores/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/ventas/clientes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ventas/clientes/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -140,6 +166,9 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1lMPMcR9YFvoyL74H56PLJlhjm9" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -150,18 +179,18 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="E:/WebProjects/app-cmp8" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../app-incidencias" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Laravel.SettingsForm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Mantenimiento\Vendedor" />
-      <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Mantenimiento\Ubigeo" />
-      <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Mantenimiento\Empleado" />
-      <recent name="C:\laragon\www\app-ecovalle\app\Mantenimiento\Vendedor" />
-      <recent name="C:\laragon\www\app-ecovalle\app\Mantenimiento\Empleado" />
+      <recent name="C:\laragon\www\app-ecovalle\resources\views\produccion\productos" />
+      <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Produccion" />
+      <recent name="C:\laragon\www\app-ecovalle\app\Http\Controllers\Ventas" />
+      <recent name="C:\laragon\www\app-ecovalle\app\Ventas" />
+      <recent name="C:\laragon\www\app-ecovalle\app\Produccion" />
     </key>
   </component>
   <component name="RunManager">
@@ -189,7 +218,12 @@
       <workItem from="1607966965131" duration="2604000" />
       <workItem from="1607971555157" duration="8099000" />
       <workItem from="1608003235674" duration="17691000" />
-      <workItem from="1608048800016" duration="4983000" />
+      <workItem from="1608048800016" duration="5210000" />
+      <workItem from="1608062736607" duration="818000" />
+      <workItem from="1608092158301" duration="2147000" />
+      <workItem from="1608133166564" duration="35449000" />
+      <workItem from="1608247470664" duration="25098000" />
+      <workItem from="1608333647833" duration="28141000" />
     </task>
     <servers />
   </component>
@@ -207,17 +241,6 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/resources/views/mantenimiento/empleados/create.blade.php</url>
-          <line>25</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

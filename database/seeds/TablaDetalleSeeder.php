@@ -362,21 +362,46 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 12;
         $detalle->save();
 
+
+
+        // UNIDAD DE MEDIDA
+        $detalle = new Detalle();
+        $detalle->descripcion = "KILOGRAMOS";
+        $detalle->simbolo = "KG";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "GALON";
+        $detalle->simbolo = "GL";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOTEL";
+        $detalle->simbolo = "BOL";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
         //MODO DE COMPRA
         $detalle = new Detalle();
         $detalle->descripcion = "CONTADO 30 DÍAS";
         $detalle->simbolo = 'CONTADO';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 13;
+        $detalle->tabla_id = 14;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "CONTRATO DE CRÉDITO";
         $detalle->simbolo = 'CRÉDITO';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 13;
+        $detalle->tabla_id = 14;
         $detalle->save();
-
 
 
     }

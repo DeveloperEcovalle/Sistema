@@ -86,6 +86,11 @@ class TablaSeeder extends Seeder
 
         // 13
         $tabla = new General();
+        $tabla->descripcion = 'UNIDAD MEDIDA';
+        $tabla->sigla = 'UNIDAD MEDIDA';
+        $tabla->save();
+        //14
+        $tabla = new General();
         $tabla->descripcion = 'MODO DE COMPRA';
         $tabla->sigla = 'MODO DE COMPRA';
         $tabla->save();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mantenimiento\Ubigeo;
 
 use App\Mantenimiento\Ubigeo\Departamento;
+use App\Mantenimiento\Ubigeo\Distrito;
 use App\Mantenimiento\Ubigeo\Provincia;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -79,6 +80,41 @@ class UbigeoController extends Controller
             'error' => $error,
             'message' => $message,
             'distritos' => $collection
+        ];
+
+        return response()->json($data);
+    }
+
+    public function api_ruc(Request $request)
+    {
+        $request->validate([
+            'departamento' => 'required|string',
+            'provincia' => 'required|string',
+            'distrito' => 'required|string'
+        ]);
+
+        $error = false;
+        $message = "";
+
+        // Hacemos la consulta a distritos (contiene los nombre del ubigeo completo)
+        $distritos = Distrito::where([
+                                ['departamento', $request->departamento],
+                                ['provincia', $request->provincia],
+                                ['nombre', $request->distrito]
+                            ])->get();
+        $ubigeo = null;
+        if ($distritos->count() > 0)
+            $ubigeo = $distritos->first();
+
+        if (is_null($ubigeo)) {
+            $error = true;
+            $message = "No se encontraron los datos de ubigeo";
+        }
+
+        $data = [
+            'error' => $error,
+            'message' => $message,
+            'ubigeo' => $ubigeo
         ];
 
         return response()->json($data);

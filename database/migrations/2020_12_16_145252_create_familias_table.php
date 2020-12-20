@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVendedoresTable extends Migration
+class CreateFamiliasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateVendedoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('vendedores', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('empleado_id');
-            $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
-            $table->string('zona');
-            $table->unsignedDecimal('comision', 15,2);
-            $table->string('moneda_comision');
+        Schema::create('familias', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->Increments('id');
+            $table->string('familia');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
@@ -32,6 +29,6 @@ class CreateVendedoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendedores');
+        Schema::dropIfExists('familias');
     }
 }
