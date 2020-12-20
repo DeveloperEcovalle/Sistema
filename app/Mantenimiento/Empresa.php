@@ -9,7 +9,7 @@ class Empresa extends Model
     protected $table = 'empresas';
     public $timestamps = true;
     protected $fillable =[
-        'ruc', 
+        'ruc',
         'razon_social',
         'razon_social_abreviada',
         'ruta_logo',
@@ -27,4 +27,9 @@ class Empresa extends Model
         'activo',
         'estado'
     ];
+
+    public function cotizaciones()
+    {
+        return $this->hasMany('App\Ventas\Cotizacion');
+    }
 }

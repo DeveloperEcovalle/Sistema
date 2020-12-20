@@ -42,7 +42,7 @@
         <a href="#"><i class="fa fa-signal"></i> <span class="nav-label">Ventas</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('clientes-active')"><a href="{{ route('ventas.cliente.index') }}">Clientes</a></li>
-            <li><a href="lockscreen.html">Cotizaciones</a></li>
+            <li class="@yield('cotizaciones-active')"><a href="{{ route('ventas.cotizacion.index') }}">Cotizaciones</a></li>
             <li><a href="lockscreen.html">Pedidos</a></li>
             <li><a href="lockscreen.html">Documentos</a></li>
 
@@ -50,13 +50,13 @@
     </li>
 
 
-    <li>
+    <li class="@yield('produccion-active')">
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('familia-active')"><a href="{{route('produccion.familias.index')}}">Familia</a></li>
             <li><a href="lockscreen.html">Sub Familia</a></li>
             <li><a href="invoice.html">Unidad de Medida</a></li>
-            <li><a href="login.html">Producto Terminado</a></li>
+            <li class="@yield('productos-active')"><a href="{{ route('produccion.producto.index') }}">Producto Terminado</a></li>
             <li><a href="login_two_columns.html">Linea de Producción</a></li>
             <li><a href="forgot_password.html">Detalle de Linea</a></li>
             <li><a href="register.html">Ordenes</a></li>

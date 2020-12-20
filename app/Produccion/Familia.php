@@ -10,4 +10,9 @@ class Familia extends Model
     protected $table = 'familias';
     protected $fillable = ['familia','estado'];
     public $timestamps = true;
+
+    public function sub_familias()
+    {
+        return $this->hasMany('App\Produccion\Subfamilia');
+    }
 }

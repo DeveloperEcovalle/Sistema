@@ -148,19 +148,18 @@ Route::prefix('mantenimiento/vendedores')->group(function() {
     Route::post('/getDNI', 'Mantenimiento\Vendedor\VendedorController@getDNI')->name('mantenimiento.vendedor.getDni');
 });
 
-// Ventas
+// Clientes
 Route::prefix('ventas/clientes')->group(function() {
-    Route::get('/', 'Ventas\Cliente\ClienteController@index')->name('ventas.cliente.index');
-    Route::get('/getTable', 'Ventas\Cliente\ClienteController@getTable')->name('ventas.cliente.getTable');
-    Route::get('/registrar', 'Ventas\Cliente\ClienteController@create')->name('ventas.cliente.create');
-    Route::post('/registrar', 'Ventas\Cliente\ClienteController@store')->name('ventas.cliente.store');
-    Route::get('/actualizar/{id}', 'Ventas\Cliente\ClienteController@edit')->name('ventas.cliente.edit');
-    Route::put('/actualizar/{id}', 'Ventas\Cliente\ClienteController@update')->name('ventas.cliente.update');
-    Route::get('/datos/{id}', 'Ventas\Cliente\ClienteController@show')->name('ventas.cliente.show');
-    Route::get('/destroy/{id}', 'Ventas\Cliente\ClienteController@destroy')->name('ventas.cliente.destroy');
-    Route::post('/getDocumento', 'Ventas\Cliente\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
+    Route::get('/', 'Ventas\ClienteController@index')->name('ventas.cliente.index');
+    Route::get('/getTable', 'Ventas\ClienteController@getTable')->name('ventas.cliente.getTable');
+    Route::get('/registrar', 'Ventas\ClienteController@create')->name('ventas.cliente.create');
+    Route::post('/registrar', 'Ventas\ClienteController@store')->name('ventas.cliente.store');
+    Route::get('/actualizar/{id}', 'Ventas\ClienteController@edit')->name('ventas.cliente.edit');
+    Route::put('/actualizar/{id}', 'Ventas\ClienteController@update')->name('ventas.cliente.update');
+    Route::get('/datos/{id}', 'Ventas\ClienteController@show')->name('ventas.cliente.show');
+    Route::get('/destroy/{id}', 'Ventas\ClienteController@destroy')->name('ventas.cliente.destroy');
+    Route::post('/getDocumento', 'Ventas\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
 });
-
 
 //Familias
 Route::prefix('produccion/familias')->group(function() {
@@ -178,4 +177,76 @@ Route::prefix('produccion/subfamilias')->group(function() {
     Route::get('destroy/{id}', 'Produccion\SubFamiliaController@destroy')->name('produccion.subfamilia.destroy');
     Route::post('store', 'Produccion\SubFamiliaController@store')->name('produccion.subfamilia.store');
     Route::put('update', 'Produccion\SubFamiliaController@update')->name('produccion.subfamilia.update');
+});
+
+// Cotizaciones
+Route::prefix('ventas/cotizaciones')->group(function() {
+    Route::get('/', 'Ventas\CotizacionController@index')->name('ventas.cotizacion.index');
+    Route::get('/getTable', 'Ventas\CotizacionController@getTable')->name('ventas.cotizacion.getTable');
+    Route::get('/registrar', 'Ventas\CotizacionController@create')->name('ventas.cotizacion.create');
+    Route::post('/registrar', 'Ventas\CotizacionController@store')->name('ventas.cotizacion.store');
+    Route::get('/actualizar/{id}', 'Ventas\CotizacionController@edit')->name('ventas.cotizacion.edit');
+    Route::put('/actualizar/{id}', 'Ventas\CotizacionController@update')->name('ventas.cotizacion.update');
+    Route::get('/datos/{id}', 'Ventas\CotizacionController@show')->name('ventas.cotizacion.show');
+    Route::get('/destroy/{id}', 'Ventas\CotizacionController@destroy')->name('ventas.cotizacion.destroy');
+});
+
+// Productos
+Route::prefix('produccion/productos')->group(function() {
+    Route::get('/', 'Produccion\ProductoController@index')->name('produccion.producto.index');
+    Route::get('/getTable', 'Produccion\ProductoController@getTable')->name('produccion.producto.getTable');
+    Route::get('/registrar', 'Produccion\ProductoController@create')->name('produccion.producto.create');
+    Route::post('/registrar', 'Produccion\ProductoController@store')->name('produccion.producto.store');
+    Route::get('/actualizar/{id}', 'Produccion\ProductoController@edit')->name('produccion.producto.edit');
+    Route::put('/actualizar/{id}', 'Produccion\ProductoController@update')->name('produccion.producto.update');
+    Route::get('/datos/{id}', 'Produccion\ProductoController@show')->name('produccion.producto.show');
+    Route::get('/destroy/{id}', 'Produccion\ProductoController@destroy')->name('produccion.producto.destroy');
+});
+
+// Cotizaciones
+Route::prefix('ventas/cotizaciones')->group(function() {
+    Route::get('/', 'Ventas\CotizacionController@index')->name('ventas.cotizacion.index');
+    Route::get('/getTable', 'Ventas\CotizacionController@getTable')->name('ventas.cotizacion.getTable');
+    Route::get('/registrar', 'Ventas\CotizacionController@create')->name('ventas.cotizacion.create');
+    Route::post('/registrar', 'Ventas\CotizacionController@store')->name('ventas.cotizacion.store');
+    Route::get('/actualizar/{id}', 'Ventas\CotizacionController@edit')->name('ventas.cotizacion.edit');
+    Route::put('/actualizar/{id}', 'Ventas\CotizacionController@update')->name('ventas.cotizacion.update');
+    Route::get('/datos/{id}', 'Ventas\CotizacionController@show')->name('ventas.cotizacion.show');
+    Route::get('/destroy/{id}', 'Ventas\CotizacionController@destroy')->name('ventas.cotizacion.destroy');
+});
+
+// Productos
+Route::prefix('produccion/productos')->group(function() {
+    Route::get('/', 'Produccion\ProductoController@index')->name('produccion.producto.index');
+    Route::get('/getTable', 'Produccion\ProductoController@getTable')->name('produccion.producto.getTable');
+    Route::get('/registrar', 'Produccion\ProductoController@create')->name('produccion.producto.create');
+    Route::post('/registrar', 'Produccion\ProductoController@store')->name('produccion.producto.store');
+    Route::get('/actualizar/{id}', 'Produccion\ProductoController@edit')->name('produccion.producto.edit');
+    Route::put('/actualizar/{id}', 'Produccion\ProductoController@update')->name('produccion.producto.update');
+    Route::get('/datos/{id}', 'Produccion\ProductoController@show')->name('produccion.producto.show');
+    Route::get('/destroy/{id}', 'Produccion\ProductoController@destroy')->name('produccion.producto.destroy');
+});
+
+// Cotizaciones
+Route::prefix('ventas/cotizaciones')->group(function() {
+    Route::get('/', 'Ventas\CotizacionController@index')->name('ventas.cotizacion.index');
+    Route::get('/getTable', 'Ventas\CotizacionController@getTable')->name('ventas.cotizacion.getTable');
+    Route::get('/registrar', 'Ventas\CotizacionController@create')->name('ventas.cotizacion.create');
+    Route::post('/registrar', 'Ventas\CotizacionController@store')->name('ventas.cotizacion.store');
+    Route::get('/actualizar/{id}', 'Ventas\CotizacionController@edit')->name('ventas.cotizacion.edit');
+    Route::put('/actualizar/{id}', 'Ventas\CotizacionController@update')->name('ventas.cotizacion.update');
+    Route::get('/datos/{id}', 'Ventas\CotizacionController@show')->name('ventas.cotizacion.show');
+    Route::get('/destroy/{id}', 'Ventas\CotizacionController@destroy')->name('ventas.cotizacion.destroy');
+});
+
+// Productos
+Route::prefix('produccion/productos')->group(function() {
+    Route::get('/', 'Produccion\ProductoController@index')->name('produccion.producto.index');
+    Route::get('/getTable', 'Produccion\ProductoController@getTable')->name('produccion.producto.getTable');
+    Route::get('/registrar', 'Produccion\ProductoController@create')->name('produccion.producto.create');
+    Route::post('/registrar', 'Produccion\ProductoController@store')->name('produccion.producto.store');
+    Route::get('/actualizar/{id}', 'Produccion\ProductoController@edit')->name('produccion.producto.edit');
+    Route::put('/actualizar/{id}', 'Produccion\ProductoController@update')->name('produccion.producto.update');
+    Route::get('/datos/{id}', 'Produccion\ProductoController@show')->name('produccion.producto.show');
+    Route::get('/destroy/{id}', 'Produccion\ProductoController@destroy')->name('produccion.producto.destroy');
 });

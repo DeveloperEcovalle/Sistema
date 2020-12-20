@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Ventas\Cliente;
+namespace App\Http\Controllers\Ventas;
 
 use App\Http\Controllers\Controller;
-use App\Ventas\Cliente\Cliente;
+use App\Ventas\Cliente;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;

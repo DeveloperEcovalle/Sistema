@@ -1,22 +1,22 @@
 @extends('layout') @section('content')
 
-@section('ventas-active', 'active')
-@section('clientes-active', 'active')
+@section('produccion-active', 'active')
+@section('productos-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Listado de Clientes</b></h2>
+        <h2 style="text-transform:uppercase;"><b>Listado de Productos</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Clientes</strong>
+                <strong>Productos</strong>
             </li>
         </ol>
     </div>
     <div class="col-lg-2 col-md-2">
-        <button id="btn_añadir_cliente" class="btn btn-block btn-w-m btn-primary m-t-md">
+        <button id="btn_añadir_producto" class="btn btn-block btn-w-m btn-primary m-t-md">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </button>
     </div>
@@ -28,13 +28,14 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                        <table class="table dataTables-cliente table-striped table-bordered table-hover" style="text-transform:uppercase;">
+                        <table class="table dataTables-producto table-striped table-bordered table-hover" style="text-transform:uppercase;">
                             <thead>
                             <tr>
-                                <th class="text-center">DOCUMENTO</th>
                                 <th class="text-center">NOMBRE</th>
-                                <th class="text-center">TELÉFONO MÓVIL</th>
-                                <th class="text-center">LÍMITE CRÉDITO</th>
+                                <th class="text-center">FAMILIA</th>
+                                <!--<th class="text-center">SUB FAMILIA</th>-->
+                                <th class="text-center">U. MEDIDAD</th>
+                                <th class="text-center">STOCK</th>
                                 <th class="text-center">ACCIONES</th>
                             </tr>
                             </thead>
@@ -65,7 +66,7 @@
         $(document).ready(function() {
 
             // DataTables
-            $('.dataTables-cliente').DataTable({
+            $('.dataTables-producto').DataTable({
                 "dom": '<"html5buttons"B>lTfgitp',
                 "buttons": [
                     {
@@ -93,22 +94,23 @@
                 "bInfo": true,
                 "bAutoWidth": false,
                 "processing":true,
-                "ajax": "{{ route('ventas.cliente.getTable')}}",
+                "ajax": "{{ route('produccion.producto.getTable')}}",
                 "columns": [
-                    {data: 'documento', className:"text-center"},
-                    {data: 'nombre', className:"text-left"},
-                    {data: 'telefono_movil', className:"text-center"},
-                    {data: 'limite_credito', className:"text-center"},
+                    {data: 'nombre', className:"text-center"},
+                    {data: 'familia', className:"text-left"},
+                    //{data: 'sub_familia', className:"text-center"},
+                    {data: 'unidad_medida', className:"text-center"},
+                    {data: 'stock', className:"text-center"},
                     {
                         data: null,
                         className:"text-center",
                         render: function(data) {
                             //Ruta Detalle
-                            var url_detalle = '{{ route("ventas.cliente.show", ":id")}}';
+                            var url_detalle = '{{ route("produccion.producto.show", ":id")}}';
                             url_detalle = url_detalle.replace(':id',data.id);
 
                             //Ruta Modificar
-                            var url_editar = '{{ route("ventas.cliente.edit", ":id")}}';
+                            var url_editar = '{{ route("produccion.producto.edit", ":id")}}';
                             url_editar = url_editar.replace(':id',data.id);
 
                             return "<div class='btn-group'>" +
@@ -127,15 +129,15 @@
             });
 
             // Eventos
-            $('#btn_añadir_cliente').on('click', añadirCliente);
+            $('#btn_añadir_producto').on('click', añadirProducto);
         });
 
         //Controlar Error
         $.fn.DataTable.ext.errMode = 'throw';
 
         // Funciones de Eventos
-        function añadirCliente() {
-            window.location = "{{ route('ventas.cliente.create')  }}";
+        function añadirProducto() {
+            window.location = "{{ route('produccion.producto.create')  }}";
         }
 
         function editarCliente(url) {
@@ -154,7 +156,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     //Ruta Eliminar
-                    var url_eliminar = '{{ route("ventas.cliente.destroy", ":id")}}';
+                    var url_eliminar = '{{ route("produccion.producto.destroy", ":id")}}';
                     url_eliminar = url_eliminar.replace(':id',id);
                     $(location).attr('href',url_eliminar);
 

@@ -16,7 +16,7 @@ class CreateVendedoresTable extends Migration
         Schema::create('vendedores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('empleado_id');
-            $table->foreign('empleado_id')->references('id')->on('empleados');
+            $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
             $table->string('zona');
             $table->unsignedDecimal('comision', 15,2);
             $table->string('moneda_comision');

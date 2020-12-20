@@ -16,7 +16,7 @@ class CreateEmpleadosTable extends Migration
         Schema::create('empleados', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id');
-            $table->foreign('persona_id')->references('id')->on('personas');
+            $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->string('area');
             $table->string('profesion');
             $table->string('cargo');

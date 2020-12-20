@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ventas\Cliente;
+namespace App\Ventas;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +25,11 @@ class Cliente extends Model
         'activo',
         'estado'
     ];
+
+    public function cotizaciones()
+    {
+        return $this->hasMany('App\Ventas\Cotizacion');
+    }
 
     public function getDocumento(): string
     {

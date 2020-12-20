@@ -70,16 +70,6 @@
                 "dom": '<"html5buttons"B>lTfgitp',
                 "buttons": [
                     {
-                        extend:    'copyHtml5',
-                        text:      '<i class="fa fa-files-o"></i> Copiar',
-                        titleAttr: 'Copiar'
-                    },
-                    {
-                        extend:    'csvHtml5',
-                        text:      '<i class="fa fa-file-text-o"></i> Csv',
-                        titleAttr: 'CSV'
-                    },
-                    {
                         extend:    'excelHtml5',
                         text:      '<i class="fa fa-file-excel-o"></i> Excel',
                         titleAttr: 'Excel',

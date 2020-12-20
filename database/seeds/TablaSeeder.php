@@ -83,5 +83,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'GRUPOS SANGUINEOS';
         $tabla->sigla = 'GRUPOS SANGUINEOS';
         $tabla->save();
+
+        // 13
+        $tabla = new General();
+        $tabla->descripcion = 'UNIDAD MEDIDA';
+        $tabla->sigla = 'UNIDAD MEDIDA';
+        $tabla->save();
     }
 }
