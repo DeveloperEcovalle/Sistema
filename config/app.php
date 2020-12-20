@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         //Yajra Datatable
         Yajra\Datatables\DatatablesServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -230,6 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         //Yajra Datatable
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

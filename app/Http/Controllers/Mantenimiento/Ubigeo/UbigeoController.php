@@ -11,6 +11,7 @@ class UbigeoController extends Controller
 {
     public function provincias(Request $request)
     {
+        // dd($request);
         $error = false;
         $message = "";
         $data= null;

@@ -62,3 +62,8 @@ select.form-control:not([size]):not([multiple]) {
     background-color: #1ab394;
     border-color: #1ab394;
   }
+
+/*SobrePoner Alert*/
+.my-swal {
+    z-index: 3000 !important;
+}

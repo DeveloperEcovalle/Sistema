@@ -17,6 +17,7 @@ class Empresa extends Model
         'direccion_fiscal',
         'telefono',
         'celular',
+        'correo',
         'direccion_planta',
 
         'dni_representante',
@@ -25,6 +26,6 @@ class Empresa extends Model
         'num_asiento',
         'num_partida',
         'activo',
-        'estado'
+        'estado',
     ];
 }

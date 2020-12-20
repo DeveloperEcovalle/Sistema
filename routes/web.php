@@ -93,16 +93,17 @@ Route::prefix('compras/proveedores')->group(function() {
 });
 
 //Ordenes de Compra
-// Route::prefix('compras/ordenes')->group(function() {
-//     Route::get('index', 'Compras\OrdenController@index')->name('compras.orden.index');
-//     Route::get('getOrder','Compras\OrdenController@getOrder')->name('getOrder');
-//     Route::get('create','Compras\OrdenController@create')->name('compras.orden.create');
-//     Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store');
-//     Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit');
-//     Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show');
-//     Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update');
-//     Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy');
-// });
+Route::prefix('compras/ordenes')->group(function() {
+    Route::get('index', 'Compras\OrdenController@index')->name('compras.orden.index');
+    Route::get('getOrder','Compras\OrdenController@getOrder')->name('getOrder');
+    Route::get('create','Compras\OrdenController@create')->name('compras.orden.create');
+    Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store');
+    Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit');
+    Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show');
+    Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update');
+    Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy');
+    Route::get('reporte/{id}','Compras\OrdenController@report')->name('compras.orden.reporte');
+});
 
 
 //Almacenes

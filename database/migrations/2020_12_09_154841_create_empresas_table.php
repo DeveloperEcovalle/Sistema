@@ -25,6 +25,7 @@ class CreateEmpresasTable extends Migration
             $table->mediumText('direccion_fiscal');
             $table->string('telefono')->nullable();
             $table->string('celular')->nullable();
+            $table->string('correo')->nullable();
 
             $table->mediumText('direccion_llegada');
 

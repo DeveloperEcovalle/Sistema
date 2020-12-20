@@ -361,5 +361,23 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 12;
         $detalle->save();
+
+        //MODO DE COMPRA
+        $detalle = new Detalle();
+        $detalle->descripcion = "CONTADO 30 DÍAS";
+        $detalle->simbolo = 'CONTADO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CONTRATO DE CRÉDITO";
+        $detalle->simbolo = 'CRÉDITO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+
     }
 }

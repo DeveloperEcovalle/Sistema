@@ -92,6 +92,13 @@ if (!function_exists('grupos_sanguineos')) {
     }
 }
 
+if (!function_exists('modo_compra')) {
+    function modo_compra()
+    {
+        return General::find(13)->detalles;
+    }
+}
+
 // UBIGEO
 if (!function_exists('departamentos')) {
     function departamentos($id = null)

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Mantenimiento;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Mantenimiento\Empresa;
+use App\Mantenimiento\Ubigeo\Departamento;
+use App\Mantenimiento\Ubigeo\Provincia;
+use App\Mantenimiento\Ubigeo\Distrito;
 use DataTables;
 use Carbon\Carbon;
 use Session;
@@ -26,7 +29,14 @@ class EmpresaController extends Controller
 
     public function create()
     {
-        return view('mantenimiento.empresas.create');
+        $departamentos = Departamento::all();
+        $provincias = Provincia::all();
+        $distritos = Distrito::all();
+        return view('mantenimiento.empresas.create',[
+            'departamentos' => $departamentos,
+            'provincias' => $provincias,
+            'distritos' => $distritos,
+        ]);
     }
 
     public function store(Request $request){
@@ -48,6 +58,7 @@ class EmpresaController extends Controller
             'num_partida' => 'required',
             'telefono' => 'nullable|numeric',
             'celular' => 'nullable|numeric',
+            'correo' => 'nullable',
 
         ];
         
@@ -138,7 +149,6 @@ class EmpresaController extends Controller
 
     public function update(Request $request, $id){
         $data = $request->all();
-        
         $rules = [
             'ruc' => ['required','numeric','min:11', Rule::unique('empresas','ruc')->where(function ($query) {
                         $query->whereIn('estado',["ACTIVO"]);
@@ -198,15 +208,8 @@ class EmpresaController extends Controller
             $name = $file->getClientOriginalName();
             $empresa->nombre_logo = $name;
             $empresa->ruta_logo = $request->file('logo')->store('public/empresas/logos');
-        }else{
-            if ($empresa->ruta_logo) {
-                //Eliminar Archivo anterior
-                Storage::delete($empresa->ruta_logo);
-                $empresa->nombre_logo = '';
-                $empresa->ruta_logo = '';
-            }
         }
-        
+
         $empresa->dni_representante = $request->get('dni_representante');
         $empresa->nombre_representante = $request->get('nombre_representante');
 
