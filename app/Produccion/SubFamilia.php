@@ -15,7 +15,7 @@ class SubFamilia extends Model
 
     public function familia()
     {
-        return $this->belongsTo('App\Produccion\Familia');
+        return $this->belongsTo('App\Produccion\Familia', 'familia_id');
     }
 
     public function productos()

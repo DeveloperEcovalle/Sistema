@@ -11,6 +11,7 @@
                 <small class="font-bold">Editar detalle</small>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="id_editar" name="id_editar">
                 <div class="form-group">
                     <label class="required">Artículo</label>
                     <select id="articulo_editar" name="articulo_editar" class="select2_form form-control" disabled>

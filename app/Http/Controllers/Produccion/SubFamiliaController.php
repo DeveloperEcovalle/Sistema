@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Produccion\Familia;
+use App\Produccion\SubFamilia;
 use Illuminate\Http\Request;
 
 class SubFamiliaController extends Controller
@@ -81,5 +83,34 @@ class SubFamiliaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getByFamilia(Request $request)
+    {
+        $error = false;
+        $message = "";
+        $data= null;
+        $collection = collect([]);
+
+        if (!is_null($request->familia_id)) {
+            $familia = Familia::findOrFail($request->familia_id);
+            foreach ($familia->sub_familias as $sub_familia) {
+                $collection->push([
+                    'id' => $sub_familia->id,
+                    'text' => $sub_familia->descripcion
+                ]);
+            }
+        } else {
+            $error = true;
+            $message = "Error interno del servidor";
+        }
+
+        $data = [
+            'error' => $error,
+            'message' => $message,
+            'sub_familias' => $collection
+        ];
+
+        return response()->json($data);
     }
 }

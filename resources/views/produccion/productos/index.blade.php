@@ -30,14 +30,13 @@
                     <div class="table-responsive">
                         <table class="table dataTables-producto table-striped table-bordered table-hover" style="text-transform:uppercase;">
                             <thead>
-                            <tr>
-                                <th class="text-center">NOMBRE</th>
-                                <th class="text-center">FAMILIA</th>
-                                <!--<th class="text-center">SUB FAMILIA</th>-->
-                                <th class="text-center">U. MEDIDAD</th>
-                                <th class="text-center">STOCK</th>
-                                <th class="text-center">ACCIONES</th>
-                            </tr>
+                                <tr>
+                                    <th class="text-center">CÓDIGO</th>
+                                    <th class="text-center">NOMBRE</th>
+                                    <th class="text-center">FAMILIA</th>
+                                    <th class="text-center">STOCK</th>
+                                    <th class="text-center">ACCIONES</th>
+                                </tr>
                             </thead>
                             <tbody>
 
@@ -96,10 +95,9 @@
                 "processing":true,
                 "ajax": "{{ route('produccion.producto.getTable')}}",
                 "columns": [
-                    {data: 'nombre', className:"text-center"},
+                    {data: 'codigo', className:"text-left"},
+                    {data: 'nombre', className:"text-left"},
                     {data: 'familia', className:"text-left"},
-                    //{data: 'sub_familia', className:"text-center"},
-                    {data: 'unidad_medida', className:"text-center"},
                     {data: 'stock', className:"text-center"},
                     {
                         data: null,
@@ -135,6 +133,15 @@
         //Controlar Error
         $.fn.DataTable.ext.errMode = 'throw';
 
+        //Modal Eliminar
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        });
+
         // Funciones de Eventos
         function añadirProducto() {
             window.location = "{{ route('produccion.producto.create')  }}";
@@ -160,10 +167,7 @@
                     url_eliminar = url_eliminar.replace(':id',id);
                     $(location).attr('href',url_eliminar);
 
-                }else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
+                }else if (result.dismiss === Swal.DismissReason.cancel) {
                     swalWithBootstrapButtons.fire(
                         'Cancelado',
                         'La Solicitud se ha cancelado.',

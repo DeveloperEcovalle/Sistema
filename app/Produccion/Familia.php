@@ -13,6 +13,11 @@ class Familia extends Model
 
     public function sub_familias()
     {
-        return $this->hasMany('App\Produccion\Subfamilia');
+        return $this->hasMany('App\Produccion\SubFamilia');
+    }
+
+    public function productos()
+    {
+        return $this->hasMany('App\Produccion\Producto');
     }
 }
