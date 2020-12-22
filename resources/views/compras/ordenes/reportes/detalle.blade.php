@@ -299,22 +299,16 @@
                     <td class="total" style="text-align:center;">{{$moneda.'  '.$subtotal}}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">IGV @if($detalle->orden->igv){{$detalle->orden->igv}}%@endif:</td>
+                    <td colspan="4">IGV {{$detalle->orden->igv}}%:</td>
                     <td class="total" style="text-align:center;">
-                        @if($detalle->orden->igv)
                             {{$moneda.'  '.$igv}}
-                        @else
-                            {{$moneda.'  '}}0.00
-                        @endif    
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4" class="grand total">TOTAL</td>
-                        @if($detalle->orden->igv)
-                            <td class="grand total" style="text-align:center;">{{$moneda.'  '.$total}}</td>
-                        @else
-                            <td class="grand total" style="text-align:center;">{{$moneda.'  '.$subtotal}}</td>
-                        @endif
+   
+                        <td class="grand total" style="text-align:center;">{{$moneda.'  '.$total}}</td>
+
                     
                 </tr>
             </tbody>

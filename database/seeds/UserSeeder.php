@@ -16,5 +16,8 @@ class UserSeeder extends Seeder
         $user->email = 'admin@ecovalle.com';
         $user->password = bcrypt('admin');
         $user->save();
+
     }
+
+
 }

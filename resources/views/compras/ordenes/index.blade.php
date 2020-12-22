@@ -28,17 +28,19 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                        <table class="table dataTables-orden table-striped table-bordered table-hover" style="text-transform:uppercase;">
+                        <table class="table dataTables-orden table-striped table-bordered table-hover"
+                            style="text-transform:uppercase;">
                             <thead>
-                            <tr>
-                                <th></th>
-                                <th class="text-center">FECHA DOC.</th>
-                                <th class="text-center">FECHA ENTREGA</th>
-                                <th class="text-center">EMPRESA</th>
-                                <th class="text-center">PROVEEDOR</th>
-                                <th class="text-center">ESTADO</th>
-                                <th class="text-center">ACCIONES</th>
-                            </tr>
+                                <tr>
+                                    <th></th>
+                                    <th class="text-center">FECHA DOC.</th>
+                                    <th class="text-center">FECHA ENTREGA</th>
+                                    <th class="text-center">EMPRESA</th>
+                                    <th class="text-center">PROVEEDOR</th>
+                                    <th class="text-center">ENVIADO</th>
+                                    <th class="text-center">ESTADO</th>
+                                    <th class="text-center">ACCIONES</th>
+                                </tr>
                             </thead>
                             <tbody>
 
@@ -51,6 +53,53 @@
     </div>
 </div>
 
+<div class="modal inmodal" id="modal_listar_enviados" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <i class="fa fa-cogs modal-icon"></i>
+                <h4 class="modal-title">Ordenes</h4>
+                <small class="font-bold">Ultima Orden enviada.</small>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="">
+                <div  id="enviado_usuario" style="display:none;">
+                <p>Ultimo registro enviado por el usuario y al correo :</p>
+                    <div class="form-group">
+                        <label class="">Al Correo:</label>
+                        <br>
+                        <b><label id="correo_enviado"></label></b>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="">Usuario</label>
+                        <br>
+                        <b><label id="usuario_enviado"></label></b>
+                    </div>
+                </div>
+
+                <div style="display:none;" id="no_enviado_usuario">
+                    <p>Aun no se ha enviado ninguna orden de compra al proveedor.</p>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <div class="col-md-6 text-right">
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i>
+                        Cancelar</button>
+                </div>
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
 @stop
 @push('styles')
 <!-- DataTable -->
@@ -63,137 +112,222 @@
 <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
 
 <script>
+$(document).ready(function() {
 
-    $(document).ready(function() {
-
-        // DataTables
-        $('.dataTables-orden').DataTable({
-            "dom": '<"html5buttons"B>lTfgitp',
-            "buttons": [
-                {
-                    extend:    'excelHtml5',
-                    text:      '<i class="fa fa-file-excel-o"></i> Excel',
-                    titleAttr: 'Excel',
-                    title: 'Tablas Generales'
-                },
-                {
-                    titleAttr: 'Imprimir',
-                    extend: 'print',
-                    text:      '<i class="fa fa-print"></i> Imprimir',
-                    customize: function (win){
-                        $(win.document.body).addClass('white-bg');
-                        $(win.document.body).css('font-size', '10px');
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    }
-                }
-            ],
-            "bPaginate": true,
-            "bLengthChange": true,
-            "bFilter": true,
-            "bInfo": true,
-            "bAutoWidth": false,
-            "processing":true,
-            "ajax": "{{ route('getOrder')}}",
-            "columns": [
-                //ORDEN DE COMPRA
-                {data: 'id', className:"text-center", visible:false},
-                {data: 'fecha_documento', className:"text-center"},
-                {data: 'fecha_entrega', className:"text-center"},
-                {data: 'empresa', className:"text-left"},
-                {data: 'proveedor', className:"text-left"},
-                {
-                    data: null,
-                    className:"text-center",
-                    render: function(data){
-                        switch(data.estado) {
-                            case "PENDIENTE":
-                                return "<span class='badge badge-warning' d-block>"+data.estado+"</span>";
-                                break;
-                            case "ADELANTO":
-                                return "<span class='badge badge-success' d-block>"+data.estado+"</span>";
-                                break;
-                            default:
-                                return "<span class='badge badge-success' d-block>"+data.estado+"</span>";
-                        }
-                    },
-                },
-
-                {
-                    data: null,
-                    className:"text-center",
-                    render: function(data) {
-                        //Ruta Detalle
-                        var url_detalle = '{{ route("compras.orden.show", ":id")}}';
-                        url_detalle = url_detalle.replace(':id',data.id);
-
-                        //Ruta Modificar
-                        var url_editar = '{{ route("compras.orden.edit", ":id")}}';
-                        url_editar = url_editar.replace(':id',data.id);
-
-
-                        return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>"+
-                                "<li><a class='dropdown-item' href='#' title='Pagos'><b><i class='fa fa-money'></i> Pagos</a></b></li>"+
-                                "<li><a class='dropdown-item' href='"+url_editar+"' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>"+
-                                "<li><a class='dropdown-item' href='"+url_detalle+"' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>"+
-                                "<li class='dropdown-divider'></li>"+
-                                "<li><a class='dropdown-item' onclick='eliminar("+data.id+")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>"
-                            "</ul></div>"
-                    }
-                }
-
-            ],
-            "language": {
-                "url": "{{asset('Spanish.json')}}"
+    // DataTables
+    $('.dataTables-orden').DataTable({
+        "dom": '<"html5buttons"B>lTfgitp',
+        "buttons": [{
+                extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel-o"></i> Excel',
+                titleAttr: 'Excel',
+                title: 'Tablas Generales'
             },
-            "order": [[ 0, "desc" ]],
-        });
+            {
+                titleAttr: 'Imprimir',
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Imprimir',
+                customize: function(win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ],
+        "bPaginate": true,
+        "bLengthChange": true,
+        "bFilter": true,
+        "bInfo": true,
+        "bAutoWidth": false,
+        "processing": true,
+        "ajax": "{{ route('getOrder')}}",
+        "columns": [
+            //ORDEN DE COMPRA
+            {
+                data: 'id',
+                className: "text-center",
+                visible: false
+            },
+            {
+                data: 'fecha_documento',
+                className: "text-center"
+            },
+            {
+                data: 'fecha_entrega',
+                className: "text-center"
+            },
+            {
+                data: 'empresa',
+                className: "text-left"
+            },
+            {
+                data: 'proveedor',
+                className: "text-left"
+            },
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    if (data.enviado == "1") {
+                        return "<div> <input type='checkbox' checked disabled title='Orden de Compra enviada al proveedor.'></div>"
+                    } else {
+                        return " <div> <input type='checkbox' title='Orden de Compra aun no enviada al proveedor.' disabled></div>"
+                    }
+                }
+            },
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    switch (data.estado) {
+                        case "PENDIENTE":
+                            return "<span class='badge badge-warning' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        case "ADELANTO":
+                            return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        default:
+                            return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                    }
+                },
+            },
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    //Ruta Detalle
+                    var url_detalle = '{{ route("compras.orden.show", ":id")}}';
+                    url_detalle = url_detalle.replace(':id', data.id);
 
-        // Eventos
-        $('#btn_añadir_empleado').on('click', añadirEmpleado);
+                    //Ruta Modificar
+                    var url_editar = '{{ route("compras.orden.edit", ":id")}}';
+                    url_editar = url_editar.replace(':id', data.id);
+
+
+                    return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+
+                        "<li><a class='dropdown-item' href='" + url_editar +
+                        "' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                        "<li><a class='dropdown-item' href='" + url_detalle +
+                        "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
+                        ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
+                        "<li class='dropdown-divider'></li>" +
+                        "<li><a class='dropdown-item' onclick='enviado(" + data.id +
+                        ")' title='Ordenes Enviadas'><b><i class='fa fa-send'></i> Enviados</a></b></li>" +
+                        "<li><a class='dropdown-item' href='#' title='Pagos'><b><i class='fa fa-money'></i> Pagos</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='concretada(" + data.id +
+                        ")' title='Concretada'><b><i class='fa fa-check'></i> Concretada</a></b></li>"
+                    "</ul></div>"
+                }
+            }
+
+        ],
+        "language": {
+            "url": "{{asset('Spanish.json')}}"
+        },
+        "order": [
+            [0, "desc"]
+        ],
     });
 
-    //Controlar Error
-    $.fn.DataTable.ext.errMode = 'throw';
+    tablaDatos = $('.dataTables-enviados').DataTable();
 
-    // Funciones de Eventos
-    function añadirEmpleado() {
-        window.location = "{{ route('mantenimiento.empleado.create')  }}";
-    }
+    // Eventos
+    $('#btn_añadir_empleado').on('click', añadirEmpleado);
+});
 
-    function editarEmpleado(url) {
-        window.location = url;
-    }
+//Controlar Error
+$.fn.DataTable.ext.errMode = 'throw';
 
-    function eliminar(id) {
-        Swal.fire({
-            title: 'Opción Eliminar',
-            text: "¿Seguro que desea guardar cambios?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                //Ruta Eliminar
-                var url_eliminar = '{{ route("compras.orden.destroy", ":id")}}';
-                url_eliminar = url_eliminar.replace(':id',id);
-                $(location).attr('href',url_eliminar);
+// Funciones de Eventos
+function añadirEmpleado() {
+    window.location = "{{ route('mantenimiento.empleado.create')  }}";
+}
 
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelado',
-                    'La Solicitud se ha cancelado.',
-                    'error'
-                )
-            }
-        })
-    }
+function editarEmpleado(url) {
+    window.location = url;
+}
 
+function eliminar(id) {
+    Swal.fire({
+        title: 'Opción Eliminar',
+        text: "¿Seguro que desea guardar cambios?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Eliminar
+            var url_eliminar = '{{ route("compras.orden.destroy", ":id")}}';
+            url_eliminar = url_eliminar.replace(':id', id);
+            $(location).attr('href', url_eliminar);
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+}
+
+function concretada(id) {
+    Swal.fire({
+        title: 'Opción Concretada',
+        text: "¿Seguro que desea concretar orden de compra?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Concretar
+            var url_concretar = '{{ route("compras.orden.concretada", ":id")}}';
+            url_concretar = url_concretar.replace(':id', id);
+            $(location).attr('href', url_concretar);
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+}
+
+function enviado(id) {
+
+    $("#modal_listar_enviados").on("shown.bs.modal", function () { 
+        $.get('/compras/ordenes/consultaEnvios/' + id, function(data) {
+        if (data.length > 0) {
+            enviado_usuario.style.display = "";
+            no_enviado_usuario.style.display = "none";
+            $('#correo_enviado').text(data[0].correo);
+            $('#usuario_enviado').text(data[0].usuario);
+        } else {
+            enviado_usuario.style.display = "none";
+            no_enviado_usuario.style.display = "";
+        }
+    });
+    }).modal('show');
+
+}
 </script>
 @endpush

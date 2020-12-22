@@ -459,7 +459,7 @@ $("#igv_check").click(function() {
         $('#igv').val('18')
         var igv = ($('#igv').val()) + ' %'
         $('#igv_int').text(igv)
-        calcularIgv($('#igv').val())
+        sumaTotal()
 
     } else {
         $('#igv').attr('disabled', true)
@@ -467,7 +467,7 @@ $("#igv_check").click(function() {
         $('#igv').prop('required', false)
         $('#igv').val('')
         $('#igv_int').text('')
-        calcularIgv($('#igv').val())
+        sumaTotal()
     }
 });
 
@@ -478,7 +478,7 @@ $("#igv").on("change", function() {
         $('#igv').prop('required', true)
         var igv = ($('#igv').val()) + ' %'
         $('#igv_int').text(igv)
-        calcularIgv($('#igv').val())
+        sumaTotal()
 
     } else {
         $('#igv').attr('disabled', true)
@@ -486,35 +486,9 @@ $("#igv").on("change", function() {
         $('#igv').prop('required', false)
         $('#igv').val('')
         $('#igv_int').text('')
+        sumaTotal()
     }
 });
-
-
-
-
-function sumaTotal() {
-    var t = $('.dataTables-orden-detalle').DataTable();
-    var subtotal = 0;
-    t.rows().data().each(function(el, index) {
-        subtotal = Number(el[6]) + subtotal
-    });
-
-    $('#subtotal').text(subtotal.toFixed(2))
-}
-
-function calcularIgv(igv) {
-    var t = $('.dataTables-orden-detalle').DataTable();
-    var subtotal = 0;
-    t.rows().data().each(function(el, index) {
-        subtotal = Number(el[6]) + subtotal
-    });
-    var monto_igv = igv / 100
-    igv = subtotal * monto_igv
-    var total = igv + subtotal
-    $('#igv_monto').text(igv.toFixed(2))
-    $('#total').text(total.toFixed(2))
-}
-
 
 
 
@@ -707,7 +681,7 @@ $(document).on('click', '#borrar_articulo', function(event) {
             var table = $('.dataTables-orden-detalle').DataTable();
             table.row($(this).parents('tr')).remove().draw();
             sumaTotal()
-            calcularIgv($('#igv').val())
+            // calcularIgv($('#igv').val())
 
         } else if (
             /* Read more about handling dismissals below */
@@ -790,7 +764,7 @@ $(".enviar_articulo").click(function() {
                 limpiarDetalle()
                 agregarTabla(detalle);
                 sumaTotal()
-                calcularIgv($('#igv').val())
+                // calcularIgv($('#igv').val())
 
             } else if (
                 /* Read more about handling dismissals below */
@@ -935,7 +909,43 @@ function sumaTotal() {
         subtotal = Number(el[6]) + subtotal
     });
 
+    var igv = $('#igv').val()
+    if (!igv) {
+        sinIgv(subtotal)   
+    }else{
+        conIgv(subtotal)
+    }
+}
+
+function sinIgv(subtotal) {
+    // calular igv (calcular la base)
+    var igv =  subtotal * 0.18
+    var total = subtotal + igv
+    $('#igv_int').text('18%')
     $('#subtotal').text(subtotal.toFixed(2))
+    $('#igv_monto').text(igv.toFixed(2))
+    $('#total').text(total.toFixed(2))
+
+}
+
+function conIgv(subtotal) {
+    // calular igv (calcular la base)
+    var igv = $('#igv').val()
+    ///////////////////////////////
+
+    if (igv) {
+        var calcularIgv = igv/100
+        var base = subtotal / (1 + calcularIgv)
+        var nuevo_igv = subtotal - base;
+        $('#igv_int').text(igv+'%')
+        $('#subtotal').text(base.toFixed(2))
+        $('#igv_monto').text(nuevo_igv.toFixed(2))
+        $('#total').text(subtotal.toFixed(2))
+
+    }else{
+        toastr.error('Ingrese Igv.', 'Error');
+    }
+
 }
 </script>
 @endpush

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Compras\Orden;
 use App\Compras\Detalle;
 use App\Compras\Proveedor;
+use App\Compras\Enviado;
 use App\Mantenimiento\Empresa;
 use App\Compras\Articulo;
 use DataTables;
@@ -16,6 +17,10 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrdenCompra;
+use Illuminate\Support\Facades\Auth;
+
 
 class OrdenController extends Controller
 {
@@ -30,7 +35,7 @@ class OrdenController extends Controller
         $fecha_hoy = Carbon::now();
         $ordenes = Orden::where('estado','!=','CONCRETADA')->where('estado','!=','ANULADO')->get();
         foreach($ordenes as $orden){
-            if ($orden->fecha_entrega == $fecha_hoy->toDateString()) {
+            if ($orden->fecha_entrega <= $fecha_hoy->toDateString()) {
                 $orden->estado = 'PENDIENTE';
                 $orden->update();
             }else{
@@ -49,6 +54,7 @@ class OrdenController extends Controller
                 'proveedor' => $orden->proveedor->descripcion,
                 'fecha_documento' =>  Carbon::parse($orden->fecha_documento)->format( 'd/m/Y'),
                 'fecha_entrega' =>  Carbon::parse($orden->fecha_entrega)->format( 'd/m/Y'), 
+                'enviado' => $orden->enviado,
                 'estado' => $orden->estado,
             ]);
         }
@@ -165,8 +171,6 @@ class OrdenController extends Controller
     }
 
     public function update(Request $request, $id){
-        // dd($request);
-       
         $data = $request->all();
         $rules = [
             'fecha_documento'=> 'required',
@@ -265,14 +269,24 @@ class OrdenController extends Controller
             }
         }
 
-        $decimal_subtotal = number_format($subtotal, 2, '.', ''); 
+
+        if (!$orden->igv) {
+               $igv = $subtotal * 0.18;
+               $total = $subtotal + $igv;
+               $decimal_subtotal = number_format($subtotal, 2, '.', '');
+               $decimal_total = number_format($total, 2, '.', '');
+               $decimal_igv = number_format($igv, 2, '.', ''); 
+        }else{
+            $calcularIgv = $orden->igv/100;
+            $base = $subtotal / (1 + $calcularIgv);
+            $nuevo_igv = $subtotal - $base;
+            $decimal_subtotal = number_format($base, 2, '.', '');
+            $decimal_total = number_format($subtotal, 2, '.', '');
+            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+        }
+
+ 
         
-        $igv_monto = $orden->igv /100;
-        $igv = $decimal_subtotal * $igv_monto;
-        $total = $decimal_subtotal + $igv;
-        
-        $decimal_total = number_format($total, 2, '.', '');
-        $decimal_igv = number_format($igv, 2, '.', ''); 
         return view('compras.ordenes.show', [
             'orden' => $orden,
             'detalles' => $detalles,
@@ -301,14 +315,22 @@ class OrdenController extends Controller
             }
         }
 
-        $decimal_subtotal = number_format($subtotal, 2, '.', '');
 
-        $igv_monto = $orden->igv /100;
-        $igv = $decimal_subtotal * $igv_monto;
-        $total = $decimal_subtotal + $igv;
-        
-        $decimal_total = number_format($total, 2, '.', '');
-        $decimal_igv = number_format($igv, 2, '.', ''); 
+        if (!$orden->igv) {
+            $igv = $subtotal * 0.18;
+            $total = $subtotal + $igv;
+            $decimal_subtotal = number_format($subtotal, 2, '.', '');
+            $decimal_total = number_format($total, 2, '.', '');
+            $decimal_igv = number_format($igv, 2, '.', ''); 
+        }else{
+            $calcularIgv = $orden->igv/100;
+            $base = $subtotal / (1 + $calcularIgv);
+            $nuevo_igv = $subtotal - $base;
+            $decimal_subtotal = number_format($base, 2, '.', '');
+            $decimal_total = number_format($subtotal, 2, '.', '');
+            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+        }
+
 
 
         $presentaciones = presentaciones();  
@@ -322,13 +344,113 @@ class OrdenController extends Controller
             'igv' => $decimal_igv,
             'total' => $decimal_total,
             ])->setPaper('a4')->setWarnings(false);
-
         return $pdf->stream();
         
 
 
 
     }
+
+    public function email($id)
+    {
+        $orden = Orden::findOrFail($id);
+        $detalles = Detalle::where('orden_id',$id)->get();
+        $subtotal = 0; 
+        $igv = '';
+        $tipo_moneda = '';
+        foreach($detalles as $detalle){
+            $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
+        }
+        foreach(tipos_moneda() as $moneda){
+            if ($moneda->descripcion == $orden->moneda) {
+                $tipo_moneda= $moneda->simbolo;
+            }
+        }
+
+
+        if (!$orden->igv) {
+            $igv = $subtotal * 0.18;
+            $total = $subtotal + $igv;
+            $decimal_subtotal = number_format($subtotal, 2, '.', '');
+            $decimal_total = number_format($total, 2, '.', '');
+            $decimal_igv = number_format($igv, 2, '.', ''); 
+        }else{
+            $calcularIgv = $orden->igv/100;
+            $base = $subtotal / (1 + $calcularIgv);
+            $nuevo_igv = $subtotal - $base;
+            $decimal_subtotal = number_format($base, 2, '.', '');
+            $decimal_total = number_format($subtotal, 2, '.', '');
+            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+        }
+
+
+
+        $presentaciones = presentaciones();  
+        $paper_size = array(0,0,360,360);
+        $pdf = PDF::loadview('compras.ordenes.reportes.detalle',[
+            'orden' => $orden,
+            'detalles' => $detalles,
+            'presentaciones' => $presentaciones,
+            'subtotal' => $decimal_subtotal,
+            'moneda' => $tipo_moneda,
+            'igv' => $decimal_igv,
+            'total' => $decimal_total,
+            ])->setPaper('a4')->setWarnings(false);
+        
+        Mail::send('email.ordencompra',compact("orden"), function ($mail) use ($pdf,$orden) {
+            $mail->to($orden->proveedor->correo);
+            $mail->subject('ORDEN DE COMPRA OC-00'.$orden->id);
+            $mail->attachdata($pdf->output(), 'ORDEN DE COMPRA OC-00'.$orden->id.'.pdf');
+        });
+
+
+        //Registrar en correos enviados
+        $correo = new Enviado();
+        $correo->orden_id = $orden->id;
+        $correo->enviado = '1';
+        $correo->usuario = Auth::user()->usuario;
+        $correo->save();
+
+        //Añadir check
+        $orden->enviado = '1';
+        $orden->update();
+
+
+        Session::flash('success','Orden de Compra enviado al correo '.$orden->proveedor->correo);
+        return redirect()->route('compras.orden.show',$orden->id)->with('enviar', 'success');
+        
+    }
+
+    public function concretized($id)
+    {
+        
+        $orden = Orden::findOrFail($id);
+        $orden->estado = 'CONCRETADA';
+        $orden->update();
+
+        Session::flash('success','Orden de Compra concretada.');
+        return redirect()->route('compras.orden.index')->with('concretar', 'success');
+
+    }
+
+
+    public function send($id)
+    {
+        $enviado = Enviado::where('orden_id',$id)->orderby('created_at','DESC')->take(1)->get();;
+        $coleccion = collect([]);
+        foreach($enviado as $envio){
+            $coleccion->push([
+                'id' => $envio->id,
+                'fecha' => Carbon::parse($envio->created)->format( 'd/m/Y'),
+                'hora' => Carbon::parse($envio->created)->format( 'H:i:s'),
+                'correo' => $envio->orden->proveedor->correo,
+                'usuario' => $envio->usuario,
+            ]);
+        }
+
+        return $coleccion;
+    }
+
 
 
 

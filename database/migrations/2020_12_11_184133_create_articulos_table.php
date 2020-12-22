@@ -17,7 +17,7 @@ class CreateArticulosTable extends Migration
             $table->engine = 'InnoDB';
             $table->Increments('id');
             $table->string('descripcion');
-            $table->string('codigo_fabrica',20);
+            $table->string('codigo_fabrica')->unique();
             $table->BigInteger('stock')->nullable();
             $table->BigInteger('stock_min');
             $table->unsignedDecimal('precio_compra', 15,2);

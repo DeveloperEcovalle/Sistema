@@ -33,6 +33,7 @@ class CreateOrdenesTable extends Migration
             $table->string('igv_check',2)->nullable();
             $table->char('igv',3)->nullable();
             $table->mediumText('observacion')->nullable();
+            $table->boolean('enviado')->nullable();
             
             $table->enum('estado',['VIGENTE','PENDIENTE','ADELANTO','CONCRETADA','ANULADO'])->default('VIGENTE');
 

@@ -22,6 +22,8 @@
                     class="fa fa-edit"></i> Editar</a>
             <a href="#" onclick="generarReporte()" class="btn btn-danger btn-sm"><i
                     class="fa fa-file-pdf-o "></i> Reporte </a>
+            <a href="#" onclick="enviarReporte()" class="btn btn-primary btn-sm"><i
+                    class="fa fa-send "></i> Enviar </a>
         </div>
     </div>
 </div>
@@ -517,5 +519,53 @@
     }
 
 </script>
+<script>
+    function enviarReporte() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
+
+        Swal.fire({
+            title: "Opción Reporte",
+            text: "¿Seguro que desea enviar reporte por correo?",
+            showCancelButton: true,
+            icon: 'info',
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            // showLoaderOnConfirm: true,
+        }).then((result) => {
+            if (result.value) {
+                window.location.href = "{{route('compras.orden.email', $orden->id)}}"
+                Swal.fire({
+                    title: '¡Enviando!',
+                    type: 'info',
+                    text: 'El Reporte se esta enviando al correo: '+"{{$orden->proveedor->correo}}",
+                    showConfirmButton:false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
+                
+            }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+                )
+            }
+        })
+
+    }
+
+</script>
+
 
 @endpush

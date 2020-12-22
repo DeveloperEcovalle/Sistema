@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
-                <button type="button" class="close" onclick="limpiar()"data-dismiss="modal">
+                <button type="button" class="close" onclick="limpiar()" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
@@ -62,7 +62,8 @@
                 <div class="col-md-6 text-right">
                     <a class="btn btn-primary btn-sm editarRegistro" style="color:white"><i class="fa fa-save"></i>
                         Guardar</a>
-                    <button type="button" onclick="limpiar()"class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i>
+                    <button type="button" onclick="limpiar()" class="btn btn-danger btn-sm" data-dismiss="modal"><i
+                            class="fa fa-times"></i>
                         Cancelar</button>
                 </div>
             </div>
@@ -75,107 +76,102 @@
 
 @push('scripts')
 <script>
-    //Validacion al ingresar tablas
-    $(".editarRegistro").click(function () {
-        // limpiarErrores()
-        var enviar = false;
+//Validacion al ingresar tablas
+$(".editarRegistro").click(function() {
+    // limpiarErrores()
+    var enviar = false;
 
-        if ($('#precio_editar').val()=='' ){
-        
-            toastr.error('Ingrese el precio del artículo.','Error');
-            enviar = true;
-            
-            $("#precio_editar").addClass( "is-invalid" );
-            $('#error-precio_editar').text('El campo Precio es obligatorio.')
-        }
+    if ($('#precio_editar').val() == '') {
 
-        if ($('#cantidad_editar').val()=='' ){
-            toastr.error('Ingrese cantidad del artículo.','Error');
-            enviar = true;
-            
-            $("#cantidad_editar").addClass( "is-invalid" );
-            $('#error-cantidad_editar').text('El campo Cantidad es obligatorio.')
-        }
+        toastr.error('Ingrese el precio del artículo.', 'Error');
+        enviar = true;
 
+        $("#precio_editar").addClass("is-invalid");
+        $('#error-precio_editar').text('El campo Precio es obligatorio.')
+    }
 
+    if ($('#cantidad_editar').val() == '') {
+        toastr.error('Ingrese cantidad del artículo.', 'Error');
+        enviar = true;
 
-        if(enviar!=true){
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger',
-                    container: 'my-swal',
-                },
-                buttonsStyling: false
-            })
-
-            Swal.fire({
-                customClass: {
-                    container: 'my-swal'
-                },
-                title: 'Opción Agregar',
-                text: "¿Seguro que desea agregar Artículo?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: "#1ab394",
-                confirmButtonText: 'Si, Confirmar',
-                cancelButtonText: "No, Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    actualizarTabla($('#indice').val())
-                    sumaTotal()
-                    calcularIgv($('#igv').val())
-                    limpiar()
-
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelado',
-                        'La Solicitud se ha cancelado.',
-                        'error'
-                    )
-                }
-            })
-
-        }
-    })
-
-    function actualizarTabla(i) {
-        var table = $('.dataTables-orden-detalle').DataTable();
-        table.row( i ).remove().draw();
-        var descripcion_articulo = obtenerArticulo($('#articulo_id_editar').val())
-        var presentacion_articulo = obtenerPresentacion($('#presentacion_editar').val())
-        var detalle = {
-            articulo_id: $('#articulo_id_editar').val(),
-            descripcion : descripcion_articulo,
-            presentacion : presentacion_articulo, 
-            precio: $('#precio_editar').val(),
-            cantidad: $('#cantidad_editar').val(),
-        }
-        agregarTabla(detalle);
-        
+        $("#cantidad_editar").addClass("is-invalid");
+        $('#error-cantidad_editar').text('El campo Cantidad es obligatorio.')
     }
 
 
-    function limpiar() {
 
-        $('#cantidad_editar').removeClass( "is-invalid" )
-        $('#error-cantidad_editar').text('')
+    if (enviar != true) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+                container: 'my-swal',
+            },
+            buttonsStyling: false
+        })
 
-        $("#precio_editar").removeClass( "is-invalid" );
-        $('#error-precio_editar').text('')
+        Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Opción Agregar',
+            text: "¿Seguro que desea agregar Artículo?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                actualizarTabla($('#indice').val())
+                sumaTotal()
+                limpiar()
 
-        $('#modal_editar_orden').modal('hide');
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                )
+            }
+        })
+
     }
+})
 
-    $('#modal_editar_orden').on('hidden.bs.modal', function(e) { 
-        limpiar()
-    });
+function actualizarTabla(i) {
+    var table = $('.dataTables-orden-detalle').DataTable();
+    table.row(i).remove().draw();
+    var descripcion_articulo = obtenerArticulo($('#articulo_id_editar').val())
+    var presentacion_articulo = obtenerPresentacion($('#presentacion_editar').val())
+    var detalle = {
+        articulo_id: $('#articulo_id_editar').val(),
+        descripcion: descripcion_articulo,
+        presentacion: presentacion_articulo,
+        precio: $('#precio_editar').val(),
+        cantidad: $('#cantidad_editar').val(),
+    }
+    agregarTabla(detalle);
+
+}
 
 
+function limpiar() {
 
+    $('#cantidad_editar').removeClass("is-invalid")
+    $('#error-cantidad_editar').text('')
 
+    $("#precio_editar").removeClass("is-invalid");
+    $('#error-precio_editar').text('')
+
+    $('#modal_editar_orden').modal('hide');
+}
+
+$('#modal_editar_orden').on('hidden.bs.modal', function(e) {
+    limpiar()
+});
 </script>
 @endpush

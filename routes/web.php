@@ -103,6 +103,9 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update');
     Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy');
     Route::get('reporte/{id}','Compras\OrdenController@report')->name('compras.orden.reporte');
+    Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email');
+    Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada');
+    Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
 });
 
 
