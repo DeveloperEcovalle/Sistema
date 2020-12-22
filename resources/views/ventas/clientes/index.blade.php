@@ -133,6 +133,15 @@
         //Controlar Error
         $.fn.DataTable.ext.errMode = 'throw';
 
+        //Modal Eliminar
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
+
         // Funciones de Eventos
         function añadirCliente() {
             window.location = "{{ route('ventas.cliente.create')  }}";

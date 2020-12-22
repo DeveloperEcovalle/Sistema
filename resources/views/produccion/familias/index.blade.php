@@ -21,7 +21,7 @@
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
-    
+
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -44,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    
+
                     </tbody>
 
                     </table>
@@ -67,7 +67,7 @@
         z-index: 3000 !important;
     }
 </style>
-@endpush 
+@endpush
 
 @push('scripts')
 <!-- DataTable -->
@@ -77,7 +77,7 @@
 <script>
 
     $(document).ready(function() {
-        
+
 
         $('.dataTables-articulo').DataTable({
             "dom": '<"html5buttons"B>lTfgitp',
@@ -89,7 +89,7 @@
                     title: 'Tablas Generales'
                 },
 
-                {   
+                {
                     titleAttr: 'Imprimir',
                     extend: 'print',
                     text:      '<i class="fa fa-print"></i> Imprimir',
@@ -120,7 +120,7 @@
                     data: null,
                     className:"text-center",
                     render: function (data) {
-                        
+
                         return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
                 }
@@ -130,7 +130,7 @@
                         "url": "{{asset('Spanish.json')}}"
             },
 
-           
+
 
         });
 
@@ -147,12 +147,12 @@
             if (value.id == $id) {
                 $('#tabla_id_editar').val(value.id);
                 $('#descripcion_editar').val(value.descripcion);
-            }  
+            }
         });
 
         $('#modal_editar_familia').modal('show');
 
-        
+
     }
 
     //Old Modal Editar
@@ -165,8 +165,8 @@
         $('#error-descripcion').text('')
     }
 
-    $('#modal_editar_familia').on('hidden.bs.modal', function(e) { 
-        limpiarError() 
+    $('#modal_editar_familia').on('hidden.bs.modal', function(e) {
+        limpiarError()
     });
 
     //Old Modal Crear
@@ -179,14 +179,14 @@
         $('#error-descripcion-guardar').text('')
     }
 
-    $('#modal_crear_categoria').on('hidden.bs.modal', function(e) { 
+    $('#modal_crear_categoria').on('hidden.bs.modal', function(e) {
         guardarError()
         $('#descripcion_guardar').val('')
 
     });
 
     function eliminar(id) {
-        
+
         Swal.fire({
             title: 'Opción Eliminar',
             text: "¿Seguro que desea eliminar registro?",
@@ -214,7 +214,7 @@
 
             }
         })
-        
+
     }
 
     $('#editar_familia').submit(function(e){
@@ -226,7 +226,7 @@
                 cancelButton: 'btn btn-danger',
             },
             buttonsStyling: false
-            
+
         })
 
         Swal.fire({
@@ -252,7 +252,7 @@
                 'La Solicitud se ha cancelado.',
                 'error'
                 )
-                
+
             }
             })
     })

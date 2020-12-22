@@ -25,10 +25,9 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <form action="{{ route('produccion.familias.store') }}" method="POST" id="form_registrar_producto">
+                    <form action="{{ route('produccion.producto.store') }}" method="POST" id="form_registrar_producto">
                         @csrf
-                        <div class="row"
-                        >
+                        <div class="row">
                             <div class="col-lg-8 col-xs-12 b-r">
                                 <h4><b>Datos Generales</b></h4>
                                 <div class="form-group row">
@@ -161,11 +160,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="col-lg-12 col-xs-12 m-t-sm">
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-12 col-xs-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
-                                        <b>Detalles del producto</b>
+                                        <h4><b>Detalle del Producto Terminado</b></h4>
                                     </div>
                                     <div class="panel-body">
                                         <div class="row">
@@ -173,7 +174,7 @@
                                                 <div class="form-group row">
                                                     <div class="col-lg-6 col-xs-12">
                                                         <label class="required">Artículo</label>
-                                                        <select id="articulo" name="articulo" class="select2_form form-control {{ $errors->has('articulo') ? ' is-invalid' : '' }}">
+                                                        <select id="articulo" class="select2_form form-control {{ $errors->has('articulo') ? ' is-invalid' : '' }}">
                                                             <option></option>
                                                             @foreach($articulos as $articulo)
                                                                 <option value="{{ $articulo->id }}" {{ (old('articulo') == $articulo->id ? "selected" : "") }} >{{ $articulo->getDescripcionCompleta() }}</option>
@@ -187,7 +188,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
                                                         <label class="required">Cantidad</label>
-                                                        <input type="text" id="cantidad" name="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad')}}" maxlength="10" onkeypress="return isNumber(event);" required>
+                                                        <input type="text" id="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad')}}" maxlength="10" onkeypress="return isNumber(event);">
                                                         @if ($errors->has('cantidad'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('cantidad') }}</strong>
@@ -196,7 +197,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
                                                         <label class="required">Peso</label>
-                                                        <input type="text" id="peso" name="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
+                                                        <input type="text" id="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this);">
                                                         @if ($errors->has('peso'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('peso') }}</strong>
@@ -207,7 +208,7 @@
                                                 <div class="form-group row">
                                                     <div class="col-lg-10 col-xs-12">
                                                         <label>Observación</label>
-                                                        <input type="text" id="observacion" name="peso" class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}" value="{{old('observacion')}}" maxlength="300" onkeyup="return mayus(this)">
+                                                        <input type="text" id="observacion" class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}" value="{{old('observacion')}}" maxlength="300" onkeyup="return mayus(this)">
                                                         @if ($errors->has('observacion'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('observacion') }}</strong>
@@ -215,7 +216,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
-                                                        <button type="button" id="btn_agregar_detalle" class="btn btn-primary btn-block m-t-lg"><i class="fa fa-plus-circle"></i> Agregar</button>
+                                                        <button type="button" id="btn_agregar_detalle" class="btn btn-warning btn-block m-t-lg"><i class="fa fa-plus-circle"></i> Agregar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,6 +241,7 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="detalles" id="detalles" value="{{ old('detalles') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -310,9 +312,29 @@
             });
 
             table = $('.dataTables-detalle-producto').DataTable({
+                "dom": '<"html5buttons"B>lTfgitp',
+                "buttons": [{
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i> Excel',
+                    titleAttr: 'Excel',
+                    title: 'Detalle de Orden de Compra'
+                },
+                    {
+                        titleAttr: 'Imprimir',
+                        extend: 'print',
+                        text: '<i class="fa fa-print"></i> Imprimir',
+                        customize: function(win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ],
+                "bPaginate": true,
+                "bLengthChange": true,
                 "responsive": true,
-                "bPaginate": false,
-                "bLengthChange": false,
                 "bFilter": true,
                 "bInfo": false,
                 "columnDefs": [
@@ -342,7 +364,7 @@
                     { sWidth: '30%', sClass: 'text-left' },
                     { sWidth: '10%', sClass: 'text-center' },
                 ],
-                'data': null,
+                'data': getData(),
                 "language": {
                     url: "{{asset('Spanish.json')}}"
                 },
@@ -352,6 +374,10 @@
             //Controlar Error
             $.fn.DataTable.ext.errMode = 'throw';
 
+            $("#codigo").on("change", validarCodigo);
+
+            $("#familia").on("change", obtenerSubFamilias);
+
             $("#btn_agregar_detalle").on("click", agregarDetalle);
 
             $("#btn_editar_detalle").on("click", editarDetalle);
@@ -360,7 +386,99 @@
 
             $('.dataTables-detalle-producto tbody').on('click', 'button.btn-delete', eliminarDetalle);
 
+            $('#form_registrar_producto').submit(function(e) {
+                e.preventDefault();
+                if (detalles !== undefined && detalles.length <= 0) {
+                    toastr.error('Debe ingresar los detalles del producto');
+                    return false;
+                }
+                $("#detalles").val(JSON.stringify(detalles));
+
+                Swal.fire({
+                    title: 'Opción Guardar',
+                    text: "¿Seguro que desea guardar cambios?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: "#1ab394",
+                    confirmButtonText: 'Si, Confirmar',
+                    cancelButtonText: "No, Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelado',
+                            'La Solicitud se ha cancelado.',
+                            'error'
+                        )
+                    }
+                })
+            });
+
         });
+
+        function getData() {
+            detalles = ($("#detalles").val() === undefined || $("#detalles").val() === "") ? [] : JSON.parse($("#detalles").val());
+            var data = [];
+            detalles.forEach(obj => {
+                data.push([
+                    String(obj.articulo_id),
+                    String(obj.articulo),
+                    parseInt(obj.cantidad),
+                    parseFloat(obj.peso),
+                    String(obj.observacion)
+                ]);
+            });
+            return data;
+        }
+
+        function validarCodigo() {
+            // Consultamos nuestra BBDD
+            $.ajax({
+                dataType : 'json',
+                type : 'post',
+                url : '{{ route('produccion.producto.getCodigo') }}',
+                data : {
+                    '_token' : $('input[name=_token]').val(),
+                    'codigo' : $(this).val(),
+                    'id': null
+                }
+            }).done(function (result){
+                if (result.existe) {
+                    toastr.error('El código ingresado ya se encuentra registrado para un producto','Error');
+                    $(this).focus();
+                }
+            });
+        }
+
+        function obtenerSubFamilias() {
+            $.ajax({
+                dataType : 'json',
+                type : 'post',
+                url : '{{ route('produccion.subfamilia.getByFamilia') }}',
+                data : {
+                    '_token' : $('input[name=_token]').val(),
+                    'familia_id' : $(this).val()
+                }
+            }).done(function (data){
+                // Limpiamos data
+                $("#sub_familia").empty();
+
+                if (!data.error) {
+                    // Mostramos la información
+                    if (data.sub_familias != null) {
+                        $("#sub_familia").select2({
+                            data: data.sub_familias
+                        }).val($('#sub_familia').find(':selected').val()).trigger('change');
+                    }
+                } else {
+                    toastr.error(data.message, 'Mensaje de Error', {
+                        "closeButton": true,
+                        positionClass: 'toast-bottom-right'
+                    });
+                }
+            });
+        }
 
         function agregarDetalle() {
 
@@ -504,6 +622,7 @@
             $("#peso_editar").val("");
             $("#observacion_editar_editar").val("");
         });
+
 
     </script>
 @endpush

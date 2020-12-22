@@ -21,7 +21,7 @@ class CreateProductosTable extends Migration
             $table->unsignedInteger('familia_id');
             $table->foreign('familia_id')->references('id')->on('familias')->onDelete('cascade');
             $table->unsignedInteger('sub_familia_id');
-            $table->foreign('sub_familia_id')->references('id')->on('sub_familias')->onDelete('cascade');
+            $table->foreign('sub_familia_id')->references('id')->on('subfamilias')->onDelete('cascade');
             $table->string('presentacion');
             $table->unsignedInteger('stock');
             $table->unsignedInteger('stock_minimo');
