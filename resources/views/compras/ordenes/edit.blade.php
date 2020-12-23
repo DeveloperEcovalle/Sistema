@@ -176,7 +176,7 @@
                                             @endif
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label id="igv_requerido">IGV (%):</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -195,6 +195,15 @@
 
                                         </div>
 
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="">Tipo de Cambio:</label>
+                                        <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$orden->tipo_cambio)}}">
+                                        @if ($errors->has('tipo_cambio'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('tipo_cambio') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
 
                                 </div>
@@ -536,6 +545,16 @@ $('#precio_editar').keyup(function() {
     $(this).val(val);
 });
 
+$('#tipo_cambio').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+});
+
 $('#cantidad').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
@@ -543,6 +562,7 @@ $('#cantidad').on('input', function() {
 $('#igv').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+
 
 function validarFecha() {
     var enviar = false

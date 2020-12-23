@@ -13,8 +13,8 @@ class DepartamentoSeeder extends Seeder
     {
 
 
-        // factory(Almacen::class)->times(10000)->create();
-        // factory(Categoria::class)->times(10000)->create();
+        factory(Almacen::class)->times(300)->create();
+        factory(Categoria::class)->times(300)->create();
         // factory(Articulo::class)->times(1000)->create();
 
 

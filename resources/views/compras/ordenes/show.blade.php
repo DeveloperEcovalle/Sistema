@@ -428,6 +428,15 @@
                                     </tr>
                                     <tr>
                                         <th class="text-left">
+                                            TIPO DE CAMBIO
+                                        </th>
+                                        <th class="text-left">
+                                        <span style="font-weight: normal">{{$orden->tipo_cambio}}</span>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">
                                             DIRECCION DE SERVICIO
                                         </th>
                                         <th class="text-left">
@@ -454,6 +463,7 @@
                                         </th>
 
                                     </tr>
+                                    
 
                                 </tbody>
 

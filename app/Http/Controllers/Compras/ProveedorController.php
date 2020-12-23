@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Compras;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Compras\Proveedor;
+use App\Compras\Banco;
 use DataTables;
 use Carbon\Carbon;
 use Session;
@@ -51,14 +52,18 @@ class ProveedorController extends Controller
     {
         $tipos = personas();
         $zonas = zonas();
+        $bancos = bancos();
+        $monedas = tipos_moneda();
         return view('compras.proveedores.create',[
             'tipos' => $tipos,
             'zonas' => $zonas,
+            'bancos' => $bancos,
+            'monedas' => $monedas,
         ]);
     }
 
     public function store(Request $request){
-
+      
         $data = $request->all();
         $rules = [
             'tipo_documento' => 'required',
@@ -195,6 +200,24 @@ class ProveedorController extends Controller
         };
         $proveedor->save();
 
+        //Llenado de Bancos
+        $entidadesJSON = $request->get('entidades_tabla');
+        $entidadtabla = json_decode($entidadesJSON[0]);
+
+        if ($entidadtabla) {
+            foreach ($entidadtabla as $entidad) {
+                Banco::create([
+                    'proveedor_id' => $proveedor->id,
+                    'descripcion' => $entidad->entidad,
+                    'tipo_moneda' => $entidad->moneda,
+                    'num_cuenta' => $entidad->cuenta,
+                    'cci' => $entidad->cci,
+                ]);
+            }
+        }
+
+        
+
         Session::flash('success','Proveedor creada.');
         return redirect()->route('compras.proveedor.index')->with('guardar', 'success');
     }
@@ -213,9 +236,11 @@ class ProveedorController extends Controller
 
     public function show($id)
     {
+        $banco = Banco::where('proveedor_id',$id)->get();
         $proveedor = Proveedor::findOrFail($id);
         return view('compras.proveedores.show', [
-            'proveedor' => $proveedor
+            'proveedor' => $proveedor,
+            'banco' => $banco,
         ]);
 
     }
@@ -223,12 +248,18 @@ class ProveedorController extends Controller
     public function edit($id)
     {
         $proveedor = Proveedor::findOrFail($id);
+        $banco = Banco::where('proveedor_id',$id)->get();
         $tipos = personas();
         $zonas = zonas();
+        $bancos = bancos();
+        $monedas = tipos_moneda();
         return view('compras.proveedores.edit', [
             'proveedor' => $proveedor,
             'tipos' => $tipos,
-            'zonas' => $zonas, 
+            'zonas' => $zonas,
+            'bancos' => $bancos, 
+            'monedas' => $monedas,
+            'banco' => $banco,
         ]);
 
     }
@@ -371,6 +402,27 @@ class ProveedorController extends Controller
             $proveedor->activo = "1";
         };
         $proveedor->update();
+
+        $entidadesJSON = $request->get('entidades_tabla');
+        $entidadtabla = json_decode($entidadesJSON[0]);
+
+        if ($entidadtabla) {
+
+            $bancos = Banco::where('proveedor_id', $proveedor->id)->get();
+            foreach ($bancos as $banco) {
+                $banco->delete();
+            }
+            foreach ($entidadtabla as $entidad) {
+                Banco::create([
+                    'proveedor_id' => $proveedor->id,
+                    'descripcion' => $entidad->entidad,
+                    'tipo_moneda' => $entidad->moneda,
+                    'num_cuenta' => $entidad->cuenta,
+                    'cci' => $entidad->cci,
+                ]);
+            }
+
+        }
 
         Session::flash('success','Proveedor modificada.');
         return redirect()->route('compras.proveedor.index')->with('modificar', 'success');

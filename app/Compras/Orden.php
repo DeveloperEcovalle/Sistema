@@ -19,6 +19,7 @@ class Orden extends Model
             'igv',
             'igv_check',
             'estado',
+            'tipo_cambio',
             'enviado',
         ];
 

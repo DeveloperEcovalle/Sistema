@@ -55,6 +55,10 @@ select.form-control:not([size]):not([multiple]) {
     color: white;
 }
 
+.select2-container--open{
+    z-index:9999999         
+}
+
 
 /* Estilos Active */
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
@@ -67,3 +71,5 @@ select.form-control:not([size]):not([multiple]) {
 .my-swal {
     z-index: 3000 !important;
 }
+
+

@@ -74,22 +74,24 @@
                                 <label><strong>Dirección: </strong></label>
                                 <p>{{$proveedor->direccion}}</p>
                             </div>
-
                             <div class="form-group">
                                 <label><strong>Zona: </strong></label>
                                 <p>{{$proveedor->zona}}</p>
                             </div>
 
-                            <div class="form-group">
-                                <label><strong>Dirección: </strong></label>
-                                <p>{{$proveedor->direccion}}</p>
-                            </div>
+
 
 
 
                         </div>
 
                         <div class="col-md-6">
+
+
+                            <div class="form-group">
+                                <label><strong>Dirección: </strong></label>
+                                <p>{{$proveedor->direccion}}</p>
+                            </div>
 
                             <div class="form-group">
                                 <label><strong>Correo: </strong></label>
@@ -123,12 +125,34 @@
                     </div>
 
                     <hr>
+                    <div class="form-group">
+                        <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Informacion de las entidades Financieras asociadas al proveedor:</strong></p>
+                        <div class="table-responsive">
+                            <table class="table dataTables-bancos table-striped table-bordered table-hover"
+                                style="text-transform:uppercase;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">DESCRIPCION</th>
+                                        <th class="text-center">MONEDA</th>
+                                        <th class="text-center">CUENTA</th>
+                                        <th class="text-center">CCI</th>
 
-                    <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Información del
-                            calidad:</strong></p>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <hr>
                     <div class="row" style="text-transform:uppercase;">
 
                         <div class="col-md-6 b-r">
+                            <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Información
+                                    del
+                                    calidad:</strong></p>
 
                             <div class="form-group">
                                 <label><strong>Nombre: </strong></label>
@@ -148,10 +172,6 @@
                                 @endif
 
                             </div>
-
-                        </div>
-
-                        <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label><strong>Telefono: </strong></label>
@@ -173,16 +193,10 @@
                             </div>
 
                         </div>
-                    </div>
 
-
-                    <hr>
-                    <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Información del
-                            contacto:</strong></p>
-                    <div class="row" style="text-transform:uppercase;">
-
-                        <div class="col-md-6 b-r">
-
+                        <div class="col-md-6">
+                            <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Información
+                                    del contacto:</strong></p>
                             <div class="form-group">
                                 <label><strong>Nombre: </strong></label>
                                 @if($proveedor->contacto != "")
@@ -193,9 +207,7 @@
 
                             </div>
 
-                        </div>
 
-                        <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label><strong>Telefono: </strong></label>
@@ -216,17 +228,19 @@
                                 </div>
                             </div>
 
-                        </div>
 
+
+                        </div>
                     </div>
 
                     <hr>
-                    <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información del
-                            Transporte:</strong></p>
+
                     <div class="row" style="text-transform:uppercase;">
 
                         <div class="col-md-6 b-r">
-
+                            <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información
+                                    del
+                                    Transporte:</strong></p>
                             <div class="form-group">
                                 <label><strong>Nombre: </strong></label>
                                 @if($proveedor->transporte != "")
@@ -235,11 +249,6 @@
                                 <p>-</p>
                                 @endif
                             </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-
                             <div class="form-group">
                                 <label><strong>Dirección: </strong></label>
 
@@ -252,16 +261,10 @@
 
                         </div>
 
-                    </div>
-
-
-                    <hr>
-                    <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información del
-                            Almacen:</strong></p>
-                    <div class="row" style="text-transform:uppercase;">
-
                         <div class="col-md-6">
-
+                            <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información
+                                    del
+                                    Almacen:</strong></p>
                             <div class="form-group">
                                 <label><strong>Dirección: </strong></label>
 
@@ -275,6 +278,7 @@
                         </div>
 
                     </div>
+
 
 
 
@@ -321,3 +325,68 @@
     </div>
 </div>
 @stop
+@push('styles')
+<!-- DataTable -->
+<link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+<style>
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {  
+    margin-left:2px;
+}
+</style>
+@endpush
+@push('scripts')
+<!-- DataTable -->
+<script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
+
+<script>
+$(document).ready(function() {
+
+    // DataTables
+    $('.dataTables-bancos').DataTable({
+        "dom": 'Ttp',
+        "bPaginate": true,
+        "bFilter": true,
+        "bInfo": true,
+        "bAutoWidth": false,
+        "language": {
+            "url": "{{asset('Spanish.json')}}"
+        },
+
+        "columnDefs": [
+            {
+                "targets": [0],
+                className: "text-left",
+            },
+            {
+                "targets": [1],
+                className: "text-center",
+            },
+            {
+                "targets": [2],
+                className: "text-center",
+            },
+            {
+                "targets": [3],
+                className: "text-center",
+            },
+
+        ],
+
+    });
+    obtenerTabla()
+
+})
+
+function obtenerTabla() {
+    var t = $('.dataTables-bancos').DataTable();
+    @foreach($banco as $ban)
+    t.row.add([
+        "{{$ban->descripcion}}",
+        "{{$ban->tipo_moneda}}",
+        "{{$ban->num_cuenta}}",
+        "{{$ban->cci}}",
+    ]).draw(false);
+    @endforeach
+}
+</script>
+@endpush

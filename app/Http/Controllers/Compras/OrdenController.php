@@ -111,7 +111,6 @@ class OrdenController extends Controller
     }
 
     public function store(Request $request){
-      
         $data = $request->all();
         $rules = [
             'fecha_documento'=> 'required',
@@ -121,6 +120,7 @@ class OrdenController extends Controller
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
             'moneda' => 'nullable',
+            'tipo_cambio' => 'nullable|numeric',
             'igv' => 'required_if:igv_check,==,on|numeric|digits_between:1,3',
             
         ];
@@ -134,6 +134,7 @@ class OrdenController extends Controller
             'igv.required_if' => 'El campo Igv es obligatorio.',
             'igv.digits' => 'El campo Igv puede contener hasta 3 dígitos.',
             'igv.numeric' => 'El campo Igv debe se numérico.',
+            'tipo_cambio.numeric' => 'El campo Tipo de Cambio debe se numérico.',
 
 
         ];
@@ -147,6 +148,7 @@ class OrdenController extends Controller
         $orden->modo_compra = $request->get('modo_compra');
         $orden->observacion = $request->get('observacion');
         $orden->moneda = $request->get('moneda');
+        $orden->tipo_cambio = $request->get('tipo_cambio');
         $orden->igv = $request->get('igv');
         if ($request->get('igv_check') == "on") {
             $orden->igv_check = "1";
@@ -205,6 +207,7 @@ class OrdenController extends Controller
         $orden->moneda = $request->get('moneda');
         $orden->observacion = $request->get('observacion');
         $orden->igv = $request->get('igv');
+        $orden->tipo_cambio = $request->get('tipo_cambio');
         
         if ($request->get('igv_check') == "on") {
             $orden->igv_check = "1";

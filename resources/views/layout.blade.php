@@ -76,11 +76,11 @@
             </div>
 
             <div class="footer">
-                <div class="float-right">
-                    10GB of <strong>250GB</strong> Free.
+                <div class="float-right"style="text-transform:uppercase">
+                    DEVELOPER <strong>SISCOM SAC</strong>
                 </div>
-                <div>
-                    <strong>Copyright</strong> Example Company &copy; 2014-2018
+                <div style="text-transform:uppercase">
+                    <strong>Copyright</strong> AgroEnsancha Eirl &copy; 2020-2021
                 </div>
             </div>
 

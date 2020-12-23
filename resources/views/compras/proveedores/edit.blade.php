@@ -269,8 +269,42 @@
 
 
                             </div>
-
+                            <input type="hidden" id="entidades_tabla" name="entidades_tabla[]">
                             <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <div class="col-md-8">
+                                        <h4><b>Entidades Financieras</b></h4>
+                                        <p>Modificar entidad financiera del proveedor:</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a class="btn btn-block btn-primary m-t-md btn-sm"
+                                            href="#" onclick="agregarEntidad()">
+                                            <i class="fa fa-plus-square"></i> Añadir entidad
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="table-responsive">
+                                        <table class="table dataTables-bancos table-striped table-bordered table-hover"
+                                            style="text-transform:uppercase;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">ACCIONES</th>
+                                                    <th class="text-center">DESCRIPCION</th>
+                                                    <th class="text-center">MONEDA</th>
+                                                    <th class="text-center">CUENTA</th>
+                                                    <th class="text-center">CCI</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <hr>
                                 <h4><b>Datos Adicionales</b></h4>
                                 <p>Registrar datos adicionales del proveedor:</p>
 
@@ -519,11 +553,13 @@
 
 </div>
 
-
+@include('compras.proveedores.modal')
 @stop
 
 @push('styles')
 <link href="{{asset('Inspinia/css/plugins/select2/select2.min.css')}}" rel="stylesheet">
+<!-- DataTable -->
+<link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
 
 <style>
 .logo {
@@ -532,56 +568,11 @@
     border-radius: 10%;
 }
 
-/*Select 2*/
-.select2-container--default .select2-selection--single {
-    background-color: #fff;
-    border: 1px solid #e5e6e7;
-    border-radius: 0px;
-
-}
-
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-    color: inherit;
-    font-size: 13.5px;
-    line-height: 1.6;
-    text-transform: uppercase;
-}
-
-.select2-container .select2-selection--single {
-    background-color: #FFFFFF;
-    background-image: none;
-    border: 1px solid #e5e6e7;
-    border-radius: 1px;
-    color: inherit;
-    display: block;
-    padding: 6px 10px;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 100%;
-    height: 2.05rem;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 28px;
-    width: 22px;
-}
-
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-    background-color: #042b63;
-}
-
-select.form-control:not([size]):not([multiple]) {
-    height: calc(2.25rem + 2px);
-}
-
-.select2-container--default .select2-results>.select2-results__options {
-    text-transform: uppercase;
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {  
+    margin-left:2px;
 }
 
 
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #1ab394;
-    color: white;
-}
 </style>
 @endpush
 
@@ -589,7 +580,8 @@ select.form-control:not([size]):not([multiple]) {
 
 <!-- Select2 -->
 <script src="{{asset('Inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
-
+<!-- DataTable -->
+<script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
 <script>
 //Select2
 $(".select2_form").select2({
@@ -925,5 +917,75 @@ function camposDni(objeto) {
     $('#descripcion').val(nombre_completo.join(' '))
 
 }
+
+
+
+$(document).ready(function() {
+
+    // DataTables
+    $('.dataTables-bancos').DataTable({
+        "dom": 'Tftp',
+        "bPaginate": true,
+        "bFilter": true,
+        "bInfo": true,
+        "bAutoWidth": false,
+        "language": {
+            "url": "{{asset('Spanish.json')}}"
+        },
+
+        "columnDefs": [
+            {
+
+                "targets": [0],
+                className: "text-center",
+                render: function(data, type, row) {
+                    return "<div class='btn-group'>" +
+                        "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_entidad' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
+                        "<a class='btn btn-danger btn-sm' id='borrar_entidad' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                        "</div>";
+                }
+            },
+            {
+                "targets": [1],
+            },
+            {
+                "targets": [2],
+                className: "text-center",
+            },
+            {
+                "targets": [3],
+                className: "text-center",
+            },
+            {
+                "targets": [4],
+                className: "text-center",
+            },
+
+        ],
+
+    });
+
+    obtenerTabla()
+
+})
+
+function obtenerTabla() {
+    var t = $('.dataTables-bancos').DataTable();
+    @foreach($banco as $ban)
+    t.row.add([
+        '',
+        "{{$ban->descripcion}}",
+        "{{$ban->tipo_moneda}}",
+        "{{$ban->num_cuenta}}",
+        "{{$ban->cci}}",
+    ]).draw(false);
+    @endforeach
+}
+
+//Añadir Entidad Financiera
+function agregarEntidad() {
+    $('#modal_agregar_entidad').modal('show');
+}
+
 </script>
 @endpush
