@@ -197,7 +197,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
                                                         <label class="required">Peso</label>
-                                                        <input type="text" id="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this);">
+                                                        <input type="text" id="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this, true);">
                                                         @if ($errors->has('peso'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('peso') }}</strong>
@@ -317,7 +317,7 @@
                     extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel-o"></i> Excel',
                     titleAttr: 'Excel',
-                    title: 'Detalle de Orden de Compra'
+                    title: 'Detalle del Producto Terminado'
                 },
                     {
                         titleAttr: 'Imprimir',
@@ -620,7 +620,7 @@
             $("#articulo_editar").val("").trigger("change");
             $("#cantidad_editar").val("");
             $("#peso_editar").val("");
-            $("#observacion_editar_editar").val("");
+            $("#observacion_editar").val("");
         });
 
 

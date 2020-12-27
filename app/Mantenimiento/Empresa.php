@@ -33,4 +33,9 @@ class Empresa extends Model
     {
         return $this->hasMany('App\Ventas\Cotizacion');
     }
+
+    public function talonarios()
+    {
+        return $this->hasMany('App\Mantenimiento\Talonario');
+    }
 }

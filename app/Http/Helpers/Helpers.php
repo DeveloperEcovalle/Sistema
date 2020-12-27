@@ -184,3 +184,11 @@ if (!function_exists('getFechaFormato')) {
         return ($fecha_formato) ? $fecha_formato : $fecha;
     }
 }
+
+// Documento tributarios
+if (!function_exists('tipos_documentos_tributarios')) {
+    function tipos_documentos_tributarios()
+    {
+        return General::findOrFail(15)->detalles;
+    }
+}

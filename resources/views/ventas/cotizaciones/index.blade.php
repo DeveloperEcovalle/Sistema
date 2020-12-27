@@ -35,7 +35,7 @@
                                 <th class="text-center">CLIENTE</th>
                                 <th class="text-center">FECHA DOCUMENTO</th>
                                 <th class="text-center">TOTAL</th>
-                                <th class="text-center">MONTO</th>
+                                <th class="text-center">ESTADO</th>
                                 <th class="text-center">ACCIONES</th>
                             </tr>
                             </thead>
@@ -100,7 +100,7 @@
                     {data: 'cliente', className:"text-left"},
                     {data: 'fecha_documento', className:"text-center"},
                     {data: 'total', className:"text-left"},
-                    {data: 'monto', className:"text-left"},
+                    {data: 'estado', className:"text-left"},
                     {
                         data: null,
                         className:"text-center",
