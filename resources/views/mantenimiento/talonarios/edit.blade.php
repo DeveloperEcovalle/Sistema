@@ -15,6 +15,22 @@
                 <div class="modal-body">
                     <input type="hidden" name="id_editar" id="id_editar" value="{{old('id_editar')}}">
                     <div class="form-group row">
+                        <div class="col-lg-12 col-xs-12">
+                            <label class="required">Empresa</label>
+                            <select id="empresa_editar" name="empresa_editar" class="select2_form form-control {{ $errors->has('empresa_editar') ? ' is-invalid' : '' }}">
+                                <option></option>
+                                @foreach($empresas as $empresa)
+                                    <option value="{{ $empresa->id }}" {{ (old('empresa_editar') == $empresa->id ? "selected" : "") }} >{{ $empresa->razon_social }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('empresa_editar'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong id="error-empresa-editar">{{ $errors->first('empresa_editar') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-lg-8 col-xs-12">
                             <label class="required">Tipo de documento</label>
                             <select id="tipo_documento_editar" name="tipo_documento_editar" class="select2_form form-control {{ $errors->has('tipo_documento_editar') ? ' is-invalid' : '' }}">

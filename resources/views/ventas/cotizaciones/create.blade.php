@@ -98,7 +98,7 @@
                                         <select id="empresa" name="empresa" class="select2_form form-control {{ $errors->has('empresa') ? ' is-invalid' : '' }}">
                                             <option></option>
                                             @foreach($empresas as $empresa)
-                                                <option value="{{ $empresa->id }}" {{ (old('empresa') == $empresa->razon_social ? "selected" : "") }} >{{ $empresa->razon_social }}</option>
+                                                <option value="{{ $empresa->id }}" {{ (old('empresa') == $empresa->id ? "selected" : "") }} >{{ $empresa->razon_social }}</option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('empresa'))

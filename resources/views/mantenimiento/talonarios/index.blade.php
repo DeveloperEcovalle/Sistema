@@ -36,6 +36,8 @@
                             <tr>
                                 <th class="text-center"></th>
                                 <th class="text-center"></th>
+                                <th class="text-center">EMPRESA</th>
+                                <th class="text-center"></th>
                                 <th class="text-center">TIPO DOCUMENTO</th>
                                 <th class="text-center">SERIE</th>
                                 <th class="text-center">NRO. INICIO</th>
@@ -116,6 +118,8 @@
                 "columns": [
                     //Tabla General
                     {data: 'id', className:"text-center", "visible": false},
+                    {data: 'empresa_id', className:"text-center", "visible": false},
+                    {data: 'empresa', className:"text-left"},
                     {data: 'tipo_documento', className:"text-center", "visible": false},
                     {data: 'tipo_documento_descripcion', className:"text-center"},
                     {data: 'serie', className:"text-center"},
@@ -154,6 +158,7 @@
             data.each(function (value, index) {
                 if (value.id == $id) {
                     $('#id_editar').val(value.id);
+                    $('#empresa_editar').val(value.empresa_id).trigger('change');
                     $('#tipo_documento_editar').val(value.tipo_documento).trigger('change');
                     $('#serie_editar').val(value.serie);
                     $('#numero_inicio_editar').val(value.numero_inicio);
@@ -172,11 +177,13 @@
         @endif
 
         function limpiarError() {
+            $('#empresa_editar').removeClass( "is-invalid" );
             $('#tipo_documento_editar').removeClass( "is-invalid" );
             $('#serie_editar').removeClass( "is-invalid" );
             $('#numero_inicio_editar').removeClass( "is-invalid" );
             $('#numero_final_editar').removeClass( "is-invalid" );
             $('#numero_actual_editar').removeClass( "is-invalid" );
+            $('#error-empresa-editar').text('');
             $('#error-tipo-documento-editar').text('');
             $('#error-serie-editar').text('');
             $('#error-numero-inicio-editar').text('');
@@ -189,12 +196,13 @@
         });
 
         //Old Modal Crear
-        @if ($errors->has('tipo_documento_guardar') || $errors->has('serie_guardar') || $errors->has('numero_inicio_guardar')
-            || $errors->has('numero_final_guardar') || $errors->has('numero_actual_guardar'))
+        @if ($errors->has('empresa_guardar') ||  $errors->has('tipo_documento_guardar') || $errors->has('serie_guardar')
+            || $errors->has('numero_inicio_guardar') || $errors->has('numero_final_guardar') || $errors->has('numero_actual_guardar'))
             $('#modal_crear_talonario').modal({ show: true });
         @endif
 
         function guardarError() {
+            $('#empresa_guardar').removeClass( "is-invalid" );
             $('#tipo_documento_guardar').removeClass( "is-invalid" );
             $('#serie_guardar').removeClass( "is-invalid" );
             $('#error-tipo-documento-guardar').text('');
@@ -203,7 +211,8 @@
 
         $('#modal_crear_talonario').on('hidden.bs.modal', function(e) {
             guardarError()
-            $('#tipo_documento_guardar').val('');
+            $('#empresa_guardar').val('').trigger('change');
+            $('#tipo_documento_guardar').val('').trigger('change');
             $('#serie_guardar').val('');
             $('#numero_inicio_guardar').val('');
             $('#numero_final_guardar').val('');
@@ -340,7 +349,7 @@
                 toastr.error('El número inicial debe ser un valor numérico positivo', 'Error');
                 return false;
             }
-            if (numero_final <= 0) {
+            if (!Number.isNaN(numero_final) && numero_final <= 0) {
                 toastr.error('El número final debe ser un valor numérico positivo', 'Error');
                 return false;
             }
@@ -348,7 +357,7 @@
                 toastr.error('El número actual debe ser un valor numérico positivo', 'Error');
                 return false;
             }
-            if (numero_inicio > numero_final) {
+            if (!Number.isNaN(numero_final) && numero_inicio > numero_final) {
                 toastr.error('El número inicial debe ser menor o igual que el número final', 'Error');
                 return false;
             }
@@ -356,7 +365,7 @@
                 toastr.error('El número actual debe ser mayor o igual al número inicial', 'Error');
                 return false;
             }
-            if (numero_actual > numero_final) {
+            if (!Number.isNaN(numero_final) && numero_actual > numero_final) {
                 toastr.error('El número actual debe ser menor o igual al número final', 'Error');
                 return false;
             }

@@ -15,6 +15,8 @@ class CreateTalonariosTable extends Migration
     {
         Schema::create('talonarios', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('empresa_id');
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
             $table->string('tipo_documento');
             $table->string('serie');
             $table->unsignedInteger('numero_inicio');

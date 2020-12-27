@@ -17,7 +17,8 @@ class TalonarioController extends Controller
 {
     public function index()
     {
-        return view('mantenimiento.talonarios.index');
+        $empresas = Empresa::where('estado', 'ACTIVO')->get();
+        return view('mantenimiento.talonarios.index', compact('empresas'));
     }
 
     public function getTable()
@@ -27,6 +28,8 @@ class TalonarioController extends Controller
         foreach ($talonarios as $talonario) {
             $coleccion->push([
                 'id' => $talonario->id,
+                'empresa_id' => $talonario->empresa->id,
+                'empresa' => $talonario->empresa->razon_social,
                 'tipo_documento' => $talonario->tipo_documento,
                 'tipo_documento_descripcion' => tipos_documentos_tributarios()->firstWhere('simbolo', $talonario->tipo_documento)->descripcion.' ('.$talonario->tipo_documento.')',
                 'serie' => $talonario->serie,
@@ -49,19 +52,21 @@ class TalonarioController extends Controller
         $data = $request->all();
 
         $rules = [
+            'empresa_guardar' => 'required',
             'tipo_documento_guardar' => 'required',
             'serie_guardar' => ['required', Rule::unique('talonarios','serie')->where(function ($query) {
                 $query->whereIn('estado', ["ACTIVO"]);
-            })->where('tipo_documento', $request->get('tipo_documento_guardar'))],
+            })->where('tipo_documento', $request->get('tipo_documento_guardar'))->where('empresa_id', $request->get('empresa_guardar'))],
             'numero_inicio_guardar' => 'required|numeric',
             'numero_final_guardar' => 'nullable|numeric',
             'numero_actual_guardar' => 'required|numeric',
         ];
 
         $message = [
+            'empresa_guardar.required' => 'El campo Empresa es obligatorio',
             'tipo_documento_guardar.required' => 'El campo Tipo de documento es obligatorio',
             'serie_guardar.required' => 'El campo Serie es obligatorio',
-            'serie_guardar.unique' => 'Ya existe un talonario para el tipo de documento y serie establecida',
+            'serie_guardar.unique' => 'Ya existe un talonario para la empresa, tipo de documento y serie establecida',
             'numero_inicio_guardar.required' => 'El campo Número de inicio es obligatorio',
             'numero_inicio_guardar.numeric' => 'El campo Número de inicio debe ser numérico',
             'numero_final_guardar.numeric' => 'El campo Número final debe ser numérico',
@@ -72,6 +77,7 @@ class TalonarioController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $talonario = new Talonario();
+        $talonario->empresa_id = $request->get('empresa_guardar');
         $talonario->tipo_documento = $request->get('tipo_documento_guardar');
         $talonario->serie = $request->get('serie_guardar');
         $talonario->numero_inicio = $request->get('numero_inicio_guardar');
@@ -97,16 +103,18 @@ class TalonarioController extends Controller
 
         $rules = [
             'id_editar' => 'required',
+            'empresa_editar' => 'required',
             'tipo_documento_editar' => 'required',
             'serie_editar' => ['required', Rule::unique('talonarios','serie')->where(function ($query) {
                 $query->whereIn('estado', ["ACTIVO"]);
-            })->where('tipo_documento', $request->get('tipo_documento_editar'))->ignore($request->get('id_editar'))],
+            })->where('tipo_documento', $request->get('tipo_documento_editar'))->where('empresa_id', $request->get('empresa_editar'))->ignore($request->get('id_editar'))],
             'numero_inicio_editar' => 'required|numeric',
             'numero_final_editar' => 'nullable|numeric',
             'numero_actual_editar' => 'required|numeric',
         ];
 
         $message = [
+            'empresa_editar.required' => 'El campo Empresa es obligatorio',
             'tipo_documento_editar.required' => 'El campo Tipo de documento es obligatorio',
             'serie_editar.required' => 'El campo Serie es obligatorio',
             'numero_inicio_editar.required' => 'El campo Número de inicio es obligatorio',
@@ -119,6 +127,7 @@ class TalonarioController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $talonario = Talonario::findOrFail($request->get('id_editar'));
+        $talonario->empresa_id = $request->get('empresa_editar');
         $talonario->tipo_documento = $request->get('tipo_documento_editar');
         $talonario->serie = $request->get('serie_editar');
         $talonario->numero_inicio = $request->get('numero_inicio_editar');
