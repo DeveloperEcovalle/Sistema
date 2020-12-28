@@ -20,7 +20,8 @@ class CreateCotizacionesTable extends Migration
             $table->foreignId('cliente_id');
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->dateTime('fecha_documento');
-            $table->dateTime('fecha_atencion');
+            $table->dateTime('fecha_atencion')->nullable();
+            $table->string('moneda');
             $table->unsignedDecimal('total_afecto', 15, 2);
             $table->unsignedDecimal('sub_total', 15, 2);
             $table->unsignedDecimal('total_igv', 15, 2);

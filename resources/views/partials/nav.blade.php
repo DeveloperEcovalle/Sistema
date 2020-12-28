@@ -131,7 +131,7 @@
             <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
             <li class="@yield('vendedores-active')"><a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a></li>
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
-            <li><a href="lockscreen.html">Parametros</a></li>
+            <li class="@yield('talonarios-active')"><a href="{{ route('mantenimiento.talonario.index') }}">Talonarios</a></li>
             <li><a href="lockscreen.html">Metodos de Pago</a></li>
             <li><a href="lockscreen.html">Tipos de Pago</a></li>
             <li><a href="lockscreen.html">Origen de Documentos</a></li>

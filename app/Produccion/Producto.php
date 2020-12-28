@@ -39,4 +39,9 @@ class Producto extends Model
     {
         return $this->hasMany('App\Produccion\ProductoDetalle');
     }
+
+    public function getDescripcionCompleta()
+    {
+        return $this->codigo.' - '.$this->nombre;
+    }
 }

@@ -94,5 +94,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'MODO DE COMPRA';
         $tabla->sigla = 'MODO DE COMPRA';
         $tabla->save();
+
+        //15
+        $tabla = new General();
+        $tabla->descripcion = 'TIPOS DE DOCUMENTOS TRIBUTARIOS';
+        $tabla->sigla = 'TIPO DOCUMENTO TRIBUTARIO';
+        $tabla->save();
     }
 }

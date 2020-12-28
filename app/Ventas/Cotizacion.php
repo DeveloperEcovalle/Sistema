@@ -10,13 +10,14 @@ class Cotizacion extends Model
     protected $fillable = [
         'empresa_id',
         'cliente_id',
+        'moneda',
         'fecha_documento',
         'fecha_atencion',
-        'total',
+        'total_afecto',
         'sub_total',
-        'igv',
-        'monto',
-        'monto_exento',
+        'total_igv',
+        'total',
+        'total_exento',
         'user_id',
         'estado'
     ];
@@ -34,5 +35,10 @@ class Cotizacion extends Model
     public function detalles()
     {
         return $this->hasMany('App\Ventas\CotizacionDetalle');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 }

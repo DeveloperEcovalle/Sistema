@@ -219,3 +219,12 @@ Route::prefix('ventas/cotizaciones')->group(function() {
     Route::get('/datos/{id}', 'Ventas\CotizacionController@show')->name('ventas.cotizacion.show');
     Route::get('/destroy/{id}', 'Ventas\CotizacionController@destroy')->name('ventas.cotizacion.destroy');
 });
+
+// Talonarios
+Route::prefix('mantenimiento/talonarios')->group(function() {
+    Route::get('/', 'Mantenimiento\TalonarioController@index')->name('mantenimiento.talonario.index');
+    Route::get('/getTable', 'Mantenimiento\TalonarioController@getTable')->name('mantenimiento.talonario.getTable');
+    Route::post('/registrar', 'Mantenimiento\TalonarioController@store')->name('mantenimiento.talonario.store');
+    Route::put('/actualizar', 'Mantenimiento\TalonarioController@update')->name('mantenimiento.talonario.update');
+    Route::get('/destroy/{id}', 'Mantenimiento\TalonarioController@destroy')->name('mantenimiento.talonario.destroy');
+});

@@ -403,6 +403,47 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 14;
         $detalle->save();
 
+        // TIPO DE DOCUMENTO TRIBUTARIOS
+        $detalle = new Detalle();
+        $detalle->descripcion = "FACTURA";
+        $detalle->simbolo = 'FAC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 15;
+        $detalle->save();
 
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOLETA";
+        $detalle->simbolo = 'BOL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 15;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "RECIBO";
+        $detalle->simbolo = 'REC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 15;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "NOTA DE CRÉDITO";
+        $detalle->simbolo = 'NC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 15;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "NOTA DE DÉBITO";
+        $detalle->simbolo = 'ND';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 15;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "GUÍA DE REMISIÓN";
+        $detalle->simbolo = 'GR';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 15;
+        $detalle->save();
     }
 }
