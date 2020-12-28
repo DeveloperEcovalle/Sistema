@@ -14,6 +14,7 @@ class CreateCorreosOrdenesTable extends Migration
     public function up()
     {
         Schema::create('correos_ordenes', function (Blueprint $table) {
+            
             $table->Increments('id');
             $table->unsignedInteger('orden_id')->unsigned();
             $table->foreign('orden_id')

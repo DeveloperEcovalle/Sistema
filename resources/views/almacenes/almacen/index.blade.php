@@ -111,17 +111,19 @@
             "bInfo": true,
             "bAutoWidth": false,
             "processing":true,
+            "serverSide":true,
             "ajax": '{{ route("getRepository")}}',
             "columns": [
                 //Tabla General
-                {data: 'id', className:"text-center", "visible":false},
-                {data: 'descripcion', className:"text-center"},
-                {data: 'ubicacion', className:"text-center"},
-                {data: 'fecha_creacion', className:"text-center"},
-                {data: 'fecha_actualizacion', className:"text-center"},
+                {data: 'id', className:"text-center", "visible":false, name:'almacenes.descripcion'},
+                {data: 'descripcion', className:"text-center", name:'almacenes.descripcion'},
+                {data: 'ubicacion', className:"text-center", name:'almacenes.ubicacion'},
+                {data: 'creado', className:"text-center", name: 'almacenes.created_at'},
+                {data: 'actualizado', className:"text-center", name: 'almacenes.updated_at'},
                 {
                     data: null,
                     className:"text-center",
+                    name: 'almacenes.descripcion',
                     render: function (data) {
                         
                         return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"

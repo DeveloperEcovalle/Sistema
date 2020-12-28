@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Articulo::class, function (Faker $faker) {
     return [
-        'codigo_fabrica' => $faker->name,
-        'presentacion' => $faker->name,
+        'codigo_fabrica' => $faker->unique()->randomNumber,
+        'presentacion' => 'KILOGRAMO',
         'descripcion' => $faker->name,
         'stock_min'=> $faker->randomNumber(),
         'categoria_id' => factory(App\Compras\Categoria::class),

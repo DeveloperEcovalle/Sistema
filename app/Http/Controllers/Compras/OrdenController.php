@@ -20,6 +20,7 @@ use PDF;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrdenCompra;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 
 class OrdenController extends Controller
@@ -44,10 +45,36 @@ class OrdenController extends Controller
             }
         }
 
-     
-
         $coleccion = collect([]);
         foreach($ordenes as $orden){
+
+            
+            $detalles = Detalle::where('orden_id',$orden->id)->get(); 
+            $subtotal = 0; 
+            $igv = '';
+            $tipo_moneda = '';
+
+            foreach($detalles as $detalle){
+                $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
+            }
+
+            foreach(tipos_moneda() as $moneda){
+                if ($moneda->descripcion == $orden->moneda) {
+                    $tipo_moneda= $moneda->simbolo;
+                }
+            }
+
+            if (!$orden->igv) {
+                $igv = $subtotal * 0.18;
+                $total = $subtotal + $igv;
+                $decimal_total = number_format($total, 2, '.', ''); 
+            }else{
+                $calcularIgv = $orden->igv/100;
+                $base = $subtotal / (1 + $calcularIgv);
+                $nuevo_igv = $subtotal - $base;
+                $decimal_total = number_format($subtotal, 2, '.', '');
+            }
+
             $coleccion->push([
                 'id' => $orden->id,
                 'empresa' => $orden->empresa->razon_social,
@@ -56,6 +83,7 @@ class OrdenController extends Controller
                 'fecha_entrega' =>  Carbon::parse($orden->fecha_entrega)->format( 'd/m/Y'), 
                 'enviado' => $orden->enviado,
                 'estado' => $orden->estado,
+                'total' => $tipo_moneda.' '.$decimal_total,
             ]);
         }
   

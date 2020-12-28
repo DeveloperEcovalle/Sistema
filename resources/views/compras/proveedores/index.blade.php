@@ -105,6 +105,7 @@
             "bInfo": true,
             "bAutoWidth": false,
             "processing":true,
+            "serverSide":true,
             "ajax": '{{ route("getProvider")}}',
             "columns": [
                 //Proveedor

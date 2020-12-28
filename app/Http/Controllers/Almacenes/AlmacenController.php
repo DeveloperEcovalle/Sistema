@@ -9,7 +9,7 @@ use DataTables;
 use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 class AlmacenController extends Controller
 {
     public function index()
@@ -17,19 +17,13 @@ class AlmacenController extends Controller
         return view('almacenes.almacen.index');
     }
     public function getRepository(){
-        $almacenes = Almacen::where('estado','ACTIVO')->get();
-        $coleccion = collect([]);
-        foreach($almacenes as $almacen){
-            $coleccion->push([
-                'id' => $almacen->id,
-                'descripcion' => $almacen->descripcion,
-                'ubicacion' => $almacen->ubicacion,
-                'fecha_creacion' =>  Carbon::parse($almacen->created_at)->format( 'd/m/Y'),
-                'fecha_actualizacion' =>  Carbon::parse($almacen->updated_at)->format( 'd/m/Y'),
-                'estado' => $almacen->estado,
-            ]);
-        }
-        return DataTables::of($coleccion)->toJson();
+        return datatables()->query(
+            DB::table('almacenes')
+            ->select('almacenes.*', 
+            DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y") as creado'),
+            DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y") as actualizado')
+            )->where('almacenes.estado','ACTIVO')
+        )->toJson();
     }
     public function store(Request $request){
         

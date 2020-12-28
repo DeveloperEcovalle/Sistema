@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Almacenes\Almacen;
 use App\Compras\Categoria;
 use App\Compras\Articulo;
+use App\Mantenimiento\Empresa;
 
 class DepartamentoSeeder extends Seeder
 {
@@ -13,10 +14,10 @@ class DepartamentoSeeder extends Seeder
     {
 
 
-        factory(Almacen::class)->times(300)->create();
-        factory(Categoria::class)->times(300)->create();
-        // factory(Articulo::class)->times(1000)->create();
-
+        factory(Almacen::class)->times(30)->create();
+        factory(Categoria::class)->times(30)->create();
+        factory(Articulo::class)->times(10000)->create();
+        factory(Empresa::class)->times(10000)->create();
 
 
         DB::table('departamentos')->delete();

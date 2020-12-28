@@ -12,6 +12,7 @@ use App\Almacenes\Almacen;
 use Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use DB;
 
 class ArticuloController extends Controller
 {
@@ -21,20 +22,12 @@ class ArticuloController extends Controller
     }
 
     public function getArticle(){
-        $articulos = Articulo::where('estado','ACTIVO')->get();
-        $coleccion = collect([]);
-        foreach($articulos as $articulo){
-            $coleccion->push([
-                'id' => $articulo->id,
-                'codigo' => $articulo->codigo_fabrica,
-                'descripcion' => $articulo->descripcion,
-                'categoria' => $articulo->categoria->descripcion,
-                'presentacion' => $articulo->presentacion,
-                'stock_min' => $articulo->stock_min,
-                'precio_compra'=> $articulo->precio_compra,
-            ]);
-        }
-        return DataTables::of($coleccion)->toJson();
+        return datatables()->query(
+            DB::table('articulos')
+            ->join('categorias', 'articulos.categoria_id', '=', 'categorias.id')
+            ->select('articulos.*','categorias.descripcion as categoria')
+            ->where('articulos.estado','ACTIVO')
+        )->toJson();
     }
 
     public function create()

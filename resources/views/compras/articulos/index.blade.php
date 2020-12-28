@@ -106,19 +106,21 @@
             "bInfo": true,
             "bAutoWidth": false,
             "processing":true,
+            "serverSide":true,
             "ajax": '{{ route("getArticle")}}',
             "columns": [
                 //Articulo
-                {data: 'id' , className:"text-center", visible:false },
-                {data: 'codigo' , className:"text-center" },
-                {data: 'descripcion' },
-                {data: 'categoria' , className:"text-center" },
-                {data: 'presentacion', className:"text-center"},
-                {data: 'stock_min', className:"text-center"},
-                {data: 'precio_compra', className:"text-center"},
+                {data: 'id' , className:"text-center", visible:false , name: 'articulos.codigo_fabrica' },
+                {data: 'codigo_fabrica' , className:"text-center", name: 'articulos.codigo_fabrica'},
+                {data: 'descripcion', className:"text-center" , name:'articulos.descripcion'},
+                {data: 'categoria' , className:"text-center" , name:'categorias.descripcion'},
+                {data: 'presentacion', className:"text-center", name:'articulos.presentacion'},
+                {data: 'stock_min', className:"text-center", name:'articulos.stock_min'},
+                {data: 'precio_compra', className:"text-center", name:'articulos.precio_compra'},
                 {
                     data: null,
                     className:"text-center",
+                    name: 'articulos.codigo_fabrica',
                     render: function (data) {
                         //Ruta Detalle
                         var url_detalle = '{{ route("compras.articulo.show", ":id")}}';

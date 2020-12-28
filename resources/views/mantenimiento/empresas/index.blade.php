@@ -102,17 +102,19 @@
             "bFilter": true,
             "bInfo": true,
             "bAutoWidth": false,
+            "serverSide":true,
             "processing":true,
             "ajax": '{{ route("getBusiness")}}',
             "columns": [
                 //Empresa
-                {data: 'id', className:"text-center",visible:false},
-                {data: 'ruc', className:"text-center"},
-                {data: 'razon_social'},
-                {data: 'razon_social_abreviada'},
+                {data: 'id', className:"text-center", visible:false, name:'empresas.razon_social'},
+                {data: 'ruc', className:"text-center", name:'empresas.ruc'},
+                {data: 'razon_social', name:'empresas.razon_social'},
+                {data: 'razon_social_abreviada', name:'empresas.razon_social_abreviada'},
                 {
                     data: null,
                     className:"text-center",
+                    name:'empresas.razon_social',
                     render: function (data) {
                         //Ruta Detalle
                         var url_detalle = '{{ route("mantenimiento.empresas.show", ":id")}}';

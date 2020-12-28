@@ -747,6 +747,9 @@ $('#enviar_proveedor').submit(function(e) {
                 $("#estado").prop('disabled', false)
                 $("#tipo_persona").prop('disabled', false);
                 $("#tipo_persona_dni").prop('disabled', false);
+                //Cargar Entidades en modal
+                cargarEntidades()
+
                 this.submit();
             } else {
                 toastr.error('Ingrese un proveedor activo', 'Error');

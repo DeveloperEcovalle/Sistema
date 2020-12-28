@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\RequiredIf;
-
+use DB;
 class ProveedorController extends Controller
 {
     public function index()
@@ -22,7 +22,7 @@ class ProveedorController extends Controller
     }
 
     public function getProvider(){
-        $proveedores = Proveedor::where('estado','ACTIVO')->get();
+        $proveedores = DB::table('proveedores')->select('proveedores.*')->where('estado','ACTIVO')->get();
         $coleccion = collect([]);
         foreach($proveedores as $proveedor){
             if ($proveedor->dni) {
@@ -236,7 +236,9 @@ class ProveedorController extends Controller
 
     public function show($id)
     {
-        $banco = Banco::where('proveedor_id',$id)->get();
+        $banco = Banco::where('proveedor_id',$id)
+        ->where('estado','ACTIVO')
+        ->get();
         $proveedor = Proveedor::findOrFail($id);
         return view('compras.proveedores.show', [
             'proveedor' => $proveedor,
@@ -248,7 +250,9 @@ class ProveedorController extends Controller
     public function edit($id)
     {
         $proveedor = Proveedor::findOrFail($id);
-        $banco = Banco::where('proveedor_id',$id)->get();
+        $banco = Banco::where('proveedor_id',$id)
+        ->where('estado','ACTIVO')
+        ->get();
         $tipos = personas();
         $zonas = zonas();
         $bancos = bancos();
@@ -265,7 +269,7 @@ class ProveedorController extends Controller
     }
 
     public function update(Request $request, $id){
-
+        // dd($request);
         $data = $request->all();
         $rules = [
             'tipo_documento' => 'required',
@@ -410,7 +414,8 @@ class ProveedorController extends Controller
 
             $bancos = Banco::where('proveedor_id', $proveedor->id)->get();
             foreach ($bancos as $banco) {
-                $banco->delete();
+                $banco->estado= "ANULADO";
+                $banco->update();
             }
             foreach ($entidadtabla as $entidad) {
                 Banco::create([
@@ -422,6 +427,12 @@ class ProveedorController extends Controller
                 ]);
             }
 
+        }else{
+            $bancos = Banco::where('proveedor_id', $proveedor->id)->get();
+            foreach ($bancos as $banco) {
+                $banco->estado= "ANULADO";
+                $banco->update();
+            }
         }
 
         Session::flash('success','Proveedor modificada.');

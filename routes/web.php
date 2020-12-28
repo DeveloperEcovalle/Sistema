@@ -106,6 +106,16 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email');
     Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada');
     Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
+    //Pagos
+    Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index');
+    Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
+    Route::get('pagos/create/{id}', 'Compras\PagoController@create')->name('compras.pago.create');
+    Route::post('pagos/store/', 'Compras\PagoController@store')->name('compras.pago.store');
+    Route::get('pagos/edit/', 'Compras\PagoController@edit')->name('compras.pago.edit');
+    Route::put('pagos/update/{id}', 'Compras\PagoController@update')->name('compras.pago.update');
+    Route::get('pagos/destroy/', 'Compras\PagoController@destroy')->name('compras.pago.destroy');
+    Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show');
+
 });
 
 

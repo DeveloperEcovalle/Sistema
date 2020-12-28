@@ -72,4 +72,12 @@ select.form-control:not([size]):not([multiple]) {
     z-index: 3000 !important;
 }
 
+/*Buscar*/
+.custom-file-label::after {
+    content: "Buscar";
+}
+
+
+
+
 

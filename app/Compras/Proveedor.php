@@ -30,10 +30,14 @@ class Proveedor extends Model
         'telefono_calidad',
         'correo_calidad',
 
-
-
-
-
-
     ];
+
+    public function bancos()
+    {
+        return $this->hasMany('App\Compras\Banco');
+    }
+    public function ordenes()
+    {
+        return $this->hasMany('App\Compras\Orden');
+    }
 }

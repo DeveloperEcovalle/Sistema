@@ -20,4 +20,9 @@ class Banco extends Model
     {
         return $this->belongsTo('App\Compras\Proveedor');
     }
+
+    public function pagos()
+    {
+        return $this->hasMany('App\Compras\Pago');
+    }
 }

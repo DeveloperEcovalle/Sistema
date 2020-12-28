@@ -69,7 +69,7 @@
             </div>
 
 
-            <div>
+            <div id="" style="">
                 <!-- Contenido del Sistema -->
                 @yield('content')
                 <!-- /.Contenido del Sistema -->
@@ -171,13 +171,15 @@
     </script>
 
     <script>
-    function consultaExitosa() {
-        Swal.fire(
-            '¡Búsqueda Exitosa!',
-            'Datos ingresados.',
-            'success'
-        )
-    }
+        function consultaExitosa() {
+            Swal.fire(
+                '¡Búsqueda Exitosa!',
+                'Datos ingresados.',
+                'success'
+            )
+        }
+        
+
     </script>
 
 </body>

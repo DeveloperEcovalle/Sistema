@@ -14,6 +14,7 @@ use Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use DB;
 
 class EmpresaController extends Controller
 {
@@ -23,8 +24,10 @@ class EmpresaController extends Controller
     }
 
     public function getBusiness(){
-        $empresas = Empresa::where('estado','ACTIVO')->get();
-        return DataTables::of($empresas)->toJson();
+        return datatables()->query(
+            DB::table('empresas')
+            ->select('empresas.*')->where('empresas.estado','ACTIVO')
+        )->toJson();
     }
 
     public function create()

@@ -35,6 +35,7 @@
                                     <th></th>
                                     <th class="text-center">FECHA DOC.</th>
                                     <th class="text-center">FECHA ENTREGA</th>
+                                    <th class="text-center">MONTO</th>
                                     <th class="text-center">EMPRESA</th>
                                     <th class="text-center">PROVEEDOR</th>
                                     <th class="text-center">ENVIADO</th>
@@ -159,6 +160,10 @@ $(document).ready(function() {
                 className: "text-center"
             },
             {
+                data: 'total',
+                className: "text-center"
+            },
+            {
                 data: 'empresa',
                 className: "text-left"
             },
@@ -166,6 +171,7 @@ $(document).ready(function() {
                 data: 'proveedor',
                 className: "text-left"
             },
+
             {
                 data: null,
                 className: "text-center",
@@ -208,6 +214,10 @@ $(document).ready(function() {
                     var url_editar = '{{ route("compras.orden.edit", ":id")}}';
                     url_editar = url_editar.replace(':id', data.id);
 
+                    //Ruta Pago
+                    var url_pago = '{{ route("compras.pago.index", ":id")}}';
+                    url_pago = url_pago.replace(':id', data.id);
+
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
 
@@ -220,7 +230,7 @@ $(document).ready(function() {
                         "<li class='dropdown-divider'></li>" +
                         "<li><a class='dropdown-item' onclick='enviado(" + data.id +
                         ")' title='Ordenes Enviadas'><b><i class='fa fa-send'></i> Enviados</a></b></li>" +
-                        "<li><a class='dropdown-item' href='#' title='Pagos'><b><i class='fa fa-money'></i> Pagos</a></b></li>" +
+                        "<li><a class='dropdown-item' href='"+url_pago+"' title='Pagos'><b><i class='fa fa-money'></i> Pagos</a></b></li>" +
                         "<li><a class='dropdown-item' onclick='concretada(" + data.id +
                         ")' title='Concretada'><b><i class='fa fa-check'></i> Concretada</a></b></li>"
                     "</ul></div>"
@@ -238,21 +248,10 @@ $(document).ready(function() {
 
     tablaDatos = $('.dataTables-enviados').DataTable();
 
-    // Eventos
-    $('#btn_añadir_empleado').on('click', añadirEmpleado);
 });
 
 //Controlar Error
 $.fn.DataTable.ext.errMode = 'throw';
-
-// Funciones de Eventos
-function añadirEmpleado() {
-    window.location = "{{ route('mantenimiento.empleado.create')  }}";
-}
-
-function editarEmpleado(url) {
-    window.location = url;
-}
 
 function eliminar(id) {
     Swal.fire({
