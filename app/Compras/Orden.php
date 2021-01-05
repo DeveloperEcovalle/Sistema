@@ -12,7 +12,7 @@ class Orden extends Model
             'empresa_id',
             'modo_compra',
             'proveedor_id',
-            'fecha_documento',
+            'fecha_emision',
             'fecha_entrega',
             'moneda',
             'observacion',
@@ -21,6 +21,7 @@ class Orden extends Model
             'estado',
             'tipo_cambio',
             'enviado',
+            'usuario_id'
         ];
 
     public function empresa()
@@ -30,5 +31,9 @@ class Orden extends Model
     public function proveedor()
     {
         return $this->belongsTo('App\Compras\Proveedor');
+    }
+    public function usuario()
+    {
+        return $this->belongsTo('App\User','usuario_id');
     }
 }

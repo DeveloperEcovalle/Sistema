@@ -38,9 +38,34 @@
                             {{csrf_field()}}
                             <div class="row">
                                 <div class="col-sm-8 b-r">
-                                    <h4 class="">Entidad Financiera</h4>
-                                    <p>Seleccionar entidad financiera:</p>
+                                    <div class="row">
+                                        
+                                        <div class="col-md-6">
+                                            <h4 class="">Entidad Financiera</h4>
+                                            <p>Seleccionar entidad financiera:</p>
+                                        </div>
+                                        <div class="col-md-3 text-right b-r">
+                                            <h4 class="">Monto Restante</h4>
+                                            <p class="text-navy"><b>
+                                                @foreach ($monedas as $moneda)
+                                                    @if ($moneda->descripcion == $orden->moneda)
+                                                        {{$moneda->simbolo}}
+                                                    @endif
+                                                @endforeach
+                                            {{$monto_restante}}</b></p>
+                                        </div>
+                                        <div class="col-md-3 text-right">
+                                            <h4 class="">Monto de la Orden</h4>
+                                            <p class="text-navy"><b>
+                                                @foreach ($monedas as $moneda)
+                                                    @if ($moneda->descripcion == $orden->moneda)
+                                                        {{$moneda->simbolo}}
+                                                    @endif
+                                                @endforeach
+                                            {{$monto}}</b></p>
+                                        </div>
 
+                                    </div>
                                     <div class="form-group">
                                         <div class="table-responsive">
                                             <table class="table dataTables-bancos table-striped table-bordered table-hover"
@@ -63,37 +88,97 @@
 
                                     </div>
 
-                                </div>
-                                <div class="col-sm-4">
+                                    <hr>
                                     <h4>Datos Seleccionados</h4>
                                     <p>Datos seleccionados de la entidad financiera:</p>
-                                    <input type="hidden" name="id_orden" id="id_orden" value="{{$orden->id}}">
-                                    <input type="hidden" name="id_entidad" id="id_entidad" value="{{old('id_entidad')}}">
-                                    <div class="form-group">
+                                    <div class="form-group row">
+                                       
+                                            <input type="hidden" name="id_orden" id="id_orden" value="{{$orden->id}}">
+                                            <input type="hidden" name="id_entidad" id="id_entidad" value="{{old('id_entidad')}}">
+                                            <div class="col-md-3">
 
-                                        <label class="col-form-label">Descripción</label>
-                                        <input type="text" id="descripcion" class="form-control" disabled>
+                                                <label class="col-form-label">Descripción</label>
+                                                <input type="text" id="descripcion" class="form-control" disabled>
+                                                
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <label class="col-form-label">Moneda</label>
+                                                <input type="text" id="moneda" class="form-control" disabled>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <label class="col-form-label">N° Cuenta</label>
+                                                <input type="text" id="cuenta" class="form-control" disabled>
+
+                                            </div>
+                                            
+                                            <div class="col-md-3">
+
+                                                <label class="col-form-label">N° CCI</label>
+                                                <input type="text" id="cci" class="form-control" disabled>
+
+                                            </div>
+                                        
                                         
                                     </div>
 
-                                    <div class="form-group">
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Proveedor</h4>
+                                    <p>Datos del proveedor a pagar:</p>
+                                        <div style="text-transform:uppercase">
 
-                                        <label class="col-form-label">Moneda</label>
-                                        <input type="text" id="moneda" class="form-control" disabled>
+                                        @if ($orden->proveedor->ruc)
+                                            <div class="form-group" >
 
-                                    </div>
-                                    <div class="form-group">
+                                            <label class="col-form-label">RUC</label>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->ruc}}" style="text-transform:uppercase" disabled>
 
-                                        <label class="col-form-label">N° Cuenta</label>
-                                        <input type="text" id="cuenta" class="form-control" disabled>
+                                            </div>
 
-                                    </div>
-                                    <div class="form-group">
+                                        @else
+                                            <div class="form-group" >
 
-                                        <label class="col-form-label">N° CCI</label>
-                                        <input type="text" id="cci" class="form-control" disabled>
+                                            <label class="col-form-label">DNI</label>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->dni}}" style="text-transform:uppercase" disabled>
 
-                                    </div>
+                                            </div>
+                                        @endif
+
+
+                                            <div class="form-group" >
+
+                                                <label class="col-form-label">Descripcion</label>
+                                                <input type="text" class="form-control" value="{{$orden->proveedor->descripcion}}" style="text-transform:uppercase" disabled>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label class="col-form-label">Direccion</label>
+                                                <textarea type="text" style="text-transform:uppercase" class="form-control" disabled>{{$orden->proveedor->direccion}}</textarea>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label class="col-form-label">Telefono</label>
+                                                <input type="text" class="form-control"  style="text-transform:uppercase" value="{{$orden->proveedor->telefono}}" disabled>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label class="col-form-label">Correo</label>
+                                                <input type="text"  style="text-transform:uppercase" class="form-control" value="{{$orden->proveedor->correo}}"disabled>
+
+                                            </div>
+                                        </div>
+
 
                                 </div>
                             </div>
@@ -125,30 +210,18 @@
                                         </div>
 
                                         <div class="col-lg-6 col-xs-12" id="">
-                                                <label class="required">Monto:</label>
-                                                <input type="text" id="monto" name="monto" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{old('monto')}}" required>
-                                                @if ($errors->has('monto'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('monto') }}</strong>
-                                                </span>
-                                                @endif
-
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group row">
-
-                                        <div class="col-lg-6 col-xs-12" id="">
-                                            <label class="required">Moneda</label>
+                                            <label>Moneda</label>
                                             <select
                                                 class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
                                                 style="text-transform: uppercase; width:100%" value="{{old('moneda')}}"
-                                                name="moneda" id="moneda" required>
+                                                id="moneda" disabled>
                                                 <option></option>
                                                 @foreach ($monedas as $moneda)
-                                                <option value="{{$moneda->descripcion}}" @if(old('moneda')==$moneda->
+                                                    @if($moneda->descripcion == $orden->moneda)
+                                                        <option selected value="{{$moneda->descripcion}}" @if(old('moneda')==$moneda->
                                                     descripcion ) {{'selected'}} @endif
                                                     >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
+                                                    @endif
                                                 @endforeach
                                                 @if ($errors->has('moneda'))
                                                 <span class="invalid-feedback" role="alert">
@@ -159,9 +232,37 @@
 
                                         </div>
 
-                                        <div class="col-lg-6 col-xs-12" id="">
-                                                <label class="required">Tipo de Cambio:</label>
-                                                <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio')}}" required>
+                                        
+                                        <input type="hidden" name="moneda" value="{{$orden->moneda}}">
+
+
+                                    </div>
+                                    <div class="form-group row">
+
+                                        <div class="col-lg-4 col-xs-12" id="">
+                                                <label class="required" style="text-transform:none">Monto en 
+                                                
+                                                @foreach ($monedas as $moneda)
+                                                    @if ($moneda->descripcion == $orden->moneda)
+                                                        {{$moneda->simbolo}}
+                                                    @endif
+                                                @endforeach
+                                                
+                                                :</label>
+                                                <input type="text" id="monto" name="monto" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{old('monto')}}" required placeholder="0.00">
+                                                @if ($errors->has('monto'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('monto') }}</strong>
+                                                </span>
+                                                @endif
+
+                                        </div>
+
+
+                                        @if($orden->moneda != 'SOLES') 
+                                        <div class="col-lg-4 col-xs-12" id="requerido_tipo">
+                                                <label class="required" id="requerido_tipo_cambio_label">Tipo de Cambio:</label>
+                                                <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio')}}" required placeholder="0.00">
                                                 @if ($errors->has('tipo_cambio'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('tipo_cambio') }}</strong>
@@ -169,6 +270,19 @@
                                                 @endif
 
                                         </div>
+
+                                        <div class="col-lg-4 col-xs-12" id="requerido_cambio">
+                                                <label class="required" id="requerido_tipo_cambio_label">Cambio (S/.):</label>
+                                                <input type="text" id="cambio" name="cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('cambio')}}"  placeholder="0.00"required disabled>
+                                                @if ($errors->has('cambio'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('cambio') }}</strong>
+                                                </span>
+                                                @endif
+
+                                        </div>
+                                        @endif
+
 
                                     </div>
 
@@ -318,6 +432,16 @@ $('#tipo_cambio').keyup(function() {
     $(this).val(val);
 });
 
+$('#cambio').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+});
+
 $('#monto').keyup(function() {
     var val = $(this).val();
     if (isNaN(val)) {
@@ -413,14 +537,14 @@ $(document).ready(function() {
 
 function obtenerTabla() {
     var t = $('.dataTables-bancos').DataTable();
-    @foreach($orden->proveedor->bancos as $ban)
-        @if($ban->estado == 'ACTIVO' )
+    @foreach($bancos_proveedor as $ban)
+        @if($ban['estado'] == 'ACTIVO' )
             t.row.add([
-                "{{$ban->id}}",
-                "{{$ban->descripcion}}",
-                "{{$ban->tipo_moneda}}",
-                "{{$ban->num_cuenta}}",
-                "{{$ban->cci}}",
+                "{{$ban['id']}}",
+                "{{$ban['descripcion']}}",
+                "{{$ban['tipo_moneda']}}",
+                "{{$ban['num_cuenta']}}",
+                "{{$ban['cci']}}",
             ]).draw(false);
         @endif
 
@@ -442,6 +566,31 @@ $('.custom-file-input').on('change', function() {
     }
 });
 
+
+
+
+function validar() {
+    
+    var enviar = false;
+    var monto = $('#monto').val()
+    var restante = "{{$monto_restante}}"
+
+    if (Number(monto) > Number(restante)){
+        enviar = true
+        toastr.error("El monto ingresado es mayor al restante.", 'Error');
+        $('#monto').focus();
+    }
+
+    if ($('#id_entidad').val()==''){
+        enviar = true
+        toastr.error("Seleccionar entidad bancaria.", 'Error');
+    }
+
+
+
+    return enviar
+
+}
 $('#enviar_pago').submit(function(e) {
     e.preventDefault();
     const swalWithBootstrapButtons = Swal.mixin({
@@ -462,8 +611,14 @@ $('#enviar_pago').submit(function(e) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
+            
+            
+            var enviar = validar()
+            if (enviar ==  false) {
+                $('#cambio').attr('disabled',false)
+                this.submit();               
+            }
 
-            this.submit();
 
 
         } else if (
@@ -478,6 +633,25 @@ $('#enviar_pago').submit(function(e) {
         }
     })
 })
+
+//Calcular cambio soles
+
+$('#tipo_cambio').keyup(function() {
+    var monto = $('#monto').val()
+    var tipo_cambio = $('#tipo_cambio').val()
+    var cambio = monto*tipo_cambio
+    $('#cambio').val(cambio.toFixed(2))
+})
+
+$('#monto').keyup(function() {
+    var monto = $('#monto').val()
+    var tipo_cambio = $('#tipo_cambio').val()
+    var cambio = monto*tipo_cambio
+    $('#cambio').val(cambio.toFixed(2))
+})
+
+
+
 </script>
 
 

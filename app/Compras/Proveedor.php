@@ -19,12 +19,18 @@ class Proveedor extends Model
         'telefono',
         'web',
         'zona',
+
         'contacto',
         'celular_contacto',
         'telefono_contacto',
+        'correo_contacto',
+
+        'ruc_transporte',
         'transporte',
         'direccion_transporte',
         'direccion_almacen',
+        'activo_transporte',
+        
         'calidad',
         'celular_calidad',
         'telefono_calidad',

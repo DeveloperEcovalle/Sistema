@@ -32,13 +32,21 @@
                             style="text-transform:uppercase;">
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th class="text-center">FECHA DOC.</th>
-                                    <th class="text-center">FECHA ENTREGA</th>
-                                    <th class="text-center">MONTO</th>
-                                    <th class="text-center">EMPRESA</th>
+                                    
+                                    <th colspan="3" class="text-center">FECHAS</th>
+                                    <th colspan="6" class="text-center">ORDEN DE COMPRA</th>
+                                    <th colspan="1" class="text-center"></th>
+
+                                </tr>
+                                <tr>
+                                    <th style="display:none;"></th>
+                                    <th class="text-center">EMISION</th>
+                                    <th class="text-center">ENTREGA</th>
                                     <th class="text-center">PROVEEDOR</th>
-                                    <th class="text-center">ENVIADO</th>
+                                    <th class="text-center">MONTO</th>
+                                    <th class="text-center">A CUENTA</th>
+                                    <th class="text-center">A CUENTA (S/.)</th>
+                                    <th class="text-center">SALDO</th>
                                     <th class="text-center">ESTADO</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
@@ -152,7 +160,7 @@ $(document).ready(function() {
                 visible: false
             },
             {
-                data: 'fecha_documento',
+                data: 'fecha_emision',
                 className: "text-center"
             },
             {
@@ -160,29 +168,30 @@ $(document).ready(function() {
                 className: "text-center"
             },
             {
-                data: 'total',
-                className: "text-center"
-            },
-            {
-                data: 'empresa',
-                className: "text-left"
-            },
-            {
                 data: 'proveedor',
                 className: "text-left"
             },
+            {
+                data: 'total',
+                className: "text-center"
+            },
 
             {
-                data: null,
-                className: "text-center",
-                render: function(data) {
-                    if (data.enviado == "1") {
-                        return "<div> <input type='checkbox' checked disabled title='Orden de Compra enviada al proveedor.'></div>"
-                    } else {
-                        return " <div> <input type='checkbox' title='Orden de Compra aun no enviada al proveedor.' disabled></div>"
-                    }
-                }
+                data: 'acuenta',
+                className: "text-center"
             },
+
+            {
+                data: 'acuenta_soles',
+                className: "text-center"
+            },
+
+            {
+                data: 'saldo',
+                className: "text-center"
+            },
+
+
             {
                 data: null,
                 className: "text-center",

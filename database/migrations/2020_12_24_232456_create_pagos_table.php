@@ -15,10 +15,11 @@ class CreatePagosTable extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->Increments('id');
-            $table->unsignedInteger('banco_id')->unsigned();
-            $table->foreign('banco_id')
-                  ->references('id')->on('bancos')
+            $table->unsignedInteger('orden_id')->unsigned();
+            $table->foreign('orden_id')
+                  ->references('id')->on('ordenes')
                   ->onDelete('cascade');
+            $table->BigInteger('banco');
             $table->date('fecha_pago');
             $table->unsignedDecimal('monto', 15,2);
             $table->string('moneda');

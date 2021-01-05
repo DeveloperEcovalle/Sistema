@@ -63,7 +63,7 @@ class ProveedorController extends Controller
     }
 
     public function store(Request $request){
-      
+
         $data = $request->all();
         $rules = [
             'tipo_documento' => 'required',
@@ -120,17 +120,20 @@ class ProveedorController extends Controller
             'direccion' => 'required',
             'zona' => 'required',
 
-            'telefono' => 'nullable|numeric',
+            'telefono' => 'required|numeric',
             'celular' => 'nullable|numeric',
             'web' => 'nullable',
             'correo' => 'required|email',
 
             'contacto' => 'nullable',
+            'correo_contacto' => 'nullable',
             'telefono_contacto' => 'nullable|numeric',
             'celular_contacto' => 'nullable|numeric',
 
-            'transporte' => 'nullable',
-            'direccion_transporte' => 'nullable',
+            'ruc_transporte' => 'required|numeric',
+            'transporte' => 'required',
+            'direccion_transporte' => 'required',
+
             'direccion_almacen' => 'nullable',
             'estado' => 'required',
 
@@ -149,9 +152,17 @@ class ProveedorController extends Controller
             'correo.required' => 'El campo Correo es obligatorio.',
             'correo.email' => 'El campo Correo debe ser email.',
             'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
+            'telefono.required' => 'El campo Teléfono es obligatorio.',
+
             'celular.numeric' => 'El campo Celular debe ser numérico.',
             'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+
+            'ruc_tranporte.numeric' => 'El campo Ruc debe ser numérico.',
+            'ruc_tranporte.required' => 'El campo Ruc es obligatorio.',
+            'transporte.required' => 'El campo Nombre Completo es obligatorio.',
+            'direccion_transporte.required' => 'El campo Direccion es obligatorio.',
+
             'estado.required' => 'El campo Estado es obligatorio.',
                         
             'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
@@ -186,18 +197,25 @@ class ProveedorController extends Controller
         $proveedor->contacto = $request->get('contacto');
         $proveedor->celular_contacto = $request->get('celular_contacto');
         $proveedor->telefono_contacto = $request->get('telefono_contacto');
+        $proveedor->correo_contacto = $request->get('correo_contacto');
 
         $proveedor->calidad = $request->get('calidad');
         $proveedor->celular_calidad = $request->get('celular_calidad');
         $proveedor->telefono_calidad = $request->get('telefono_calidad');
         $proveedor->correo_calidad = $request->get('correo_calidad');
         
+        $proveedor->ruc_transporte = $request->get('ruc_transporte');
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
         $proveedor->direccion_almacen = $request->get('direccion_almacen');
         if ($request->get('estado') == "ACTIVO") {
             $proveedor->activo = "1";
         };
+
+        if ($request->get('estado_transporte') == "ACTIVO") {
+            $proveedor->activo_transporte = "1";
+        };
+
         $proveedor->save();
 
         //Llenado de Bancos
@@ -326,17 +344,20 @@ class ProveedorController extends Controller
             'direccion' => 'required',
             'zona' => 'required',
 
-            'telefono' => 'nullable|numeric',
+            'telefono' => 'required|numeric',
             'celular' => 'nullable|numeric',
             'web' => 'nullable',
             'correo' => 'required|email',
 
             'contacto' => 'nullable',
+            'correo_contacto' => 'nullable',
             'telefono_contacto' => 'nullable|numeric',
             'celular_contacto' => 'nullable|numeric',
 
-            'transporte' => 'nullable',
-            'direccion_transporte' => 'nullable',
+            'ruc_transporte' => 'required|numeric',
+            'transporte' => 'required',
+            'direccion_transporte' => 'required',
+
             'direccion_almacen' => 'nullable',
             'estado' => 'required',
 
@@ -355,11 +376,13 @@ class ProveedorController extends Controller
             'correo.required' => 'El campo Correo es obligatorio.',
             'correo.email' => 'El campo Correo debe ser email.',
             'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
+            'telefono.required' => 'El campo Teléfono es obligatorio.',
+
             'celular.numeric' => 'El campo Celular debe ser numérico.',
             'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
-            'estado.required' => 'El campo Estado es obligatorio.',
 
+            'estado.required' => 'El campo Estado es obligatorio.',
             'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
             'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
             'correo_calidad.email' => 'El campo Correo debe ser email.',
@@ -387,23 +410,28 @@ class ProveedorController extends Controller
         $proveedor->zona = $request->get('zona');
         $proveedor->telefono = $request->get('telefono');
         $proveedor->celular = $request->get('celular');
-
-
+        
         $proveedor->contacto = $request->get('contacto');
         $proveedor->celular_contacto = $request->get('celular_contacto');
         $proveedor->telefono_contacto = $request->get('telefono_contacto');
+        $proveedor->correo_contacto = $request->get('correo_contacto');
 
         $proveedor->calidad = $request->get('calidad');
         $proveedor->celular_calidad = $request->get('celular_calidad');
         $proveedor->telefono_calidad = $request->get('telefono_calidad');
         $proveedor->correo_calidad = $request->get('correo_calidad');
         
+        $proveedor->ruc_transporte = $request->get('ruc_transporte');
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
         $proveedor->direccion_almacen = $request->get('direccion_almacen');
 
         if ($request->get('estado') == "ACTIVO") {
             $proveedor->activo = "1";
+        };
+
+        if ($request->get('estado_transporte') == "ACTIVO") {
+            $proveedor->activo_transporte = "1";
         };
         $proveedor->update();
 

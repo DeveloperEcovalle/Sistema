@@ -1,333 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8">
     <title>Ecovalle | Sistema de Producción</title>
-    <style>
-    .clearfix:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    a {
-        color: #5D6975;
-        text-decoration: underline;
-    }
-
-    body {
-        color: #001028;
-        background: #FFFFFF;
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        font-family: Arial;
-    }
-
-    header {
-        padding: 10px 0;
-        margin-bottom: 30px;
-    }
-
-    #logo {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    #logo img {
-        width: 100px;
-    }
-
-    .title {
-        border-top: 2px solid #5D6975;
-        border-bottom: 2px solid #5D6975;
-        font-weight: normal;
-        text-align: center;
-        margin: 0 0 20px 0;
-        padding-top: 10px;
-        background: url(dimension.png);
-    }
-
-    #empresa {
-        float: left;
-        text-transform: uppercase;
-        font-size: 11px;
-    }
-
-    #proveedor {
-        float: left;
-        text-transform: uppercase;
-        font-size: 11px;
-    }
-
-    #empresa span,
-    #proveedor span {
-        color: #5D6975;
-        text-align: right;
-        width: 70px;
-        margin-right: 10px;
-        display: inline-block;
-        font-size: 0.9em;
-    }
-
-    #company {
-        float: right;
-        text-align: right;
-    }
-
-    #project div,
-    #company div {
-        white-space: nowrap;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        border-spacing: 0;
-        margin-bottom: 20px;
-    }
-
-    table tr:nth-child(2n-1) td {
-        background: #F5F5F5;
-    }
-
-    table th,
-    table td {
-        text-align: center;
-    }
-
-    table th {
-        padding: 5px 20px;
-        color: #5D6975;
-        border-bottom: 1px solid #C1CED9;
-        white-space: nowrap;
-        font-weight: normal;
-    }
-
-    table .service,
-    table .desc {
-        text-align: center;
-    }
-
-    table td {
-        padding: 20px;
-        text-align: right;
-    }
-
-    table td.service,
-    table td.desc {
-        vertical-align: top;
-    }
-
-    table td.unit,
-    table td.qty,
-    table td.total {
-        font-size: 1.0em;
-    }
-
-    table td.grand {
-        border-top: 1px solid #5D6975;
-        ;
-    }
-
-    #notices .notice {
-        color: #5D6975;
-        font-size: 1.2em;
-    }
-
-    footer {
-        color: #5D6975;
-        width: 100%;
-        height: 30px;
-        position: absolute;
-        bottom: 0;
-        border-top: 1px solid #C1CED9;
-        padding: 8px 0;
-        text-align: center;
-    }
-
-    @page {
-        margin: 0px;
-    }
-
-    body {
-        padding: 40px 30px 10px 30px;
-    }
-
-    .description-title {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .column-left {
-        float: left;
-        width: 50%;
-    }
-
-    .column-right {
-        float: right;
-        width: 50%;
-    }
-
-    #empresa .empresa-adition {
-        color: black;
-        font-size: 12px;
-    }
-    </style>
-
-
-</head>
-
-<body>
+    <link rel="stylesheet" href="{{asset('css/informe.css')}}" />    
+  </head>
+  <body>
     <header class="clearfix">
-        <div class="title">
+    
+        <div>
             <div id="logo">
                 @if($orden->empresa->ruta_logo)
                 <img src="{{ base_path() . '/storage/app/'.$orden->empresa->ruta_logo }}">
                 @else
                 <img src="{{asset('storage/empresas/logos/default.png')}}">
                 @endif
-
-
             </div>
-
-            <div class="description-title">
-                <strong>{{$orden->empresa->razon_social}}</strong>
-                <br>
-                <span>RUC:{{$orden->empresa->ruc}}</span>
-                <br>
+            
+            <div id="company">
+                <h2 class="name">{{$orden->empresa->razon_social}}</h2>
+                <div>RUC:{{$orden->empresa->ruc}}</div>
+                <div>{{$orden->empresa->direccion_fiscal}}</div>
             </div>
-
-        </div>
-
-        <div id="main">
-            <div class="column-left">
-
-                <div id="empresa">
-                    <label class="empresa-adition" style="margin:10px;">DATOS SOBRE LA EMPRESA</label>
-                    <div style="margin-top:5px;">
-                        <div><span>RUC:</span> {{$orden->empresa->ruc}}</div>
-                        <div><span>EMPRESA:</span> {{$orden->empresa->razon_social}}</div>
-                        <div><span>COMERCIAL:</span> {{$orden->empresa->razon_social_abreviada}}</div>
-                        <div><span>DIRECCION:</span> {{$orden->empresa->direccion_fiscal}}</div>
-                        <div><span>TELEFONO:</span>
-                            @if($orden->empresa->telefono)
-                            {{$orden->empresa->telefono}}
-                            @else
-                            -
-                            @endif
-                        </div>
-                        <div><span>CELULAR:</span>
-                            @if($orden->empresa->celular)
-                            {{$orden->empresa->celular}}
-                            @else
-                            -
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="column-right">
-
-                <div id="proveedor">
-                    <label class="empresa-adition" style="margin:10px;">DATOS SOBRE EL PROVEEDOR</label>
-                    <div style="margin-top:5px;">
-                        @if($orden->proveedor->ruc)
-                        <div><span>RUC:</span> {{$orden->proveedor->ruc}}</div>
-                        @else
-                        <div><span>DNI:</span> {{$orden->proveedor->dni}}</div>
-                        @endif
-                        <div><span>PROVEEDOR:</span>{{$orden->proveedor->descripcion}}</div>
-                        <div><span>DIRECCION</span> {{$orden->proveedor->direccion}}</div>
-                        <div><span>ZONA</span> {{$orden->proveedor->zona}}</div>
-                        <div><span>CORREO</span> <a
-                                href="mailto:{{$orden->proveedor->correo}}">{{$orden->proveedor->correo}}</a></div>
-                        <div><span>TELEFONO:</span>
-                            @if($orden->proveedor->telefono)
-                            {{$orden->proveedor->telefono}}
-                            @else
-                            -
-                            @endif
-                        </div>
-                        <div><span>CELULAR:</span>
-                            @if($orden->proveedor->celular)
-                            {{$orden->proveedor->celular}}
-                            @else
-                            -
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+      </div>
+    
     </header>
+
     <main>
-        <table style="text-transform:uppercase">
+      <div id="details" class="clearfix">
+
+
+
+
+        <div id="invoice">
+            
+          <table cellspacing="0" cellpadding="0" id="tabla-orden">
             <thead>
                 <tr>
-                    <th class="service">ARTICULO</th>
-                    <th class="desc">PRESENTACION</th>
-                    <th>PRECIO</th>
-                    <th>CANT.</th>
-                    <th>TOTAL</th>
+                    <th colspan="2" class="text-center">ORDEN DE COMPRA</th>
                 </tr>
             </thead>
+
             <tbody>
-                @foreach($detalles as $detalle)
                 <tr>
-                    <td class="service">{{$detalle->articulo->descripcion}}</td>
-                    <td class="desc">
-                        @foreach($presentaciones as $presentacion)
-                        @if($presentacion->descripcion == $detalle->articulo->presentacion)
-                        {{$presentacion->simbolo}}
-                        @endif
-                        @endforeach
+                    <th class="datos-orden-titulo">
+                        N°:
+                    </th>
 
-                    </td>
-                    <td class="unit" style="text-align:center;">{{$detalle->precio}}</td>
-                    <td class="qty" style="text-align:center;">{{$detalle->cantidad}}</td>
-                    <td class="total subtotal" style="text-align:center;">{{$detalle->precio * $detalle->cantidad}}</td>
-                </tr>
-                @endforeach
+                    <th class="datos-orden">
+                        OC - {{$orden->id}}
+                    </th>
 
-
-                <tr>
-                    <td colspan="4">SUBTOTAL</td>
-                    <td class="total" style="text-align:center;">{{$moneda.'  '.$subtotal}}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">IGV {{$detalle->orden->igv}}%:</td>
-                    <td class="total" style="text-align:center;">
-                            {{$moneda.'  '.$igv}}
-                    </td>
+                    <th class="datos-orden-titulo">
+                        FECHA EMISION:
+                    </th>
+
+                    <th class="datos-orden">
+                        {{ Carbon\Carbon::parse($orden->fecha_emision)->format('d/m/y') }}
+                    </th>
+
                 </tr>
                 <tr>
-                    <td colspan="4" class="grand total">TOTAL</td>
-   
-                        <td class="grand total" style="text-align:center;">{{$moneda.'  '.$total}}</td>
+                    <th class="datos-orden-titulo">
+                        FECHA ENTREGA:
+                    </th>
 
-                    
+                    <th class="datos-orden">
+                        {{ Carbon\Carbon::parse($orden->fecha_entrega)->format('d/m/y') }}
+                    </th>
+
                 </tr>
             </tbody>
-        </table>
-        <div id="notices">
-            <div>Observación:</div>
-            @if($orden->observacion)
-            <div class="notice" style="text-transform:uppercase;">{{$orden->observacion}}.</div>
-            @else
-            <div class="notice">NO ESPECIFICADO</div>
-            @endif
+
+          </table>
+          
         </div>
+
+        <div id="client">
+
+            <div class="to">CONTACTO:</div>
+            <h2 class="name">{{$nombre_completo}}</h2>
+            <div class="address">{{$orden->usuario->empleado->persona->telefono_movil}}</div>
+            <div class="email"><a href="mailto:{{$orden->usuario->empleado->persona->correo_electronico}}">{{$orden->usuario->empleado->persona->correo_electronico}}</a></div>
+        </div>
+
+
+
+      </div>
+
+      <table border="0" cellspacing="0" cellpadding="0" id="tabla-proveedor">
+        <thead>
+          <tr>
+            <th colspan="2" class="text-center">DATOS DEL PROVEEDOR</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    RAZON SOCIAL:
+                </th>
+
+                <th class="datos-proveedor">
+                    {{$orden->proveedor->descripcion}}
+                </th>
+
+            </tr>
+
+            @if($orden->proveedor->ruc)
+
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    RUC:
+                </th>
+
+                <th class="datos-proveedor">
+                    {{$orden->proveedor->ruc}}
+                </th>
+
+            </tr>
+
+            @else
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    DNI:
+                </th>
+
+                <th class="datos-proveedor">
+                    {{$orden->proveedor->dni}}
+                </th>
+
+            </tr>
+            @endif
+
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    DIRECCION:
+                </th>
+
+                <th class="datos-proveedor">
+                    {{$orden->proveedor->direccion}}
+                </th>
+
+            </tr>
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    CONTACTO:
+                </th>
+
+                <th class="datos-proveedor">
+                @if($orden->proveedor->contacto)
+                {{$orden->proveedor->contacto}}
+                @else
+                -
+                @endif
+                </th>
+
+            </tr>
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    TELEFONO:
+                </th>
+
+                <th class="datos-proveedor">
+                    @if($orden->proveedor->telefono)
+                    {{$orden->proveedor->telefono}}
+                    @else
+                    -
+                    @endif
+                </th>
+
+            </tr>
+            <tr>
+                <th class="datos-proveedor-titulo">
+                    CORREO:
+                </th>
+
+                <th class="datos-proveedor">
+                    <a href="mailto:{{$orden->proveedor->correo}}">{{$orden->proveedor->correo}}
+                    </a>
+                </th>
+
+            </tr>
+        </tbody>
+
+      </table>
+
+
+      <table border="0" cellspacing="0" cellpadding="0" id="tabla-productos">
+        <thead>
+          <tr>
+            <th class="no">CANT.</th>
+            <th class="desc">PRESENTACION</th>
+            <th class="unit">PRODUCTO</th>
+            <th class="qty">PRECIO</th>
+            <th class="total">TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        @foreach($detalles as $detalle)
+          <tr>
+            <td class="no">{{$detalle->cantidad}}</td>
+            <td class="desc">
+            @foreach($presentaciones as $presentacion)
+                @if($presentacion->descripcion == $detalle->articulo->presentacion)
+                    {{$presentacion->simbolo}}
+                @endif
+            @endforeach
+            </td>
+            <td class="unit">{{$detalle->articulo->descripcion}}</td>
+            <td class="qty">{{$moneda.' '.$detalle->precio}}</td>
+            <td class="total">{{$moneda.' '.$detalle->precio * $detalle->cantidad}}</td>
+          </tr>
+        @endforeach
+
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3"></td>
+            <td class="sub" colspan="1">SUBTOTAL</td>
+            <td class="sub-monto">{{$moneda.'  '.$subtotal}}</td>
+          </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td class="sub" colspan="1">IGV {{$detalle->orden->igv}}%</td>
+            <td class="sub-monto">{{$moneda.'  '.$igv}}</td>
+          </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td class="sub" colspan="1">TOTAL</td>
+            <td class="sub-monto">{{$moneda.'  '.$total}}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <table border="0" cellspacing="0" cellpadding="0" id="tabla-transporte">
+        <thead>
+          <tr>
+            <th colspan="2" class="text-center">DATOS DEL TRANSPORTISTA</th>
+          </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <th class="datos-transporte-titulo">
+                    RUC:
+                </th>
+
+                <th class="datos-transporte">
+                    {{$orden->proveedor->ruc_transporte}}
+                </th>
+
+            </tr>
+
+            <tr>
+                <th class="datos-transporte-titulo">
+                    EMPRESA:
+                </th>
+
+                <th class="datos-transporte">
+                    {{$orden->proveedor->transporte}}
+                </th>
+
+            </tr>
+
+            <tr>
+                <th class="datos-transporte-titulo">
+                    DIRECCION:
+                </th>
+
+                <th class="datos-transporte">
+                    {{$orden->proveedor->direccion_transporte}}
+                </th>
+
+            </tr>
+
+        </tbody>
+
+      </table>
+
+      <table border="0" cellspacing="0" cellpadding="0" id="tabla-adicional">
+        <tbody>
+
+            <tr>
+                <th class="datos-adicional-titulo">
+                    CONDICION DE ORDEN:
+                </th>
+
+                <th class="datos-adicional">
+                    {{$orden->modo_compra}}
+                </th>
+
+            </tr>
+
+            <tr>
+                <th class="datos-adicional-titulo">
+                    OBSERVACION:
+                </th>
+
+                <th class="datos-adicional">
+                    {{$orden->observacion}}
+                </th>
+
+            </tr>
+
+        </tbody>
+
+      </table>
+
     </main>
     <footer>
-
+      SISCOM SAC
     </footer>
-
-
-
-</body>
-
+  </body>
 </html>

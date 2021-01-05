@@ -13,7 +13,7 @@
                 <a href="{{route('compras.articulo.index')}}">Artículos</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Registrar</strong>
+                <strong>Modificar</strong>
             </li>
 
         </ol>

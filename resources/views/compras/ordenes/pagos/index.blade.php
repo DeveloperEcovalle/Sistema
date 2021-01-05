@@ -18,15 +18,39 @@
             </li>
         </ol>
     </div>
-    <div class="col-lg-2 col-md-2">
+    
+    <div class="col-lg-2 col-md-2" id="boton_agregar_pago">
         <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('compras.pago.create',$orden->id)}}">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
+
+
+    
+        <div class="col-md-12 m-t">
+            <div class="alert alert-success">
+                <b>INFORMACION DE PAGOS </b>
+                <ul class="margin-bottom-none padding-left-lg">                           
+                        <li>Deuda total de la orden de compra: <b>{{$moneda.' '.$monto}}</b>.</li>
+                        <li>Saldo de la orden de compra: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                        <li>Monto a cuenta hasta el momento: <b>{{$moneda.' '.$total}}</b>. </li>
+                        <li>Monto a cuenta en Soles hasta el momento: <b>{{'S/. '.$soles}}</b>. </li>
+                        <li id="informacion-cancelada"><b>Orden de compra #{{$orden->id}} CANCELADA.</b> </li>
+                </ul>
+            </div>
+        </div>
+  
+
+
+
+    
 </div>
 
 <input type="hidden" id="id_orden" value="{{$orden->id}}" >
 <div class="wrapper wrapper-content animated fadeInRight">
+
+
+    
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox ">
@@ -40,6 +64,7 @@
                                     <th class="text-center">FECHA PAGO</th>
                                     <th class="text-center">ENTIDAD</th>
                                     <th class="text-center">MONTO</th>
+                                    <th class="text-center">MONTO (S/.)</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -120,6 +145,10 @@ $(document).ready(function() {
                 className: "text-center"
             },
             {
+                data: 'monto_soles',
+                className: "text-center"
+            },
+            {
                     data: null,
                     className:"text-center",
                     render: function (data) {
@@ -144,10 +173,20 @@ $(document).ready(function() {
 
     tablaDatos = $('.dataTables-enviados').DataTable();
 
+    @if("{{$monto}}" == "{{$total}}")
+        $("#boton_agregar_pago").css("display", "none");
+        $("#informacion-cancelada").css("display", "");
+    @else
+        $("#boton_agregar_pago").css("display", "");
+        $("#informacion-cancelada").css("display", "none");
+    @endif
+
 });
 
 //Controlar Error
 $.fn.DataTable.ext.errMode = 'throw';
+
+
 
 function eliminar(id) {
     Swal.fire({

@@ -11,7 +11,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'usuario', 'email', 'password','nombre_imagen','ruta_imagen','empleado_id'
     ];
 
     protected $hidden = [
@@ -25,5 +25,10 @@ class User extends Authenticatable
     public function cotizaciones()
     {
         return $this->hasMany('App\Ventas\Cotizacion');
+    }
+
+    public function empleado()
+    {
+        return $this->belongsTo('App\Mantenimiento\Empleado\Empleado');
     }
 }

@@ -6,6 +6,9 @@ use App\Mantenimiento\Ubigeo\Distrito;
 use App\Mantenimiento\Ubigeo\Provincia;
 use App\Parametro;
 use Carbon\Carbon;
+//Orden de compra
+use App\Compras\Detalle;
+use App\Compras\Orden;
 
 // TABLAS-DETALLES
 if (!function_exists('tipos_moneda')) {
@@ -191,4 +194,37 @@ if (!function_exists('tipos_documentos_tributarios')) {
     {
         return General::findOrFail(15)->detalles;
     }
+}
+
+// Monto a Pagar Orden de compra
+if (!function_exists('calcularMonto')) {
+    function calcularMonto($id)
+    {
+        
+        $detalles = Detalle::where('orden_id',$id)->get();
+        $orden = Orden::findOrFail($id);
+        $subtotal = 0; 
+        $igv = '';
+        $tipo_moneda = '';
+        foreach($detalles as $detalle){
+            $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
+        }
+
+        if (!$orden->igv) {
+            $igv = $subtotal * 0.18;
+            $total = $subtotal + $igv;
+            $decimal_subtotal = number_format($subtotal, 2, '.', '');
+            $decimal_total = number_format($total, 2, '.', '');
+            $decimal_igv = number_format($igv, 2, '.', ''); 
+        }else{
+            $calcularIgv = $orden->igv/100;
+            $base = $subtotal / (1 + $calcularIgv);
+            $nuevo_igv = $subtotal - $base;
+            $decimal_subtotal = number_format($base, 2, '.', '');
+            $decimal_total = number_format($subtotal, 2, '.', '');
+            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+        }
+        return $decimal_total;
+    }
+
 }

@@ -20,10 +20,9 @@
         <div class="title-action">
             <a href="{{route('compras.orden.edit', $orden->id)}}" class="btn btn-warning btn-sm"><i
                     class="fa fa-edit"></i> Editar</a>
-            <a href="#" onclick="generarReporte()" class="btn btn-danger btn-sm"><i
-                    class="fa fa-file-pdf-o "></i> Reporte </a>
-            <a href="#" onclick="enviarReporte()" class="btn btn-primary btn-sm"><i
-                    class="fa fa-send "></i> Enviar </a>
+            <a href="#" onclick="generarReporte()" class="btn btn-danger btn-sm"><i class="fa fa-file-pdf-o "></i>
+                Reporte </a>
+            <a href="#" onclick="enviarReporte()" class="btn btn-primary btn-sm"><i class="fa fa-send "></i> Enviar </a>
         </div>
     </div>
 </div>
@@ -46,292 +45,190 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-12 text-center">
-                                <div style="text-transform:uppercase">
-
-                                    <strong>{{$orden->empresa->razon_social}}</strong>
-                                    <br>
-                                    RUC:{{$orden->empresa->ruc}}
-                                    <br>
-                                    <div style="">
-                                        {{$orden->empresa->direccion_fiscal}}
-                                    </div>
-                                    <br>
-
-                                </div>
-
-                            </div>
-
                         </div>
 
                     </div>
 
                     <div class="col-sm-6 text-right">
                         <div class="row">
-                            <div class="col-md-6 text-center">
-
+                            <div class="col-md-12 m-t">
+                                <strong>{{$orden->empresa->razon_social}}</strong>
+                                <br>
+                                RUC:{{$orden->empresa->ruc}}
+                                <br>
+                                {{$orden->empresa->direccion_fiscal}}
                             </div>
-                            <div class="col-md-6 text-right">
-                                <h4>ORDEN DE COMPRA</h4>
-                                <h4 class="text-navy">OC-00{{$orden->id}}</h4>
-                                <hr>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" style="text-transform: uppercase;">
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2" class="text-center">FECHAS</th>
 
-                                            </tr>
-                                            <tr>
-                                                <th class="text-center">DOC.</th>
-                                                <th class="text-center">ENTREGA</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th class="text-center">
-                                                    <span
-                                                        style="font-weight: normal">{{ Carbon\Carbon::parse($orden->fecha_documento)->format('d/m/y') }}</span>
-                                                </th>
-                                                <th class="text-center">
-                                                    <span
-                                                        style="font-weight: normal">{{ Carbon\Carbon::parse($orden->fecha_entrega)->format('d/m/y') }}</span>
-                                                </th>
-
-                                            </tr>
-
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 text-center">
+                    </div>
 
-                            </div>
-                            <div class="col-md-6 text-center">
+                </div>
 
-                            </div>
+                <hr>
+
+
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="text-transform: uppercase;" id="tabla-fecha">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center">ORDEN DE COMPRA</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-left">N°:</th>
+                                        <th class="text-center">
+                                            <span
+                                                style="font-weight: normal">OC - {{ $orden->id }}</span>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">FECHA EMISION</th>
+                                        <th class="text-center">
+                                            <span
+                                                style="font-weight: normal">{{ Carbon\Carbon::parse($orden->fecha_emision)->format('d/m/y') }}</span>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">FECHA ENTREGA</th>
+                                        <th class="text-center">
+                                            <span
+                                                style="font-weight: normal">{{ Carbon\Carbon::parse($orden->fecha_entrega)->format('d/m/y') }}</span>
+                                        </th>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
                         </div>
+                    </div>
+                    <div class="col-md-8 text-right" style="text-transform: uppercase;" id="contacto">
+                        <b>CONTACTO</b>
+                        <br>
+                        <span>{{$nombre_completo}}</span>
+                        <br>
+                        <span>{{$orden->usuario->empleado->persona->telefono_movil}}</span>
+                        <br>
+                        <a href="mailto:{{$orden->usuario->empleado->persona->correo_electronico}}">{{$orden->usuario->empleado->persona->correo_electronico}}</a>
 
                     </div>
                 </div>
 
                 <hr>
+
                 <div class="row">
-                    <div class="col-md-6 b-r text-center" style="text-transform:uppercase">
-                        <p><b>DATOS DE LA EMPRESA</b></p>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>ESTADO:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"><span class="label label-primary">{{$orden->empresa->estado}}</span>
-                                </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>RUC:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1 text-navy">{{$orden->empresa->ruc}}</dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>RAZON SOCIAL:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> {{$orden->empresa->razon_social}}</dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>COMERCIAL:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> {{$orden->empresa->razon_social_abreviada}}</dd>
-                            </div>
-                        </dl>
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="text-transform: uppercase;" id="tabla-proveedor">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center">DATOS DEL PROVEEDOR</th>
 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-left" style="width:20%">RAZON SOCIAL:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span
+                                                style="font-weight: normal"> {{$orden->proveedor->descripcion}}</span>
+                                        </th>
+                                    </tr>
 
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>DIRECCION:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> {{$orden->empresa->direccion_fiscal}} </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>CORREO:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">
-                                    @if($orden->empresa->correo)
-                                    {{$orden->empresa->correo}}
+                                    @if($orden->proveedor->ruc)
+                                    <tr>
+                                        <th class="text-left" style="width:20%">RUC:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span
+                                                style="font-weight: normal"> {{$orden->proveedor->ruc}}</span>
+                                        </th>
+                                    </tr>
                                     @else
-                                    -
+                                    <tr>
+                                        <th class="text-left" style="width:20%">DNI:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span
+                                                style="font-weight: normal">{{$orden->proveedor->dni}}</span>
+                                        </th>
+                                    </tr>
                                     @endif
+                                    
+                                    
+                                    <tr>
+                                        <th class="text-left" style="width:20%">DIRECCION:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span
+                                                style="font-weight: normal">{{$orden->proveedor->direccion}}</span>
+                                        </th>
 
-                                </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>TELEFONO:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">
-                                    @if($orden->empresa->telefono)
-                                    {{$orden->empresa->telefono}}
-                                    @else
-                                    -
-                                    @endif
+                                    </tr>
 
-                                </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>CELULAR:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">
-                                    @if($orden->empresa->celular)
-                                    {{$orden->empresa->celular}}
-                                    @else
-                                    -
-                                    @endif
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                    <div class="col-md-6 text-center" style="text-transform:uppercase">
-                        <p><b>DATOS DEL PROVEEDOR</b></p>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>ESTADO:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"><span class="label label-primary">{{$orden->proveedor->estado}}</span>
-                                </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            @if($orden->proveedor->ruc)
+                                    <tr>
+                                        <th class="text-left" style="width:20%">CONTACTO:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal">
+                                            @if($orden->proveedor->contacto)
+                                                {{$orden->proveedor->contacto}}
+                                            @else
+                                                -
+                                            @endif
+                                            </span>
+                                        </th>
 
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>RUC:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1 text-navy">{{$orden->empresa->ruc}}</dd>
-                            </div>
+                                    </tr>
 
-                            @else
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>DNI:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1 text-navy">{{$orden->empresa->dni}}</dd>
-                            </div>
+                                    <tr>
+                                        <th class="text-left" style="width:20%">TELEFONO:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal">
+                                            @if($orden->proveedor->telefono)
+                                            {{$orden->proveedor->telefono}}
+                                            @else
+                                            -
+                                            @endif
+                                            </span>
+                                        </th>
 
-                            @endif
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left" style="width:20%">CORREO:</th>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal">
+                                            <a href="mailto:{{$orden->proveedor->correo}}">{{$orden->proveedor->correo}}</a>
+                                            </span>
+                                        </th>
 
+                                    </tr>
 
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>DESCRIPCION:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> {{$orden->proveedor->descripcion}}</dd>
-                            </div>
-                        </dl>
+                                </tbody>
 
-
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>DIRECCION:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> {{$orden->proveedor->direccion}} </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>ZONA:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> {{$orden->proveedor->zona}}</dd>
-                            </div>
-                        </dl>
-
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>CORREO:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">
-                                    {{$orden->proveedor->correo}}
-                                </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>TELEFONO:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">
-                                    @if($orden->proveedor->telefono)
-                                    {{$orden->proveedor->telefono}}
-                                    @else
-                                    -
-                                    @endif
-
-                                </dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>CELULAR:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">
-                                    @if($orden->proveedor->celular)
-                                    {{$orden->proveedor->celular}}
-                                    @else
-                                    -
-                                    @endif
-                                </dd>
-                            </div>
-                        </dl>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
 
                 <hr>
 
                 <div class="table-responsive">
-                    <table class="table invoice-table table table-bordered" style="text-transform:uppercase">
+                    <table class="table invoice-table table table-bordered" style="text-transform:uppercase" id="tabla-producto">
                         <thead>
                             <tr>
-                                <th class=>ARTÍCULO</th>
-                                <th class="text-center">PRESENTACIÓN</th>
                                 <th class="text-center">CANTIDAD</th>
-                                <th class="text-center">PRECIO UNIT.</th>
-                                <th class="text-center">IMPORTE</th>
+                                <th class="text-center">PRESENTACIÓN</th>
+                                <th class="text-center">PRODUCTO</th>
+                                <th class="text-center">PRECIO</th>
+                                <th class="text-center">TOTAL</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($detalles as $detalle)
                             <tr>
-                                <td>
-                                    <div><strong>{{$detalle->articulo->descripcion}}</strong></div>
-                                </td>
+                                <td class="text-center">{{$detalle->cantidad}}</td>
                                 <td class="text-center">
                                     @foreach($presentaciones as $presentacion)
                                     @if($presentacion->descripcion == $detalle->articulo->presentacion)
@@ -339,9 +236,13 @@
                                     @endif
                                     @endforeach
                                 </td>
-                                <td class="text-center">{{$detalle->cantidad}}</td>
-                                <td class="text-center">{{$detalle->precio}}</td>
-                                <td class="text-center subtotal">{{$detalle->cantidad * $detalle->precio}}</td>
+                                <td class="text-left">
+                                    <div><strong>{{$detalle->articulo->descripcion}}</strong></div>
+                                </td>
+
+                                
+                                <td class="text-center">{{$moneda.'  '.$detalle->precio}}</td>
+                                <td class="text-center subtotal">{{$moneda.'  '.$detalle->cantidad * $detalle->precio}}</td>
 
                             </tr>
                             @endforeach
@@ -350,18 +251,21 @@
                         </tbody>
                         <tfoot style="text-transform:uppercase">
                             <tr>
-                                <th colspan="4" style="text-align:right"><strong>Sub Total :</strong></th>
+                                <td colspan="3" class="borde-title"></td>
+                                <th colspan="1" style="text-align:center" class="title-producto"><strong>Sub Total</strong></th>
                                 <th class="text-center"><span id="">{{$moneda.'  '.$subtotal}}</span></th>
 
                             </tr>
                             <tr>
-                                <th colspan="4" style="text-align:right"><strong>IGV
-                                        @if($orden->igv){{$orden->igv}}%@endif :</strong></th>
+                                <td colspan="3" class="borde-title"></td>
+                                <th colspan="1" style="text-align:center" class="title-producto"><strong>IGV
+                                        @if($orden->igv){{$orden->igv}}%@endif </strong></th>
                                 <th class="text-center"><span id="">{{$moneda.'  '.$igv}}</span></th>
 
                             </tr>
                             <tr>
-                                <th colspan="4" style="text-align:right"><strong>Total :</strong></th>
+                                <td colspan="3" class="borde-title"></td>
+                                <th colspan="1" style="text-align:center" class="title-producto"><strong>Total </strong></th>
                                 <th class="text-center"><span id="total">{{$moneda.'  '.$total}}</span></th>
 
                             </tr>
@@ -371,99 +275,43 @@
 
                 <hr>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-bordered" style="text-transform: uppercase;">
+                            <table class="table table-bordered" style="text-transform: uppercase;" id="tabla-transportista">
                                 <thead>
                                     <tr>
-                                        <th colspan="2" class="text-center">OBSERVACION</th>
+                                        <th colspan="2" class="text-center">DATOS DEL TRANSPORTISTA</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th class="">
-                                            @if($orden->observacion)
-                                            <span style="font-weight: normal">{{$orden->observacion}}</span>
-                                            @else
-                                            <span style="font-weight: normal">NO ESPECIFICADO</span>
-                                            @endif
-
+                                        <th class="text-left" style="width:20%">
+                                            RUC:
                                         </th>
-
-                                    </tr>
-
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" style="text-transform: uppercase;">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2" class="text-center">DATOS ADICIONALES</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th class="text-left">
-                                            CONDICION DE ORDEN DE COMPRA
-                                        </th>
-                                        <th class="text-left">
-                                            <span style="font-weight: normal">{{$orden->modo_compra}}</span>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal">{{$orden->proveedor->ruc_transporte}}</span>
                                         </th>
 
                                     </tr>
                                     <tr>
-                                        <th class="text-left">
-                                            TIPO DE MONEDA
+                                        <th class="text-left" style="width:20%">
+                                            EMPRESA:
                                         </th>
-                                        <th class="text-left">
-                                            <span style="font-weight: normal">{{$orden->moneda}}</span>
-                                        </th>
-
-                                    </tr>
-                                    <tr>
-                                        <th class="text-left">
-                                            TIPO DE CAMBIO
-                                        </th>
-                                        <th class="text-left">
-                                        <span style="font-weight: normal">{{$orden->tipo_cambio}}</span>
-                                        </th>
-
-                                    </tr>
-                                    <tr>
-                                        <th class="text-left">
-                                            DIRECCION DE SERVICIO
-                                        </th>
-                                        <th class="text-left">
-                                            <span style="font-weight: normal"></span>
-                                        </th>
-
-                                    </tr>
-                                    <tr>
-                                        <th class="text-left">
-                                            EMPRESA DE TRANSPORTE
-                                        </th>
-                                        <th class="text-left">
+                                        <th class="text-left" style="width:80%">
                                             <span style="font-weight: normal">{{$orden->proveedor->transporte}}</span>
                                         </th>
 
                                     </tr>
-
                                     <tr>
-                                        <th class="text-left">
-                                            CONTACTO DE ENTREGA
+                                        <th class="text-left" style="width:20%">
+                                            DIRECCION:
                                         </th>
-                                        <th class="text-left">
-                                            <span style="font-weight: normal"></span>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal">{{$orden->proveedor->direccion_transporte}}</span>
                                         </th>
 
                                     </tr>
-                                    
 
                                 </tbody>
 
@@ -472,6 +320,40 @@
 
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="text-transform: uppercase;" id="tabla-adicional">
+
+                                <tbody>
+                                    <tr>
+                                        <th class="text-left title-adicional" style="width:20%">
+                                            CONDICION DE ORDEN:
+                                        </th>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal">{{$orden->modo_compra}}</span>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left title-adicional" style="width:20%">
+                                            OBSERVACION:
+                                        </th>
+                                        <th class="text-left" style="width:80%">
+                                            <span style="font-weight: normal"> {{$orden->observacion}}</span>
+                                        </th>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -480,101 +362,150 @@
 
 @stop
 @push('styles')
+<style>
+    #tabla-transportista thead th,
+    #tabla-fecha thead th,
+    #tabla-proveedor thead th,
+    #tabla-producto thead th
+    {
+        background: #0f243e;
+        color: #ffff;
+        border: 2px solid #0f243e;
+    }
+    #tabla-transportista,
+    #tabla-fecha,
+    #tabla-proveedor,
+    #tabla-producto ,
+    #tabla-adicional
+    {
+        color: #000;
+        background: #EEEEEE;
+        border: 2px solid #0f243e;
+    }
+    #tabla-transportista tbody tr th,
+    #tabla-fecha tbody tr th,
+    #tabla-proveedor tbody tr th,
+    #tabla-producto tbody tr td,
+    #tabla-producto tfoot tr th,
+    #tabla-adicional tbody tr th
+
+    {
+        /* padding: 8px; */
+        border: 2px solid #0f243e;
+    }
+
+    #tabla-producto .title-producto {
+        background: #0f243e;
+        color: #ffff;
+        border: 2px solid #0f243e;
+        text-align:center;
+    }
+    #tabla-producto .borde-title{
+        border:none;
+        color: #000;
+        background: white;
+        border: 2px solid white;
+    }
+    #tabla-adicional .title-adicional{
+        background: #0f243e;
+        color: #ffff;
+        border: 2px solid #0f243e;
+    }
+
+</style>
 @endpush
 @push('scripts')
 <script>
-    function generarReporte() {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
+function generarReporte() {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
             confirmButton: 'btn btn-success',
             cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
+        },
+        buttonsStyling: false
+    })
 
-        Swal.fire({
-            title: "Opción Reporte",
-            text: "¿Seguro que desea generar reporte?",
-            showCancelButton: true,
-            icon: 'info',
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-            // showLoaderOnConfirm: true,
-        }).then((result) => {
-            if (result.value) {
-                window.location.href = "{{route('compras.orden.reporte', $orden->id)}}"
-                Swal.fire({
-                    title: '¡Cargando!',
-                    type: 'info',
-                    text: 'Generando Reporte',
-                    showConfirmButton:false,
-                    onBeforeOpen: () => {
-                        Swal.showLoading()
-                    }
-                })
-                
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
+    Swal.fire({
+        title: "Opción Reporte",
+        text: "¿Seguro que desea generar reporte?",
+        showCancelButton: true,
+        icon: 'info',
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+        // showLoaderOnConfirm: true,
+    }).then((result) => {
+        if (result.value) {
+            window.location.href = "{{route('compras.orden.reporte', $orden->id)}}"
+            Swal.fire({
+                title: '¡Cargando!',
+                type: 'info',
+                text: 'Generando Reporte',
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
                 'Cancelado',
                 'La Solicitud se ha cancelado.',
                 'error'
-                )
-            }
-        })
+            )
+        }
+    })
 
-    }
-
+}
 </script>
 <script>
-    function enviarReporte() {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
+function enviarReporte() {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
             confirmButton: 'btn btn-success',
             cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
+        },
+        buttonsStyling: false
+    })
 
-        Swal.fire({
-            title: "Opción Reporte",
-            text: "¿Seguro que desea enviar reporte por correo?",
-            showCancelButton: true,
-            icon: 'info',
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-            // showLoaderOnConfirm: true,
-        }).then((result) => {
-            if (result.value) {
-                window.location.href = "{{route('compras.orden.email', $orden->id)}}"
-                Swal.fire({
-                    title: '¡Enviando!',
-                    type: 'info',
-                    text: 'El Reporte se esta enviando al correo: '+"{{$orden->proveedor->correo}}",
-                    showConfirmButton:false,
-                    onBeforeOpen: () => {
-                        Swal.showLoading()
-                    }
-                })
-                
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
+    Swal.fire({
+        title: "Opción Reporte",
+        text: "¿Seguro que desea enviar reporte por correo?",
+        showCancelButton: true,
+        icon: 'info',
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+        // showLoaderOnConfirm: true,
+    }).then((result) => {
+        if (result.value) {
+            window.location.href = "{{route('compras.orden.email', $orden->id)}}"
+            Swal.fire({
+                title: '¡Enviando!',
+                type: 'info',
+                text: 'El Reporte se esta enviando al correo: ' + "{{$orden->proveedor->correo}}",
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
                 'Cancelado',
                 'La Solicitud se ha cancelado.',
                 'error'
-                )
-            }
-        })
+            )
+        }
+    })
 
-    }
-
+}
 </script>
 
 

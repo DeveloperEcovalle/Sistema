@@ -33,17 +33,26 @@ class OrdenController extends Controller
     public function getOrder(){
 
         //Cambiar a estado pendiente si la fecha de la de hoy
-        $fecha_hoy = Carbon::now();
-        $ordenes = Orden::where('estado','!=','CONCRETADA')->where('estado','!=','ANULADO')->get();
-        foreach($ordenes as $orden){
-            if ($orden->fecha_entrega <= $fecha_hoy->toDateString()) {
-                $orden->estado = 'PENDIENTE';
-                $orden->update();
-            }else{
-                $orden->estado = 'VIGENTE';
-                $orden->update();
+        DB::table('ordenes')->where('estado','!=','ANULADO')
+        ->where('estado','!=','CONCRETADA')
+        ->chunkById(100,function ($ordenes) {
+            $fecha_hoy = Carbon::now();
+
+            foreach ($ordenes as $orden) {
+
+                if ($orden->fecha_entrega <= $fecha_hoy->toDateString()) {
+                    DB::table('ordenes')
+                    ->where('id', $orden->id)
+                    ->update(['estado' => 'PENDIENTE']);
+                }else{
+                    DB::table('ordenes')
+                    ->where('id', $orden->id)
+                    ->update(['estado' => 'VIGENTE']);
+                }
+
             }
-        }
+        });
+        $ordenes = Orden::where('estado','!=','CONCRETADA')->where('estado','!=','ANULADO')->get();
 
         $coleccion = collect([]);
         foreach($ordenes as $orden){
@@ -75,15 +84,40 @@ class OrdenController extends Controller
                 $decimal_total = number_format($subtotal, 2, '.', '');
             }
 
+            //Pagos a cuenta
+            $pagos = DB::table('pagos')
+            ->select('pagos.*')
+            ->where('pagos.orden_id','=',$orden->id)
+            ->where('pagos.estado','!=','ANULADO')
+            ->get();
+
+            // CALCULAR ACUENTA EN MONEDA
+            $acuenta = 0;
+            foreach($pagos as $pago){
+                $acuenta = $acuenta + $pago->monto;
+            }
+
+            //CALCULAR A CUENTA EN SOLES
+            $soles = 0;
+            $cambio = 0;
+            foreach($pagos as $pago){
+                $cambio = $pago->monto * $pago->tipo_cambio;
+                $soles = $soles+$cambio;
+            }
+
+            //CALCULAR SALDO
+            $saldo = $decimal_total - $acuenta;
+
             $coleccion->push([
                 'id' => $orden->id,
-                'empresa' => $orden->empresa->razon_social,
                 'proveedor' => $orden->proveedor->descripcion,
-                'fecha_documento' =>  Carbon::parse($orden->fecha_documento)->format( 'd/m/Y'),
+                'fecha_emision' =>  Carbon::parse($orden->fecha_emision)->format( 'd/m/Y'),
                 'fecha_entrega' =>  Carbon::parse($orden->fecha_entrega)->format( 'd/m/Y'), 
-                'enviado' => $orden->enviado,
                 'estado' => $orden->estado,
-                'total' => $tipo_moneda.' '.$decimal_total,
+                'total' => $tipo_moneda.' '.number_format($decimal_total, 2, '.', ''),
+                'acuenta' => $tipo_moneda.' '.number_format($acuenta, 2, '.', ''),
+                'acuenta_soles' => 'S/. '.number_format($soles, 2, '.', ''),
+                'saldo' => $tipo_moneda.' '.number_format($saldo, 2, '.', ''),
             ]);
         }
   
@@ -141,7 +175,7 @@ class OrdenController extends Controller
     public function store(Request $request){
         $data = $request->all();
         $rules = [
-            'fecha_documento'=> 'required',
+            'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
             'empresa_id'=> 'required',
             'proveedor_id'=> 'required',
@@ -153,7 +187,7 @@ class OrdenController extends Controller
             
         ];
         $message = [
-            'fecha_documento.required' => 'El campo Fecha de Documento es obligatorio.',
+            'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
             'empresa_id.required' => 'El campo Empresa es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
@@ -169,7 +203,7 @@ class OrdenController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $orden = new Orden();        
-        $orden->fecha_documento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_documento'))->format('Y-m-d');
+        $orden->fecha_emision = Carbon::createFromFormat('d/m/Y', $request->get('fecha_emision'))->format('Y-m-d');
         $orden->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
         $orden->empresa_id = $request->get('empresa_id');
         $orden->proveedor_id = $request->get('proveedor_id');
@@ -177,6 +211,7 @@ class OrdenController extends Controller
         $orden->observacion = $request->get('observacion');
         $orden->moneda = $request->get('moneda');
         $orden->tipo_cambio = $request->get('tipo_cambio');
+        $orden->usuario_id = auth()->user()->id;
         $orden->igv = $request->get('igv');
         if ($request->get('igv_check') == "on") {
             $orden->igv_check = "1";
@@ -203,7 +238,7 @@ class OrdenController extends Controller
     public function update(Request $request, $id){
         $data = $request->all();
         $rules = [
-            'fecha_documento'=> 'required',
+            'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
             'empresa_id'=> 'required',
             'proveedor_id'=> 'required',
@@ -213,7 +248,7 @@ class OrdenController extends Controller
             'igv' => 'required_if:igv_check,==,on|digits_between:1,3',
         ];
         $message = [
-            'fecha_documento.required' => 'El campo Fecha de Documento es obligatorio.',
+            'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
             'empresa_id.required' => 'El campo Empresa es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
@@ -227,13 +262,14 @@ class OrdenController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $orden = Orden::findOrFail($id);        
-        $orden->fecha_documento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_documento'))->format('Y-m-d');
+        $orden->fecha_emision = Carbon::createFromFormat('d/m/Y', $request->get('fecha_emision'))->format('Y-m-d');
         $orden->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
         $orden->empresa_id = $request->get('empresa_id');
         $orden->proveedor_id = $request->get('proveedor_id');
         $orden->modo_compra = $request->get('modo_compra');
         $orden->moneda = $request->get('moneda');
         $orden->observacion = $request->get('observacion');
+        $orden->usuario_id = auth()->user()->id;
         $orden->igv = $request->get('igv');
         $orden->tipo_cambio = $request->get('tipo_cambio');
         
@@ -282,6 +318,7 @@ class OrdenController extends Controller
     public function show($id)
     {
         $orden = Orden::findOrFail($id);
+        $nombre_completo = $orden->usuario->empleado->persona->apellido_paterno.' '.$orden->usuario->empleado->persona->apellido_materno.' '.$orden->usuario->empleado->persona->nombres;
         $detalles = Detalle::where('orden_id',$id)->get(); 
         $presentaciones = presentaciones(); 
         $subtotal = 0; 
@@ -326,6 +363,7 @@ class OrdenController extends Controller
             'moneda' => $tipo_moneda,
             'igv' => $decimal_igv,
             'total' => $decimal_total,
+            'nombre_completo' => $nombre_completo
         ]);
 
     }
@@ -333,6 +371,7 @@ class OrdenController extends Controller
     public function report($id)
     {
         $orden = Orden::findOrFail($id);
+        $nombre_completo = $orden->usuario->empleado->persona->apellido_paterno.' '.$orden->usuario->empleado->persona->apellido_materno.' '.$orden->usuario->empleado->persona->nombres;
         $detalles = Detalle::where('orden_id',$id)->get();
         $subtotal = 0; 
         $igv = '';
@@ -368,6 +407,7 @@ class OrdenController extends Controller
         $paper_size = array(0,0,360,360);
         $pdf = PDF::loadview('compras.ordenes.reportes.detalle',[
             'orden' => $orden,
+            'nombre_completo' => $nombre_completo,
             'detalles' => $detalles,
             'presentaciones' => $presentaciones,
             'subtotal' => $decimal_subtotal,
@@ -482,6 +522,8 @@ class OrdenController extends Controller
         return $coleccion;
     }
 
+
+    
 
 
 

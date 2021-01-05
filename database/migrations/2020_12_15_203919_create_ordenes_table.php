@@ -25,7 +25,7 @@ class CreateOrdenesTable extends Migration
                 ->references('id')->on('proveedores')
                 ->onDelete('cascade');
 
-            $table->date('fecha_documento');
+            $table->date('fecha_emision');
             $table->date('fecha_entrega');
 
             $table->string('modo_compra');
@@ -35,6 +35,7 @@ class CreateOrdenesTable extends Migration
             $table->unsignedDecimal('tipo_cambio', 15,2)->nullable();
             $table->mediumText('observacion')->nullable();
             $table->boolean('enviado')->nullable(); 
+            $table->BigInteger('usuario_id');
             
             $table->enum('estado',['VIGENTE','PENDIENTE','ADELANTO','CONCRETADA','ANULADO'])->default('VIGENTE');
 

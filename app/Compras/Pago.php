@@ -10,7 +10,8 @@ class Pago extends Model
     protected $table = 'pagos';
     public $timestamps = true;
     protected $fillable = [
-            'banco_id',
+            'orden_id',
+            'banco',
             'ruta_archivo',
             'nombre_archivo',
             'fecha_pago',
@@ -21,9 +22,14 @@ class Pago extends Model
             'estado'
         ];
 
-    public function banco()
+    public function bancos()
     {
-        return $this->belongsTo('App\Compras\Banco');
+        return $this->belongsTo('App\Compras\Banco','banco');
+    }
+
+    public function orden()
+    {
+        return $this->belongsTo('App\Compras\Orden');
     }
     
 }

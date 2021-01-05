@@ -34,12 +34,38 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-content">
-                    <form action="{{route('compras.pago.update',$pago->id)}}" id="enviar_pago" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('compras.pago.update',$pago[0]->id_pago)}}" id="enviar_pago" method="POST" enctype="multipart/form-data">
                             @csrf @method('PUT')
                             <div class="row">
                                 <div class="col-sm-8 b-r">
-                                    <h4 class="">Entidad Financiera</h4>
-                                    <p>Seleccionar entidad financiera:</p>
+                                    <div class="row">
+                                        
+                                        <div class="col-md-6">
+                                            <h4 class="">Entidad Financiera</h4>
+                                            <p>Seleccionar entidad financiera:</p>
+                                        </div>
+                                        <div class="col-md-3 text-right b-r">
+                                            <h4 class="">Monto Restante</h4>
+                                            <p class="text-navy"><b>
+                                                @foreach ($monedas as $moneda)
+                                                    @if ($moneda->descripcion == $orden->moneda)
+                                                        {{$moneda->simbolo}}
+                                                    @endif
+                                                @endforeach
+                                            <span id="monto_restante"></span></b></p>
+                                        </div>
+                                        <div class="col-md-3 text-right">
+                                            <h4 class="">Monto de la Orden</h4>
+                                            <p class="text-navy"><b>
+                                                @foreach ($monedas as $moneda)
+                                                    @if ($moneda->descripcion == $orden->moneda)
+                                                        {{$moneda->simbolo}}
+                                                    @endif
+                                                @endforeach
+                                            {{$monto}}</b></p>
+                                        </div>
+
+                                    </div>
 
                                     <div class="form-group">
                                         <div class="table-responsive">
@@ -63,36 +89,94 @@
 
                                     </div>
 
-                                </div>
-                                <div class="col-sm-4">
+                                    <hr>
                                     <h4>Datos Seleccionados</h4>
                                     <p>Datos seleccionados de la entidad financiera:</p>
-                                    <input type="hidden" name="id_entidad" id="id_entidad" value="{{old('id_entidad', $pago->banco_id)}}">
-                                    <input type="hidden" name="id_orden" id="id_orden" value="{{$orden->id}}">
-                                    <div class="form-group">
+                                    <div class="form-group row">
+                                       
+                                            <input type="hidden" name="id_orden" id="id_orden" value="{{$orden->id}}">
+                                            <input type="hidden" name="id_entidad" id="id_entidad" value="{{old('id_entidad' , $pago[0]->banco_id)}}">
+                                            <div class="col-md-3">
 
-                                        <label class="col-form-label">Descripción</label>
-                                        <input type="text" id="descripcion" class="form-control"value="{{old('id_entidad', $pago->banco->descripcion)}}" disabled>
+                                                <label class="col-form-label">Descripción</label>
+                                                <input type="text" id="descripcion" class="form-control" name="descripcion" value="{{old('descripcion' , $pago[0]->descripcion)}}" disabled>
+                                                
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <label class="col-form-label">Moneda</label>
+                                                <input type="text" id="moneda" class="form-control" name="moneda" value="{{old('moneda' , $pago[0]->moneda)}}" disabled>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <label class="col-form-label">N° Cuenta</label>
+                                                <input type="text" id="cuenta" class="form-control" name="num_cuenta" value="{{old('num_cuenta' , $pago[0]->num_cuenta)}}" disabled>
+
+                                            </div>
+                                            
+                                            <div class="col-md-3">
+
+                                                <label class="col-form-label">N° CCI</label>
+                                                <input type="text" id="cci" class="form-control"  name="cci" value="{{old('cci' , $pago[0]->cci)}}" disabled>
+                                            </div>
+                                        
                                         
                                     </div>
 
-                                    <div class="form-group">
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Proveedor</h4>
+                                    <p>Datos del proveedor a pagar:</p>
+                                    <div style="text-transform:uppercase">
 
-                                        <label class="col-form-label">Moneda</label>
-                                        <input type="text" id="moneda" name="moneda" class="form-control" value="{{old('moneda', $pago->banco->tipo_moneda)}}" disabled>
+                                        @if ($orden->proveedor->ruc)
+                                            <div class="form-group" >
 
-                                    </div>
-                                    <div class="form-group">
+                                            <label class="col-form-label">RUC</label>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->ruc}}" style="text-transform:uppercase" disabled>
 
-                                        <label class="col-form-label">N° Cuenta</label>
-                                        <input type="text" id="cuenta"  name="cuenta" class="form-control" value="{{old('cuenta', $pago->banco->num_cuenta)}}" disabled>
+                                            </div>
 
-                                    </div>
-                                    <div class="form-group">
+                                        @else
+                                            <div class="form-group" >
 
-                                        <label class="col-form-label">N° CCI</label>
-                                        <input type="text" id="cci" name="cci" value="{{old('cci', $pago->banco->cci)}}" class="form-control" disabled>
+                                            <label class="col-form-label">DNI</label>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->dni}}" style="text-transform:uppercase" disabled>
 
+                                            </div>
+                                        @endif
+
+
+                                        <div class="form-group" >
+
+                                            <label class="col-form-label">Descripcion</label>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->descripcion}}" style="text-transform:uppercase" disabled>
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label class="col-form-label">Direccion</label>
+                                            <textarea type="text" style="text-transform:uppercase" class="form-control" disabled>{{$orden->proveedor->direccion}}</textarea>
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label class="col-form-label">Telefono</label>
+                                            <input type="text" class="form-control"  style="text-transform:uppercase" value="{{$orden->proveedor->telefono}}" disabled>
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label class="col-form-label">Correo</label>
+                                            <input type="text"  style="text-transform:uppercase" class="form-control" value="{{$orden->proveedor->correo}}"disabled>
+
+                                        </div>
                                     </div>
 
                                 </div>
@@ -103,6 +187,8 @@
                                 <div class="col-md-6 b-r">
                                     <h4>Pago</h4>
                                     <p>Registrar datos del nuevo pago:</p>
+                                    <!-- Monto restante global -->
+                                    <input type="hidden" id="suma_monto_restante" value="{{$monto_restante + $pago[0]->monto}}">
                                     <div class="form-group row">
 
                                         <div class="col-lg-6 col-xs-12" id="fecha_pago">
@@ -113,7 +199,7 @@
                                                 </span>
                                                 <input type="text" id="fecha_pago_campo" name="fecha_pago"
                                                     class="form-control {{ $errors->has('fecha_pago') ? ' is-invalid' : '' }}"
-                                                    value="{{old('fecha_pago',getFechaFormato($pago->fecha_pago, 'd/m/Y'))}}"
+                                                    value="{{old('fecha_pago',getFechaFormato($pago[0]->fecha_pago, 'd/m/Y'))}}"
                                                     autocomplete="off" required readonly>
 
                                                     @if ($errors->has('fecha_pago'))
@@ -125,28 +211,14 @@
                                         </div>
 
                                         <div class="col-lg-6 col-xs-12" id="">
-                                                <label class="required">Monto:</label>
-                                                <input type="text" id="monto" name="monto" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{old('monto',$pago->monto)}}" required>
-                                                @if ($errors->has('monto'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('monto') }}</strong>
-                                                </span>
-                                                @endif
-
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group row">
-
-                                        <div class="col-lg-6 col-xs-12" id="">
                                             <label class="required">Moneda</label>
                                             <select
                                                 class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
-                                                style="text-transform: uppercase; width:100%" value="{{old('moneda')}}"
-                                                name="moneda" id="moneda" required>
+                                                style="text-transform: uppercase; width:100%" value="{{old('moneda',$pago[0]->moneda)}}"
+                                                name="moneda" id="moneda" disabled>
                                                 <option></option>
                                                 @foreach ($monedas as $moneda)
-                                                <option value="{{$moneda->descripcion}}" @if(old('moneda',$pago->moneda)==$moneda->
+                                                <option value="{{$moneda->descripcion}}" @if(old('moneda',$pago[0]->moneda)==$moneda->
                                                     descripcion ) {{'selected'}} @endif
                                                     >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
                                                 @endforeach
@@ -156,12 +228,39 @@
                                                 </span>
                                                 @endif
                                             </select>
+                                            <input type="hidden" name="moneda" value="{{$orden->moneda}}">
+
 
                                         </div>
 
-                                        <div class="col-lg-6 col-xs-12" id="">
+
+
+                                    </div>
+                                    <div class="form-group row">
+
+                                        <div class="col-lg-4 col-xs-12" id="">
+                                                <label class="required">Monto
+                                                @foreach ($monedas as $moneda)
+                                                    @if ($moneda->descripcion == $orden->moneda)
+                                                        {{$moneda->simbolo}}
+                                                    @endif
+                                                @endforeach
+                                                :</label>
+                                                <input type="text" id="monto" name="monto" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{old('monto',$pago[0]->monto)}}"  placeholder="0.00" required>
+                                                @if ($errors->has('monto'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('monto') }}</strong>
+                                                </span>
+                                                @endif
+
+                                        </div>
+
+                                        <input type="hidden" id="monto_2" value="{{$pago[0]->monto}}">
+
+                                        @if($orden->moneda != 'SOLES')
+                                        <div class="col-lg-4 col-xs-12" id="">
                                                 <label class="required">Tipo de Cambio:</label>
-                                                <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$pago->tipo_cambio)}}" required>
+                                                <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$pago[0]->tipo_cambio)}}"  placeholder="0.00" required>
                                                 @if ($errors->has('tipo_cambio'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('tipo_cambio') }}</strong>
@@ -169,6 +268,20 @@
                                                 @endif
 
                                         </div>
+                                        <div class="col-lg-4 col-xs-12" id="requerido_cambio">
+                                                <label class="required" id="requerido_tipo_cambio_label">Cambio (S/.):</label>
+                                                <input type="text" id="cambio" name="cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('cambio')}}"  placeholder="0.00"required disabled>
+                                                @if ($errors->has('cambio'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('cambio') }}</strong>
+                                                </span>
+                                                @endif
+
+                                        </div>
+                                        @endif
+
+
+
 
                                     </div>
 
@@ -181,10 +294,10 @@
                                             <div class="custom-file">
                                                 <input id="archivo" type="file" name="archivo" id="archivo"
                                                     class="custom-file-input {{ $errors->has('archivo') ? ' is-invalid' : '' }}"
-                                                    accept="pdf , image/*" value="{{old('archivo', $pago->ruta_archivo)}}">
+                                                    accept="pdf , image/*" value="{{old('archivo', $pago[0]->ruta_archivo)}}">
 
                                                 <label for="archivo" id="archivo_txt"
-                                                    class="custom-file-label selected {{ $errors->has('ruta') ? ' is-invalid' : '' }}">{{$pago->nombre_archivo}}</label>
+                                                    class="custom-file-label selected {{ $errors->has('ruta') ? ' is-invalid' : '' }}">{{$pago[0]->nombre_archivo}}</label>
 
                                                 @if ($errors->has('archivo'))
                                                 <span class="invalid-feedback" role="alert">
@@ -202,7 +315,7 @@
                                         <textarea type="text" placeholder=""
                                             class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
                                             name="observacion" id="observacion" style="text-transform:uppercase;"
-                                            value="{{old('observacion',$pago->observacion)}}">{{old('observacion',$pago->observacion)}}</textarea>
+                                            value="{{old('observacion',$pago[0]->observacion)}}">{{old('observacion',$pago[0]->observacion)}}</textarea>
                                         @if ($errors->has('observacion'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('observacion') }}</strong>
@@ -318,6 +431,17 @@ $('#tipo_cambio').keyup(function() {
     $(this).val(val);
 });
 
+$('#cambio').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+});
+
+
 $('#monto').keyup(function() {
     var val = $(this).val();
     if (isNaN(val)) {
@@ -397,19 +521,62 @@ $(document).ready(function() {
 
     });
 
+    //Cambio
+    var monto = $('#monto').val()
+    var tipo_cambio = $('#tipo_cambio').val()
+    var cambio = monto*tipo_cambio
+    $('#cambio').val(cambio.toFixed(2))
+
+    //Monto Restante
+    $('#monto_restante').text("{{$monto_restante}}")
+
+    // Escuchamos el evento keyup de nuestro input
+    
+    $('#monto').keyup(function() {
+ 
+        // Valor restante
+        var monto_restante = $('#suma_monto_restante').val()
+        //Rangos
+        const min = 0;    
+ 
+
+        // // Obtenemos el objeto
+        // var self = $(this);
+        // // Obtenemos el valor actual
+        // var value = self.val();
+        
+
+        
+        // Si el valor obtenido es menor a nuestro valor mínimo
+        // o nuestro valor valor obtenido es mayor a nuestro valor máximo
+        // Le decimos al usuario que no está dentro del rango 
+        // y limpiamos nuestro campo
+     
+        if($(this).val() > Number(monto_restante) || $(this).val() < min   ){
+            toastr.error("El monto ingresado no está en el rango permitido del monto restante.", 'Error');
+            $('#monto').val('');
+        }else{
+            const max = (Number(monto_restante) - Number($(this).val())).toFixed(2); 
+            // Nuevo monto restante
+            $('#monto_restante').text(max)
+        }
+        
+    })
+
+
 })
 
 
 function obtenerTabla() {
     var t = $('.dataTables-bancos').DataTable();
-    @foreach($orden->proveedor->bancos as $ban)
-        @if($ban->estado == 'ACTIVO' )
+    @foreach($bancos_proveedor as $ban)
+        @if($ban['estado'] == 'ACTIVO' )
             t.row.add([
-                "{{$ban->id}}",
-                "{{$ban->descripcion}}",
-                "{{$ban->tipo_moneda}}",
-                "{{$ban->num_cuenta}}",
-                "{{$ban->cci}}",
+                "{{$ban['id']}}",
+                "{{$ban['descripcion']}}",
+                "{{$ban['tipo_moneda']}}",
+                "{{$ban['num_cuenta']}}",
+                "{{$ban['cci']}}",
             ]).draw(false);
         @endif
     @endforeach
@@ -429,6 +596,21 @@ $('.custom-file-input').on('change', function() {
         toastr.error('Extensión inválida, formatos admitidos (.pdf .jpg . jpeg . png)', 'Error');
     }
 });
+
+function validar() {
+    
+    var enviar = false;
+
+    if ($('#id_entidad').val()==''){
+        enviar = true
+        toastr.error("Seleccionar entidad bancaria.", 'Error');
+    }
+
+
+
+    return enviar
+
+}
 
 $('#enviar_pago').submit(function(e) {
     e.preventDefault();
@@ -451,7 +633,11 @@ $('#enviar_pago').submit(function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
 
-            this.submit();
+            var enviar = validar()
+            if (enviar ==  false) {
+                $('#cambio').attr('disabled',false)
+                this.submit();               
+            }
 
 
         } else if (
@@ -494,6 +680,25 @@ function buscarBanco() {
 
 
 }
+
+//Calcular cambio soles
+
+$('#tipo_cambio').keyup(function() {
+    var monto = $('#monto').val()
+    var tipo_cambio = $('#tipo_cambio').val()
+    var cambio = monto*tipo_cambio
+    $('#cambio').val(cambio.toFixed(2))
+})
+
+$('#monto').keyup(function() {
+    var monto = $('#monto').val()
+    var tipo_cambio = $('#tipo_cambio').val()
+    var cambio = monto*tipo_cambio
+    $('#cambio').val(cambio.toFixed(2))
+})
+
+
+
 
 </script>
 

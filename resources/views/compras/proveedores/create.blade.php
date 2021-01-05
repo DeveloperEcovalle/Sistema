@@ -219,9 +219,9 @@
 
                                 <div class="form-group row">
                                     <div class="col-md-6">
-                                        <label>Teléfono:</label>
+                                        <label class="required">Teléfono:</label>
                                         <input type="text" placeholder=""
-                                            class="form-control {{ $errors->has('telefono') ? ' is-invalid' : '' }}"
+                                            class="form-control {{ $errors->has('telefono') ? ' is-invalid' : '' }}" required
                                             name="telefono" id="telefono" style="text-transform:uppercase;"
                                             value="{{old('telefono')}}">
                                         @if ($errors->has('telefono'))
@@ -311,9 +311,9 @@
                                                         data-toggle="tab" href="#tab-1"><i
                                                             class="fa fa-check-square"></i> Calidad</a></li>
                                                 <li title="Datos de Contacto"><a class="nav-link" data-toggle="tab"
-                                                        href="#tab-2"> <i class="fa fa-user"></i> Contacto</a></li>
+                                                        href="#tab-2" id="contacto_link"> <i class="fa fa-user"></i> Contacto</a></li>
                                                 <li title="Datos de Tranporte"><a class="nav-link" data-toggle="tab"
-                                                        href="#tab-3"> <i class="fa fa-bus"></i> Transporte</a></li>
+                                                        href="#tab-3" id="transporte_link"> <i class="fa fa-bus"></i> Transporte</a></li>
                                                 <li title="Datos de Almacen"><a class="nav-link" data-toggle="tab"
                                                         href="#tab-4"> <i class="fa fa-building"></i> Almacen</a></li>
                                             </ul>
@@ -401,12 +401,30 @@
                                                                 <strong>{{ $errors->first('contacto') }}</strong>
                                                             </span>
                                                             @endif
+                                                            <div class="invalid-feedback"><b><span id="error-nombre_contacto"></span></b></div> 
+
+                                                        </div>
+
+                                                        <div class="form-group">
+
+                                                            <label>Correo:</label>
+                                                            <input type="text" placeholder=""
+                                                                class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}"
+                                                                name="correo_contacto" id="correo_contacto"
+                                                                style="text-transform:uppercase;"
+                                                                value="{{old('correo_contacto')}}">
+                                                            @if ($errors->has('correo_contacto'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('correo_contacto') }}</strong>
+                                                            </span>
+                                                            @endif
+                                                            <div class="invalid-feedback"><b><span id="error-correo_contacto"></span></b></div> 
 
                                                         </div>
 
                                                         <div class="form-group row">
                                                             <div class="col-md-6">
-                                                                <label>Teléfono:</label>
+                                                                <label class="required">Teléfono:</label>
                                                                 <input type="text" placeholder=""
                                                                     class="form-control {{ $errors->has('telefono_contacto') ? ' is-invalid' : '' }}"
                                                                     name="telefono_contacto" id="telefono_contacto"
@@ -417,6 +435,7 @@
                                                                     <strong>{{ $errors->first('telefono_contacto') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-telefono_contacto"></span></b></div> 
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Celular:</label>
@@ -440,35 +459,78 @@
                                                     <div class="panel-body">
 
                                                         <p><b>Registrar datos del transporte:</b></p>
-                                                        <div class="form-group">
 
-                                                            <label>Nombre Completo:</label>
-                                                            <input type="text" placeholder=""
-                                                                class="form-control {{ $errors->has('transporte') ? ' is-invalid' : '' }}"
-                                                                name="transporte" id="transporte"
-                                                                style="text-transform:uppercase;"
-                                                                value="{{old('transporte')}}">
-                                                            @if ($errors->has('transporte'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('transporte') }}</strong>
-                                                            </span>
-                                                            @endif
+
+                                                        
+                                                        <div class="form-group row">
+
+                                                            <div class="col-md-6">
+                                                                <label class="required">Ruc:</label>
+                                                                <input type="text" placeholder=""
+                                                                    class="form-control {{ $errors->has('ruc_transporte') ? ' is-invalid' : '' }}"
+                                                                    name="ruc_transporte" maxlength="11" id="ruc_transporte"
+                                                                    style="text-transform:uppercase;"
+                                                                    value="{{old('ruc_transporte')}}">
+                                                                @if ($errors->has('ruc_transporte'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('ruc_transporte') }}</strong>
+                                                                </span>
+                                                                @endif
+                                                                <div class="invalid-feedback"><b><span id="error-ruc_transporte"></span></b></div> 
+                                                            </div>
+
+                                                            <div class="col-md-6">
+
+                                                            <label>Estado: </label>
+                                                                <input type="text" id="estado_transporte"
+                                                                    class="form-control {{ $errors->has('estado_transporte') ? ' is-invalid' : '' }}"
+                                                                    name="estado_transporte" value="{{old('estado_transporte',"Inactivo")}}"
+                                                                    style="text-transform:uppercase;" disabled>
+                                                                @if ($errors->has('estado_transporte'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('estado_transporte') }}</strong>
+                                                                </span>
+                                                                @endif
+                                                                <div class="invalid-feedback"><b><span id="error-estado_transporte"></span></b></div> 
+                                                        
+                                                            </div>
+
+
 
 
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <label>Dirección:</label>
+                                                        
+                                                                <label class="required">Nombre Completo:</label>
+                                                                <input type="text" placeholder=""
+                                                                    class="form-control {{ $errors->has('transporte') ? ' is-invalid' : '' }}" 
+                                                                    name="transporte" id="transporte"
+                                                                    style="text-transform:uppercase;"
+                                                                    value="{{old('transporte')}}">
+                                                                @if ($errors->has('transporte'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('transporte') }}</strong>
+                                                                </span>
+                                                                @endif
+                                                                <div class="invalid-feedback"><b><span id="error-transporte"></span></b></div> 
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="required">Dirección:</label>
                                                             <textarea type="text" placeholder=""
-                                                                class="form-control {{ $errors->has('direccion_transporte') ? ' is-invalid' : '' }}"
+                                                                class="form-control {{ $errors->has('direccion_transporte') ? ' is-invalid' : '' }}" 
                                                                 name="direccion_transporte" id="direccion_transporte"
-                                                                style="text-transform:uppercase;"
+                                                                style="text-transform:uppercase;" rows='3'
                                                                 value="{{old('direccion_transporte')}}">{{old('direccion_transporte')}}</textarea>
                                                             @if ($errors->has('direccion_transporte'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('direccion_transporte') }}</strong>
                                                             </span>
                                                             @endif
+
+                                                            <div class="invalid-feedback"><b><span id="error-direccion_transporte"></span></b></div> 
 
 
                                                         </div>
@@ -632,6 +694,10 @@ $('#ruc').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
+$('#ruc_transporte').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
 $('#dni').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
@@ -753,6 +819,33 @@ $("#ruc").keyup(function() {
     }
 })
 
+
+//Validar datos del tranportista
+$("#ruc_transporte").keyup(function() {
+    if ($('#estado_transporte').val('ACTIVO')) {
+        $('#estado_transporte').val('INACTIVO');
+        $('#transporte').val('');
+        $('#direccion_transporte').val('');
+    }
+})
+
+$("#transporte").keyup(function() {
+    $('#estado_transporte').val('INACTIVO');
+    $('#transporte').val('');
+    $('#direccion_transporte').val('');
+    $('#ruc_transporte').val('');
+})
+
+$("#direccion_transporte").keyup(function() {
+    $('#estado_transporte').val('INACTIVO');
+    $('#transporte').val('');
+    $('#direccion_transporte').val('');
+    $('#ruc_transporte').val('');
+})
+
+
+
+
 $("#dni").keyup(function() {
     if ($('#estado').val('ACTIVO')) {
         $('#estado').val('INACTIVO');
@@ -779,17 +872,49 @@ $('#enviar_proveedor').submit(function(e) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
+            var error = false
+            //Transportista
+            var enviar = enviarDatosTransportista()
+            if (enviar != false) {
+                toastr.error('Campos incompletos en Transportista', 'Error');
+                $('#transporte_link').click();
+                error = true
+            }
 
-            if ($('#estado').val() == "ACTIVO") {
+            //Contacto
+            var enviar = enviarDatosContacto()
+            if (enviar != false) {
+                toastr.error('Campos incompletos en Contacto', 'Error');
+                $('#contacto_link').click();
+                error = true
+            }
+
+
+            if ($('#estado_transporte').val() != "ACTIVO") {
+                toastr.error('Ingrese un transporte activo', 'Error');
+                error = true 
+            } 
+
+            if ($('#estado').val() != "ACTIVO") {
+                toastr.error('Ingrese un proveedor activo', 'Error');
+                error = true
+            } 
+
+            if (error == false) {
                 $("#estado").prop('disabled', false)
                 $("#tipo_persona").prop('disabled', false);
                 $("#tipo_persona_dni").prop('disabled', false);
+
+                $("#estado_transporte").prop('disabled', false)
+
+
                 this.submit();
                 //Cargar Entidades en modal
                 cargarEntidades()
-            } else {
-                toastr.error('Ingrese un proveedor activo', 'Error');
+
             }
+
+            
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
@@ -813,6 +938,14 @@ $("#ruc").keypress(function() {
         event.preventDefault();
         var ruc = $("#ruc").val()
         evaluarRuc(ruc);
+    }
+})
+
+$("#ruc_transporte").keypress(function() {
+    if (event.which == 13) {
+        event.preventDefault();
+        var ruc = $("#ruc_transporte").val()
+        evaluarRuctransporte(ruc);
     }
 })
 
@@ -857,6 +990,72 @@ function evaluarRuc(ruc) {
     }
 
 
+}
+
+function evaluarRuctransporte(ruc) {
+    if (ruc.length == 11) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Ruc a Sunat?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApiruc", ":ruc")}}';
+                url = url.replace(':ruc', ruc);
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        Swal.showValidationMessage(
+                            `Ruc Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            console.log(result)
+            $('#ruc_transporte').removeClass('is-invalid')
+            camposRuctransporte(result)
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
+    }
+
+
+}
+
+function camposRuctransporte(objeto) {
+    var razonsocial = objeto.value.razonSocial;
+    var direccion = objeto.value.direccion;
+    var departamento = objeto.value.departamento;
+    var provincia = objeto.value.provincia;
+    var distrito = objeto.value.distrito;
+    var estado = objeto.value.estado;
+
+    if (razonsocial != '-' && razonsocial != "NULL") {
+        $('#transporte').val(razonsocial)
+    }
+
+    if (estado == "ACTIVO") {
+        $('#estado_transporte').val(estado)
+    } else {
+        toastr.error('Proveedor no se encuentra "Activo"', 'Error');
+    }
+
+    if (direccion != '-' && direccion != "NULL") {
+        $('#direccion_transporte').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
+    }
 }
 
 function camposRuc(objeto) {
@@ -962,5 +1161,96 @@ function camposDni(objeto) {
 function agregarEntidad() {
     $('#modal_agregar_entidad').modal('show');
 }
+
+function limpiarErroresTransportista(){
+    $('#ruc_transporte').removeClass( "is-invalid" )
+    $('#error-ruc_transporte').text('')
+    
+    $('#transporte').removeClass( "is-invalid" )
+    $('#error-transporte').text('')
+
+    $('#direccion_transporte').removeClass( "is-invalid" )
+    $('#error-direccion_transporte').text('')
+
+    $('#estado_transporte').removeClass( "is-invalid" )
+    $('#error-estado_transporte').text('')
+}
+
+// Validar tabs
+//Transportista
+function enviarDatosTransportista() {
+    
+    limpiarErroresTransportista();
+    var enviar = false;
+    if ($('#estado_transporte').val()!='ACTIVO'){
+        toastr.error('EL Ruc del transportista debe de estar Activo.','Error');
+        enviar = true;
+        $('#estado_transporte').addClass( "is-invalid" )
+        $('#error-estado_transporte').text('El campo Estado debe estar Activo.')            
+    }
+
+    if ($('#ruc_transporte').val()==''){
+        toastr.error('Ingresar Ruc del transportista.','Error');
+        enviar = true;            
+        $('#ruc_transporte').addClass( "is-invalid" )
+        $('#error-ruc_transporte').text('El campo Ruc es obligatorio.')
+    }
+
+    if ($('#transporte').val()==''){
+        toastr.error('Ingresar Nombre Completo del transportista.','Error');
+        enviar = true;            
+        $('#transporte').addClass( "is-invalid" )
+        $('#error-transporte').text('El campo Nombre Completo es obligatorio.')
+    }
+
+    if ($('#direccion_transporte').val()==''){
+        toastr.error('Ingresar Dirección del transportista.','Error');
+        enviar = true;            
+        $('#direccion_transporte').addClass( "is-invalid" )
+        $('#error-direccion_transporte').text('El campo Dirección es obligatorio.')
+    }
+    return enviar
+}
+
+//Contacto
+function limpiarErroresContacto(){
+    $('#contacto').removeClass( "is-invalid" )
+    $('#error-nombre_contacto').text('')
+    
+    $('#correo_contacto').removeClass( "is-invalid" )
+    $('#error-correo_contacto').text('')
+
+    $('#telefono_contacto').removeClass( "is-invalid" )
+    $('#error-telefono_contacto').text('')
+}
+
+function enviarDatosContacto() {
+    
+    limpiarErroresContacto();
+    var enviar = false;
+    if ($('#contacto').val()==''){
+        toastr.error('Ingresar Nombre Completo del contacto.','Error');
+        enviar = true;            
+        $('#contacto').addClass( "is-invalid" )
+        $('#error-nombre_contacto').text('El campo Nombre Completo es obligatorio.')
+    }
+
+    if ($('#correo_contacto').val()==''){
+        toastr.error('Ingresar Correo del contacto.','Error');
+        enviar = true;            
+        $('#correo_contacto').addClass( "is-invalid" )
+        $('#error-correo_contacto').text('El campo Correo es obligatorio.')
+    }
+
+    if ($('#telefono_contacto').val()==''){
+        toastr.error('Ingresar Telefono del contacto.','Error');
+        enviar = true;            
+        $('#telefono_contacto').addClass( "is-invalid" )
+        $('#error-telefono_contacto').text('El campo Telefono es obligatorio.')
+    }
+    return enviar
+}
+
 </script>
+
 @endpush

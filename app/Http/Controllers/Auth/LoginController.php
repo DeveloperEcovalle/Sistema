@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+use Session;
+use DB;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -26,7 +31,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -36,5 +42,41 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        return ['email' => $request->{$this->username()}, 'password' => $request->password, 'estado' => 'ACTIVO'];
+    }
+
+    protected function sendFailedLoginResponse(\Illuminate\Http\Request $request)
+    {
+
+        if ( !User::where('email', $request->email)->first() ) {
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors([
+                    $this->username() => 'El usuario no es correcto',
+                ]);
+        }
+
+        if ( !User::where('email', $request->email)->where('password', bcrypt($request->password))->first() ) {
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors([
+                    'password' => 'Error de autentificación',
+                ]);
+        }
+
+
+        if ( !User::where('email', $request->email)->where('password', bcrypt($request->password))->where('estado', 'ACTIVO')->first() ) {
+           
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors([
+                    'password' => 'Usuario desactivado',
+                ]);
+        }
+
     }
 }

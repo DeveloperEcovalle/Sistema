@@ -16,8 +16,8 @@ class DepartamentoSeeder extends Seeder
 
         //factory(Almacen::class)->times(30)->create();
         //factory(Categoria::class)->times(30)->create();
-        //factory(Articulo::class)->times(10000)->create();
-        //factory(Empresa::class)->times(10000)->create();
+        factory(Articulo::class)->times(10)->create();
+        factory(Empresa::class)->times(10)->create();
 
 
         DB::table('departamentos')->delete();

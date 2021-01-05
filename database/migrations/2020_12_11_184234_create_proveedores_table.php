@@ -24,7 +24,7 @@ class CreateProveedoresTable extends Migration
             $table->mediumText('direccion')->nullable();
             
             $table->string('correo')->nullable();
-            $table->string('telefono')->nullable();
+            $table->string('telefono');
             $table->string('celular')->nullable();
             $table->string('web')->nullable();
             $table->string('zona')->nullable();
@@ -32,9 +32,12 @@ class CreateProveedoresTable extends Migration
             $table->string('contacto')->nullable();
             $table->string('celular_contacto')->nullable();
             $table->string('telefono_contacto')->nullable();
+            $table->string('correo_contacto')->nullable();
 
+            $table->bigInteger('ruc_transporte')->nullable();
             $table->string('transporte')->nullable();
             $table->mediumText('direccion_transporte')->nullable();
+            $table->boolean('activo_transporte');
 
             $table->mediumText('direccion_almacen')->nullable();
 

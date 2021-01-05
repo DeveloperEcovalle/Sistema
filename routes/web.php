@@ -106,15 +106,28 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email');
     Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada');
     Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
-        //Pagos
-        Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index');
-        Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
-        Route::get('pagos/create/{id}', 'Compras\PagoController@create')->name('compras.pago.create');
-        Route::post('pagos/store/', 'Compras\PagoController@store')->name('compras.pago.store');
-        Route::get('pagos/edit/', 'Compras\PagoController@edit')->name('compras.pago.edit');
-        Route::put('pagos/update/{id}', 'Compras\PagoController@update')->name('compras.pago.update');
-        Route::get('pagos/destroy/', 'Compras\PagoController@destroy')->name('compras.pago.destroy');
-        Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show');
+    //Pagos
+    Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index');
+    Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
+    Route::get('pagos/create/{id}', 'Compras\PagoController@create')->name('compras.pago.create');
+    Route::post('pagos/store/', 'Compras\PagoController@store')->name('compras.pago.store');
+    Route::get('pagos/edit/', 'Compras\PagoController@edit')->name('compras.pago.edit');
+    Route::put('pagos/update/{id}', 'Compras\PagoController@update')->name('compras.pago.update');
+    Route::get('pagos/destroy/', 'Compras\PagoController@destroy')->name('compras.pago.destroy');
+    Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show');
+});
+
+//Seguridad
+//Usuarios
+Route::prefix('seguridad/usuarios')->group(function() {
+    Route::get('index', 'Seguridad\UsuarioController@index')->name('seguridad.usuario.index');
+    Route::get('getUsers','Seguridad\UsuarioController@getUsers')->name('getUsers');
+    Route::get('create', 'Seguridad\UsuarioController@create')->name('seguridad.usuario.create');
+    Route::get('edit/{id}', 'Seguridad\UsuarioController@edit')->name('seguridad.usuario.edit');
+    Route::put('update/{id}', 'Seguridad\UsuarioController@update')->name('seguridad.usuario.update');
+    Route::post('store', 'Seguridad\UsuarioController@store')->name('seguridad.usuario.store');
+    Route::get('getEmployee', 'Seguridad\UsuarioController@getEmployee')->name('seguridad.usuario.getEmployee');
+    Route::get('destroy/{id}', 'Seguridad\UsuarioController@destroy')->name('seguridad.usuario.destroy');
 });
 
 
@@ -228,3 +241,5 @@ Route::prefix('mantenimiento/talonarios')->group(function() {
     Route::put('/actualizar', 'Mantenimiento\TalonarioController@update')->name('mantenimiento.talonario.update');
     Route::get('/destroy/{id}', 'Mantenimiento\TalonarioController@destroy')->name('mantenimiento.talonario.destroy');
 });
+
+

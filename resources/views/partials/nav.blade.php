@@ -1,6 +1,14 @@
     <li class="nav-header">
         <div class="dropdown profile-element">
-            <img alt="image" class="rounded-circle" height="48" width="48"  src="{{asset('img/user.jpg')}}"/>
+            
+            @if(auth()->user()->ruta_imagen)
+                <img alt="image"  alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{Storage::url(auth()->user()->ruta_imagen)}}"/>
+            @else
+                <img alt="{{auth()->user()->usuario}}" alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{ asset('storage/usuarios/default.jpg') }}"/>
+
+            @endif
+                            
+
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <span class="block m-t-xs font-bold">{{auth()->user()->usuario}}</span>
                 <span class="text-muted text-xs block">Administrador <b class="caret"></b></span>
@@ -141,10 +149,10 @@
         </ul>
     </li>
 
-    <li>
+    <li class="@yield('seguridad-active')">
         <a href="#"><i class="fa fa-shield"></i> <span class="nav-label">Seguridad</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li><a href="search_results.html">Usuarios</a></li>
+            <li class="@yield('usuarios-active')"><a href="{{route('seguridad.usuario.index')}}">Usuarios</a></li>
             <li><a href="lockscreen.html">Roles</a></li>
         </ul>
     </li>

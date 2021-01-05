@@ -49,18 +49,18 @@
                                 <div class="form-group row">
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_documento">
-                                        <label class="required">Fecha de Documento</label>
+                                        <label class="required">Fecha de Emisión</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                            <input type="text" id="fecha_documento" name="fecha_documento"
-                                                class="form-control {{ $errors->has('fecha_documento') ? ' is-invalid' : '' }}"
-                                                value="{{old('fecha_documento', getFechaFormato($orden->fecha_documento, 'd/m/Y'))}}"
+                                            <input type="text" id="fecha_documento" name="fecha_emision"
+                                                class="form-control {{ $errors->has('fecha_emision') ? ' is-invalid' : '' }}"
+                                                value="{{old('fecha_emision', getFechaFormato($orden->fecha_emision, 'd/m/Y'))}}"
                                                 autocomplete="off" readonly required>
-                                            @if ($errors->has('fecha_documento'))
+                                            @if ($errors->has('fecha_emision'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('fecha_documento') }}</strong>
+                                                <strong>{{ $errors->first('fecha_emision') }}</strong>
                                             </span>
                                             @endif
                                         </div>
@@ -937,10 +937,12 @@ function cargarPresentacion(articulo) {
     @foreach($articulos as $articulo)
     if ("{{$articulo->id}}" == id) {
         presentacion = "{{$articulo->presentacion}}"
+        precio = "{{$articulo->precio_compra}}"
     }
     @endforeach
     //Añadir a input presentacion
     $('#presentacion').val(presentacion)
+    $('#precio').val(precio)
 }
 
 function articuloPresentacion(articulo) {

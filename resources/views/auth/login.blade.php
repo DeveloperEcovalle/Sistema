@@ -13,7 +13,9 @@
 
     <link href="{{asset('Inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('Inspinia/css/style.css')}}" rel="stylesheet">
-
+    
+    <!-- Toastr style -->
+    <link href="{{asset('Inspinia/css/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
     <style>
 
         @media only screen and (min-width: 992px) {
@@ -72,6 +74,14 @@
     <script src="{{asset('Inspinia/js/jquery-3.1.1.min.js')}}"></script>
     <script src="{{asset('Inspinia/js/popper.min.js')}}"></script>
     <script src="{{asset('Inspinia/js/bootstrap.js')}}"></script>
+    <!-- Toastr script -->
+    <script src="{{asset('Inspinia/js/plugins/toastr/toastr.min.js')}}"></script>
+    <script>
+        @if(Session::has('usuario_anulado'))
+            // toastr.error("{{ Session::get('usuario_anulado') }}")
+            dd("sasas");
+        @endif
+    </script>
 
 </body>
 

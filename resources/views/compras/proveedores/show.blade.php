@@ -207,6 +207,16 @@
 
                             </div>
 
+                            <div class="form-group">
+                                <label><strong>Correo: </strong></label>
+                                @if($proveedor->correo_contacto != "")
+                                <p>{{$proveedor->correo_contacto}}</p>
+                                @else
+                                <p>-</p>
+                                @endif
+
+                            </div>
+
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -241,13 +251,19 @@
                             <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información
                                     del
                                     Transporte:</strong></p>
-                            <div class="form-group">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+
+                                </div>
+                                <div class="col-md-6">
                                 <label><strong>Nombre: </strong></label>
-                                @if($proveedor->transporte != "")
-                                <p>{{$proveedor->transporte}}</p>
-                                @else
-                                <p>-</p>
-                                @endif
+                                    @if($proveedor->transporte != "")
+                                    <p>{{$proveedor->transporte}}</p>
+                                    @else
+                                    <p>-</p>
+                                    @endif
+                                </div>
+
                             </div>
                             <div class="form-group">
                                 <label><strong>Dirección: </strong></label>
