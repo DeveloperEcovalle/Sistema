@@ -3,7 +3,7 @@
 @section('articulo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-12">
-        <h2 style="text-transform:uppercase;"><b>Detalle del Artículo: {{$articulo->descripcion}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Detalle del Artículo: {{$articulo->descripcion}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -26,14 +26,14 @@
                                 <div class="col-lg-12">
                                     <div class="">
                                         <a href="{{route('compras.articulo.edit',$articulo->id)}}" class="btn btn-warning btn-xs float-right"><i class='fa fa-edit'></i>Editar Artículo</a>
-                                        <h2 style="text-transform:uppercase;">{{$articulo->descripcion}}</h2>
+                                       <h2  style="text-transform:uppercase">{{$articulo->descripcion}}</h2>
                                     </div>
-                                    <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información general del Artículo:</strong></p>
+                                    <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Información general del Artículo:</strong></p>
 
                                 </div>
                             </div>
 
-                            <div class="row" style="text-transform:uppercase;">
+                            <div class="row"  onkeyup="return mayus(this)">
 
                                 <div class="col-md-6 b-r">
 
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="wrapper wrapper-content project-manager" style="text-transform:uppercase;">
+                <div class="wrapper wrapper-content project-manager"  onkeyup="return mayus(this)">
                     <h4>Registro</h4>
                     <p><b>Información del registro:<b></p>
                     <p class="text-center">

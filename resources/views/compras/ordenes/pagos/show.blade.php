@@ -3,7 +3,7 @@
 @section('orden-compra-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-12">
-        <h2 style="text-transform:uppercase;"><b>Detalle del pago de la orden de compra # {{$orden->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Detalle del pago de la orden de compra # {{$orden->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -30,14 +30,14 @@
                                 <div class="col-lg-12">
                                     <div class="">
                                         <a href="{{route('compras.pago.edit',  [ 'pago' => $pago[0]->id_pago, 'orden'=>  $orden->id ])}}" class="btn btn-warning btn-xs float-right"><i class='fa fa-edit'></i>Editar Pago</a>
-                                        <h2 style="text-transform:uppercase;">Pago de la orden de compra # {{$orden->id}}</h2>
+                                       <h2  style="text-transform:uppercase">Pago de la orden de compra # {{$orden->id}}</h2>
                                     </div>
-                                    <p style="text-transform:uppercase;"><strong><i class="fa fa-caret-right"></i> Información general del pago:</strong></p>
+                                    <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Información general del pago:</strong></p>
 
                                 </div>
                             </div>
 
-                            <div class="row" style="text-transform:uppercase;">
+                            <div class="row"  onkeyup="return mayus(this)">
 
                                 <div class="col-md-6 b-r">
 
@@ -95,8 +95,8 @@
 
                             <hr>
 
-                            <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Entidad Financiera :</strong></p>
-                            <div class="row" style="text-transform:uppercase;">
+                            <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Entidad Financiera :</strong></p>
+                            <div class="row"  onkeyup="return mayus(this)">
 
                                     <div class="col-md-6 b-r">
 
@@ -131,8 +131,8 @@
                             </div>
                             <hr>
 
-                            <p style="text-transform:uppercase;"><strong> <i class="fa fa-caret-right"></i> Proveedor :</strong></p>
-                            <div class="row" style="text-transform:uppercase;">
+                            <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Proveedor :</strong></p>
+                            <div class="row"  onkeyup="return mayus(this)">
 
                                     <div class="col-md-6 b-r">
 
@@ -210,7 +210,7 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="wrapper wrapper-content project-manager" style="text-transform:uppercase;">
+                <div class="wrapper wrapper-content project-manager"  onkeyup="return mayus(this)">
                     <h4>Pago</h4>
                     <p><b>Información adicional:</b><p>
                     <div class="text-center">

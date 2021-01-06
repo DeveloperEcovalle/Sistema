@@ -8,7 +8,7 @@
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
                 <h4 class="modal-title">Familia</h4>
-                <small class="font-bold" style="text-transform:uppercase;">Modificar Familia.</small>
+                <small class="font-bold"  onkeyup="return mayus(this)">Modificar Familia.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('produccion.familias.update')}}" method="POST" id="editar_familia">
@@ -17,7 +17,7 @@
                     <input type="hidden" name="tabla_id" id="tabla_id_editar" value="{{old('tabla_id')}}">
                    <div class="form-group">
                         <label class="required">Familia:</label> 
-                        <input type="text" class="form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}" name="familia" id="familia_editar" value="{{old('familia')}}" style="text-transform:uppercase;"required>
+                        <input type="text" class="form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}" name="familia" id="familia_editar" value="{{old('familia')}}"  onkeyup="return mayus(this)"required>
                         
                         @if ($errors->has('familia'))
                         <span class="invalid-feedback" role="alert">

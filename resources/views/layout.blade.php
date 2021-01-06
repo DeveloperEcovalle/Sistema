@@ -94,10 +94,10 @@
             </div>
 
             <div class="footer">
-                <div class="float-right"style="text-transform:uppercase">
+                <div class="float-right" onkeyup="return mayus(this)">
                     DEVELOPER <strong>SISCOM SAC</strong>
                 </div>
-                <div style="text-transform:uppercase">
+                <div  onkeyup="return mayus(this)">
                     <strong>Copyright</strong> AgroEnsancha Eirl &copy; 2020-2021
                 </div>
             </div>

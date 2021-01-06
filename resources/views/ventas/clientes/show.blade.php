@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Datos del Cliente: {{ $cliente->nombre }}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Datos del Cliente: {{ $cliente->nombre }}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -29,7 +29,7 @@
                         <a href="{{ route('ventas.cliente.edit', $cliente->id) }}" class="btn btn-warning btn-xs float-right">
                             <i class="fa fa-edit"></i>EDITAR CLIENTE
                         </a>
-                        <h2 style="text-transform:uppercase;">{{ $cliente->nombre }}</h2>
+                       <h2  style="text-transform:uppercase">{{ $cliente->nombre }}</h2>
                     </div>
                     <h4><b><i class="fa fa-caret-right"></i> DATOS GENERALES</b></h4>
                     <div class="row">

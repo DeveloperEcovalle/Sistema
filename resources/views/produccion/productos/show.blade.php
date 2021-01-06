@@ -4,7 +4,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8 col-xs-12">
-        <h2 style="text-transform:uppercase;"><b>DETALLE DEL PRODUCTO TERMINADO: #{{ $producto->id }}</b></h2>
+       <h2  style="text-transform:uppercase"><b>DETALLE DEL PRODUCTO TERMINADO: #{{ $producto->id }}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -93,7 +93,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-xs-12">
                             <div class="table-responsive">
-                                <table class="table invoice-table table table-bordered" style="text-transform:uppercase">
+                                <table class="table invoice-table table table-bordered"  onkeyup="return mayus(this)">
                                     <thead>
                                     <tr>
                                         <th class=>ARTÍCULO</th>

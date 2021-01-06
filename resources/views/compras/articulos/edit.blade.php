@@ -4,7 +4,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     
     <div class="col-lg-12">
-        <h2 style="text-transform:uppercase;"><b>MODIFICAR ARTÍCULO #{{$articulo->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR ARTÍCULO #{{$articulo->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -46,7 +46,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label class="required">Código de Fábrica: </label>                                                     
-                                            <input type="text" id="codigo_fabrica" class="form-control {{ $errors->has('codigo_fabrica') ? ' is-invalid' : '' }}" name="codigo_fabrica" value="{{ old('codigo_fabrica',$articulo->codigo_fabrica)}}"  style="text-transform:uppercase;" required>
+                                            <input type="text" id="codigo_fabrica" class="form-control {{ $errors->has('codigo_fabrica') ? ' is-invalid' : '' }}" name="codigo_fabrica" value="{{ old('codigo_fabrica',$articulo->codigo_fabrica)}}"   onkeyup="return mayus(this)" required>
 
                                             @if ($errors->has('codigo_fabrica'))
                                                 <span class="invalid-feedback" role="alert">
@@ -58,7 +58,7 @@
                                         <div class="col-md-6">
 
                                             <label class="required">Descripción: </label>                                                     
-                                            <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion',$articulo->descripcion)}}"  style="text-transform:uppercase;" required>
+                                            <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion',$articulo->descripcion)}}"   onkeyup="return mayus(this)" required>
 
                                             @if ($errors->has('descripcion'))
                                                 <span class="invalid-feedback" role="alert">
@@ -137,7 +137,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label >Stock:</label> 
-                                            <input type="text" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" id="stock" style="text-transform:uppercase;" value="{{old('stock',$articulo->stock)}}" disabled>
+                                            <input type="text" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" id="stock"  onkeyup="return mayus(this)" value="{{old('stock',$articulo->stock)}}" disabled>
                                             @if ($errors->has('stock'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('stock') }}</strong>
@@ -146,7 +146,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="required">Stock Min.:</label> 
-                                            <input type="text" placeholder="" class="form-control {{ $errors->has('stock_min') ? ' is-invalid' : '' }}" name="stock_min" id="celular" style="text-transform:uppercase;" value="{{old('stock_min',$articulo->stock_min)}}" required>
+                                            <input type="text" placeholder="" class="form-control {{ $errors->has('stock_min') ? ' is-invalid' : '' }}" name="stock_min" id="celular"  onkeyup="return mayus(this)" value="{{old('stock_min',$articulo->stock_min)}}" required>
                                             @if ($errors->has('stock_min'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('stock_min') }}</strong>
@@ -159,7 +159,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label class="required">Precio de Compra:</label> 
-                                            <input type="text" placeholder="" class="form-control {{ $errors->has('precio_compra') ? ' is-invalid' : '' }}" name="precio_compra" id="precio_compra" style="text-transform:uppercase;" value="{{old('precio_compra', $articulo->precio_compra)}}" required>
+                                            <input type="text" placeholder="" class="form-control {{ $errors->has('precio_compra') ? ' is-invalid' : '' }}" name="precio_compra" id="precio_compra"  onkeyup="return mayus(this)" value="{{old('precio_compra', $articulo->precio_compra)}}" required>
                                             @if ($errors->has('precio_compra'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('precio_compra') }}</strong>

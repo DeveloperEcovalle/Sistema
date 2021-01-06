@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Listado de Pagos de la Orden #{{$orden->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos de la Orden #{{$orden->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -57,7 +57,7 @@
                 <div class="ibox-content">
                     <div class="table-responsive">
                         <table class="table dataTables-orden table-striped table-bordered table-hover"
-                            style="text-transform:uppercase;">
+                             onkeyup="return mayus(this)">
                             <thead>
                                 <tr>
                                     <th></th>

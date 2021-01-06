@@ -8,7 +8,7 @@
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
                 <h4 class="modal-title">Categoría</h4>
-                <small class="font-bold" style="text-transform:uppercase;">Modificar categoría.</small>
+                <small class="font-bold"  onkeyup="return mayus(this)">Modificar categoría.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('compras.categoria.update')}}" method="POST" id="editar_categoria">
@@ -17,7 +17,7 @@
                     <input type="hidden" name="tabla_id" id="tabla_id_editar" value="{{old('tabla_id')}}">
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" style="text-transform:uppercase;"required>
+                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}"  onkeyup="return mayus(this)"required>
                         
                         @if ($errors->has('descripcion'))
                         <span class="invalid-feedback" role="alert">

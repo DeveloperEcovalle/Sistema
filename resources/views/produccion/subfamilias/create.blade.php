@@ -5,7 +5,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     
     <div class="col-lg-12">
-        <h2 style="text-transform:uppercase;"><b>REGISTRAR NUEVA SUB FAMILIA</b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVA SUB FAMILIA</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -48,7 +48,7 @@
 
                                     <div class="col-md-6">
                                             <label class="required">Descripción: </label>                                                     
-                                            <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion')}}"  style="text-transform:uppercase;" required>
+                                            <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion')}}"   onkeyup="return mayus(this)" required>
 
                                             @if ($errors->has('descripcion'))
                                                 <span class="invalid-feedback" role="alert">

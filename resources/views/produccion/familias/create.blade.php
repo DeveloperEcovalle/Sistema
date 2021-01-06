@@ -16,7 +16,7 @@
 
                    <div class="form-group">
                         <label class="required">Familia:</label> 
-                        <input type="text" class="form-control {{ $errors->has('familia_guardar') ? ' is-invalid' : '' }}" name="familia_guardar" id="familia_guardar" value="{{old('familia_guardar')}}"  style="text-transform:uppercase;" required>
+                        <input type="text" class="form-control {{ $errors->has('familia_guardar') ? ' is-invalid' : '' }}" name="familia_guardar" id="familia_guardar" value="{{old('familia_guardar')}}"   onkeyup="return mayus(this)" required>
 
                         @if ($errors->has('familia_guardar'))
                         <span class="invalid-feedback" role="alert">

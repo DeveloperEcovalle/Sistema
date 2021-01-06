@@ -265,7 +265,7 @@
 
     </header>
     <main>
-        <table style="text-transform:uppercase">
+        <table  onkeyup="return mayus(this)">
             <thead>
                 <tr>
                     <th class="service">ARTICULO</th>
@@ -316,7 +316,7 @@
         <div id="notices">
             <div>Observación:</div>
             @if($orden->observacion)
-            <div class="notice" style="text-transform:uppercase;">{{$orden->observacion}}.</div>
+            <div class="notice"  onkeyup="return mayus(this)">{{$orden->observacion}}.</div>
             @else
             <div class="notice">NO ESPECIFICADO</div>
             @endif

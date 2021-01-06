@@ -3,7 +3,7 @@
 @section('orden-compra-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2 style="text-transform:uppercase;"><b>Detalle de la Orden de Compra: # {{$orden->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Detalle de la Orden de Compra: # {{$orden->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -215,7 +215,7 @@
                 <hr>
 
                 <div class="table-responsive">
-                    <table class="table invoice-table table table-bordered" style="text-transform:uppercase" id="tabla-producto">
+                    <table class="table invoice-table table table-bordered"  onkeyup="return mayus(this)" id="tabla-producto">
                         <thead>
                             <tr>
                                 <th class="text-center">CANTIDAD</th>
@@ -249,7 +249,7 @@
 
 
                         </tbody>
-                        <tfoot style="text-transform:uppercase">
+                        <tfoot  onkeyup="return mayus(this)">
                             <tr>
                                 <td colspan="3" class="borde-title"></td>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>Sub Total</strong></th>

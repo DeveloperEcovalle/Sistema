@@ -5,7 +5,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     
     <div class="col-lg-12">
-        <h2 style="text-transform:uppercase;"><b>MODIFICAR USUARIO #{{$usuario->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR USUARIO #{{$usuario->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -64,7 +64,7 @@
                                         <div class="col-md-4">
 
                                             <label class="required">Usuario: </label>                                                     
-                                            <input type="text" id="usuario" class="form-control {{ $errors->has('usuario') ? ' is-invalid' : '' }}" name="usuario" value="{{ old('usuario',$usuario->usuario)}}"  style="text-transform:uppercase;" required>
+                                            <input type="text" id="usuario" class="form-control {{ $errors->has('usuario') ? ' is-invalid' : '' }}" name="usuario" value="{{ old('usuario',$usuario->usuario)}}"  onkeyup="return mayus(this)" required>
 
                                             @if ($errors->has('usuario'))
                                                 <span class="invalid-feedback" role="alert">
@@ -77,7 +77,7 @@
 
                                         <div class="col-md-8">
                                             <label class="required">Correo electrónico: </label>                                                     
-                                            <input type="email" id="correo" class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}" name="correo" value="{{ old('correo',$usuario->email)}}"  style="text-transform:uppercase;" required>
+                                            <input type="email" id="correo" class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}" name="correo" value="{{ old('correo',$usuario->email)}}"  onkeyup="return mayus(this)" required>
 
                                             @if ($errors->has('correo'))
                                                 <span class="invalid-feedback" role="alert">

@@ -7,7 +7,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-        <h2 style="text-transform:uppercase;"><b>Datos del Empleado: {{ $empleado->persona->getApellidosYNombres() }}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Datos del Empleado: {{ $empleado->persona->getApellidosYNombres() }}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -204,7 +204,7 @@
             <div class="container m-b-xl">
                 <a href="{{route('mantenimiento.empleado.edit',$empleado->id)}}" class="btn btn-block btn-warning btn-xs float-right"><i class='fa fa-edit'></i>EDITAR EMPRESA</a>
             </div>
-            <div class="container" style="text-transform:uppercase;">
+            <div class="container"  onkeyup="return mayus(this)">
                 <div class="text-center">
                     @if($empleado->ruta_imagen)
                         <img  src="{{Storage::url($empleado->ruta_imagen)}}" class="img-fluid">

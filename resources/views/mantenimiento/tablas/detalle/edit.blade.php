@@ -8,7 +8,7 @@
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
                 <h4 class="modal-title">Tabla Detalle</h4>
-                <small class="font-bold" style="text-transform:uppercase;">Modificar registro de la Tabla General: <strong>{{$tabla->descripcion}}</strong>.</small>
+                <small class="font-bold"  onkeyup="return mayus(this)">Modificar registro de la Tabla General: <strong>{{$tabla->descripcion}}</strong>.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('mantenimiento.tabla.detalle.update')}}" method="POST" id="editar_tabla_detalle">
@@ -18,7 +18,7 @@
                    
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" required style="text-transform:uppercase">
+                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" required  onkeyup="return mayus(this)">
                         
                         @if ($errors->has('descripcion'))
                         <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         
                         <label class="required">Símbolo:</label>
-                        <input type="text" class="form-control {{ $errors->has('simbolo') ? ' is-invalid' : '' }}" id="simbolo_editar" name="simbolo" value="{{old('simbolo')}}" required style="text-transform:uppercase">
+                        <input type="text" class="form-control {{ $errors->has('simbolo') ? ' is-invalid' : '' }}" id="simbolo_editar" name="simbolo" value="{{old('simbolo')}}" required  onkeyup="return mayus(this)">
 
                         @if ($errors->has('simbolo'))
                         <span class="invalid-feedback" role="alert">

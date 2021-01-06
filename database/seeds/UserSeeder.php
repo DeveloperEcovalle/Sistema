@@ -56,10 +56,10 @@ class UserSeeder extends Seeder
         $empleado->save();
 
         $user = new User();
-        $user->usuario = 'Administrador';
+        $user->usuario = 'ADMINISTRADOR';
         $user->empleado_id = 1;
-        $user->email = 'admin@ecovalle.com';
-        $user->password = bcrypt('admin');
+        $user->email = 'ADMIN@ECOVALLE.COM';
+        $user->password = bcrypt('ADMIN');
         $user->save();
 
     }

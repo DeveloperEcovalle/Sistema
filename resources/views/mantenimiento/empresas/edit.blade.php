@@ -4,7 +4,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-        <h2 style="text-transform:uppercase;"><b>MODIFICAR EMPRESA # {{$empresa->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR EMPRESA # {{$empresa->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -69,7 +69,7 @@
                                         <input type="text" id="estado"
                                             class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
                                             name="estado" value="{{ $empresa->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}"
-                                            style="text-transform:uppercase;" disabled>
+                                             onkeyup="return mayus(this)" disabled>
                                         @if ($errors->has('estado'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('estado') }}</strong>
@@ -89,7 +89,7 @@
                                     <input type="text"
                                         class="form-control {{ $errors->has('razon_social') ? ' is-invalid' : '' }}"
                                         name="razon_social" value="{{ old('razon_social', $empresa->razon_social)}}"
-                                        id="razon_social" style="text-transform:uppercase;">
+                                        id="razon_social"  onkeyup="return mayus(this)">
 
                                     @if ($errors->has('razon_social'))
                                     <span class="invalid-feedback" role="alert">
@@ -104,7 +104,7 @@
                                         class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}"
                                         name="razon_social_abreviada"
                                         value="{{ old('razon_social_abreviada',$empresa->razon_social_abreviada)}}"
-                                        style="text-transform:uppercase;">
+                                         onkeyup="return mayus(this)">
 
                                     @if ($errors->has('razon_social_abreviada'))
                                     <span class="invalid-feedback" role="alert">
@@ -121,7 +121,7 @@
                                         <textarea type="text" id="direccion_fiscal" name="direccion_fiscal"
                                             class="form-control {{ $errors->has('direccion_fiscal') ? ' is-invalid' : '' }}"
                                             value="{{old('direccion_fiscal',$empresa->direccion_fiscal)}}"
-                                            style="text-transform:uppercase;">{{old('direccion_fiscal',$empresa->direccion_fiscal)}}</textarea>
+                                             onkeyup="return mayus(this)">{{old('direccion_fiscal',$empresa->direccion_fiscal)}}</textarea>
                                         @if ($errors->has('direccion_fiscal'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('direccion_fiscal') }}</strong>
@@ -138,7 +138,7 @@
                                         <textarea type="text" id="direccion_llegada" name="direccion_llegada"
                                             class="form-control {{ $errors->has('direccion_llegada') ? ' is-invalid' : '' }}"
                                             value="{{old('direccion_llegada', $empresa->direccion_llegada)}}"
-                                            style="text-transform:uppercase;">{{old('direccion_llegada',$empresa->direccion_llegada)}}</textarea>
+                                             onkeyup="return mayus(this)">{{old('direccion_llegada',$empresa->direccion_llegada)}}</textarea>
                                         @if ($errors->has('direccion_llegada'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('direccion_llegada') }}</strong>
@@ -160,7 +160,7 @@
                                     <input type="email"
                                         class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}"
                                         name="correo" value="{{ old('correo', $empresa->correo)}}" id="correo"
-                                        style="text-transform:uppercase;">
+                                         onkeyup="return mayus(this)">
 
                                     @if ($errors->has('correo'))
                                     <span class="invalid-feedback" role="alert">
@@ -173,13 +173,13 @@
                                     <div class="col-md-6">
                                         <label>Teléfono:</label>
                                         <input type="text" placeholder="" class="form-control" name="telefono"
-                                            id="telefono" style="text-transform:uppercase;"
+                                            id="telefono"  onkeyup="return mayus(this)"
                                             value="{{old('telefono', $empresa->telefono)}}">
                                     </div>
                                     <div class="col-md-6">
                                         <label>Celular:</label>
                                         <input type="text" placeholder="" class="form-control" name="celular"
-                                            id="celular" style="text-transform:uppercase;"
+                                            id="celular"  onkeyup="return mayus(this)"
                                             value="{{old('celular',$empresa->celular)}}">
                                     </div>
 
@@ -252,7 +252,7 @@
                                             class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"
                                             id="dni_representante"
                                             value="{{old('dni_representante', $empresa->dni_representante)}}"
-                                            maxlength="8" style="text-transform:uppercase;">
+                                            maxlength="8"  onkeyup="return mayus(this)">
 
                                         @if ($errors->has('dni_representante'))
                                         <span class="invalid-feedback" role="alert">
@@ -266,7 +266,7 @@
                                         <input type="text"
                                             class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
                                             name="nombre_representante" id="nombre_representante"
-                                            style="text-transform:uppercase;"
+                                             onkeyup="return mayus(this)"
                                             value="{{old('nombre_representante',$empresa->nombre_representante)}}">
 
                                         @if ($errors->has('nombre_representante'))
@@ -292,7 +292,7 @@
 
                                         <input type="text"
                                             class="form-control {{ $errors->has('num_asiento') ? ' is-invalid' : '' }}"
-                                            name="num_asiento" id="num_asiento" style="text-transform:uppercase;"
+                                            name="num_asiento" id="num_asiento"  onkeyup="return mayus(this)"
                                             value="{{old('num_asiento', $empresa->num_asiento)}}">
 
                                         @if ($errors->has('num_asiento'))
@@ -308,7 +308,7 @@
                                         <label class="required">N° de Partida:</label>
                                         <input type="text"
                                             class="form-control {{ $errors->has('num_partida') ? ' is-invalid' : '' }}"
-                                            name="num_partida" id="num_partida" style="text-transform:uppercase;"
+                                            name="num_partida" id="num_partida"  onkeyup="return mayus(this)"
                                             value="{{old('num_partida', $empresa->num_partida)}}">
                                         @if ($errors->has('num_partida'))
                                         <span class="invalid-feedback" role="alert">

@@ -16,7 +16,7 @@
 
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion_guardar') ? ' is-invalid' : '' }}" name="descripcion_guardar" id="descripcion_guardar" value="{{old('descripcion_guardar')}}"  style="text-transform:uppercase;" required>
+                        <input type="text" class="form-control {{ $errors->has('descripcion_guardar') ? ' is-invalid' : '' }}" name="descripcion_guardar" id="descripcion_guardar" value="{{old('descripcion_guardar')}}"   onkeyup="return mayus(this)" required>
 
                         @if ($errors->has('descripcion_guardar'))
                         <span class="invalid-feedback" role="alert">

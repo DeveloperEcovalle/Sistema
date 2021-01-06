@@ -18,7 +18,7 @@
                    
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" style="text-transform:uppercase" required>
+                        <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" id="descripcion_editar" value="{{old('descripcion')}}" onkeyup="return mayus(this)" required>
                         
                         @if ($errors->has('descripcion'))
                         <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         
                         <label class="required">Ubicación:</label>
-                        <input type="text" class="form-control {{ $errors->has('ubicacion') ? ' is-invalid' : '' }}" id="ubicacion_editar" name="ubicacion" value="{{old('ubicacion')}}" style="text-transform:uppercase" required>
+                        <input type="text" class="form-control {{ $errors->has('ubicacion') ? ' is-invalid' : '' }}" id="ubicacion_editar" name="ubicacion" value="{{old('ubicacion')}}" onkeyup="return mayus(this)" required>
 
                         @if ($errors->has('ubicacion'))
                         <span class="invalid-feedback" role="alert">

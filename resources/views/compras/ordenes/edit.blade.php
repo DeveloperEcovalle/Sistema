@@ -6,7 +6,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-        <h2 style="text-transform:uppercase;"><b>MODIFICAR ORDEN DE COMPRA # {{$orden->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR ORDEN DE COMPRA # {{$orden->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -186,7 +186,7 @@
                                             </div>
                                             <input type="text" value="{{old('igv',$orden->igv)}}" maxlength="3"
                                                 class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
-                                                name="igv" id="igv" style="text-transform:uppercase;" required>
+                                                name="igv" id="igv"  onkeyup="return mayus(this)" required>
                                                 @if ($errors->has('igv'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('igv') }}</strong>
@@ -217,7 +217,7 @@
                                     <label>Observación:</label>
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
-                                        name="observacion" id="observacion" style="text-transform:uppercase;"
+                                        name="observacion" id="observacion"  onkeyup="return mayus(this)"
                                         value="{{old('observacion', $orden->observacion)}}">{{old('observacion',$orden->observacion)}}</textarea>
                                     @if ($errors->has('observacion'))
                                     <span class="invalid-feedback" role="alert">
@@ -320,7 +320,7 @@
                                         <div class="table-responsive">
                                             <table
                                                 class="table dataTables-orden-detalle table-striped table-bordered table-hover"
-                                                style="text-transform:uppercase;">
+                                                 onkeyup="return mayus(this)">
                                                 <thead>
                                                     <tr>
                                                         <th></th>

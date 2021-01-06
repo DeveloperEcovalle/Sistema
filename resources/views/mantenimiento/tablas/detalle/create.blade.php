@@ -18,7 +18,7 @@
 
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
-                        <input type="text" class="form-control {{ $errors->has('descripcion_guardar') ? ' is-invalid' : '' }}" name="descripcion_guardar" id="descripcion_guardar" value="{{old('descripcion_guardar')}}" required style="text-transform:uppercase">
+                        <input type="text" class="form-control {{ $errors->has('descripcion_guardar') ? ' is-invalid' : '' }}" name="descripcion_guardar" id="descripcion_guardar" value="{{old('descripcion_guardar')}}" required  onkeyup="return mayus(this)">
 
                         @if ($errors->has('descripcion_guardar'))
                         <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         
                         <label class="required">Símbolo:</label>
-                        <input type="text" class="form-control {{ $errors->has('simbolo_guardar') ? ' is-invalid' : '' }}" id="simbolo_guardar" name="simbolo_guardar" value="{{old('simbolo_guardar')}}" required style="text-transform:uppercase">
+                        <input type="text" class="form-control {{ $errors->has('simbolo_guardar') ? ' is-invalid' : '' }}" id="simbolo_guardar" name="simbolo_guardar" value="{{old('simbolo_guardar')}}" required  onkeyup="return mayus(this)">
                         
                         @if ($errors->has('simbolo_guardar'))
                         <span class="invalid-feedback" role="alert">

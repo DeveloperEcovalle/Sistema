@@ -4,7 +4,7 @@
 @section('tablas-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12 col-md-12">
-        <h2 style="text-transform:uppercase;"><b>Mantenimiento de Tablas Generales</b></h2>
+       <h2  style="text-transform:uppercase"><b>Mantenimiento de Tablas Generales</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -28,7 +28,7 @@
             <div class="ibox-content">
 
                 <div class="table-responsive">
-                    <table class="table dataTables-tabla-general table-striped table-bordered table-hover" style="text-transform:uppercase;">
+                    <table class="table dataTables-tabla-general table-striped table-bordered table-hover"  onkeyup="return mayus(this)">
                     <thead>
                         <tr>
                             <th class="text-center"></th>

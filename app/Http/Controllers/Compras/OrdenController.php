@@ -425,6 +425,7 @@ class OrdenController extends Controller
     public function email($id)
     {
         $orden = Orden::findOrFail($id);
+        $nombre_completo = $orden->usuario->empleado->persona->apellido_paterno.' '.$orden->usuario->empleado->persona->apellido_materno.' '.$orden->usuario->empleado->persona->nombres;
         $detalles = Detalle::where('orden_id',$id)->get();
         $subtotal = 0; 
         $igv = '';
@@ -460,6 +461,7 @@ class OrdenController extends Controller
         $paper_size = array(0,0,360,360);
         $pdf = PDF::loadview('compras.ordenes.reportes.detalle',[
             'orden' => $orden,
+            'nombre_completo' => $nombre_completo,
             'detalles' => $detalles,
             'presentaciones' => $presentaciones,
             'subtotal' => $decimal_subtotal,

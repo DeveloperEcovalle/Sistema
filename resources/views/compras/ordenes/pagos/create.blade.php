@@ -6,7 +6,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-        <h2 style="text-transform:uppercase;"><b>REGISTRAR NUEVO PAGO DE LA ORDEN DE COMPRA #{{$orden->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVO PAGO DE LA ORDEN DE COMPRA #{{$orden->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <div class="table-responsive">
                                             <table class="table dataTables-bancos table-striped table-bordered table-hover"
-                                                style="text-transform:uppercase;" id="table-bancos">
+                                                 onkeyup="return mayus(this)" id="table-bancos">
                                                 <thead>
                                                     <tr>
                                                         <th></th>
@@ -130,13 +130,13 @@
                                 <div class="col-sm-4">
                                     <h4>Proveedor</h4>
                                     <p>Datos del proveedor a pagar:</p>
-                                        <div style="text-transform:uppercase">
+                                        <div  onkeyup="return mayus(this)">
 
                                         @if ($orden->proveedor->ruc)
                                             <div class="form-group" >
 
                                             <label class="col-form-label">RUC</label>
-                                            <input type="text" class="form-control" value="{{$orden->proveedor->ruc}}" style="text-transform:uppercase" disabled>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->ruc}}"  onkeyup="return mayus(this)" disabled>
 
                                             </div>
 
@@ -144,7 +144,7 @@
                                             <div class="form-group" >
 
                                             <label class="col-form-label">DNI</label>
-                                            <input type="text" class="form-control" value="{{$orden->proveedor->dni}}" style="text-transform:uppercase" disabled>
+                                            <input type="text" class="form-control" value="{{$orden->proveedor->dni}}"  onkeyup="return mayus(this)" disabled>
 
                                             </div>
                                         @endif
@@ -153,28 +153,28 @@
                                             <div class="form-group" >
 
                                                 <label class="col-form-label">Descripcion</label>
-                                                <input type="text" class="form-control" value="{{$orden->proveedor->descripcion}}" style="text-transform:uppercase" disabled>
+                                                <input type="text" class="form-control" value="{{$orden->proveedor->descripcion}}"  onkeyup="return mayus(this)" disabled>
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label class="col-form-label">Direccion</label>
-                                                <textarea type="text" style="text-transform:uppercase" class="form-control" disabled>{{$orden->proveedor->direccion}}</textarea>
+                                                <textarea type="text"  onkeyup="return mayus(this)" class="form-control" disabled>{{$orden->proveedor->direccion}}</textarea>
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label class="col-form-label">Telefono</label>
-                                                <input type="text" class="form-control"  style="text-transform:uppercase" value="{{$orden->proveedor->telefono}}" disabled>
+                                                <input type="text" class="form-control"   onkeyup="return mayus(this)" value="{{$orden->proveedor->telefono}}" disabled>
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label class="col-form-label">Correo</label>
-                                                <input type="text"  style="text-transform:uppercase" class="form-control" value="{{$orden->proveedor->correo}}"disabled>
+                                                <input type="text"   onkeyup="return mayus(this)" class="form-control" value="{{$orden->proveedor->correo}}"disabled>
 
                                             </div>
                                         </div>
@@ -315,7 +315,7 @@
                                         <label>Observación:</label>
                                         <textarea type="text" placeholder=""
                                             class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
-                                            name="observacion" id="observacion" style="text-transform:uppercase;"
+                                            name="observacion" id="observacion"  onkeyup="return mayus(this)"
                                             value="{{old('observacion')}}">{{old('observacion')}}</textarea>
                                         @if ($errors->has('observacion'))
                                         <span class="invalid-feedback" role="alert">
