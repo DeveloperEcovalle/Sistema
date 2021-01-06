@@ -127,6 +127,7 @@ Route::prefix('seguridad/usuarios')->group(function() {
     Route::put('update/{id}', 'Seguridad\UsuarioController@update')->name('seguridad.usuario.update');
     Route::post('store', 'Seguridad\UsuarioController@store')->name('seguridad.usuario.store');
     Route::get('getEmployee', 'Seguridad\UsuarioController@getEmployee')->name('seguridad.usuario.getEmployee');
+    Route::get('getEmployeeedit/{id}', 'Seguridad\UsuarioController@getEmployeeedit')->name('seguridad.usuario.getEmployee.edit');
     Route::get('destroy/{id}', 'Seguridad\UsuarioController@destroy')->name('seguridad.usuario.destroy');
 });
 

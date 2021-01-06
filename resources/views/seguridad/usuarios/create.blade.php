@@ -1,7 +1,7 @@
 @extends('layout') @section('content')
 
-@section('compras-active', 'active')
-@section('articulo-active', 'active')
+@section('seguridad-active', 'active')
+@section('usuarios-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     
     <div class="col-lg-12">

@@ -42,12 +42,54 @@ class UsuarioController extends Controller
     }
 
     public function getEmployee(){
+
         $empleados = DB::table('empleados')
-        ->join('personas','empleados.persona_id','=','personas.id')
-        ->select('personas.*')
+        ->join('personas','empleados.id','=','personas.id')
+        ->select('empleados.id as empleado_id', 'personas.*')
         ->where('empleados.estado','!=',"ANULADO")
         ->get();
-        return $empleados;
+
+ 
+        $coleccion = collect([]);
+        foreach($empleados as $empleado){
+            if (DB::table('users')->where('empleado_id', $empleado->empleado_id)->where('estado','ACTIVO')->exists() == false) {
+                $coleccion->push([
+                    'id' => $empleado->empleado_id,
+                    'apellido_materno' => $empleado->apellido_materno,
+                    'apellido_paterno' => $empleado->apellido_paterno,
+                    'nombres' => $empleado->nombres,
+                ]);
+
+             }
+        };
+
+        return $coleccion;
+    }
+
+    public function getEmployeeedit($id){
+
+        $empleados = DB::table('empleados')
+        ->join('personas','empleados.id','=','personas.id')
+        ->select('empleados.id as empleado_id', 'personas.*')
+        ->where('empleados.estado','!=',"ANULADO")
+        ->get();
+
+ 
+        $coleccion = collect([]);
+        foreach($empleados as $empleado){
+            if (DB::table('users')->where('empleado_id', $empleado->empleado_id)->where('estado','ACTIVO')->exists() == false || $empleado->id == $id) {
+                $coleccion->push([
+                    'id' => $empleado->empleado_id,
+                    'apellido_materno' => $empleado->apellido_materno,
+                    'apellido_paterno' => $empleado->apellido_paterno,
+                    'nombres' => $empleado->nombres,
+                ]);
+
+             }
+
+        };
+
+        return $coleccion;
     }
 
     public function store(Request $request){

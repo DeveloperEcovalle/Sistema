@@ -49,7 +49,7 @@
                                         <label class="required">Empleado: </label> 
                                     
                                         <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required>
-                                            <option></option>
+                                           
                                         </select>
 
                                         @if ($errors->has('empleado_id'))
@@ -255,30 +255,37 @@
         width: '100%',
     });
 
-    $('#empleado_id').select2({
+    $("#empleado_id").select2({
         placeholder: "SELECCIONAR",
         allowClear: true,
         height: '200px',
         width: '100%',
-	    ajax: {
-			url: "{{route('seguridad.usuario.getEmployee')}}",
-            dataType: 'json',
-            type: 'GET',
+    });
+
+    var id = "{{$usuario->empleado_id}}"
+    $.get('/seguridad/usuarios/getEmployeeedit/'+ id, function (data) {
             
-            processResults: function (data) {
-                console.log(data)
-                return {
-					results: $.map(data, function (item) {
-						return {
-                            id: item.id,
-                            text: item.apellido_paterno+' '+item.apellido_materno+' '+item.nombres
-                            }
-						})
-					}
-				}
-				
-            },
-	});
+        if(data.length > 0){
+            
+            var select = '<option value="" selected disabled >SELECCIONAR</option>'
+            for (var i = 0; i < data.length; i++)
+                if (data[i].id == "{{$usuario->empleado_id}}") {
+                    select += '<option value="' + data[i].id + '" selected >' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
+                }else{
+                    select += '<option value="' + data[i].id + '">' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
+                }
+  
+
+        }else{
+            toastr.error('Empleados no registrados.','Error');
+        }
+
+        $("#empleado_id").html(select);
+        $("#empleado_id").val("{{$usuario->empleado_id}}").trigger("change");
+
+    });
+
+
 
     $('#enviar_usuario').submit(function(e){
         e.preventDefault();
