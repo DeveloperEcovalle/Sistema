@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Mantenimiento;
 
 use App\Http\Controllers\Controller;
-use App\Mantenimiento\Empresa;
+use App\Mantenimiento\Empresa\Empresa;
 use App\Mantenimiento\Talonario;
 use Illuminate\Http\Request;
 use DataTables;

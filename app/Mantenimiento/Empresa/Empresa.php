@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mantenimiento;
+namespace App\Mantenimiento\Empresa;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +37,10 @@ class Empresa extends Model
     public function talonarios()
     {
         return $this->hasMany('App\Mantenimiento\Talonario');
+    }
+
+    public function bancos()
+    {
+        return $this->hasMany('App\Mantenimiento\Empresa\Banco');
     }
 }

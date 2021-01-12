@@ -32,12 +32,12 @@
                                         <a href="{{route('compras.pago.edit',  [ 'pago' => $pago[0]->id_pago, 'orden'=>  $orden->id ])}}" class="btn btn-warning btn-xs float-right"><i class='fa fa-edit'></i>Editar Pago</a>
                                        <h2  style="text-transform:uppercase">Pago de la orden de compra # {{$orden->id}}</h2>
                                     </div>
-                                    <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Información general del pago:</strong></p>
+                                    <p style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Información general del pago:</strong></p>
 
                                 </div>
                             </div>
 
-                            <div class="row"  onkeyup="return mayus(this)">
+                            <div class="row"  style="text-transform:uppercase">
 
                                 <div class="col-md-6 b-r">
 
@@ -48,7 +48,16 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label><strong>Monto: </strong></label>
-                                            <p >{{$tipo_moneda.' '.$pago[0]->monto}}</p>
+                                            @if($pago[0]->tipo_moneda == "SOLES" && $pago[0]->moneda_empresa == "SOLES" &&  $pago[0]->moneda == "SOLES")
+                                                <p>{{simbolo_monedas($pago[0]->tipo_moneda).' '.$pago[0]->monto}}</p>
+                                            @else
+                                                @if($pago[0]->moneda_empresa == "SOLES" )
+                                                    <p>S/. {{($pago[0]->monto)}}</p>
+                                                @else
+                                                    <p>{{simbolo_monedas($pago[0]->moneda_empresa).' '.($pago[0]->monto)}}</p>
+                                                @endif
+                                            @endif
+                                            
                                         </div>
                                     </div>
 
@@ -61,20 +70,32 @@
                                                 <p>-</p>
                                             @endif
                                         </div>
-                                        <div class="col-md-6">
-                                            <label><strong>Tipo de Cambio: </strong></label> 
-                                            @if($pago[0]->tipo_cambio != "")
-                                                <p>{{$pago[0]->tipo_cambio}}</p>
-                                            @else
-                                                <p>-</p>
-                                            @endif
-                                        </div>
                                     </div>
 
                         
                                 </div>
 
                                 <div class="col-md-6">
+
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label><strong>Tipo de Cambio del dia: </strong></label> 
+                                            @if($pago[0]->tc_dia != "")
+                                                <p>{{$pago[0]->tc_dia}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><strong>Tipo de Cambio del banco: </strong></label> 
+                                            @if($pago[0]->tc_banco != "")
+                                                <p>{{$pago[0]->tc_banco}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
                                             <label><strong>Observación: </strong></label> 
@@ -95,11 +116,11 @@
 
                             <hr>
 
-                            <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Entidad Financiera :</strong></p>
-                            <div class="row"  onkeyup="return mayus(this)">
+                           
+                            <div class="row" style="text-transform:uppercase">
 
                                     <div class="col-md-6 b-r">
-
+                                        <p style="text-transform:uppercase"><strong> <i class="fa fa-caret-right"></i> Entidad Financiera del Proveedor :</strong></p>
                                         <div class="form-group">
                                             <label><strong>Descripcion: </strong></label>
                                             <p >{{$pago[0]->descripcion}}</p>
@@ -110,11 +131,6 @@
                                             <p >{{$pago[0]->tipo_moneda}}</p>
                                             
                                         </div>
-
-                                    </div>
-
-                                    <div class="col-md-6">
-
                                         <div class="form-group">
                                             <label><strong>N° Cuenta: </strong></label>
                                             <p >{{$pago[0]->num_cuenta}}</p>
@@ -128,11 +144,36 @@
 
                                     </div>
 
+                                    <div class="col-md-6">
+                                    <p style="text-transform:uppercase"><strong> <i class="fa fa-caret-right"></i> Entidad Financiera de la Empresa :</strong></p>
+                                        <div class="form-group">
+                                            <label><strong>Descripcion: </strong></label>
+                                            <p >{{$pago[0]->descripcion_empresa}}</p>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Moneda: </strong></label>
+                                            <p >{{$pago[0]->moneda_empresa}}</p>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>N° Cuenta: </strong></label>
+                                            <p >{{$pago[0]->cuenta_empresa}}</p>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>N° CCI: </strong></label>
+                                            <p >{{$pago[0]->cci_empresa}}</p>
+                                            
+                                        </div>
+
+                                    </div>
+
                             </div>
                             <hr>
-
-                            <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Proveedor :</strong></p>
-                            <div class="row"  onkeyup="return mayus(this)">
+                        
+                            <p style="text-transform:uppercase"><strong> <i class="fa fa-caret-right"></i> Proveedor :</strong></p>
+                            <div class="row" style="text-transform:uppercase">
 
                                     <div class="col-md-6 b-r">
 
@@ -204,7 +245,76 @@
                                     </div>
 
                             </div>
+                            <hr>
+                            <p style="text-transform:uppercase"><strong> <i class="fa fa-caret-right"></i> Empresa :</strong></p>
+                            <div class="row" style="text-transform:uppercase">
 
+                                    <div class="col-md-6 b-r">
+
+                                        
+                                        <div class="form-group">
+                                            <label><strong>Ruc: </strong></label>
+                                            <p class="text-navy">{{$orden->empresa->ruc}}</p>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label><strong>Empresa: </strong></label>
+                                            <p >{{$orden->empresa->razon_social}}</p>
+                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Empresa: </strong></label>
+                                            <p >{{$orden->empresa->razon_social_abreviada}}</p>
+                                            
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label><strong>Dirección Fiscal: </strong></label>
+                                            <p >{{$orden->empresa->direccion_fiscal}}</p>
+                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Direccion: </strong></label>
+                                            <p>{{$orden->empresa->direccion_llegada}}</p>
+                                            
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label><strong>Telefono: </strong></label>
+                                                @if($orden->empresa->telefono != "")
+                                                    <p>{{$orden->empresa->telefono}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label><strong>Celular: </strong></label>
+                                                @if($orden->empresa->celular != "")
+                                                    <p>{{$orden->empresa->celular}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+                                            
+                                            
+                                        </div>
+
+
+
+
+                                    </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

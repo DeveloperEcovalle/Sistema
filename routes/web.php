@@ -51,14 +51,14 @@ Route::prefix('mantenimiento/tablas/detalles')->group(function() {
 
 //Empresas
 Route::prefix('mantenimiento/empresas')->group(function() {
-    Route::get('index', 'Mantenimiento\EmpresaController@index')->name('mantenimiento.empresas.index');
-    Route::get('getBusiness','Mantenimiento\EmpresaController@getBusiness')->name('getBusiness');
-    Route::get('create','Mantenimiento\EmpresaController@create')->name('mantenimiento.empresas.create');
-    Route::post('store', 'Mantenimiento\EmpresaController@store')->name('mantenimiento.empresas.store');
-    Route::get('destroy/{id}', 'Mantenimiento\EmpresaController@destroy')->name('mantenimiento.empresas.destroy');
-    Route::get('show/{id}', 'Mantenimiento\EmpresaController@show')->name('mantenimiento.empresas.show');
-    Route::get('edit/{id}', 'Mantenimiento\EmpresaController@edit')->name('mantenimiento.empresas.edit');
-    Route::put('update/{id}', 'Mantenimiento\EmpresaController@update')->name('mantenimiento.empresas.update');
+    Route::get('index', 'Mantenimiento\Empresa\EmpresaController@index')->name('mantenimiento.empresas.index');
+    Route::get('getBusiness','Mantenimiento\Empresa\EmpresaController@getBusiness')->name('getBusiness');
+    Route::get('create','Mantenimiento\Empresa\EmpresaController@create')->name('mantenimiento.empresas.create');
+    Route::post('store', 'Mantenimiento\Empresa\EmpresaController@store')->name('mantenimiento.empresas.store');
+    Route::get('destroy/{id}', 'Mantenimiento\Empresa\EmpresaController@destroy')->name('mantenimiento.empresas.destroy');
+    Route::get('show/{id}', 'Mantenimiento\Empresa\EmpresaController@show')->name('mantenimiento.empresas.show');
+    Route::get('edit/{id}', 'Mantenimiento\Empresa\EmpresaController@edit')->name('mantenimiento.empresas.edit');
+    Route::put('update/{id}', 'Mantenimiento\Empresa\EmpresaController@update')->name('mantenimiento.empresas.update');
 });
 //Compras
 //Categoria

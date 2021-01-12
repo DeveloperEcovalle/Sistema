@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Mantenimiento;
+namespace App\Http\Controllers\Mantenimiento\Empresa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Mantenimiento\Empresa;
+use App\Mantenimiento\Empresa\Empresa;
 use App\Mantenimiento\Ubigeo\Departamento;
 use App\Mantenimiento\Ubigeo\Provincia;
 use App\Mantenimiento\Ubigeo\Distrito;
@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use DB;
+use App\Mantenimiento\Empresa\Banco;
 
 class EmpresaController extends Controller
 {
@@ -35,15 +36,19 @@ class EmpresaController extends Controller
         $departamentos = Departamento::all();
         $provincias = Provincia::all();
         $distritos = Distrito::all();
+        $bancos = bancos();
+        $monedas = tipos_moneda();
         return view('mantenimiento.empresas.create',[
             'departamentos' => $departamentos,
             'provincias' => $provincias,
             'distritos' => $distritos,
+            'bancos' => $bancos,
+            'monedas' => $monedas,
         ]);
     }
 
     public function store(Request $request){
-   
+
         $data = $request->all();
 
         $rules = [
@@ -116,6 +121,23 @@ class EmpresaController extends Controller
         };
         $empresa->save();
 
+        //Llenado de Bancos
+        $entidadesJSON = $request->get('entidades_tabla');
+        $entidadtabla = json_decode($entidadesJSON[0]);
+
+        if ($entidadtabla) {
+            foreach ($entidadtabla as $entidad) {
+                Banco::create([
+                    'empresa_id' => $empresa->id,
+                    'descripcion' => $entidad->entidad,
+                    'tipo_moneda' => $entidad->moneda,
+                    'num_cuenta' => $entidad->cuenta,
+                    'cci' => $entidad->cci,
+                ]);
+            }
+        }
+        
+
         Session::flash('success','Empresa creada.');
         return redirect()->route('mantenimiento.empresas.index')->with('guardar', 'success');
     }
@@ -135,8 +157,12 @@ class EmpresaController extends Controller
     public function show($id)
     {
         $empresa = Empresa::findOrFail($id);
+        $banco = Banco::where('empresa_id',$id)
+        ->where('estado','ACTIVO')
+        ->get();
         return view('mantenimiento.empresas.show', [
-            'empresa' => $empresa 
+            'empresa' => $empresa ,
+            'banco' => $banco
         ]);
 
     }
@@ -144,8 +170,16 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         $empresa = Empresa::findOrFail($id);
+        $banco = Banco::where('empresa_id',$id)
+        ->where('estado','ACTIVO')
+        ->get();
+        $bancos = bancos();
+        $monedas = tipos_moneda();
         return view('mantenimiento.empresas.edit', [
-            'empresa' => $empresa 
+            'empresa' => $empresa ,
+            'bancos' => $bancos, 
+            'monedas' => $monedas,
+            'banco' => $banco,
         ]);
 
     }
@@ -222,6 +256,34 @@ class EmpresaController extends Controller
             $empresa->activo = "1";
         };
         $empresa->update();
+
+        $entidadesJSON = $request->get('entidades_tabla');
+        $entidadtabla = json_decode($entidadesJSON[0]);
+
+        if ($entidadtabla) {
+
+            $bancos = Banco::where('empresa_id', $empresa->id)->get();
+            foreach ($bancos as $banco) {
+                $banco->estado= "ANULADO";
+                $banco->update();
+            }
+            foreach ($entidadtabla as $entidad) {
+                Banco::create([
+                    'empresa_id' => $empresa->id,
+                    'descripcion' => $entidad->entidad,
+                    'tipo_moneda' => $entidad->moneda,
+                    'num_cuenta' => $entidad->cuenta,
+                    'cci' => $entidad->cci,
+                ]);
+            }
+
+        }else{
+            $bancos = Banco::where('empresa_id', $empresa->id)->get();
+            foreach ($bancos as $banco) {
+                $banco->estado= "ANULADO";
+                $banco->update();
+            }
+        }
 
         Session::flash('success','Empresa modificada.');
         return redirect()->route('mantenimiento.empresas.index')->with('modificar', 'success');

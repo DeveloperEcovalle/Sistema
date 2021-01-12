@@ -28,7 +28,7 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                        <table class="table dataTables-empleado table-striped table-bordered table-hover"  onkeyup="return mayus(this)">
+                        <table class="table dataTables-empleado table-striped table-bordered table-hover"  style="text-transform:uppercase">
                             <thead>
                             <tr>
                                 <th class="text-center">DOCUMENTO</th>

@@ -37,9 +37,25 @@
 
                                 <div class="col-md-6 b-r">
 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label><strong>Código de Fábrica: </strong></label>
+                                            <p class="text-navy">{{$articulo->codigo_fabrica}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><strong>Código de Barra: </strong></label> 
+                                                @if($articulo->codigo_barra)
+                                                    <p>{{$articulo->codigo_barra}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                        </div>
+                                        
+                                    </div>
+
                                     <div class="form-group">
                                         <label><strong>Descripción: </strong></label>
-                                        <p class="text-navy">{{$articulo->descripcion}}</p>
+                                        <p >{{$articulo->descripcion}}</p>
                                     </div>
 
                                     <div class="form-group row">
@@ -48,7 +64,7 @@
                                             <p >{{$articulo->categoria->descripcion}}</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <label><strong>Presentación </strong></label> 
+                                            <label><strong>Presentación: </strong></label> 
                                             <p>{{$articulo->presentacion}}</p>
                                         </div>
                                         

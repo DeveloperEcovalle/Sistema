@@ -286,7 +286,7 @@
                                 <div class="form-group">
                                     <div class="table-responsive">
                                         <table class="table dataTables-bancos table-striped table-bordered table-hover"
-                                             onkeyup="return mayus(this)">
+                                        style="text-transform:uppercase">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">ACCIONES</th>

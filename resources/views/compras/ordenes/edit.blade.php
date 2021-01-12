@@ -156,7 +156,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <label class="required">Moneda: </label>
                                         <select
                                             class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
@@ -175,6 +175,15 @@
                                             </span>
                                             @endif
                                         </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class=""  id="campo_tipo_cambio">Tipo de Cambio (S/.):</label>
+                                        <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$orden->tipo_cambio)}}" disabled>
+                                        @if ($errors->has('tipo_cambio'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('tipo_cambio') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
                                     <div class="col-md-3">
                                         <label id="igv_requerido">IGV (%):</label>
@@ -196,15 +205,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-3">
-                                        <label class="">Tipo de Cambio:</label>
-                                        <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$orden->tipo_cambio)}}">
-                                        @if ($errors->has('tipo_cambio'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('tipo_cambio') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
+
 
                                 </div>
 
@@ -450,7 +451,19 @@ $(document).ready(function() {
         $('#igv').attr('disabled', true)
         $('#igv_requerido').removeClass("required")
     }
-});
+    //TIPO DE CAMBIO
+
+    if ("{{old('moneda',$orden->moneda)}}" == "SOLES") {
+        $('#tipo_cambio').attr('disabled',true)
+        $("#tipo_cambio").attr("required", false);
+        $("#campo_tipo_cambio").removeClass("required")
+    }else{
+        $('#tipo_cambio').attr('disabled',false)
+        $("#tipo_cambio").attr("required", true);
+        $("#campo_tipo_cambio").addClass("required")
+    }
+
+})
 
 $("#igv_check").click(function() {
     if ($("#igv_check").is(':checked')) {
@@ -944,6 +957,22 @@ function cargarPresentacion(articulo) {
     $('#presentacion').val(presentacion)
     $('#precio').val(precio)
 }
+
+$("#moneda").on("change", function() {
+    var val = $(this).val();
+    if (val == "SOLES") {
+        $('#tipo_cambio').attr('disabled',true)
+        $('#tipo_cambio').val('')
+        $("#tipo_cambio").attr("required", false);
+        $("#campo_tipo_cambio").removeClass("required")
+
+    }else{
+        $('#tipo_cambio').attr('disabled',false)
+        $('#tipo_cambio').val('')
+        $("#tipo_cambio").attr("required", true);
+        $("#campo_tipo_cambio").addClass("required")
+    }
+});
 
 function articuloPresentacion(articulo) {
     var presentacion = ""

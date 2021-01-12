@@ -26,7 +26,7 @@ class Orden extends Model
 
     public function empresa()
     {
-        return $this->belongsTo('App\Mantenimiento\Empresa');
+        return $this->belongsTo('App\Mantenimiento\Empresa\Empresa');
     }
     public function proveedor()
     {

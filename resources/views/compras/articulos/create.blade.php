@@ -61,15 +61,29 @@
                                         </div> 
 
                                         <div class="col-md-6">
-                                            <label class="required">Descripción: </label>                                                     
-                                            <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion')}}"   onkeyup="return mayus(this)" required>
+                                            <label class="">Código de Barra: </label>                                                     
+                                            <input type="text" id="codigo_barra" class="form-control {{ $errors->has('codigo_barra') ? ' is-invalid' : '' }}" name="codigo_barra" value="{{ old('codigo_barra')}}"   onkeyup="return mayus(this)">
 
-                                            @if ($errors->has('descripcion'))
+                                            @if ($errors->has('codigo_barra'))
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('descripcion') }}</strong>
+                                                    <strong>{{ $errors->first('codigo_barra') }}</strong>
                                                 </span>
                                             @endif 
                                         </div>   
+                                        
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="required">Descripción: </label>                                                     
+                                        <input type="text" id="descripcion" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion')}}"   onkeyup="return mayus(this)" required>
+
+                                        @if ($errors->has('descripcion'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('descripcion') }}</strong>
+                                            </span>
+                                        @endif 
+                                           
                                         
                                     </div>
 

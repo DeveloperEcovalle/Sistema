@@ -16,6 +16,7 @@ class Articulo extends Model
         'stock',
         'stock_min',
         'precio_compra',
+        'codigo_barra',
         'estado'];
     public $timestamps = true;
 

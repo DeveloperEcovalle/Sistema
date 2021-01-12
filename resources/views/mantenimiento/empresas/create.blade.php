@@ -69,7 +69,7 @@
                                         <label>Estado: </label>
                                         <input type="text" id="estado"
                                             class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
-                                            name="estado" value="{{old('estado',"Inactivo")}}"
+                                            name="estado" value="{{old('estado',"INACTVO")}}"
                                              onkeyup="return mayus(this)" disabled>
                                         @if ($errors->has('estado'))
                                         <span class="invalid-feedback" role="alert">
@@ -143,14 +143,6 @@
 
                                 </div>
 
-
-
-
-                            </div>
-
-                            <div class="col-sm-6">
-
-
                                 <div class="form-group">
                                     <label class="">Correo: </label>
 
@@ -194,6 +186,14 @@
 
                                 </div>
 
+
+
+
+                            </div>
+
+                            <div class="col-sm-6">
+
+
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label>Logo:</label>
@@ -233,6 +233,42 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-md-8">
+                                        <h4><b>Entidades Financieras</b></h4>
+                                        <p>Registrar entidad financiera de la Empresa:</p>
+                                        <input type="hidden" id="entidades_tabla" name="entidades_tabla[]">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a class="btn btn-block btn-primary m-t-md btn-sm"
+                                            style="color:white;" onclick="agregarEntidad()">
+                                            <i class="fa fa-plus-square"></i> Añadir entidad
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="table-responsive">
+                                        <table class="table dataTables-bancos table-striped table-bordered table-hover"
+                                        style="text-transform:uppercase">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">ACCIONES</th>
+                                                    <th class="text-center">DESCRIPCION</th>
+                                                    <th class="text-center">MONEDA</th>
+                                                    <th class="text-center">CUENTA</th>
+                                                    <th class="text-center">CCI</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                
 
                             </div>
 
@@ -358,11 +394,14 @@
     </div>
 
 </div>
-
+@include('mantenimiento.empresas.modal')
 @stop
 
 @push('styles')
 
+<link href="{{asset('Inspinia/css/plugins/select2/select2.min.css')}}" rel="stylesheet">
+<!-- DataTable -->
+<link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
 
 <style>
 .logo {
@@ -370,13 +409,82 @@
     height: 200px;
     border-radius: 10%;
 }
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {  
+    margin-left:2px;
+}
 </style>
 @endpush
 
 @push('scripts')
+<!-- Select2 -->
+<script src="{{asset('Inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
 
+<!-- DataTable -->
+<script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
 
 <script>
+$(document).ready(function() {
+
+    // DataTables
+    $('.dataTables-bancos').DataTable({
+        "dom": 'Tftp',
+        "bPaginate": true,
+        "bFilter": true,
+        "bInfo": true,
+        "bAutoWidth": false,
+        "language": {
+            "url": "{{asset('Spanish.json')}}"
+        },
+
+        "columnDefs": [
+            {
+
+                "targets": [0],
+                className: "text-center",
+                render: function(data, type, row) {
+                    return "<div class='btn-group'>" +
+                        "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_entidad' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
+                        "<a class='btn btn-danger btn-sm' id='borrar_entidad' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                        "</div>";
+                }
+            },
+            {
+                "targets": [1],
+            },
+            {
+                "targets": [2],
+                className: "text-center",
+            },
+            {
+                "targets": [3],
+                className: "text-center",
+            },
+            {
+                "targets": [4],
+                className: "text-center",
+            },
+
+        ],
+
+    });
+
+})
+
+//Añadir Entidad Financiera
+function agregarEntidad() {
+    $('#modal_agregar_entidad').modal('show');
+}
+$.fn.select2.defaults.set('language', 'es');
+
+//Select2
+$(".select2_form").select2({
+    placeholder: "SELECCIONAR",
+    allowClear: true,
+    height: '200px',
+    width: '100%',
+});
+
 // Solo campos numericos
 $('#ruc').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');

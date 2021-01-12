@@ -8,7 +8,7 @@ use App\Compras\Orden;
 use App\Compras\Detalle;
 use App\Compras\Proveedor;
 use App\Compras\Enviado;
-use App\Mantenimiento\Empresa;
+use App\Mantenimiento\Empresa\Empresa;
 use App\Compras\Articulo;
 use DataTables;
 use Carbon\Carbon;
@@ -86,24 +86,84 @@ class OrdenController extends Controller
 
             //Pagos a cuenta
             $pagos = DB::table('pagos')
-            ->select('pagos.*')
+            ->join('ordenes','pagos.orden_id','=','ordenes.id')
+            ->select('pagos.*','ordenes.moneda as moneda_orden')
             ->where('pagos.orden_id','=',$orden->id)
             ->where('pagos.estado','!=','ANULADO')
             ->get();
 
+
             // CALCULAR ACUENTA EN MONEDA
             $acuenta = 0;
+            $soles = 0;
             foreach($pagos as $pago){
-                $acuenta = $acuenta + $pago->monto;
+
+                if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
+                    $acuenta = $acuenta + $pago->monto;
+                }else{
+    
+                    if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
+                        if ($pago->moneda_orden != 'SOLES') {
+                            $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
+                        }else{
+                            $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
+                        }
+                        
+                    }else{
+                        if ($pago->moneda_orden == $pago->moneda_empresa) {
+                            $acuenta = $acuenta + $pago->monto;
+                        }else{
+                                if ($pago->moneda_empresa == 'SOLES') {
+                                    $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
+                                }else{
+                                    $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
+                                }
+                        }
+                    }
+    
+     
+                }
+
+                //CALCULAR A CUENTA EN SOLES
+                if($pago->moneda_empresa != "SOLES" && $pago->moneda_proveedor != "SOLES" && $pago->moneda_orden != "SOLES"  ){
+                    $soles = $soles + ($pago->monto*$pago->tipo_cambio_soles);
+                }else{
+                    if ($pago->moneda_empresa == "SOLES") {
+                        $soles = $soles + $pago->monto;
+                    }else{
+                        if ($pago->moneda_proveedor == "SOLES") {
+                            $soles = $soles + ($pago->tc_banco*$pago->monto);
+                        }else{
+                            $soles = $soles + ($pago->tipo_cambio_soles*$pago->monto);
+                        }
+                    }
+                }
+
             }
 
-            //CALCULAR A CUENTA EN SOLES
-            $soles = 0;
+           
+            // foreach($pagos as $pago){
+            //     if ($pago->moneda_orden == $pago->moneda_empresa) {
+            //         $acuenta = $acuenta + $pago->monto;
+            //     }else{
+            //         if ($pago->moneda_orden == $pago->moneda_proveedor) {
+            //             $acuenta = $acuenta + ($pago->tc_banco*$pago->monto);
+            //         }else{
+            //             if ($pago->moneda_orden == 'SOLES') {
+            //                 $acuenta = $acuenta + ($pago->tc_dia*$pago->monto);
+            //             }else{
+            //                 $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
+            //             }
+            //         }
+            //     }
+
+
+ 
             $cambio = 0;
-            foreach($pagos as $pago){
-                $cambio = $pago->monto * $pago->tipo_cambio;
-                $soles = $soles+$cambio;
-            }
+            // foreach($pagos as $pago){
+            //     $cambio = $pago->monto * $pago->tipo_cambio;
+            //     $soles = $soles+$cambio;
+            // }
 
             //CALCULAR SALDO
             $saldo = $decimal_total - $acuenta;

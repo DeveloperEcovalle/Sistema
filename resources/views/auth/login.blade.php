@@ -82,6 +82,9 @@
             dd("sasas");
         @endif
     </script>
+    
+    <!-- Propio scripts -->
+    <script src="{{ asset('Inspinia/js/scripts.js') }}"></script>
 
 </body>
 

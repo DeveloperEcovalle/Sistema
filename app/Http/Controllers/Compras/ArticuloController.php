@@ -100,6 +100,7 @@ class ArticuloController extends Controller
         $articulo->stock = $request->get('stock');
         $articulo->stock_min = $request->get('stock_min');
         $articulo->precio_compra = $request->get('precio_compra');
+        $articulo->codigo_barra = $request->get('codigo_barra');
         $articulo->save();
 
         Session::flash('success','Artículo creada.');
@@ -147,6 +148,7 @@ class ArticuloController extends Controller
         $articulo->stock = $request->get('stock');
         $articulo->stock_min = $request->get('stock_min');
         $articulo->precio_compra = $request->get('precio_compra');
+        $articulo->codigo_barra = $request->get('codigo_barra');
         $articulo->update();
 
         Session::flash('success','Artículo modificada.');

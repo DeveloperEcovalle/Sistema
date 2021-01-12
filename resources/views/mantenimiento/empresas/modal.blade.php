@@ -8,7 +8,7 @@
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
                 <h4 class="modal-title">Entidad Financiera</h4>
-                <small class="font-bold">Registrar entidad financiera asociada al proveedor.</small>
+                <small class="font-bold">Registrar entidad financiera asociada a la empresa.</small>
             </div>
             <div class="modal-body">
                 <form role="form" id="">
@@ -93,7 +93,7 @@
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
                 <h4 class="modal-title">Entidad Financiera</h4>
-                <small class="font-bold">Modificar entidad financiera asociada al proveedor.</small>
+                <small class="font-bold">Modificar entidad financiera asociada a la empresa.</small>
             </div>
             <div class="modal-body">
                 <form role="form" id="">
@@ -259,7 +259,6 @@ $(".modificarEntidad").click(function() {
                     actualizarTabla($('#modificar_id_banco').val())
                     $('#modal_editar_entidad').modal('hide');
                 }
-                cargarEntidades()
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
@@ -400,6 +399,7 @@ $(".agregarEntidad").click(function() {
                     limpiar()
                     agregarTabla(entidad)
                 }
+                cargarEntidades()
 
             } else if (
                 /* Read more about handling dismissals below */

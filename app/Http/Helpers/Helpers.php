@@ -228,3 +228,17 @@ if (!function_exists('calcularMonto')) {
     }
 
 }
+
+//Obtner Simbbolo de la moneda
+if (!function_exists('simbolo_monedas')) {
+    function simbolo_monedas($moneda_descripcion)
+    {
+        $simbolo= '';
+        foreach(tipos_moneda() as $moneda){
+            if ($moneda->descripcion == $moneda_descripcion) {
+                $simbolo= $moneda->simbolo;
+            }
+        }
+        return $simbolo;
+    }
+}

@@ -17,7 +17,7 @@
         </ol>
     </div>
 </div>
-<div class="row">
+<div class="row"  style="text-transform:uppercase" >
     <div class="col-lg-9">
         <div class="wrapper wrapper-content animated fadeInUp">
             <div class="ibox">
@@ -30,13 +30,13 @@
                                     Proveedor</a>
                                <h2  style="text-transform:uppercase">{{$proveedor->descripcion}}</h2>
                             </div>
-                            <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Información
+                            <p  style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Información
                                     general del proveedor:</strong></p>
 
                         </div>
                     </div>
 
-                    <div class="row"  onkeyup="return mayus(this)">
+                    <div class="row"  style="text-transform:uppercase">
 
                         <div class="col-md-6 b-r">
 
@@ -74,10 +74,7 @@
                                 <label><strong>Dirección: </strong></label>
                                 <p>{{$proveedor->direccion}}</p>
                             </div>
-                            <div class="form-group">
-                                <label><strong>Zona: </strong></label>
-                                <p>{{$proveedor->zona}}</p>
-                            </div>
+
 
 
 
@@ -87,10 +84,9 @@
 
                         <div class="col-md-6">
 
-
                             <div class="form-group">
-                                <label><strong>Dirección: </strong></label>
-                                <p>{{$proveedor->direccion}}</p>
+                                <label><strong>Zona: </strong></label>
+                                <p>{{$proveedor->zona}}</p>
                             </div>
 
                             <div class="form-group">
@@ -126,10 +122,10 @@
 
                     <hr>
                     <div class="form-group">
-                        <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Informacion de las entidades Financieras asociadas al proveedor:</strong></p>
+                        <p  style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Informacion de las entidades Financieras asociadas al proveedor:</strong></p>
                         <div class="table-responsive">
                             <table class="table dataTables-bancos table-striped table-bordered table-hover"
-                                 onkeyup="return mayus(this)">
+                            style="text-transform:uppercase">
                                 <thead>
                                     <tr>
                                         <th class="text-left">DESCRIPCION</th>
@@ -147,10 +143,10 @@
 
                     </div>
                     <hr>
-                    <div class="row"  onkeyup="return mayus(this)">
+                    <div class="row"  style="text-transform:uppercase">
 
                         <div class="col-md-6 b-r">
-                            <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Información
+                            <p  style="text-transform:uppercase"><strong> <i class="fa fa-caret-right"></i> Información
                                     del
                                     calidad:</strong></p>
 
@@ -195,7 +191,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Información
+                            <p  style="text-transform:uppercase"><strong> <i class="fa fa-caret-right"></i> Información
                                     del contacto:</strong></p>
                             <div class="form-group">
                                 <label><strong>Nombre: </strong></label>
@@ -245,17 +241,14 @@
 
                     <hr>
 
-                    <div class="row"  onkeyup="return mayus(this)">
+                    <div class="row"  style="text-transform:uppercase">
 
                         <div class="col-md-6 b-r">
-                            <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Información
+                            <p  style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Información
                                     del
                                     Transporte:</strong></p>
                             <div class="form-group row">
-                                <div class="col-md-4">
-
-                                </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                 <label><strong>Nombre: </strong></label>
                                     @if($proveedor->transporte != "")
                                     <p>{{$proveedor->transporte}}</p>
@@ -278,7 +271,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <p  onkeyup="return mayus(this)"><strong><i class="fa fa-caret-right"></i> Información
+                            <p  style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Información
                                     del
                                     Almacen:</strong></p>
                             <div class="form-group">

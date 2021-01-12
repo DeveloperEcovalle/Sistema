@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Pagos de la Orden #{{$orden->id}} para el proveedor "{{$orden->proveedor->descripcion}}"</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos de la Orden #{{$orden->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -30,33 +30,12 @@
         <div class="col-md-12 m-t">
             <div class="alert alert-success">
                 <b>INFORMACION DE PAGOS </b>
-                <ul class="margin-bottom-none padding-left-lg">
-                        <div class="form-group row">
-                            @if($orden->moneda != "SOLES")
-                            <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
-                                <li id="informacion-cancelada"><b>Orden de compra #{{$orden->id}} CANCELADA.</b> </li> 
-                            </div>
-                            
-                            <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>soles</b></span>: <b>S/. {{$total_soles}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>soles</b></span>: <b>S/. {{$acuenta_soles}}</b>.</li>
-                            </div>
-                            @else
-
-                            <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
-                                <li id="informacion-cancelada"><b>Orden de compra #{{$orden->id}} CANCELADA.</b> </li> 
-                            </div>
-
-                            @endif
-                        </div>
-
-
+                <ul class="margin-bottom-none padding-left-lg">                           
+                        <li>Deuda total de la orden de compra: <b>{{$moneda.' '.$monto}}</b>.</li>
+                        <!-- <li>Saldo de la orden de compra: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                        <li>Monto a cuenta hasta el momento: <b>{{$moneda.' '.$total}}</b>. </li>
+                        <li>Monto a cuenta en Soles hasta el momento: <b>{{'S/. '.$soles}}</b>. </li>
+                        <li id="informacion-cancelada"><b>Orden de compra #{{$orden->id}} CANCELADA.</b> </li> -->
                 </ul>
             </div>
         </div>
@@ -84,8 +63,6 @@
                                     <th></th>
                                     <th class="text-center">FECHA PAGO</th>
                                     <th class="text-center">ENTIDAD</th>
-                                    <th class="text-center">CUENTA EMPRESA</th>
-                                    <th class="text-center">CUENTA PROVEEDOR</th>
                                     <th class="text-center">MONTO</th>
                                     <th class="text-center">MONTO (S/.)</th>
                                     <th class="text-center">ACCIONES</th>
@@ -164,14 +141,6 @@ $(document).ready(function() {
                 className: "text-center"
             },
             {
-                data: 'cuenta_empresa',
-                className: "text-center"
-            },
-            {
-                data: 'cuenta_proveedor',
-                className: "text-center"
-            },
-            {
                 data: 'monto',
                 className: "text-center"
             },
@@ -203,15 +172,14 @@ $(document).ready(function() {
     });
 
     tablaDatos = $('.dataTables-enviados').DataTable();
-    
-    @if("{{$monto}}" == "{{$acuenta}}")
+
+    @if("{{$monto}}" == "{{$total}}")
         $("#boton_agregar_pago").css("display", "none");
         $("#informacion-cancelada").css("display", "");
     @else
         $("#boton_agregar_pago").css("display", "");
         $("#informacion-cancelada").css("display", "none");
     @endif
-
 
 });
 

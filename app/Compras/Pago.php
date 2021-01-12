@@ -11,20 +11,35 @@ class Pago extends Model
     public $timestamps = true;
     protected $fillable = [
             'orden_id',
-            'banco',
+            'id_banco_proveedor',
+            'id_banco_empresa',
+
             'ruta_archivo',
             'nombre_archivo',
             'fecha_pago',
             'monto',
             'moneda',
-            'tipo_cambio',
+
+            'moneda_empresa',
+            'moneda_proveedor',
+            
+            'tipo_cambio_soles',
+            'tc_dia',
+            'tc_banco',
+            
+            
             'observacion',
             'estado'
         ];
 
-    public function bancos()
+    public function bancosProveedor()
     {
-        return $this->belongsTo('App\Compras\Banco','banco');
+        return $this->belongsTo('App\Compras\Banco','id_banco_proveedor');
+    }
+
+    public function bancosEmpresa()
+    {
+        return $this->belongsTo('App\Mantenimiento\Empresa\Banco','id_banco_empresa');
     }
 
     public function orden()

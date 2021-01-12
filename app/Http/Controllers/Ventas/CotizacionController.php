@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Ventas;
 
 use App\Http\Controllers\Controller;
-use App\Mantenimiento\Empresa;
+use App\Mantenimiento\Empresa\Empresa;
 use App\Produccion\Producto;
 use App\Ventas\Cliente;
 use App\Ventas\Cotizacion;
