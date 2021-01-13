@@ -19,11 +19,13 @@
         </ol>
     </div>
     
+    @if($orden->estado != "PAGADA")
     <div class="col-lg-2 col-md-2" id="boton_agregar_pago">
         <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('compras.pago.create',$orden->id)}}">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
+    @endif
 
 
     
@@ -37,7 +39,9 @@
                                 <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
                                 <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
                                 <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                @if($orden->estado == "PAGADA")
                                 <li id="informacion-cancelada"><b>Orden de compra #{{$orden->id}} CANCELADA.</b> </li> 
+                                @endif
                             </div>
                             
                             <div class="col-md-6">                           
@@ -50,7 +54,9 @@
                                 <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
                                 <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
                                 <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                @if($orden->estado == "PAGADA")
                                 <li id="informacion-cancelada"><b>Orden de compra #{{$orden->id}} CANCELADA.</b> </li> 
+                                @endif
                             </div>
 
                             @endif
@@ -186,10 +192,7 @@ $(document).ready(function() {
                         //Ruta Detalle
                         var url_detalle = "{{ route('compras.pago.show', [ 'pago' =>'id', 'orden'=>  $orden->id ]) }}".replace('id', data.id);
 
-                        //Ruta Modificar
-                        var url_edit = "{{ route('compras.pago.edit', [ 'pago' =>'id', 'orden'=>  $orden->id ]) }}".replace('id', data.id);
-
-                        return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-warning btn-sm modificarDetalle' href='"+url_edit+"' title='Modificar'><i class='fa fa-edit'></i></a><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
+                        return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
             }
 
@@ -203,14 +206,6 @@ $(document).ready(function() {
     });
 
     tablaDatos = $('.dataTables-enviados').DataTable();
-    
-    @if("{{$monto}}" == "{{$acuenta}}")
-        $("#boton_agregar_pago").css("display", "none");
-        $("#informacion-cancelada").css("display", "");
-    @else
-        $("#boton_agregar_pago").css("display", "");
-        $("#informacion-cancelada").css("display", "none");
-    @endif
 
 
 });

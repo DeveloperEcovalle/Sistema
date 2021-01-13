@@ -29,7 +29,6 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="">
-                                        <a href="{{route('compras.pago.edit',  [ 'pago' => $pago[0]->id_pago, 'orden'=>  $orden->id ])}}" class="btn btn-warning btn-xs float-right"><i class='fa fa-edit'></i>Editar Pago</a>
                                        <h2  style="text-transform:uppercase">Pago de la orden de compra # {{$orden->id}}</h2>
                                     </div>
                                     <p style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Información general del pago:</strong></p>

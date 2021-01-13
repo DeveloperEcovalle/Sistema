@@ -64,26 +64,6 @@ class PagoController extends Controller
         //SALDO EN RESTANTE EN SOLES
         $saldo_restante_soles = $total_cambio - $soles;
 
-
-
-        // $total = 0;
-        // foreach($pagos as $pago){
-        //     $total = $total + $pago->monto;
-        // }
-
-        // $soles = 0;
-        // $cambio = 0;
-        // foreach($pagos as $pago){
-        //     $cambio = $pago->monto * $pago->tipo_cambio;
-        //     $soles = $soles+$cambio;
-        // }
-
-        // // CALCULAR ACUENTA EN MONEDA
-        // $acuenta = 0;
-        // foreach($pagos as $pago){
-        //     $acuenta = $acuenta + $pago->monto;
-        // }
-
         //CALCULAR LA SUMA DE TODOS LOS PAGOS
         $pagos = DB::table('pagos')
         ->join('ordenes','pagos.orden_id','=','ordenes.id')
@@ -91,24 +71,7 @@ class PagoController extends Controller
         ->where('pagos.orden_id','=',$id)
         ->where('pagos.estado','!=','ANULADO')
         ->get();
-        
 
-        // $total = 0;
-        // foreach($pagos as $pago){
-        //     if ($pago->moneda_orden == $pago->moneda_empresa) {
-        //         $total = $total + $pago->monto;
-        //     }else{
-        //         if ($pago->moneda_orden == $pago->moneda_proveedor) {
-        //             $total = $total + ($pago->tc_banco*$pago->monto);
-        //         }else{
-        //             if ($pago->moneda_orden == 'SOLES') {
-        //                 $total = $total + ($pago->tc_dia*$pago->monto);
-        //             }else{
-        //                 $total = $total + ($pago->monto/$pago->tc_dia);
-        //             }
-        //         }
-        //     }
-        // }
         // MONTOS ACUENTA EN LA MONEDA DE LA ORDEN
         $acuenta = 0;
         foreach($pagos as $pago){
@@ -143,7 +106,10 @@ class PagoController extends Controller
         // //CALCULAR SALDO
         $saldo = $montoTotal - $acuenta;
 
-
+        if ($saldo < 1) {
+            $orden->estado = "PAGADA";
+            $orden->update();
+        }
         
         return view('compras.ordenes.pagos.index',[
             'orden' => $orden,
@@ -283,25 +249,6 @@ class PagoController extends Controller
         ->where('pagos.estado','!=','ANULADO')
         ->get();
         
-
-        // $total = 0;
-        // foreach($pagos as $pago){
-
-        //     if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-        //         $total = $total + $pago->monto;
-        //     }else{
-        //         if ($pago->moneda_orden == $pago->moneda_empresa) {
-        //             $total = $total + $pago->monto;
-        //         }else{
-        //                 if ($pago->moneda_empresa == 'SOLES') {
-        //                     $total = $total + ($pago->monto/$pago->tc_banco);
-        //                 }else{
-        //                     $total = $total + ($pago->monto*$pago->tc_banco);
-        //                 }
-        //         }
-        //     }
-        // }
-
         // TOTAL DE PAGOS EN SU MONEDA DE LA ORDEN
         $acuenta = 0;
         foreach($pagos as $pago){
@@ -354,7 +301,6 @@ class PagoController extends Controller
     public function store(Request $request)
     {
        
-        // dd($request);
         $data = $request->all();
 
         $rules = [
@@ -423,188 +369,6 @@ class PagoController extends Controller
         Session::flash('success','Pago creado.');
         return redirect()->route('compras.pago.index',$request->get('id_orden'))->with('guardar', 'success');
         
-      
-
-    }
-
-    public function edit(Request $request)
-    {
-        // dd($request);
-        $orden = Orden::findOrFail($request->get('orden') );
-        $fecha_hoy = Carbon::now()->toDateString();
-        $monedas =  tipos_moneda();
-        $bancos = bancos();
-        $bancos_proveedor = collect([]);
-        $bancos_empresa = collect([]);
-        foreach($orden->proveedor->bancos as $moneda_bancos){
-           
-            $bancos_proveedor->push([
-                'id' => $moneda_bancos->id,
-                'descripcion'=> $moneda_bancos->descripcion,
-                'tipo_moneda' => $moneda_bancos->tipo_moneda,
-                'num_cuenta'=> $moneda_bancos->num_cuenta,
-                'cci'=> $moneda_bancos->cci,
-                'estado'=> $moneda_bancos->estado,
-            ]);
-            
-        }
-
-        foreach($orden->empresa->bancos as $moneda_bancos){
-            $bancos_empresa->push([
-                'id' => $moneda_bancos->id,
-                'descripcion'=> $moneda_bancos->descripcion,
-                'tipo_moneda' => $moneda_bancos->tipo_moneda,
-                'num_cuenta'=> $moneda_bancos->num_cuenta,
-                'cci'=> $moneda_bancos->cci,
-                'estado'=> $moneda_bancos->estado,
-            ]);
-        }
-
-        $pagos = DB::table('pagos')
-        ->join('ordenes','pagos.orden_id','=','ordenes.id')
-        ->select('pagos.*', 'pagos.id as id_pago','ordenes.moneda as moneda_orden')
-        ->where('pagos.orden_id','=',$request->get('orden'))
-        ->where('pagos.estado','!=','ANULADO')
-        ->get();
-
-        
-        // $total = 0;
-        // foreach($pagos as $pago){
-        //     $total = $total + $pago->monto;
-        // }
-
-
-        // TOTAL DE PAGOS EN SU MONEDA DE LA ORDEN
-        $acuenta = 0;
-        foreach($pagos as $pago){
-
-            if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                $acuenta = $acuenta + $pago->monto;
-            }else{
-
-                if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                    if ($pago->moneda_orden != 'SOLES') {
-                        $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                    }else{
-                        $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                    }
-                    
-                }else{
-                    if ($pago->moneda_orden == $pago->moneda_empresa) {
-                        $acuenta = $acuenta + $pago->monto;
-                    }else{
-                            if ($pago->moneda_empresa == 'SOLES') {
-                                $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                            }else{
-                                $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                            }
-                    }
-                }
-
-    
-            }
-        }
-        
-        $monto = calcularMonto($orden->id);
-        $montoRestate = $monto - $acuenta;
-
-        // dd($montoRestate);
-
-        $pago = DB::table('pagos')
-        ->join('bancos', 'pagos.id_banco_proveedor', '=', 'bancos.id')
-        ->join('banco_empresas', 'pagos.id_banco_empresa', '=', 'banco_empresas.id')
-        ->select('pagos.*','bancos.*','bancos.id as banco_proveedor_id', 'pagos.id as id_pago', 'banco_empresas.id as banco_empresa_id','banco_empresas.descripcion as descripcion_empresa','banco_empresas.tipo_moneda as moneda_empresa','banco_empresas.num_cuenta as cuenta_empresa','banco_empresas.cci as cci_empresa')
-        ->where('pagos.id','=',$request->get('pago'))
-        ->where('pagos.estado','=','ACTIVO')
-        ->get();
-        // dd($pago);
-    
-        
-        return view('compras.ordenes.pagos.edit',[
-            'bancos' => $bancos,
-            'fecha_hoy' => $fecha_hoy,
-            'monedas' => $monedas,
-            'pago' => $pago,
-            'orden' => $orden,
-            'bancos_proveedor' => $bancos_proveedor,
-            'bancos_empresa' => $bancos_empresa,
-            'monto_restante' =>  number_format($montoRestate, 2, '.', ''),
-            'monto' =>  number_format($monto, 2, '.', '')
-        ]);
-    }
-
-    public function update(Request $request,$id)
-    {
-        // dd($request);
-        $data = $request->all();
-
-        $rules = [
-  
-            'id_entidad' => 'required',
-            'id_entidad_empresa' => 'required',
-            'archivo' => 'nullable|mimetypes:application/pdf,image/jpeg,image/png,image/jpg|max:40000',
-            
-            'fecha_pago' => 'required',
-            'monto' => 'required|numeric',
-            'moneda' => 'required',
-            
-            'observacion' => 'nullable',
-
-        ];
-        
-        $message = [
-            'id_entidad.required' => 'El campo Entidad es obligatorio.',
-            'archivo.mimetypes' => 'El campo Archivo no contiene el formato correcto.',
-            'archivo.max' => 'El tamaño máximo del Archivo para cargar es de 40 MB.',
-
-            'fecha_pago.required'=> 'El campo Fecha de Pago es obligatorio.',
-
-            'monto.numeric'=> 'El campo Monto debe se numérico.',
-            'monto.required'=> 'El campo Monto es obligatorio.',
-            
-            'moneda.required'=> 'El campo Moneda es obligatorio.',
-            
-
-        ];
-
-        Validator::make($data, $rules, $message)->validate();
-
-        $pago = Pago::findOrFail($id);
-        //////Limpiar datos de registro que existen (TIPO DE CAMBIO)
-        $pago->tipo_cambio_soles =  '';
-        $pago->tc_dia =  '';
-        $pago->tc_banco =  '';
-        ////////////////////////////
-
-        $pago->id_banco_proveedor = $request->get('id_entidad');
-        $pago->id_banco_empresa = $request->get('id_entidad_empresa');
-
-        $pago->moneda_empresa = $request->get('moneda_empresa_pago');
-        $pago->moneda_proveedor = $request->get('moneda_proveedor_pago');
-
-        $pago->fecha_pago = Carbon::createFromFormat('d/m/Y', $request->get('fecha_pago'))->format('Y-m-d');
-        $pago->monto =  $request->get('monto');
-        $pago->moneda =  $request->get('moneda');
-
-        $pago->tipo_cambio_soles =  $request->get('tipo_cambio_soles');
-        $pago->tc_dia =  $request->get('tc_dia');
-        $pago->tc_banco =  $request->get('tc_empresa_proveedor');
-
-        $pago->observacion =  $request->get('observacion');
-
-        if($request->hasFile('archivo')){      
-            //Eliminar Archivo anterior
-            Storage::delete($pago->ruta_archivo);
-            //Agregar             
-            $file = $request->file('archivo');
-            $name = $file->getClientOriginalName();
-            $pago->nombre_archivo = $name;
-            $pago->ruta_archivo = $request->file('archivo')->store('public/ordenes/pagos');
-        }
-        $pago->update();
-
-        Session::flash('success','Pago modificado.');
-        return redirect()->route('compras.pago.index',$request->get('id_orden'))->with('modificar', 'success');
       
 
     }

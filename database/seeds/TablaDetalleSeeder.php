@@ -50,13 +50,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 1;
         $detalle->save();
 
-        $detalle = new Detalle();
-        $detalle->descripcion = "EUROS";
-        $detalle->simbolo = '€';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 1;
-        $detalle->save();
-
         // TIPO DE DOCUMENTO
 
         $detalle = new Detalle();

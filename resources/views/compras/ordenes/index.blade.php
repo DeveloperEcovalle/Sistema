@@ -201,6 +201,10 @@ $(document).ready(function() {
                             return "<span class='badge badge-warning' d-block>" + data.estado +
                                 "</span>";
                             break;
+                        case "PAGADA":
+                            return "<span class='badge badge-danger' d-block>" + data.estado +
+                                "</span>";
+                            break;
                         case "ADELANTO":
                             return "<span class='badge badge-success' d-block>" + data.estado +
                                 "</span>";

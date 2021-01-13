@@ -390,11 +390,11 @@
                                                         <p><b>Registrar datos del contacto:</b></p>
                                                         <div class="form-group">
 
-                                                            <label>Nombre Completo:</label>
+                                                            <label class="required">Nombre Completo:</label>
                                                             <input type="text" placeholder=""
                                                                 class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}"
                                                                 name="contacto" id="contacto"
-                                                                 onkeyup="return mayus(this)"
+                                                                onkeyup="return mayus(this)"
                                                                 value="{{old('contacto')}}">
                                                             @if ($errors->has('contacto'))
                                                             <span class="invalid-feedback" role="alert">
@@ -407,7 +407,7 @@
 
                                                         <div class="form-group">
 
-                                                            <label>Correo:</label>
+                                                            <label class="required">Correo:</label>
                                                             <input type="text" placeholder=""
                                                                 class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}"
                                                                 name="correo_contacto" id="correo_contacto"

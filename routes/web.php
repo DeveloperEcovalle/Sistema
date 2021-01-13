@@ -111,8 +111,6 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
     Route::get('pagos/create/{id}', 'Compras\PagoController@create')->name('compras.pago.create');
     Route::post('pagos/store/', 'Compras\PagoController@store')->name('compras.pago.store');
-    Route::get('pagos/edit/', 'Compras\PagoController@edit')->name('compras.pago.edit');
-    Route::put('pagos/update/{id}', 'Compras\PagoController@update')->name('compras.pago.update');
     Route::get('pagos/destroy/', 'Compras\PagoController@destroy')->name('compras.pago.destroy');
     Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show');
 });

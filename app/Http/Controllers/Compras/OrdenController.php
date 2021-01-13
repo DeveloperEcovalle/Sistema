@@ -141,32 +141,17 @@ class OrdenController extends Controller
 
             }
 
-           
-            // foreach($pagos as $pago){
-            //     if ($pago->moneda_orden == $pago->moneda_empresa) {
-            //         $acuenta = $acuenta + $pago->monto;
-            //     }else{
-            //         if ($pago->moneda_orden == $pago->moneda_proveedor) {
-            //             $acuenta = $acuenta + ($pago->tc_banco*$pago->monto);
-            //         }else{
-            //             if ($pago->moneda_orden == 'SOLES') {
-            //                 $acuenta = $acuenta + ($pago->tc_dia*$pago->monto);
-            //             }else{
-            //                 $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-            //             }
-            //         }
-            //     }
-
-
- 
-            $cambio = 0;
-            // foreach($pagos as $pago){
-            //     $cambio = $pago->monto * $pago->tipo_cambio;
-            //     $soles = $soles+$cambio;
-            // }
-
             //CALCULAR SALDO
             $saldo = $decimal_total - $acuenta;
+
+            //CAMBIAR ESTADO DE LA ORDEN A PAGADA
+        
+            if ($saldo < 1) {
+                $orden->estado = "PAGADA";
+                $orden->update();
+            }
+
+            
 
             $coleccion->push([
                 'id' => $orden->id,

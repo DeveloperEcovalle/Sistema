@@ -395,7 +395,7 @@
                                                         <p><b>Registrar datos del contacto:</b></p>
                                                         <div class="form-group">
 
-                                                            <label>Nombre Completo:</label>
+                                                            <label class="required">Nombre Completo:</label>
                                                             <input type="text" placeholder=""
                                                                 class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}"
                                                                 name="contacto" id="contacto"
@@ -412,7 +412,7 @@
 
                                                         <div class="form-group">
 
-                                                            <label class="">Correo:</label>
+                                                            <label class="required">Correo:</label>
                                                             <input type="email" placeholder=""
                                                                 class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}"
                                                                 name="correo_contacto" id="correo_contacto"

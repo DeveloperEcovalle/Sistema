@@ -37,7 +37,7 @@ class CreateOrdenesTable extends Migration
             $table->boolean('enviado')->nullable(); 
             $table->BigInteger('usuario_id');
             
-            $table->enum('estado',['VIGENTE','PENDIENTE','ADELANTO','CONCRETADA','ANULADO'])->default('VIGENTE');
+            $table->enum('estado',['VIGENTE','PENDIENTE','ADELANTO','CONCRETADA','ANULADO','PAGADA'])->default('VIGENTE');
 
             $table->timestamps();
         });
