@@ -467,5 +467,27 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 16;
         $detalle->save();
+
+        //TIPO DE CLIENTE
+        $detalle = new Detalle();
+        $detalle->descripcion = "CLIENTE SOCIO";
+        $detalle->simbolo = 'CLIENTE SOCIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CLIENTE";
+        $detalle->simbolo = 'CLIENTE';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CLIENTE FINAL";
+        $detalle->simbolo = 'CLIENTE FINAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
     }
 }

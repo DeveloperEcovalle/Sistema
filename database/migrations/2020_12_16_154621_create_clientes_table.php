@@ -20,6 +20,8 @@ class CreateClientesTable extends Migration
             $table->mediumText('nombre')->nullable();
             $table->char('departamento_id', 2)->nullable();
             $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
+            $table->integer('tabladetalles_id')->unsigned()->nullable();
+            $table->foreign('tabladetalles_id')->references('id')->on('tabladetalles')->onDelete('cascade');
             $table->char('provincia_id', 4)->nullable();
             $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
             $table->char('distrito_id', 6)->nullable();
