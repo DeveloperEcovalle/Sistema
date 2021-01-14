@@ -321,7 +321,7 @@
                                         <div class="table-responsive">
                                             <table
                                                 class="table dataTables-orden-detalle table-striped table-bordered table-hover"
-                                                 onkeyup="return mayus(this)">
+                                                style="text-transform:uppercase">
                                                 <thead>
                                                     <tr>
                                                         <th></th>
@@ -337,7 +337,7 @@
                                                 <tbody>
 
                                                 </tbody>
-                                                <tfoot>
+                                                <tfoot style="text-transform:uppercase">
                                                     <tr>
                                                         <th colspan="6" style="text-align:right">Sub Total:</th>
                                                         <th><span id="subtotal"></span></th>

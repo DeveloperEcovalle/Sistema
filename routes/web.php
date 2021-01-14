@@ -115,6 +115,19 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show');
 });
 
+Route::prefix('compras/documentos')->group(function(){
+    Route::get('index', 'Compras\DocumentoController@index')->name('compras.documento.index');
+    Route::get('getDocument','Compras\DocumentoController@getDocument')->name('getDocument');
+    Route::get('create', 'Compras\DocumentoController@create')->name('compras.documento.create');
+    Route::post('store', 'Compras\DocumentoController@store')->name('compras.documento.store');
+    Route::get('edit/{id}','Compras\DocumentoController@edit')->name('compras.documento.edit');
+    Route::put('update/{id}', 'Compras\DocumentoController@update')->name('compras.documento.update');
+    Route::get('destroy/{id}', 'Compras\DocumentoController@destroy')->name('compras.documento.destroy');
+    Route::get('show/{id}','Compras\DocumentoController@show')->name('compras.documento.show');
+    Route::get('reporte/{id}','Compras\DocumentoController@report')->name('compras.documento.reporte');
+
+});
+
 //Seguridad
 //Usuarios
 Route::prefix('seguridad/usuarios')->group(function() {

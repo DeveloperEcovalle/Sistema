@@ -102,6 +102,13 @@ if (!function_exists('modo_compra')) {
     }
 }
 
+if (!function_exists('tipo_compra')) {
+    function tipo_compra()
+    {
+        return General::find(16)->detalles;
+    }
+}
+
 // UBIGEO
 if (!function_exists('departamentos')) {
     function departamentos($id = null)

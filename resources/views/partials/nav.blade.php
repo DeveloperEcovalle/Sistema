@@ -35,6 +35,14 @@
     </li>
 
 
+    <li class="">
+        <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Pos</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li class=""><a href="#">Caja Chica Pos</a></li>
+        </ul>
+    </li>
+
+
     <li class="@yield('compras-active')">
         <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Compras</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -42,7 +50,7 @@
             <li class="@yield('categoria-active')"><a href="{{route('compras.categoria.index')}}">Categorias</a></li>
             <li class="@yield('proveedor-active')"><a href="{{route('compras.proveedor.index')}}">Proveedores</a></li>
             <li class="@yield('orden-compra-active')"><a href="{{route('compras.orden.index')}}">Ordenes</a></li>
-            <li><a href="ecommerce-orders.html">Documentos</a></li>
+            <li class="@yield('documento-active')"><a href="{{route('compras.documento.index')}}">Documentos</a></li>
         </ul>
     </li>
 

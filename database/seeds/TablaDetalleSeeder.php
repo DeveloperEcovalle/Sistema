@@ -438,5 +438,34 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 15;
         $detalle->save();
+
+        // TIPO DE DOCUMENTO COMPRA
+        $detalle = new Detalle();
+        $detalle->descripcion = "FACTURA";
+        $detalle->simbolo = 'FAC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 16;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOLETA";
+        $detalle->simbolo = 'BOL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 16;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOLETA ELECTRÓNICA";
+        $detalle->simbolo = 'BOL-ELEC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 16;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "RECIBO";
+        $detalle->simbolo = 'REC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 16;
+        $detalle->save();
     }
 }

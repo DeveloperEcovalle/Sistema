@@ -134,7 +134,7 @@
                                         <label class="required">Estado: </label>
                                         <input type="text" id="estado"
                                             class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
-                                            name="estado" value="{{old('estado',"Inactivo")}}"
+                                            name="estado" value="{{old('estado',"INACTIVO")}}"
                                              onkeyup="return mayus(this)" disabled>
                                         @if ($errors->has('estado'))
                                         <span class="invalid-feedback" role="alert">
@@ -484,7 +484,7 @@
                                                             <label>Estado: </label>
                                                                 <input type="text" id="estado_transporte"
                                                                     class="form-control {{ $errors->has('estado_transporte') ? ' is-invalid' : '' }}"
-                                                                    name="estado_transporte" value="{{old('estado_transporte',"Inactivo")}}"
+                                                                    name="estado_transporte" value="{{old('estado_transporte',"INACTIVO")}}"
                                                                      onkeyup="return mayus(this)" disabled>
                                                                 @if ($errors->has('estado_transporte'))
                                                                 <span class="invalid-feedback" role="alert">

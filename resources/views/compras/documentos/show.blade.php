@@ -1,15 +1,15 @@
 @extends('layout') @section('content')
 @section('compras-active', 'active')
-@section('orden-compra-active', 'active')
+@section('documento-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-       <h2  style="text-transform:uppercase"><b>Detalle de la Orden de Compra: # {{$orden->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Detalle de la Orden de Compra: # {{$documento->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.orden.index')}}">Ordenes de Compra</a>
+                <a href="{{route('compras.documento.index')}}">Documento de Compra</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Detalle</strong>
@@ -18,11 +18,9 @@
     </div>
     <div class="col-lg-4">
         <div class="title-action">
-            <a href="{{route('compras.orden.edit', $orden->id)}}" class="btn btn-warning btn-sm"><i
+            <a href="{{route('compras.documento.edit', $documento->id)}}" class="btn btn-warning btn-sm"><i
                     class="fa fa-edit"></i> Editar</a>
-            <a href="#" onclick="generarReporte()" class="btn btn-danger btn-sm"><i class="fa fa-file-pdf-o "></i>
-                Reporte </a>
-            <a href="#" onclick="enviarReporte()" class="btn btn-primary btn-sm"><i class="fa fa-send "></i> Enviar </a>
+            <a href="#" onclick="generarReporte()" class="btn btn-danger btn-sm"><i class="fa fa-file-pdf-o "></i> Reporte </a>
         </div>
     </div>
 </div>
@@ -35,9 +33,9 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-md-12 text-left" style="margin-left:100px;">
-                                @if($orden->empresa->ruta_logo)
-                                <img src="{{Storage::url($orden->empresa->ruta_logo)}}" class="img-fluid m-b"
+                            <div class="col-md-12 text-left" style="margin-left:80px;">
+                                @if($documento->empresa->ruta_logo)
+                                <img src="{{Storage::url($documento->empresa->ruta_logo)}}" class="img-fluid m-b"
                                     width="190px" height="190px">
                                 @else
                                 <img src="{{asset('storage/empresas/logos/default.png')}}" class="img-fluid m-b"
@@ -52,11 +50,11 @@
                     <div class="col-sm-6 text-right">
                         <div class="row">
                             <div class="col-md-12 m-t">
-                                <strong>{{$orden->empresa->razon_social}}</strong>
+                                <strong>{{$documento->empresa->razon_social}}</strong>
                                 <br>
-                                RUC:{{$orden->empresa->ruc}}
+                                RUC:{{$documento->empresa->ruc}}
                                 <br>
-                                {{$orden->empresa->direccion_fiscal}}
+                                {{$documento->empresa->direccion_fiscal}}
                             </div>
 
                         </div>
@@ -73,7 +71,7 @@
                             <table class="table table-bordered" style="text-transform: uppercase;" id="tabla-fecha">
                                 <thead>
                                     <tr>
-                                        <th colspan="2" class="text-center">ORDEN DE COMPRA</th>
+                                        <th colspan="2" class="text-center">DOCUMENTO DE COMPRA</th>
 
                                     </tr>
                                 </thead>
@@ -82,21 +80,21 @@
                                         <th class="text-left">N°:</th>
                                         <th class="text-center">
                                             <span
-                                                style="font-weight: normal">OC - {{ $orden->id }}</span>
+                                                style="font-weight: normal">DC - {{ $documento->id }}</span>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th class="text-left">FECHA EMISION</th>
                                         <th class="text-center">
                                             <span
-                                                style="font-weight: normal">{{ Carbon\Carbon::parse($orden->fecha_emision)->format('d/m/y') }}</span>
+                                                style="font-weight: normal">{{ Carbon\Carbon::parse($documento->fecha_emision)->format('d/m/y') }}</span>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th class="text-left">FECHA ENTREGA</th>
                                         <th class="text-center">
                                             <span
-                                                style="font-weight: normal">{{ Carbon\Carbon::parse($orden->fecha_entrega)->format('d/m/y') }}</span>
+                                                style="font-weight: normal">{{ Carbon\Carbon::parse($documento->fecha_entrega)->format('d/m/y') }}</span>
                                         </th>
 
                                     </tr>
@@ -111,9 +109,9 @@
                         <br>
                         <span>{{$nombre_completo}}</span>
                         <br>
-                        <span>{{$orden->usuario->empleado->persona->telefono_movil}}</span>
+                        <span>{{$documento->usuario->empleado->persona->telefono_movil}}</span>
                         <br>
-                        <a href="mailto:{{$orden->usuario->empleado->persona->correo_electronico}}">{{$orden->usuario->empleado->persona->correo_electronico}}</a>
+                        <a href="mailto:{{$documento->usuario->empleado->persona->correo_electronico}}">{{$documento->usuario->empleado->persona->correo_electronico}}</a>
 
                     </div>
                 </div>
@@ -135,16 +133,16 @@
                                         <th class="text-left" style="width:20%">RAZON SOCIAL:</th>
                                         <th class="text-left" style="width:80%">
                                             <span
-                                                style="font-weight: normal"> {{$orden->proveedor->descripcion}}</span>
+                                                style="font-weight: normal"> {{$documento->proveedor->descripcion}}</span>
                                         </th>
                                     </tr>
 
-                                    @if($orden->proveedor->ruc)
+                                    @if($documento->proveedor->ruc)
                                     <tr>
                                         <th class="text-left" style="width:20%">RUC:</th>
                                         <th class="text-left" style="width:80%">
                                             <span
-                                                style="font-weight: normal"> {{$orden->proveedor->ruc}}</span>
+                                                style="font-weight: normal"> {{$documento->proveedor->ruc}}</span>
                                         </th>
                                     </tr>
                                     @else
@@ -152,7 +150,7 @@
                                         <th class="text-left" style="width:20%">DNI:</th>
                                         <th class="text-left" style="width:80%">
                                             <span
-                                                style="font-weight: normal">{{$orden->proveedor->dni}}</span>
+                                                style="font-weight: normal">{{$documento->proveedor->dni}}</span>
                                         </th>
                                     </tr>
                                     @endif
@@ -162,7 +160,7 @@
                                         <th class="text-left" style="width:20%">DIRECCION:</th>
                                         <th class="text-left" style="width:80%">
                                             <span
-                                                style="font-weight: normal">{{$orden->proveedor->direccion}}</span>
+                                                style="font-weight: normal">{{$documento->proveedor->direccion}}</span>
                                         </th>
 
                                     </tr>
@@ -171,8 +169,8 @@
                                         <th class="text-left" style="width:20%">CONTACTO:</th>
                                         <th class="text-left" style="width:80%">
                                             <span style="font-weight: normal">
-                                            @if($orden->proveedor->contacto)
-                                                {{$orden->proveedor->contacto}}
+                                            @if($documento->proveedor->contacto)
+                                                {{$documento->proveedor->contacto}}
                                             @else
                                                 -
                                             @endif
@@ -185,8 +183,8 @@
                                         <th class="text-left" style="width:20%">TELEFONO:</th>
                                         <th class="text-left" style="width:80%">
                                             <span style="font-weight: normal">
-                                            @if($orden->proveedor->telefono)
-                                            {{$orden->proveedor->telefono}}
+                                            @if($documento->proveedor->telefono)
+                                            {{$documento->proveedor->telefono}}
                                             @else
                                             -
                                             @endif
@@ -198,7 +196,7 @@
                                         <th class="text-left" style="width:20%">CORREO:</th>
                                         <th class="text-left" style="width:80%">
                                             <span style="font-weight: normal">
-                                            <a href="mailto:{{$orden->proveedor->correo}}">{{$orden->proveedor->correo}}</a>
+                                            <a href="mailto:{{$documento->proveedor->correo}}">{{$documento->proveedor->correo}}</a>
                                             </span>
                                         </th>
 
@@ -221,6 +219,7 @@
                                 <th class="text-center">CANTIDAD</th>
                                 <th class="text-center">PRESENTACIÓN</th>
                                 <th class="text-center">PRODUCTO</th>
+                                <th class="text-center">COSTO FLETE</th>
                                 <th class="text-center">PRECIO</th>
                                 <th class="text-center">TOTAL</th>
                             </tr>
@@ -240,7 +239,7 @@
                                     <div><strong>{{$detalle->articulo->descripcion}}</strong></div>
                                 </td>
 
-                                
+                                <td class="text-center">{{$moneda.'  '.$detalle->costo_flete}}</td>
                                 <td class="text-center">{{$moneda.'  '.$detalle->precio}}</td>
                                 <td class="text-center subtotal">{{$moneda.'  '.$detalle->cantidad * $detalle->precio}}</td>
 
@@ -251,20 +250,24 @@
                         </tbody>
                         <tfoot  style="text-transform:uppercase">
                             <tr>
-                                <td colspan="3" class="borde-title"></td>
+                                <td colspan="4" class="borde-title"></td>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>Sub Total</strong></th>
                                 <th class="text-center"><span id="">{{$moneda.'  '.$subtotal}}</span></th>
 
                             </tr>
                             <tr>
-                                <td colspan="3" class="borde-title"></td>
+                                <td colspan="4" class="borde-title"></td>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>IGV
-                                        @if($orden->igv){{$orden->igv}}%@endif </strong></th>
+                                        @if($documento->igv)
+                                            {{$documento->igv}}%
+                                        @else
+                                            18%
+                                        @endif </strong></th>
                                 <th class="text-center"><span id="">{{$moneda.'  '.$igv}}</span></th>
 
                             </tr>
                             <tr>
-                                <td colspan="3" class="borde-title"></td>
+                                <td colspan="4" class="borde-title"></td>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>Total </strong></th>
                                 <th class="text-center"><span id="total">{{$moneda.'  '.$total}}</span></th>
 
@@ -290,7 +293,7 @@
                                             RUC:
                                         </th>
                                         <th class="text-left" style="width:80%">
-                                            <span style="font-weight: normal">{{$orden->proveedor->ruc_transporte}}</span>
+                                            <span style="font-weight: normal">{{$documento->proveedor->ruc_transporte}}</span>
                                         </th>
 
                                     </tr>
@@ -299,7 +302,7 @@
                                             EMPRESA:
                                         </th>
                                         <th class="text-left" style="width:80%">
-                                            <span style="font-weight: normal">{{$orden->proveedor->transporte}}</span>
+                                            <span style="font-weight: normal">{{$documento->proveedor->transporte}}</span>
                                         </th>
 
                                     </tr>
@@ -308,7 +311,7 @@
                                             DIRECCION:
                                         </th>
                                         <th class="text-left" style="width:80%">
-                                            <span style="font-weight: normal">{{$orden->proveedor->direccion_transporte}}</span>
+                                            <span style="font-weight: normal">{{$documento->proveedor->direccion_transporte}}</span>
                                         </th>
 
                                     </tr>
@@ -328,20 +331,30 @@
 
                                 <tbody>
                                     <tr>
-                                        <th class="text-left title-adicional" style="width:20%">
-                                            CONDICION DE ORDEN:
+                                        <th class="text-left title-adicional" style="width:30%">
+                                            TIPO DE DOCUMENTO:
                                         </th>
-                                        <th class="text-left" style="width:80%">
-                                            <span style="font-weight: normal">{{$orden->modo_compra}}</span>
+                                        <th class="text-left" style="width:70%">
+                                            <span style="font-weight: normal">{{$documento->tipo_compra}}</span>
                                         </th>
 
                                     </tr>
                                     <tr>
-                                        <th class="text-left title-adicional" style="width:20%">
+                                        <th class="text-left title-adicional" style="width:30%">
+                                            CONDICION DE DOCUMENTO:
+                                        </th>
+                                        <th class="text-left" style="width:70%">
+                                            <span style="font-weight: normal">{{$documento->modo_compra}}</span>
+                                        </th>
+
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-left title-adicional" style="width:30%">
                                             OBSERVACION:
                                         </th>
-                                        <th class="text-left" style="width:80%">
-                                            <span style="font-weight: normal"> {{$orden->observacion}}</span>
+                                        <th class="text-left" style="width:70%">
+                                            <span style="font-weight: normal"> {{$documento->observacion}}</span>
                                         </th>
 
                                     </tr>
@@ -436,7 +449,7 @@ function generarReporte() {
         // showLoaderOnConfirm: true,
     }).then((result) => {
         if (result.value) {
-            window.location.href = "{{route('compras.orden.reporte', $orden->id)}}"
+            window.location.href = "{{route('compras.documento.reporte', $documento->id)}}"
             Swal.fire({
                 title: '¡Cargando!',
                 type: 'info',
@@ -461,52 +474,7 @@ function generarReporte() {
 
 }
 </script>
-<script>
-function enviarReporte() {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
 
-    Swal.fire({
-        title: "Opción Reporte",
-        text: "¿Seguro que desea enviar reporte por correo?",
-        showCancelButton: true,
-        icon: 'info',
-        confirmButtonColor: "#1ab394",
-        confirmButtonText: 'Si, Confirmar',
-        cancelButtonText: "No, Cancelar",
-        // showLoaderOnConfirm: true,
-    }).then((result) => {
-        if (result.value) {
-            window.location.href = "{{route('compras.orden.email', $orden->id)}}"
-            Swal.fire({
-                title: '¡Enviando!',
-                type: 'info',
-                text: 'El Reporte se esta enviando al correo: ' + "{{$orden->proveedor->correo}}",
-                showConfirmButton: false,
-                onBeforeOpen: () => {
-                    Swal.showLoading()
-                }
-            })
-
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-            )
-        }
-    })
-
-}
-</script>
 
 
 @endpush

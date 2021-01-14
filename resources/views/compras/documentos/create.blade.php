@@ -1,18 +1,18 @@
 @extends('layout') @section('content')
 
 @section('compras-active', 'active')
-@section('orden-compra-active', 'active')
+@section('documento-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVA ORDEN DE COMPRA</b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVO DOCUMENTO DE COMPRA</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.orden.index')}}">Ordenes de Compra</a>
+                <a href="{{route('compras.documento.index')}}">Documentos de Compra</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Registrar</strong>
@@ -34,15 +34,15 @@
 
                 <div class="ibox-content">
 
-                    <form action="{{route('compras.orden.store')}}" method="POST" id="enviar_orden">
+                    <form action="{{route('compras.documento.store')}}" method="POST" id="enviar_documento">
                         {{csrf_field()}}
 
                         <div class="row">
                             <div class="col-sm-6 b-r">
-                                <h4 class=""><b>Orden de compra</b></h4>
+                                <h4 class=""><b>Documento de compra</b></h4>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p>Registrar datos de la orden de compra:</p>
+                                        <p>Registrar datos del documento de compra:</p>
                                     </div>
                                 </div>
 
@@ -83,6 +83,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="form-group">
@@ -149,8 +150,29 @@
                                         @endif
                                     </select>
                                 </div>
+                                
                                 <div class="form-group row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
+                                        <label class="required">Tipo: </label>
+                                        <select
+                                            class="select2_form form-control {{ $errors->has('tipo_compra') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('tipo_compra')}}"
+                                            name="tipo_compra" id="tipo_compra" required>
+                                            <option></option>
+                                            @foreach (tipo_compra() as $modo)
+                                            <option value="{{$modo->descripcion}}" @if(old('tipo_compra')==$modo->
+                                                descripcion ) {{'selected'}} @endif
+                                                >{{$modo->descripcion}}</option>
+                                            @endforeach
+                                            @if ($errors->has('tipo_compra'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('tipo_compra') }}</strong>
+                                            </span>
+                                            @endif
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <label class="required">Moneda: </label>
                                         <select
                                             class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
@@ -167,10 +189,15 @@
                                                 <strong>{{ $errors->first('moneda') }}</strong>
                                             </span>
                                             @endif
-                                        </select>
+                                        </select>                                        
                                     </div>
 
-                                    <div class="col-md-4">
+                                    
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="col-md-6">
                                         <label class="" id="campo_tipo_cambio">Tipo de Cambio (S/.) :</label>
                                         <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio')}}" disabled>
                                         @if ($errors->has('tipo_cambio'))
@@ -178,9 +205,10 @@
                                             <strong>{{ $errors->first('tipo_cambio') }}</strong>
                                         </span>
                                         @endif
+
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <label id="igv_requerido">IGV (%):</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -199,10 +227,12 @@
                                             @endif
 
                                         </div>
-
                                     </div>
+
+
                                     
                                 </div>
+
                                 <div class="form-group">
                                     <label>Observación:</label>
                                     <textarea type="text" placeholder=""
@@ -232,8 +262,7 @@
                             <div class="col-lg-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
-                                        <h4 class=""><b>Detalle de la Orden de
-                                                Compra</b></h4>
+                                        <h4 class=""><b>Detalle del Documento de Compra</b></h4>
                                     </div>
                                     <div class="panel-body">
 
@@ -241,7 +270,7 @@
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <label class="required">Artículo</label>
+                                                <label class="required">Producto:</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="articulo_id"
                                                     id="articulo_id" onchange="cargarPresentacion(this)">
@@ -255,11 +284,20 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="">Presentación</label>
-                                                <input type="text" id="presentacion" name="presentacion"
-                                                    class="form-control" disabled>
-                                                <div class="invalid-feedback"><b><span
-                                                            id="error-presentacion"></span></b></div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-6">
+                                                        <label class="">Presentación:</label>
+                                                        <input type="text" id="presentacion" name="presentacion" class="form-control" disabled>
+                                                        <div class="invalid-feedback"><b><span id="error-presentacion"></span></b></div>
+                                                    
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="required">Costo Flete:</label>
+                                                        <input type="text" id="costo_flete" name="costo_flete" class="form-control">
+                                                        <div class="invalid-feedback"><b><span id="error-costo-flete"></span></b></div>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
 
@@ -268,7 +306,7 @@
                                         <div class="row">
                                             <div class="col-sm-3">
                                                 <div class="form-group">
-                                                    <label class="col-form-label required" for="amount">Precio</label>
+                                                    <label class="col-form-label required" for="amount">Precio:</label>
                                                     <input type="text" id="precio" class="form-control">
                                                     <div class="invalid-feedback"><b><span id="error-precio"></span></b>
                                                     </div>
@@ -276,7 +314,7 @@
                                             </div>
                                             <div class="col-sm-3">
 
-                                                <label class="col-form-label required">Cantidad</label>
+                                                <label class="col-form-label required">Cantidad:</label>
                                                 <input type="text" id="cantidad" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
                                                 </div>
@@ -305,11 +343,12 @@
                                                     <tr>
                                                         <th></th>
                                                         <th class="text-center">ACCIONES</th>
-                                                        <th class="text-center">ARTICULO</th>
-                                                        <th class="text-center">PRESENTACION</th>
-                                                        <th class="text-center">PRECIO</th>
                                                         <th class="text-center">CANTIDAD</th>
-                                                        <th class="text-center">IMPORTE</th>
+                                                        <th class="text-center">PRESENTACION</th>
+                                                        <th class="text-center">PRODUCTO</th>
+                                                        <th class="text-center">COSTO FLETE</th>
+                                                        <th class="text-center">PRECIO</th>
+                                                        <th class="text-center">TOTAL</th>
 
                                                     </tr>
                                                 </thead>
@@ -318,18 +357,18 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th colspan="6" style="text-align:right">Sub Total:</th>
+                                                        <th colspan="7" style="text-align:right">Sub Total:</th>
                                                         <th><span id="subtotal">0.0</span></th>
 
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="6" class="text-center">IGV <span
+                                                        <th colspan="7" class="text-center">IGV <span
                                                                 id="igv_int"></span>:</th>
                                                         <th class="text-center"><span id="igv_monto">0.0</span></th>
 
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="6" class="text-center">TOTAL:</th>
+                                                        <th colspan="7" class="text-center">TOTAL:</th>
                                                         <th class="text-center"><span id="total">0.0</span></th>
 
                                                     </tr>
@@ -390,7 +429,7 @@
     </div>
 
 </div>
-@include('compras.ordenes.modal')
+@include('compras.documentos.modal')
 @stop
 
 @push('styles')
@@ -438,7 +477,6 @@ $('#fecha_documento .input-group.date').datepicker({
     autoclose: true,
     language: 'es',
     format: "dd/mm/yyyy",
-    startDate: "today"
 })
 
 $('#fecha_entrega .input-group.date').datepicker({
@@ -448,7 +486,6 @@ $('#fecha_entrega .input-group.date').datepicker({
     autoclose: true,
     language: 'es',
     format: "dd/mm/yyyy",
-    startDate: "today"
 })
 
 
@@ -515,6 +552,16 @@ $('#precio').keyup(function() {
     $(this).val(val);
 });
 
+$('#costo_flete').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+});
+
 $('#tipo_cambio').keyup(function() {
     var val = $(this).val();
     if (isNaN(val)) {
@@ -561,13 +608,13 @@ function validarFecha() {
         enviar = true;
     }
     if (articulos == 0) {
-        toastr.error('Ingrese al menos 1  Artículo.', 'Error');
+        toastr.error('Ingrese al menos 1  Producto.', 'Error');
         enviar = true;
     }
     return enviar
 }
 
-$('#enviar_orden').submit(function(e) {
+$('#enviar_documento').submit(function(e) {
     e.preventDefault();
     var correcto = validarFecha()
 
@@ -656,23 +703,30 @@ $(document).ready(function() {
                         "</div>";
                 }
             },
+
             {
                 "targets": [2],
+                className: "text-center",
             },
             {
-                "targets": [3],
+                "targets": [3],        
                 className: "text-center",
             },
             {
                 "targets": [4],
-                className: "text-center",
+               
             },
             {
                 "targets": [5],
                 className: "text-center",
             },
+
             {
                 "targets": [6],
+                className: "text-center",
+            },
+            {
+                "targets": [7],
                 className: "text-center",
             },
 
@@ -690,8 +744,9 @@ $(document).on('click', '#editar_articulo', function(event) {
     $('#indice').val(table.row($(this).parents('tr')).index());
     $('#articulo_id_editar').val(data[0]).trigger('change');
     $('#presentacion_editar').val(articuloPresentacion(data[0]));
-    $('#precio_editar').val(data[4]);
-    $('#cantidad_editar').val(data[5]);
+    $('#precio_editar').val(data[6]);
+    $('#costo_flete_editar').val(data[5]);
+    $('#cantidad_editar').val(data[2]);
     $('#modal_editar_orden').modal('show');
 })
 
@@ -708,7 +763,7 @@ $(document).on('click', '#borrar_articulo', function(event) {
 
     Swal.fire({
         title: 'Opción Eliminar',
-        text: "¿Seguro que desea eliminar Artículo?",
+        text: "¿Seguro que desea eliminar Producto?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",
@@ -743,21 +798,21 @@ $(".enviar_articulo").click(function() {
     limpiarErrores()
     var enviar = false;
     if ($('#articulo_id').val() == '') {
-        toastr.error('Seleccione artículo.', 'Error');
+        toastr.error('Seleccione Producto.', 'Error');
         enviar = true;
         $('#articulo_id').addClass("is-invalid")
-        $('#error-articulo').text('El campo Artículo es obligatorio.')
+        $('#error-articulo').text('El campo Producto es obligatorio.')
     } else {
         var existe = buscarArticulo($('#articulo_id').val())
         if (existe == true) {
-            toastr.error('Artículo ya se encuentra ingresado.', 'Error');
+            toastr.error('Producto ya se encuentra ingresado.', 'Error');
             enviar = true;
         }
     }
 
     if ($('#precio').val() == '') {
 
-        toastr.error('Ingrese el precio del artículo.', 'Error');
+        toastr.error('Ingrese el precio del Producto.', 'Error');
         enviar = true;
 
         $("#precio").addClass("is-invalid");
@@ -765,11 +820,19 @@ $(".enviar_articulo").click(function() {
     }
 
     if ($('#cantidad').val() == '') {
-        toastr.error('Ingrese cantidad del artículo.', 'Error');
+        toastr.error('Ingrese cantidad del Producto.', 'Error');
         enviar = true;
 
         $("#cantidad").addClass("is-invalid");
         $('#error-cantidad').text('El campo Cantidad es obligatorio.')
+    }
+
+    if ($('#costo_flete').val() == '') {
+        toastr.error('Ingrese el Costo de Flete del Producto.', 'Error');
+        enviar = true;
+
+        $("#costo_flete").addClass("is-invalid");
+        $('#error-costo-flete').text('El campo Costo Flete es obligatorio.')
     }
     if (enviar != true) {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -782,7 +845,7 @@ $(".enviar_articulo").click(function() {
 
         Swal.fire({
             title: 'Opción Agregar',
-            text: "¿Seguro que desea agregar Artículo?",
+            text: "¿Seguro que desea agregar Producto?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: "#1ab394",
@@ -796,6 +859,7 @@ $(".enviar_articulo").click(function() {
                     articulo_id: $('#articulo_id').val(),
                     descripcion: descripcion_articulo,
                     presentacion: presentacion_articulo,
+                    costo_flete: $('#costo_flete').val(),
                     precio: $('#precio').val(),
                     cantidad: $('#cantidad').val(),
                 }
@@ -823,6 +887,7 @@ function limpiarDetalle() {
     $('#presentacion').val('')
     $('#precio').val('')
     $('#cantidad').val('')
+    $('#costo_flete').val('')
     $('#articulo_id').val($('#articulo_id option:first-child').val()).trigger('change');
 
 }
@@ -830,6 +895,9 @@ function limpiarDetalle() {
 function limpiarErrores() {
     $('#cantidad').removeClass("is-invalid")
     $('#error-cantidad').text('')
+
+    $('#costo_flete').removeClass("is-invalid")
+    $('#error-costo-flete').text('')
 
     $('#precio').removeClass("is-invalid")
     $('#error-precio').text('')
@@ -844,10 +912,11 @@ function agregarTabla($detalle) {
     t.row.add([
         $detalle.articulo_id,
         '',
-        $detalle.descripcion,
-        $detalle.presentacion,
-        $detalle.precio,
         $detalle.cantidad,
+        $detalle.presentacion,
+        $detalle.descripcion,
+        $detalle.costo_flete,
+        $detalle.precio,
         ($detalle.cantidad * $detalle.precio).toFixed(2),
     ]).draw(false);
 
@@ -869,7 +938,7 @@ function obtenerArticulo($id) {
 
 function obtenerPresentacion($descripcion) {
     var presentacion = ""
-    @foreach($presentaciones as $presentacion)
+    @foreach(presentaciones() as $presentacion)
     if ("{{$presentacion->descripcion}}" == $descripcion) {
         presentacion = "{{$presentacion->simbolo}}"
     }
@@ -912,9 +981,10 @@ function cargarArticulos() {
     data.each(function(value, index) {
         let fila = {
             articulo_id: value[0],
+            cantidad: value[2],
             presentacion: value[3],
-            precio: value[4],
-            cantidad: value[5],
+            costo_flete: value[5],
+            precio: value[6],
         };
 
         articulos.push(fila);
@@ -947,7 +1017,7 @@ function sumaTotal() {
     var t = $('.dataTables-orden-detalle').DataTable();
     var subtotal = 0;
     t.rows().data().each(function(el, index) {
-        subtotal = Number(el[6]) + subtotal
+        subtotal = Number(el[7]) + subtotal
     });
 
     var igv = $('#igv').val()
