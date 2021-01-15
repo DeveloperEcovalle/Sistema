@@ -1,4 +1,6 @@
-@extends('layout') @section('content')
+@extends('layout')
+
+@section('content')
 
 @section('ventas-active', 'active')
 @section('clientes-active', 'active')
@@ -31,7 +33,7 @@
                         </a>
                        <h2  style="text-transform:uppercase">{{ $cliente->nombre }}</h2>
                     </div>
-                    <h4><b><i class="fa fa-caret-right"></i> DATOS GENERALES</b></h4>
+                    <h4><b><i class="fa fa-caret-right"></i> DATOS DEL CLIENTE</b></h4>
                     <div class="row">
                         <div class="form-group col-lg-2 col-xs-12">
                             <label><strong>TIPO DE DOCUMENTO</strong></label>
@@ -101,7 +103,7 @@
                         </div>
                         <hr>
                     @endif
-                    <h4><b><i class="fa fa-caret-right"></i> DATOS ADICIONALES</b></h4>
+                    <h4><b><i class="fa fa-caret-right"></i> DATOS DEL NEGOCIO</b></h4>
                     <div class="row">
                         <div class="form-group col-lg-3 col-xs-12">
                             <label><strong>LÍMITE DE CRÉDITO</strong></label>

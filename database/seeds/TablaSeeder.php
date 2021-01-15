@@ -112,5 +112,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'TIPO DE CLIENTE';
         $tabla->sigla = 'TIPO DE CLIENTE';
         $tabla->save();
+
+        //18
+        $tabla = new General();
+        $tabla->descripcion = 'CONDICION DE REPARTO';
+        $tabla->sigla = 'CONDICION DE REPARTO';
+        $tabla->save();
     }
 }

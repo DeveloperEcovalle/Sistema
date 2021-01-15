@@ -489,5 +489,21 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 17;
         $detalle->save();
+
+
+        //TIPO DE CONDICION DE REPARTO
+        $detalle = new Detalle();
+        $detalle->descripcion = "OFICINA";
+        $detalle->simbolo = 'OFICINA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 18;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "DOMICILIO";
+        $detalle->simbolo = 'DOMICILIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 18;
+        $detalle->save();
     }
 }

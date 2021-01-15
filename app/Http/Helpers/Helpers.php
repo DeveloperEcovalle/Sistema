@@ -11,12 +11,6 @@ use App\Compras\Detalle;
 use App\Compras\Orden;
 
 // TABLAS-DETALLES
-if (!function_exists('tipo_clientes')) {
-    function tipo_clientes()
-    {
-        return General::find(17)->detalles;
-    }
-}
 
 if (!function_exists('tipos_moneda')) {
     function tipos_moneda()
@@ -113,6 +107,20 @@ if (!function_exists('tipo_compra')) {
     function tipo_compra()
     {
         return General::find(16)->detalles;
+    }
+}
+
+if (!function_exists('tipo_clientes')) {
+    function tipo_clientes()
+    {
+        return General::find(17)->detalles;
+    }
+}
+
+if (!function_exists('condicion_reparto')) {
+    function condicion_reparto()
+    {
+        return General::find(18)->detalles;
     }
 }
 

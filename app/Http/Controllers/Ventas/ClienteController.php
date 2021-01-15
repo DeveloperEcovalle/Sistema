@@ -36,7 +36,9 @@ class ClienteController extends Controller
 
     public function create()
     {
-        return view('ventas.clientes.create');
+        $action = route('ventas.cliente.store');
+        $cliente = new Cliente();
+        return view('ventas.clientes.create')->with(compact('action','cliente'));
     }
 
     public function store(Request $request)
@@ -49,12 +51,14 @@ class ClienteController extends Controller
                 $query->whereIn('estado',["ACTIVO"]);
             })],
             'nombre' => 'required',
+            'tipo_cliente' => 'required',
             'departamento' => 'required',
             'provincia' => 'required',
             'distrito' => 'required',
             'direccion' => 'required',
             'telefono_movil' => 'required|numeric',
-            'activo' => 'required'
+            'activo' => 'required',
+            'direccion_negocio' => 'required',
         ];
         $message = [
             'tipo_documento.required' => 'El campo Tipo de documento es obligatorio.',
@@ -67,14 +71,17 @@ class ClienteController extends Controller
             'direccion.required' => 'El campo Dirección completa es obligatorio',
             'telefono_movil.required' => 'El campo Teléfono móvil es obligatorio',
             'telefono_movil.numeric' => 'El campo Teléfono móvil debe ser numérico',
-            'activo.required' => 'El campo Estado es obligatorio'
+            'activo.required' => 'El campo Estado es obligatorio',
+            'direccion_negocio.required' => 'El campo Dirección de negocio completa es obligatorio',
+
         ];
 
         Validator::make($data, $rules, $message)->validate();
 
-        $cliente = new Cliente();
+        $cliente = new Cliente($request->all());
         $cliente->tipo_documento = $request->get('tipo_documento');
         $cliente->documento = $request->get('documento');
+        $cliente->tabladetalles_id = $request->input('tipo_cliente');
         $cliente->nombre = $request->get('nombre');
         $cliente->departamento_id = str_pad($request->get('departamento'), 2, "0", STR_PAD_LEFT);
         $cliente->provincia_id = str_pad($request->get('provincia'), 4, "0", STR_PAD_LEFT);
@@ -83,11 +90,10 @@ class ClienteController extends Controller
         $cliente->correo_electronico = $request->get('correo_electronico');
         $cliente->telefono_movil = $request->get('telefono_movil');
         $cliente->telefono_fijo = $request->get('telefono_fijo');
-        $cliente->moneda_credito = $request->get('moneda_credito');
-        $cliente->limite_credito = $request->get('limite_credito');
-        $cliente->nombre_contacto = $request->get('nombre_contacto');
-        $cliente->telefono_contacto = $request->get('telefono_contacto');
-        $cliente->correo_electronico_contacto = $request->get('correo_electronico_contacto');
+        $cliente->fecha_aniversario = Carbon::createFromFormat('d/m/Y', $request->get('fecha_aniversario'))->format('Y-m-d');
+        $cliente->fecha_nacimiento1 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento1'))->format('Y-m-d');
+        $cliente->fecha_nacimiento2 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento2'))->format('Y-m-d');
+        $cliente->fecha_nacimiento3 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento3'))->format('Y-m-d');
         $cliente->activo = ($request->get('activo') == 'ACTIVO') ? 1: 0;
         $cliente->save();
 
@@ -98,8 +104,13 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $cliente = Cliente::findOrFail($id);
+        $put = True;
+        $action = route('ventas.cliente.update', $id);
+
         return view('ventas.clientes.edit', [
-            'cliente' => $cliente
+            'cliente' => $cliente,
+            'action' => $action,
+            'put' => $put,
         ]);
     }
 
@@ -140,6 +151,7 @@ class ClienteController extends Controller
         $cliente->tipo_documento = $request->get('tipo_documento');
         $cliente->documento = $request->get('documento');
         $cliente->nombre = $request->get('nombre');
+        $cliente->tabladetalles_id = $request->input('tipo_cliente');
         $cliente->departamento_id = str_pad($request->get('departamento'), 2, "0", STR_PAD_LEFT);
         $cliente->provincia_id = str_pad($request->get('provincia'), 4, "0", STR_PAD_LEFT);
         $cliente->distrito_id = str_pad($request->get('distrito'), 6, "0", STR_PAD_LEFT);
@@ -147,11 +159,30 @@ class ClienteController extends Controller
         $cliente->correo_electronico = $request->get('correo_electronico');
         $cliente->telefono_movil = $request->get('telefono_movil');
         $cliente->telefono_fijo = $request->get('telefono_fijo');
-        $cliente->moneda_credito = $request->get('moneda_credito');
-        $cliente->limite_credito = $request->get('limite_credito');
-        $cliente->nombre_contacto = $request->get('nombre_contacto');
-        $cliente->telefono_contacto = $request->get('telefono_contacto');
-        $cliente->correo_electronico_contacto = $request->get('correo_electronico_contacto');
+
+        $cliente->direccion_negocio = $request->get('direccion_negocio');
+        $cliente->fecha_aniversario = $request->get('fecha_aniversario');
+        $cliente->observaciones = $request->get('observaciones');
+        $cliente->nombre1 = $request->get('nombre1');
+        $cliente->fecha_nacimiento1 = $request->get('fecha_nacimiento1');
+        $cliente->correo_electronico1 = $request->get('correo_electronico1');
+        $cliente->celular1 = $request->get('celular1');
+        $cliente->nombre2 = $request->get('nombre2');
+        $cliente->fecha_nacimiento2 = $request->get('fecha_nacimiento2');
+        $cliente->correo_electronico2 = $request->get('correo_electronico2');
+        $cliente->celular2 = $request->get('celular2');
+        $cliente->nombre3 = $request->get('nombre3');
+        $cliente->fecha_nacimiento3 = $request->get('fecha_nacimiento3');
+        $cliente->correo_electronico3 = $request->get('correo_electronico3');
+        $cliente->celular3 = $request->get('celular3');
+        $cliente->condicion_reparto = $request->get('condicion_reparto');
+        $cliente->direccion_entrega = $request->get('direccion_entrega');
+        $cliente->empresa_envio = $request->get('empresa_envio');
+        $cliente->pago_flete_envio = $request->get('pago_flete_envio');
+        $cliente->persona_recoge = $request->get('persona_recoge');
+        $cliente->dni_persona_recoge = $request->get('dni_persona_recoge');
+        $cliente->telefono_dato_envio = $request->get('telefono_dato_envio');
+        $cliente->dato_envio_observacion = $request->get('dato_envio_observacion');
         $cliente->activo = ($request->get('activo') == 'ACTIVO') ? 1: 0;
         $cliente->update();
 

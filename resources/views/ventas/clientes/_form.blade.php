@@ -1,6 +1,6 @@
 <div class="wrapper wrapper-content animated fadeIn">
 
-    <form class="wizard-big" action="{{ route('ventas.cliente.store') }}" method="POST" id="form_registrar_cliente">
+    <form class="wizard-big" action="{{ $action }}" method="POST" id="form_registrar_cliente">
         @csrf
         <h1>Datos Del Cliente</h1>
         <fieldset  style="position: relative;">
@@ -10,7 +10,7 @@
                     <select id="tipo_documento" name="tipo_documento" class="select2_form form-control {{ $errors->has('tipo_documento') ? ' is-invalid' : '' }}">
                         <option></option>
                         @foreach(tipos_documento() as $tipo_documento)
-                            <option value="{{ $tipo_documento->simbolo }}" {{ (old('tipo_documento') == $tipo_documento->simbolo ? "selected" : "") }} >{{ $tipo_documento->simbolo }}</option>
+                            <option value="{{ $tipo_documento->simbolo }}" {{ old('tipo_documento') ? (old('tipo_documento') == $tipo_documento->simbolo ? "selected" : "") : ($cliente->tipo_documento == $tipo_documento->simbolo ? "selected" : "") }} >{{ $tipo_documento->simbolo }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('tipo_documento'))
@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-group col-lg-3 col-xs-12">
                     <label class="required">Nro. Documento</label>
-                    <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')}}" maxlength="8" onkeypress="return isNumber(event)" required>
+                    <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')?old('documento'):$cliente->documento}}" maxlength="8" onkeypress="return isNumber(event)" required>
                     @if ($errors->has('documento'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('documento') }}</strong>
@@ -33,7 +33,7 @@
                     <select id="tipo_cliente" name="tipo_cliente" class="select2_form form-control {{ $errors->has('tipo_cliente') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(tipo_clientes() as $tipo_cliente)
-                            <option value="{{ $tipo_cliente->id }}" {{ (old('tipo_cliente') == $tipo_cliente->id ? "selected" : "") }} >{{ $tipo_cliente->descripcion }}</option>
+                            <option value="{{ $tipo_cliente->id }}" {{ old('tipo_cliente') ? (old('tipo_cliente') == $tipo_cliente->id ? "selected" : "") : ($cliente->tabladetalles_id == $tipo_cliente->id ? "selected" : "") }} >{{ $tipo_cliente->descripcion }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('tipo_cliente'))
@@ -56,7 +56,7 @@
             <div class="row">
                 <div class="form-group col-lg-6 col-xs-12">
                     <label class="required" id="lblNombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
+                    <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')?old('nombre'):$cliente->nombre}}" maxlength="191" onkeyup="return mayus(this)" required>
                     @if ($errors->has('nombre'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('nombre') }}</strong>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group col-lg-6 col-xs-12">
                     <label class="required">Dirección completa</label>
-                    <input type="text" id="direccion" name="direccion" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion')}}" maxlength="191" onkeyup="return mayus(this)" required>
+                    <input type="text" id="direccion" name="direccion" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion')?old('direccion'):$cliente->direccion}}" maxlength="191" onkeyup="return mayus(this)" required>
                     @if ($errors->has('direccion'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('direccion') }}</strong>
@@ -79,7 +79,7 @@
                     <select id="departamento" name="departamento" class="select2_form form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
                         @foreach(departamentos() as $departamento)
-                            <option value="{{ $departamento->id }}" {{ (old('departamento') == $departamento->id ? "selected" : "") }} >{{ $departamento->nombre }}</option>
+                            <option value="{{ $departamento->id }}" {{ old('departamento') ? (old('departamento') == $departamento->id ? "selected" : "") : ($cliente->departamento_id == $departamento->id ? "selected" : "")}} >{{ $departamento->nombre }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('departamento'))
@@ -92,6 +92,9 @@
                     <label class="required">Provincia</label>
                     <select id="provincia" name="provincia" class="select2_form form-control {{ $errors->has('provincia') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
+                        @foreach(provincias() as $provincia)
+                            <option value="{{ $provincia->id }}" {{ old('provincia') ? (old('provincia') == $provincia->id ? "selected" : "") : ($cliente->provincia_id == $provincia->id ? "selected" : "")}} >{{ $provincia->nombre }}</option>
+                        @endforeach
                     </select>
                     @if ($errors->has('provincia'))
                         <span class="invalid-feedback" role="alert">
@@ -103,10 +106,13 @@
                     <label class="required">Distrito</label>
                     <select id="distrito" name="distrito" class="select2_form form-control {{ $errors->has('distrito') ? ' is-invalid' : '' }}" style="width: 100%">
                         <option></option>
+                        @foreach(distritos() as $distrito)
+                            <option value="{{ $distrito->id }}" {{ old('distrito') ? (old('distrito') == $distrito->id ? "selected" : "") : ($cliente->distrito_id == $distrito->id ? "selected" : "")}} >{{ $distrito->nombre }}</option>
+                        @endforeach
                     </select>
                     @if ($errors->has('distrito'))
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('provincia') }}</strong>
+                            <strong>{{ $errors->first('distrito') }}</strong>
                         </span>
                     @endif
                 </div>
@@ -114,7 +120,7 @@
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
                     <label class="required">Teléfono móvil</label>
-                    <input type="text" id="telefono_movil" name="telefono_movil" class="form-control {{ $errors->has('telefono_movil') ? ' is-invalid' : '' }}" value="{{old('telefono_movil')}}" onkeypress="return isNumber(event)" maxlength="9" required>
+                    <input type="text" id="telefono_movil" name="telefono_movil" class="form-control {{ $errors->has('telefono_movil') ? ' is-invalid' : '' }}" value="{{old('telefono_movil') ? old('telefono_movil') : $cliente->telefono_movil}}" onkeypress="return isNumber(event)" maxlength="9" required>
                     @if ($errors->has('telefono_movil'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('telefono_movil') }}</strong>
@@ -123,7 +129,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label>Teléfono fijo</label>
-                    <input type="text" id="telefono_fijo" name="telefono_fijo" class="form-control {{ $errors->has('telefono_fijo') ? ' is-invalid' : '' }}" value="{{old('telefono_fijo')}}" onkeypress="return isNumber(event)" maxlength="10">
+                    <input type="text" id="telefono_fijo" name="telefono_fijo" class="form-control {{ $errors->has('telefono_fijo') ? ' is-invalid' : '' }}" value="{{old('telefono_fijo') ? old('telefono_fijo') : $cliente->telefono_fijo}}" onkeypress="return isNumber(event)" maxlength="10">
                     @if ($errors->has('telefono_fijo'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('telefono_fijo') }}</strong>
@@ -132,7 +138,7 @@
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
                     <label>Correo electrónico</label>
-                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico')}}" maxlength="100" onkeyup="return mayus(this)">
+                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico') ? old('correo_electronico') : $cliente->correo_electronico}}" maxlength="100" onkeyup="return mayus(this)">
                     @if ($errors->has('correo_electronico'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('correo_electronico') }}</strong>
@@ -147,213 +153,217 @@
             </div>
         </fieldset>
 
-        <h1>Datos De Negocio</h1>
+        <h1>Datos Del Negocio</h1>
         <fieldset  style="position: relative;">
-        <h3>DATOS DE NEGOCIO</h3>
-        <div class="row">
-            <div class="form-group col-lg-5 col-xs-12">
-                <label class="required">Direccion de Negocio</label>
-                <input type="text" id="direccion_negocio" name="direccion_negocio" class="form-control {{ $errors->has('direccion_negocio') ? ' is-invalid' : '' }}" value="{{old('direccion_negocio')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('direccion_negocio'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('direccion_negocio') }}</strong>
+            <h3>DATOS DE NEGOCIO</h3>
+            <div class="row">
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label class="required">Direccion de Negocio</label>
+                    <input type="text" id="direccion_negocio" name="direccion_negocio" class="form-control {{ $errors->has('direccion_negocio') ? ' is-invalid' : '' }}" value="{{old('direccion_negocio') ? old('direccion_negocio') : $cliente->direccion_negocio}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('direccion_negocio'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('direccion_negocio') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-3 col-xs-12" id="fecha_aniversario">
+                    <label>Fecha de Aniversario</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
                         </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-3 col-xs-12" id="fecha_aniversario">
-                <label>Fecha de Aniversario</label>
-                <div class="input-group date">
-                    <span class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
-                    <input type="text" id="fecha_aniversario" name="fecha_aniversario" class="form-control {{ $errors->has('fecha_aniversario') ? ' is-invalid' : '' }}" value="{{old('fecha_aniversario')}}" readonly >
+                        <input type="text" id="fecha_aniversario" name="fecha_aniversario" class="form-control {{ $errors->has('fecha_aniversario') ? ' is-invalid' : '' }}" value="{{old('fecha_aniversario') ? old('fecha_aniversario', getFechaFormato($cliente->fecha_aniversario, 'd/m/Y')) : getFechaFormato($cliente->fecha_aniversario, 'd/m/Y') }}" readonly >
+                    </div>
+                </div>
+                <div class="form-group col-lg-4 col-xs-12">
+                    <label>Observaciones</label>
+                    <textarea type="text" id="observaciones" name="observaciones" class="form-control {{ $errors->has('observaciones') ? ' is-invalid' : '' }}" value="{{old('observaciones') ? old('observaciones') : $cliente->observaciones}}" rows="1" onkeyup="return mayus(this)">{{old('observaciones') ? old('observaciones') : $cliente->observaciones}}</textarea>
                 </div>
             </div>
-            <div class="form-group col-lg-4 col-xs-12">
-                <label>observaciones</label>
-                <textarea type="text" id="observaciones" name="observaciones" class="form-control {{ $errors->has('observaciones') ? ' is-invalid' : '' }}" value="{{old('observaciones')}}" rows="1" onkeyup="return mayus(this)"></textarea>
-            </div>
-        </div>
 
-        <h3>CONTACTO COMERCIAL - Tienda 1</h3>
-        <div class="row">
-            <div class="form-group col-lg-4 col-xs-12">
-                <label>Nombres y apellidos</label>
-                <input type="text" id="nombre1" name="nombre1" class="form-control {{ $errors->has('nombre1') ? ' is-invalid' : '' }}" value="{{old('nombre1')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('nombre1'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('nombre1') }}</strong>
+            <h3>CONTACTO COMERCIAL - Tienda 1</h3>
+            <div class="row">
+                <div class="form-group col-lg-4 col-xs-12">
+                    <label>Nombres y apellidos</label>
+                    <input type="text" id="nombre1" name="nombre1" class="form-control {{ $errors->has('nombre1') ? ' is-invalid' : '' }}" value="{{old('nombre1') ? old('nombre1') : $cliente->nombre1}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('nombre1'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('nombre1') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento1">
+                    <label class="">Fecha de Nacimiento</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
                         </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento1">
-                <label class="">Fecha de Nacimiento</label>
-                <div class="input-group date">
-                    <span class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
-                    <input type="text" id="fecha_nacimiento1" name="fecha_nacimiento1" class="form-control {{ $errors->has('fecha_nacimiento1') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento1')}}" autocomplete="off" readonly required >
+                        <input type="text" id="fecha_nacimiento1" name="fecha_nacimiento1" class="form-control {{ $errors->has('fecha_nacimiento1') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento1') ? old('fecha_nacimiento1', getFechaFormato($cliente->fecha_nacimiento1, 'd/m/Y')) : getFechaFormato($cliente->fecha_nacimiento1, 'd/m/Y') }}" autocomplete="off" readonly required >
+                    </div>
+                </div>
+                <div class="form-group col-lg-3 col-xs-12">
+                    <label class="">Correo electrónico</label>
+                    <input type="email" id="correo_electronico1" name="correo_electronico1" class="form-control {{ $errors->has('correo_electronico1') ? ' is-invalid' : '' }}" value="{{old('correo_electronico1') ? old('correo_electronico1') : $cliente->correo_electronico1}}" maxlength="100" onkeyup="return mayus(this)" required>
+                </div>
+                <div class="form-group col-lg-2 col-xs-12">
+                    <label class="">Celular</label>
+                    <input type="text" id="celular1" name="celular1" class="form-control {{ $errors->has('celular1') ? ' is-invalid' : '' }}" value="{{old('celular1') ? old('celular1') : $cliente->celular1}}" onkeypress="return isNumber(event)" maxlength="9" required>
                 </div>
             </div>
-            <div class="form-group col-lg-3 col-xs-12">
-                <label class="">Correo electrónico</label>
-                <input type="email" id="correo_electronico1" name="correo_electronico1" class="form-control {{ $errors->has('correo_electronico1') ? ' is-invalid' : '' }}" value="{{old('correo_electronico1')}}" maxlength="100" onkeyup="return mayus(this)" required>
-            </div>
-            <div class="form-group col-lg-2 col-xs-12">
-                <label class="">Celular</label>
-                <input type="text" id="celular1" name="celular1" class="form-control {{ $errors->has('celular1') ? ' is-invalid' : '' }}" value="{{old('celular1')}}" onkeypress="return isNumber(event)" maxlength="9" required>
-            </div>
-        </div>
 
-        <h3>CONTACTO COMERCIAL - Tienda 2</h3>
-        <div class="row">
-            <div class="form-group col-lg-4 col-xs-12">
-                <label>Nombres y apellidos</label>
-                <input type="text" id="nombre2" name="nombre2" class="form-control {{ $errors->has('nombre2') ? ' is-invalid' : '' }}" value="{{old('nombre2')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('nombre2'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('nombre2') }}</strong>
+            <h3>CONTACTO COMERCIAL - Tienda 2</h3>
+            <div class="row">
+                <div class="form-group col-lg-4 col-xs-12">
+                    <label>Nombres y apellidos</label>
+                    <input type="text" id="nombre2" name="nombre2" class="form-control {{ $errors->has('nombre2') ? ' is-invalid' : '' }}" value="{{old('nombre2') ? old('nombre2') : $cliente->nombre2}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('nombre2'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('nombre2') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento2">
+                    <label class="">Fecha de Nacimiento</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
                         </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento2">
-                <label class="">Fecha de Nacimiento</label>
-                <div class="input-group date">
-                    <span class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
-                    <input type="text" id="fecha_nacimiento2" name="fecha_nacimiento2" class="form-control {{ $errors->has('fecha_nacimiento2') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento2')}}" autocomplete="off" readonly required >
+                        <input type="text" id="fecha_nacimiento2" name="fecha_nacimiento2" class="form-control {{ $errors->has('fecha_nacimiento2') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento2') ? old('fecha_nacimiento2', getFechaFormato($cliente->fecha_nacimiento2, 'd/m/Y')) : getFechaFormato($cliente->fecha_nacimiento2, 'd/m/Y') }}" autocomplete="off" readonly required >
+                    </div>
+                </div>
+                <div class="form-group col-lg-3 col-xs-12">
+                    <label class="">Correo electrónico</label>
+                    <input type="email" id="correo_electronico2" name="correo_electronico2" class="form-control {{ $errors->has('correo_electronico2') ? ' is-invalid' : '' }}" value="{{old('correo_electronico2') ? old('correo_electronico2') : $cliente->correo_electronico2}}" maxlength="100" onkeyup="return mayus(this)" required>
+                </div>
+                <div class="form-group col-lg-2 col-xs-12">
+                    <label class="">Celular</label>
+                    <input type="text" id="celular2" name="celular2" class="form-control {{ $errors->has('celular2') ? ' is-invalid' : '' }}" value="{{old('celular2') ? old('celular2') : $cliente->celular2}}" onkeypress="return isNumber(event)" maxlength="9" required>
                 </div>
             </div>
-            <div class="form-group col-lg-3 col-xs-12">
-                <label class="">Correo electrónico</label>
-                <input type="email" id="correo_electronico2" name="correo_electronico2" class="form-control {{ $errors->has('correo_electronico2') ? ' is-invalid' : '' }}" value="{{old('correo_electronico2')}}" maxlength="100" onkeyup="return mayus(this)" required>
-            </div>
-            <div class="form-group col-lg-2 col-xs-12">
-                <label class="">Celular</label>
-                <input type="text" id="celular2" name="celular2" class="form-control {{ $errors->has('celular2') ? ' is-invalid' : '' }}" value="{{old('celular2')}}" onkeypress="return isNumber(event)" maxlength="9" required>
-            </div>
-        </div>
 
-        <h3>CONTACTO COMERCIAL - Tienda 3</h3>
-        <div class="row">
-            <div class="form-group col-lg-4 col-xs-12">
-                <label>Nombres y apellidos</label>
-                <input type="text" id="nombre3" name="nombre3" class="form-control {{ $errors->has('nombre3') ? ' is-invalid' : '' }}" value="{{old('nombre3')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('nombre3'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('nombre3') }}</strong>
+            <h3>CONTACTO COMERCIAL - Tienda 3</h3>
+            <div class="row">
+                <div class="form-group col-lg-4 col-xs-12">
+                    <label>Nombres y apellidos</label>
+                    <input type="text" id="nombre3" name="nombre3" class="form-control {{ $errors->has('nombre3') ? ' is-invalid' : '' }}" value="{{old('nombre3') ? old('nombre3') : $cliente->nombre3}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('nombre3'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('nombre3') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento3">
+                    <label class="">Fecha de Nacimiento</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
                         </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento3">
-                <label class="">Fecha de Nacimiento</label>
-                <div class="input-group date">
-                    <span class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
-                    <input type="text" id="fecha_nacimiento3" name="fecha_nacimiento3" class="form-control {{ $errors->has('fecha_nacimiento3') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento3')}}" autocomplete="off" readonly required >
+                        <input type="text" id="fecha_nacimiento3" name="fecha_nacimiento3" class="form-control {{ $errors->has('fecha_nacimiento3') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento3') ? old('fecha_nacimiento3', getFechaFormato($cliente->fecha_nacimiento3, 'd/m/Y')) : getFechaFormato($cliente->fecha_nacimiento3, 'd/m/Y') }}" autocomplete="off" readonly required >
+                    </div>
+                </div>
+                <div class="form-group col-lg-3 col-xs-12">
+                    <label class="">Correo electrónico</label>
+                    <input type="email" id="correo_electronico3" name="correo_electronico3" class="form-control {{ $errors->has('correo_electronico3') ? ' is-invalid' : '' }}" value="{{old('correo_electronico3') ? old('correo_electronico3') : $cliente->correo_electronico3}}" maxlength="100" onkeyup="return mayus(this)" required>
+                </div>
+                <div class="form-group col-lg-2 col-xs-12">
+                    <label class="">Celular</label>
+                    <input type="text" id="celular3" name="celular3" class="form-control {{ $errors->has('celular3') ? ' is-invalid' : '' }}" value="{{old('celular3') ? old('celular3') : $cliente->celular3}}" onkeypress="return isNumber(event)" maxlength="9" required>
                 </div>
             </div>
-            <div class="form-group col-lg-3 col-xs-12">
-                <label class="">Correo electrónico</label>
-                <input type="email" id="correo_electronico3" name="correo_electronico3" class="form-control {{ $errors->has('correo_electronico3') ? ' is-invalid' : '' }}" value="{{old('correo_electronico3')}}" maxlength="100" onkeyup="return mayus(this)" required>
-            </div>
-            <div class="form-group col-lg-2 col-xs-12">
-                <label class="">Celular</label>
-                <input type="text" id="celular3" name="celular3" class="form-control {{ $errors->has('celular3') ? ' is-invalid' : '' }}" value="{{old('celular3')}}" onkeypress="return isNumber(event)" maxlength="9" required>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="m-t-md col-lg-8">
-                <i class="fa fa-exclamation-circle leyenda-required"></i> <small class="leyenda-required">Los campos marcados con asterisco (*) son obligatorios.</small>
+            <div class="row">
+                <div class="m-t-md col-lg-8">
+                    <i class="fa fa-exclamation-circle leyenda-required"></i> <small class="leyenda-required">Los campos marcados con asterisco (*) son obligatorios.</small>
+                </div>
             </div>
-        </div>
         </fieldset>
 
         <h1>Datos Del Envio</h1>
         <fieldset  style="position: relative;">
-        <div class="row">
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>Condicion de Reparto</label>
-                <select id="condicion_reparto" name="condicion_reparto" class="select2_form form-control {{ $errors->has('condicion_reparto') ? ' is-invalid' : '' }}">
-                    <option></option>
-                    @foreach(tipos_moneda() as $moneda)
-                        <option value="{{ $moneda->simbolo }}" {{ (old('condicion_reparto') == $moneda->simbolo ? "selected" : "") }}>{{ $moneda->descripcion }}</option>
-                    @endforeach
-                </select>
-                @if ($errors->has('condicion_reparto'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('condicion_reparto') }}</strong>
-                    </span>
-                @endif
-            </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>Direccion de Entrega del Bien</label>
-                <input type="text" id="direccion_entrega" name="direccion_entrega" class="form-control {{ $errors->has('direccion_entrega') ? ' is-invalid' : '' }}" value="{{old('direccion_entrega')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('direccion_entrega'))
+            <div class="row">
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>Condicion de Reparto</label>
+                    <select id="condicion_reparto" name="condicion_reparto" class="select2_form form-control {{ $errors->has('condicion_reparto') ? ' is-invalid' : '' }}">
+                        <option></option>
+                        @foreach(condicion_reparto() as $condicion_reparto)
+                            <option value="{{ $condicion_reparto->simbolo }}" {{ old('condicion_reparto') ? (old('condicion_reparto') == $condicion_reparto->simbolo ? "selected" : "") : ($cliente->condicion_reparto == $condicion_reparto->simbolo ? "selected" : "") }}>{{ $condicion_reparto->descripcion }}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('condicion_reparto'))
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('direccion_entrega') }}</strong>
+                            <strong>{{ $errors->first('condicion_reparto') }}</strong>
                         </span>
                     @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>Direccion de Entrega del Bien</label>
+                    <input type="text" id="direccion_entrega" name="direccion_entrega" class="form-control {{ $errors->has('direccion_entrega') ? ' is-invalid' : '' }}" value="{{old('direccion_entrega') ? old('direccion_entrega') : $cliente->direccion_entrega }}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('direccion_entrega'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('direccion_entrega') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>Nombre de la Empresa de Transporte para el Envio:</label>
+                    <input type="text" id="empresa_envio" name="empresa_envio" class="form-control {{ $errors->has('empresa_envio') ? ' is-invalid' : '' }}" value="{{old('empresa_envio') ? old('empresa_envio') : $cliente->empresa_envio}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('empresa_envio'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('empresa_envio') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>Responsable del Pago del Flete de Envio:</label>
+                    <input type="text" id="pago_flete_envio" name="pago_flete_envio" class="form-control {{ $errors->has('pago_flete_envio') ? ' is-invalid' : '' }}" value="{{old('pago_flete_envio') ? old('pago_flete_envio') : $cliente->pago_flete_envio}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('pago_flete_envio'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('pago_flete_envio') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>Nombre de la Persona quien Recoge Paquete / Si es Envio Oficina:</label>
+                    <input type="text" id="persona_recoge" name="persona_recoge" class="form-control {{ $errors->has('persona_recoge') ? ' is-invalid' : '' }}" value="{{old('persona_recoge') ? old('persona_recoge') : $cliente->persona_recoge}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('persona_recoge'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('persona_recoge') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>Nro DNI de la Persona Quien Recoge:</label>
+                    <input type="text" id="dni_persona_recoge" name="dni_persona_recoge" class="form-control {{ $errors->has('dni_persona_recoge') ? ' is-invalid' : '' }}" value="{{old('dni_persona_recoge') ? old('dni_persona_recoge') : $cliente->dni_persona_recoge}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('dni_persona_recoge'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('dni_persona_recoge') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>TELEFONO</label>
+                    <input type="text" id="telefono_dato_envio" name="telefono_dato_envio" class="form-control {{ $errors->has('telefono_dato_envio') ? ' is-invalid' : '' }}" value="{{old('telefono_dato_envio') ? old('telefono_dato_envio') : $cliente->telefono_dato_envio}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('telefono_dato_envio'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('telefono_dato_envio') }}</strong>
+                            </span>
+                        @endif
+                </div>
+                <div class="form-group col-lg-5 col-xs-12">
+                    <label>OBSERVACION</label>
+                    <textarea type="text" id="dato_envio_observacion" name="dato_envio_observacion" class="form-control {{ $errors->has('dato_envio_observacion') ? ' is-invalid' : '' }}" value="{{old('dato_envio_observacion') ? old('dato_envio_observacion') : $cliente->dato_envio_observacion}}" rows="1" onkeyup="return mayus(this)">{{old('dato_envio_observacion') ? old('dato_envio_observacion') : $cliente->dato_envio_observacion}}</textarea>
+                </div>
             </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>Nombre de la Empresa de Transporte para el Envio:</label>
-                <input type="text" id="empresa_envio" name="empresa_envio" class="form-control {{ $errors->has('empresa_envio') ? ' is-invalid' : '' }}" value="{{old('empresa_envio')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('empresa_envio'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('empresa_envio') }}</strong>
-                        </span>
-                    @endif
+            <div class="row">
+                <div class="m-t-md col-lg-8">
+                    <i class="fa fa-exclamation-circle leyenda-required"></i> <small class="leyenda-required">Los campos marcados con asterisco (*) son obligatorios.</small>
+                </div>
             </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>Responsable del Pago del Flete de Envio:</label>
-                <input type="text" id="pago_flete_envio" name="pago_flete_envio" class="form-control {{ $errors->has('pago_flete_envio') ? ' is-invalid' : '' }}" value="{{old('pago_flete_envio')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('pago_flete_envio'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('pago_flete_envio') }}</strong>
-                        </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>Nombre de la Persona quien Recoge Paquete / Si es Envio Oficina:</label>
-                <input type="text" id="persona_recoge" name="persona_recoge" class="form-control {{ $errors->has('persona_recoge') ? ' is-invalid' : '' }}" value="{{old('persona_recoge')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('persona_recoge'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('persona_recoge') }}</strong>
-                        </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>Nro DNI de la Persona Quien Recoge:</label>
-                <input type="text" id="dni_persona_recoge" name="dni_persona_recoge" class="form-control {{ $errors->has('dni_persona_recoge') ? ' is-invalid' : '' }}" value="{{old('dni_persona_recoge')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('dni_persona_recoge'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('dni_persona_recoge') }}</strong>
-                        </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>TELEFONO</label>
-                <input type="text" id="direccion_negocio" name="direccion_negocio" class="form-control {{ $errors->has('direccion_negocio') ? ' is-invalid' : '' }}" value="{{old('direccion_negocio')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('direccion_negocio'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('direccion_negocio') }}</strong>
-                        </span>
-                    @endif
-            </div>
-            <div class="form-group col-lg-5 col-xs-12">
-                <label>OBSERVACION</label>
-                <textarea type="text" id="dato_envio_observacion" name="dato_envio_observacion" class="form-control {{ $errors->has('dato_envio_observacion') ? ' is-invalid' : '' }}" value="{{old('dato_envio_observacion')}}" rows="1" onkeyup="return mayus(this)"></textarea>
-            </div>
-        </div>
-        <div class="row">
-            <div class="m-t-md col-lg-8">
-                <i class="fa fa-exclamation-circle leyenda-required"></i> <small class="leyenda-required">Los campos marcados con asterisco (*) son obligatorios.</small>
-            </div>
-        </div>
         </fieldset>
+
+        @if (!empty($put))
+            <input type="hidden" name="_method" value="PUT">
+        @endif
     </form>
 
 </div>
@@ -430,6 +440,24 @@
             });
 
             $('#fecha_nacimiento1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                language: 'es',
+                format: "dd/mm/yyyy"
+            });
+
+            $('#fecha_nacimiento2 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                language: 'es',
+                format: "dd/mm/yyyy"
+            });
+
+            $('#fecha_nacimiento3 .input-group.date').datepicker({
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
