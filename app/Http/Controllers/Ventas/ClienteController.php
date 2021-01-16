@@ -161,18 +161,18 @@ class ClienteController extends Controller
         $cliente->telefono_fijo = $request->get('telefono_fijo');
 
         $cliente->direccion_negocio = $request->get('direccion_negocio');
-        $cliente->fecha_aniversario = $request->get('fecha_aniversario');
+        $cliente->fecha_aniversario = Carbon::createFromFormat('d/m/Y', $request->get('fecha_aniversario'))->format('Y-m-d');
         $cliente->observaciones = $request->get('observaciones');
         $cliente->nombre1 = $request->get('nombre1');
-        $cliente->fecha_nacimiento1 = $request->get('fecha_nacimiento1');
+        $cliente->fecha_nacimiento1 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento1'))->format('Y-m-d');
         $cliente->correo_electronico1 = $request->get('correo_electronico1');
         $cliente->celular1 = $request->get('celular1');
         $cliente->nombre2 = $request->get('nombre2');
-        $cliente->fecha_nacimiento2 = $request->get('fecha_nacimiento2');
+        $cliente->fecha_nacimiento2 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento2'))->format('Y-m-d');
         $cliente->correo_electronico2 = $request->get('correo_electronico2');
         $cliente->celular2 = $request->get('celular2');
         $cliente->nombre3 = $request->get('nombre3');
-        $cliente->fecha_nacimiento3 = $request->get('fecha_nacimiento3');
+        $cliente->fecha_nacimiento3 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento3'))->format('Y-m-d');
         $cliente->correo_electronico3 = $request->get('correo_electronico3');
         $cliente->celular3 = $request->get('celular3');
         $cliente->condicion_reparto = $request->get('condicion_reparto');

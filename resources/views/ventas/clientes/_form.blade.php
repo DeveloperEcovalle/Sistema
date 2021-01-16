@@ -286,7 +286,7 @@
                     <select id="condicion_reparto" name="condicion_reparto" class="select2_form form-control {{ $errors->has('condicion_reparto') ? ' is-invalid' : '' }}">
                         <option></option>
                         @foreach(condicion_reparto() as $condicion_reparto)
-                            <option value="{{ $condicion_reparto->simbolo }}" {{ old('condicion_reparto') ? (old('condicion_reparto') == $condicion_reparto->simbolo ? "selected" : "") : ($cliente->condicion_reparto == $condicion_reparto->simbolo ? "selected" : "") }}>{{ $condicion_reparto->descripcion }}</option>
+                            <option value="{{ $condicion_reparto->id }}" {{ old('condicion_reparto') ? (old('condicion_reparto') == $condicion_reparto->id ? "selected" : "") : ($cliente->condicion_reparto == $condicion_reparto->id ? "selected" : "") }}>{{ $condicion_reparto->descripcion }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('condicion_reparto'))
