@@ -77,8 +77,12 @@ class ClienteController extends Controller
         ];
 
         Validator::make($data, $rules, $message)->validate();
-
-        $cliente = new Cliente($request->all());
+        $arrayDatos = $request->all();
+        if ($arrayDatos['fecha_aniversario']=="-"){ unset($arrayDatos['fecha_aniversario']); }else{$arrayDatos['fecha_aniversario']= Carbon::createFromFormat('d/m/Y', $arrayDatos['fecha_aniversario'])->format('Y-m-d');}
+        if ($arrayDatos['fecha_nacimiento1']=="-"){ unset($arrayDatos['fecha_nacimiento1']); }else{$arrayDatos['fecha_nacimiento1']= Carbon::createFromFormat('d/m/Y', $arrayDatos['fecha_nacimiento1'])->format('Y-m-d');}
+        if ($arrayDatos['fecha_nacimiento2']=="-"){ unset($arrayDatos['fecha_nacimiento2']); }else{$arrayDatos['fecha_nacimiento2']= Carbon::createFromFormat('d/m/Y', $arrayDatos['fecha_nacimiento2'])->format('Y-m-d');}
+        if ($arrayDatos['fecha_nacimiento3']=="-"){ unset($arrayDatos['fecha_nacimiento3']); }else{$arrayDatos['fecha_nacimiento3']= Carbon::createFromFormat('d/m/Y', $arrayDatos['fecha_nacimiento3'])->format('Y-m-d');}
+        $cliente = new Cliente($arrayDatos);
         $cliente->tipo_documento = $request->get('tipo_documento');
         $cliente->documento = $request->get('documento');
         $cliente->tabladetalles_id = $request->input('tipo_cliente');
@@ -90,10 +94,6 @@ class ClienteController extends Controller
         $cliente->correo_electronico = $request->get('correo_electronico');
         $cliente->telefono_movil = $request->get('telefono_movil');
         $cliente->telefono_fijo = $request->get('telefono_fijo');
-        $cliente->fecha_aniversario = Carbon::createFromFormat('d/m/Y', $request->get('fecha_aniversario'))->format('Y-m-d');
-        $cliente->fecha_nacimiento1 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento1'))->format('Y-m-d');
-        $cliente->fecha_nacimiento2 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento2'))->format('Y-m-d');
-        $cliente->fecha_nacimiento3 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento3'))->format('Y-m-d');
         $cliente->activo = ($request->get('activo') == 'ACTIVO') ? 1: 0;
         $cliente->save();
 
@@ -161,18 +161,26 @@ class ClienteController extends Controller
         $cliente->telefono_fijo = $request->get('telefono_fijo');
 
         $cliente->direccion_negocio = $request->get('direccion_negocio');
-        $cliente->fecha_aniversario = Carbon::createFromFormat('d/m/Y', $request->get('fecha_aniversario'))->format('Y-m-d');
+        if($request->get('fecha_aniversario')!="-"){
+            $cliente->fecha_aniversario = Carbon::createFromFormat('d/m/Y', $request->get('fecha_aniversario'))->format('Y-m-d');
+        }
         $cliente->observaciones = $request->get('observaciones');
         $cliente->nombre1 = $request->get('nombre1');
-        $cliente->fecha_nacimiento1 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento1'))->format('Y-m-d');
+        if($request->get('fecha_nacimiento1')!="-"){
+            $cliente->fecha_nacimiento1 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento1'))->format('Y-m-d');
+        }
         $cliente->correo_electronico1 = $request->get('correo_electronico1');
         $cliente->celular1 = $request->get('celular1');
         $cliente->nombre2 = $request->get('nombre2');
-        $cliente->fecha_nacimiento2 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento2'))->format('Y-m-d');
+        if($request->get('fecha_nacimiento2')!="-"){
+            $cliente->fecha_nacimiento2 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento2'))->format('Y-m-d');
+        }
         $cliente->correo_electronico2 = $request->get('correo_electronico2');
         $cliente->celular2 = $request->get('celular2');
         $cliente->nombre3 = $request->get('nombre3');
-        $cliente->fecha_nacimiento3 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento3'))->format('Y-m-d');
+        if($request->get('fecha_nacimiento3')!="-"){
+            $cliente->fecha_nacimiento3 = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento3'))->format('Y-m-d');
+        }
         $cliente->correo_electronico3 = $request->get('correo_electronico3');
         $cliente->celular3 = $request->get('celular3');
         $cliente->condicion_reparto = $request->get('condicion_reparto');

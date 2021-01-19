@@ -37,7 +37,7 @@ class CreateClientesTable extends Migration
             $table->string('correo_electronico_contacto')->nullable();
 
             $table->string('direccion_negocio');
-            $table->date('fecha_aniversario');
+            $table->date('fecha_aniversario')->nullable();
             $table->text('observaciones')->nullable();
             $table->mediumText('nombre1')->nullable();
             $table->date('fecha_nacimiento1')->nullable();
