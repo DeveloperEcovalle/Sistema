@@ -106,6 +106,9 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email');
     Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada');
     Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
+    Route::get('documento/{id}','Compras\OrdenController@document')->name('compras.orden.documento');
+    Route::get('nuevodocumento/{id}','Compras\OrdenController@newdocument')->name('compras.orden.nuevodocumento');
+
     //Pagos
     Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index');
     Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
@@ -116,6 +119,7 @@ Route::prefix('compras/ordenes')->group(function() {
 });
 
 Route::prefix('compras/documentos')->group(function(){
+
     Route::get('index', 'Compras\DocumentoController@index')->name('compras.documento.index');
     Route::get('getDocument','Compras\DocumentoController@getDocument')->name('getDocument');
     Route::get('create', 'Compras\DocumentoController@create')->name('compras.documento.create');
@@ -125,6 +129,20 @@ Route::prefix('compras/documentos')->group(function(){
     Route::get('destroy/{id}', 'Compras\DocumentoController@destroy')->name('compras.documento.destroy');
     Route::get('show/{id}','Compras\DocumentoController@show')->name('compras.documento.show');
     Route::get('reporte/{id}','Compras\DocumentoController@report')->name('compras.documento.reporte');
+
+    //Pagos
+    Route::get('pagos/index/{id}', 'Compras\Documentos\PagoController@index')->name('compras.documentos.pago.index');
+    Route::get('getPay/{id}','Compras\Documentos\PagoController@getPayDocument')->name('getPay.documentos');
+    Route::get('pagos/create/{id}', 'Compras\Documentos\PagoController@create')->name('compras.documentos.pago.create');
+    Route::post('pagos/store/', 'Compras\Documentos\PagoController@store')->name('compras.documentos.pago.store');
+    Route::get('pagos/destroy/{id}', 'Compras\Documentos\PagoController@destroy')->name('compras.documentos.pago.destroy');
+    Route::get('pagos/show/{id}', 'Compras\Documentos\PagoController@show')->name('compras.documentos.pago.show');
+
+    Route::get('getBox/document/{id}', 'Compras\Documentos\PagoController@getBox')->name('compras.documentos.pago.getBox');
+
+
+
+
 
 });
 
@@ -140,6 +158,19 @@ Route::prefix('seguridad/usuarios')->group(function() {
     Route::get('getEmployee', 'Seguridad\UsuarioController@getEmployee')->name('seguridad.usuario.getEmployee');
     Route::get('getEmployeeedit/{id}', 'Seguridad\UsuarioController@getEmployeeedit')->name('seguridad.usuario.getEmployee.edit');
     Route::get('destroy/{id}', 'Seguridad\UsuarioController@destroy')->name('seguridad.usuario.destroy');
+});
+
+//POS
+//Caja Chica Pos
+//Almacen
+Route::prefix('pos/')->group(function() {
+    Route::get('cajachica/index', 'Pos\CajaController@index')->name('pos.caja.index');
+    Route::get('getBox','Pos\CajaController@getBox')->name('getBox');
+    Route::get('cajachica/destroy/{id}', 'Pos\CajaController@destroy')->name('pos.caja.destroy');
+    Route::get('cajachica/cerrar/{id}', 'Pos\CajaController@cerrar')->name('pos.caja.cerrar');
+    Route::post('cajachica/store', 'Pos\CajaController@store')->name('pos.caja.store');
+    Route::put('update', 'Pos\CajaController@update')->name('pos.caja.update');
+    Route::get('getEmployee/caja_chica', 'Pos\CajaController@getEmployee')->name('pos.caja.getEmployee');
 });
 
 

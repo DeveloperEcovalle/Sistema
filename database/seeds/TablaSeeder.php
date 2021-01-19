@@ -118,5 +118,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'CONDICION DE REPARTO';
         $tabla->sigla = 'CONDICION DE REPARTO';
         $tabla->save();
+
+        //19
+        $tabla = new General();
+        $tabla->descripcion = 'TIPOS DE PAGO (CAJA CHICA)';
+        $tabla->sigla = 'TIPO DE PAGO CAJA CHICA';
+        $tabla->save();
     }
 }

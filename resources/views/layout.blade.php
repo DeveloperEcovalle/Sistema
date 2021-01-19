@@ -136,6 +136,10 @@
     toastr.success("{{ Session::get('success') }}")
     @endif
 
+    @if(Session::has('error'))
+    toastr.error("{{ Session::get('error') }}")
+    @endif
+
 
     //Mensaje de Session
     @if(session('guardar') == 'success')
@@ -152,6 +156,16 @@
     Swal.fire({
         icon: 'success',
         title: 'Eliminado',
+        text: '¡Acción realizada satisfactoriamente!',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    @endif
+
+    @if(session('cerrada') == 'success')
+    Swal.fire({
+        icon: 'success',
+        title: 'Caja Chica Cerrada',
         text: '¡Acción realizada satisfactoriamente!',
         showConfirmButton: false,
         timer: 1500
@@ -187,6 +201,20 @@
         timer: 1500
     })
     @endif
+
+    @if(session('error_caja') == 'success')
+    Swal.fire({
+        icon: 'error',
+        title: 'Caja Chica',
+        text: '¡Caja Chica esta siendo utilizada en algun pago!',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    @endif
+
+
+
+    
     </script>
 
     <script>

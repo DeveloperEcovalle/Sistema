@@ -37,6 +37,9 @@
                     <form action="{{route('compras.documento.store')}}" method="POST" id="enviar_documento">
                         {{csrf_field()}}
 
+                        @if (!empty($orden))
+                            <input type="hidden" name="orden_id" value="{{$orden->id}}" >
+                        @endif
                         <div class="row">
                             <div class="col-sm-6 b-r">
                                 <h4 class=""><b>Documento de compra</b></h4>
@@ -54,10 +57,18 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
+                                            @if (!empty($orden))
+                                            <input type="text" id="fecha_documento_campo" name="fecha_emision"
+                                                class="form-control {{ $errors->has('fecha_emision') ? ' is-invalid' : '' }}"
+                                                value="{{old('fecha_emision',getFechaFormato($orden->fecha_emision, 'd/m/Y'))}}"
+                                                autocomplete="off" required readonly>
+                                            @else
                                             <input type="text" id="fecha_documento_campo" name="fecha_emision"
                                                 class="form-control {{ $errors->has('fecha_emision') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_emision',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
                                                 autocomplete="off" required readonly>
+                                            @endif
+
                                             @if ($errors->has('fecha_emision'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('fecha_emision') }}</strong>
@@ -72,10 +83,20 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
+                                            
+                                            @if (!empty($orden))
                                             <input type="text" id="fecha_entrega_campo" name="fecha_entrega"
                                                 class="form-control {{ $errors->has('fecha_entrega') ? ' is-invalid' : '' }}"
-                                                value="{{old('fecha_entrega',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
+                                                value="{{old('fecha_entrega',getFechaFormato( $orden->fecha_entrega ,'d/m/Y'))}}"
                                                 autocomplete="off" required readonly>
+                                            @else
+
+                                            <input type="text" id="fecha_entrega_campo" name="fecha_entrega"
+                                                class="form-control {{ $errors->has('fecha_entrega') ? ' is-invalid' : '' }}"
+                                                value="{{old('fecha_entrega',getFechaFormato( $fecha_hoy ,'d/m/Y'))}}"
+                                                autocomplete="off" required readonly>
+
+                                            @endif
                                             @if ($errors->has('fecha_entrega'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('fecha_entrega') }}</strong>
@@ -88,39 +109,83 @@
 
                                 <div class="form-group">
                                     <label class="required">Empresa: </label>
-                                    <select
-                                        class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
-                                        name="empresa_id" id="empresa_id" required>
-                                        <option></option>
-                                        @foreach ($empresas as $empresa)
-                                        <option value="{{$empresa->id}}" @if(old('empresa_id')==$empresa->id )
-                                            {{'selected'}} @endif >{{$empresa->razon_social}}</option>
-                                        @endforeach
-                                    </select>
+
+                                        @if (!empty($orden))
+                                            <select
+                                            class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('empresa_id',$orden->empresa_id)}}"
+                                            name="empresa_id" id="empresa_id" required>
+                                            <option></option>
+                                            @foreach ($empresas as $empresa)
+                                            <option value="{{$empresa->id}}" @if(old('empresa_id',$orden->empresa_id)==$empresa->id )
+                                                {{'selected'}} @endif >{{$empresa->razon_social}}</option>
+                                            @endforeach
+                                        </select>
+                                        @else
+                                            <select
+                                            class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
+                                            name="empresa_id" id="empresa_id" required>
+                                            <option></option>
+                                            @foreach ($empresas as $empresa)
+                                            <option value="{{$empresa->id}}" @if(old('empresa_id')==$empresa->id )
+                                                {{'selected'}} @endif >{{$empresa->razon_social}}</option>
+                                            @endforeach
+                                            </select>
+                                        @endif
+
+
+                                    
                                 </div>
 
                                 <div class="form-group">
                                     <label class="required">Proveedor: </label>
-                                    <select
+
+                                        @if (!empty($orden))
+                                        <select
                                         class="select2_form form-control {{ $errors->has('proveedor_id') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%" value="{{old('proveedor_id')}}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('proveedor_id', $orden->proveedor_id)}}"
                                         name="proveedor_id" id="proveedor_id" required>
                                         <option></option>
-                                        @foreach ($proveedores as $proveedor)
-                                        @if($proveedor->ruc)
-                                        <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
-                                            {{'selected'}} @endif >{{$proveedor->ruc.' - '.$proveedor->descripcion}}
-                                        </option>
+                                            @foreach ($proveedores as $proveedor)
+                                            @if($proveedor->ruc)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id',$orden->proveedor_id)==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->ruc.' - '.$proveedor->descripcion}}
+                                            </option>
+                                            @else
+                                            @if($proveedor->dni)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id',$orden->proveedor_id)==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->dni.' - '.$proveedor->descripcion}}
+                                            </option>
+                                            @endif
+                                            @endif
+                                            @endforeach
+                                            </select>
                                         @else
-                                        @if($proveedor->dni)
-                                        <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
-                                            {{'selected'}} @endif >{{$proveedor->dni.' - '.$proveedor->descripcion}}
-                                        </option>
+                                            <select
+                                            class="select2_form form-control {{ $errors->has('proveedor_id') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('proveedor_id')}}"
+                                            name="proveedor_id" id="proveedor_id" required>
+                                            <option></option>
+                                            @foreach ($proveedores as $proveedor)
+                                            @if($proveedor->ruc)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->ruc.' - '.$proveedor->descripcion}}
+                                            </option>
+                                            @else
+                                            @if($proveedor->dni)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->dni.' - '.$proveedor->descripcion}}
+                                            </option>
+                                            @endif
+                                            @endif
+                                            @endforeach
+                                            </select>
                                         @endif
-                                        @endif
-                                        @endforeach
-                                    </select>
+
+
+
+                                    
                                 </div>
 
 
@@ -133,22 +198,46 @@
 
                                 <div class="form-group">
                                     <label class="required">Modo de Compra: </label>
-                                    <select
+
+                                        @if (!empty($orden))
+                                        <select
                                         class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%" value="{{old('modo_compra')}}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('modo_compra',$orden->modo_compra)}}"
                                         name="modo_compra" id="modo_compra" required>
                                         <option></option>
-                                        @foreach ($modos as $modo)
-                                        <option value="{{$modo->descripcion}}" @if(old('modo_compra')==$modo->
-                                            descripcion ) {{'selected'}} @endif
-                                            >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
-                                        @endforeach
-                                        @if ($errors->has('modo_compra'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('modo_compra') }}</strong>
-                                        </span>
+                                            @foreach ($modos as $modo)
+                                            <option value="{{$modo->descripcion}}" @if(old('modo_compra',$orden->modo_compra)==$modo->
+                                                descripcion ) {{'selected'}} @endif
+                                                >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
+                                            @endforeach
+                                            @if ($errors->has('modo_compra'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('modo_compra') }}</strong>
+                                            </span>
+                                            @endif
+                                        </select>
+                                        @else
+                                            <select
+                                            class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('modo_compra')}}"
+                                            name="modo_compra" id="modo_compra" required>
+                                            <option></option>
+                                            @foreach ($modos as $modo)
+                                            <option value="{{$modo->descripcion}}" @if(old('modo_compra')==$modo->
+                                                descripcion ) {{'selected'}} @endif
+                                                >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
+                                            @endforeach
+                                            @if ($errors->has('modo_compra'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('modo_compra') }}</strong>
+                                            </span>
+                                            @endif
+                                            </select>
+
                                         @endif
-                                    </select>
+
+
+                                  
                                 </div>
                                 
                                 <div class="form-group row">
@@ -159,37 +248,63 @@
                                             style="text-transform: uppercase; width:100%" value="{{old('tipo_compra')}}"
                                             name="tipo_compra" id="tipo_compra" required>
                                             <option></option>
-                                            @foreach (tipo_compra() as $modo)
-                                            <option value="{{$modo->descripcion}}" @if(old('tipo_compra')==$modo->
-                                                descripcion ) {{'selected'}} @endif
-                                                >{{$modo->descripcion}}</option>
-                                            @endforeach
-                                            @if ($errors->has('tipo_compra'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('tipo_compra') }}</strong>
-                                            </span>
-                                            @endif
+                                            
+                                                @foreach (tipo_compra() as $modo)
+                                                <option value="{{$modo->descripcion}}" @if(old('tipo_compra')==$modo->
+                                                    descripcion ) {{'selected'}} @endif
+                                                    >{{$modo->descripcion}}</option>
+                                                @endforeach
+                                                @if ($errors->has('tipo_compra'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('tipo_compra') }}</strong>
+                                                </span>
+                                                @endif
+                                          
+
+
                                         </select>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="required">Moneda: </label>
-                                        <select
+
+                                            @if (!empty($orden))
+                                            <select
                                             class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('moneda')}}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('moneda',$orden->moneda)}}"
                                             name="moneda" id="moneda" required>
-                                            <option></option>
-                                            @foreach ($monedas as $moneda)
-                                            <option value="{{$moneda->descripcion}}" @if(old('moneda')==$moneda->
-                                                descripcion ) {{'selected'}} @endif
-                                                >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
-                                            @endforeach
-                                            @if ($errors->has('moneda'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('moneda') }}</strong>
-                                            </span>
+                                                <option></option>
+                                                
+                                                @foreach ($monedas as $moneda)
+                                                <option value="{{$moneda->descripcion}}" @if(old('moneda',$orden->moneda)==$moneda->descripcion ) {{'selected'}} @endif
+                                                    >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
+                                                @endforeach
+                                                @if ($errors->has('moneda'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('moneda') }}</strong>
+                                                </span>
+                                                @endif
+                                            </select> 
+                                            @else
+                                                <select
+                                                class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
+                                                style="text-transform: uppercase; width:100%" value="{{old('moneda')}}"
+                                                name="moneda" id="moneda" required>
+                                                    <option></option>
+                                                @foreach ($monedas as $moneda)
+                                                <option value="{{$moneda->descripcion}}" @if(old('moneda')==$moneda->descripcion ) {{'selected'}} @endif
+                                                    >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
+                                                @endforeach
+                                                @if ($errors->has('moneda'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('moneda') }}</strong>
+                                                </span>
+                                                @endif
+
+                                                </select> 
+
                                             @endif
-                                        </select>                                        
+                                                                               
                                     </div>
 
                                     
@@ -199,7 +314,12 @@
 
                                     <div class="col-md-6">
                                         <label class="" id="campo_tipo_cambio">Tipo de Cambio (S/.) :</label>
+                                        @if (!empty($orden))
+                                        <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$orden->tipo_cambio)}}" disabled>
+                                        @else
                                         <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio')}}" disabled>
+                                        @endif
+                                        
                                         @if ($errors->has('tipo_cambio'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('tipo_cambio') }}</strong>
@@ -216,10 +336,18 @@
                                                     <input type="checkbox" id="igv_check" name="igv_check">
                                                 </span>
                                             </div>
+                                            @if (!empty($orden))
+                                            <input type="text" value="{{old('igv',$orden->igv)}}"
+                                                class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
+                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)"
+                                                required>
+                                            @else
                                             <input type="text" value="{{old('igv')}}"
                                                 class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
                                                 name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)"
                                                 required>
+                                            @endif
+
                                             @if ($errors->has('igv'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('igv') }}</strong>
@@ -235,10 +363,18 @@
 
                                 <div class="form-group">
                                     <label>Observación:</label>
+                                    @if (!empty($orden))
+                                    <textarea type="text" placeholder=""
+                                        class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
+                                        name="observacion" id="observacion"  onkeyup="return mayus(this)"
+                                        value="{{old('observacion',$orden->observacion)}}">{{old('observacion',$orden->observacion)}}</textarea>
+                                    @else
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
                                         name="observacion" id="observacion"  onkeyup="return mayus(this)"
                                         value="{{old('observacion')}}">{{old('observacion')}}</textarea>
+                                    @endif
+
                                     @if ($errors->has('observacion'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('observacion') }}</strong>
@@ -438,10 +574,14 @@
 <link href="{{ asset('Inspinia/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 <link href="{{ asset('Inspinia/css/plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">
 <link href="{{ asset('Inspinia/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
-
-
 <!-- DataTable -->
 <link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+<style>
+    .sinFlete{
+         background: #c32020ad !important;
+         color: white !important;
+    }
+</style>
 
 @endpush
 
@@ -489,17 +629,6 @@ $('#fecha_entrega .input-group.date').datepicker({
 })
 
 
-
-$(document).ready(function() {
-    if ($("#igv_check").prop('checked')) {
-        $('#igv').attr('disabled', false)
-        $('#igv_requerido').addClass("required")
-    } else {
-        $('#igv').attr('disabled', true)
-        $('#igv_requerido').removeClass("required")
-    }
-});
-
 $("#igv_check").click(function() {
     if ($("#igv_check").is(':checked')) {
         $('#igv').attr('disabled', false)
@@ -541,6 +670,9 @@ $("#igv").on("change", function() {
 
 
 
+
+
+
 // Solo campos numericos
 $('#precio').keyup(function() {
     var val = $(this).val();
@@ -572,9 +704,21 @@ $('#tipo_cambio').keyup(function() {
     $(this).val(val);
 });
 
+$('#flete_table').keyup(function() {
+    
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+});
+
 $('#cantidad').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+
 
 $("#moneda").on("change", function() {
     var val = $(this).val();
@@ -637,7 +781,17 @@ $('#enviar_documento').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                this.submit();
+                @if (!empty($orden))
+                    var validar = montosFlete()
+                    if (validar == true) {
+                        document.getElementById("modo_compra").disabled = false;
+                        this.submit();    
+                    }
+
+                @else
+                    this.submit();
+                @endif
+                    
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
@@ -653,6 +807,41 @@ $('#enviar_documento').submit(function(e) {
 
 })
 
+
+function montosFlete() {
+    var flete = true;
+    var t = $('.dataTables-orden-detalle').DataTable();
+    t.rows().data().each(function(row, el, index) {
+        
+        if (row[5] == '') {
+            toastr.error('El Producto: '+ row[4]+' se encuentra sin costo de flete. ', 'Error');
+            $('.dataTables-orden-detalle tbody tr', row).eq(el).addClass('sinFlete');
+            flete = false
+        }else{
+            
+            $('.dataTables-orden-detalle tbody tr', row).eq(el).removeClass('sinFlete');
+        }
+    });
+    return flete
+}
+
+@if (!empty($orden))
+    @if ($orden->estado == "PAGADA" ) 
+        document.getElementById("modo_compra").disabled = true;
+        @foreach (modo_compra() as $modo)
+            @if ($modo->id == 52 ) 
+                $("#modo_compra").val("{{$modo->descripcion}}").trigger("change");
+            @endif
+        @endforeach
+    @else
+        document.getElementById("modo_compra").disabled = true;
+            @foreach (modo_compra() as $modo)
+                @if ($modo->id == 51 ) 
+                    $("#modo_compra").val("{{$modo->descripcion}}").trigger("change");
+                @endif
+            @endforeach
+    @endif
+@endif
 
 $(document).ready(function() {
 
@@ -733,6 +922,53 @@ $(document).ready(function() {
         ],
 
     });
+
+
+
+
+    @if (!empty($orden))
+
+        @if ($orden->igv_check == '1') 
+
+            $('#igv').prop('disabled', false)
+            $("#igv_check").prop('checked',true)
+
+            $('#igv_requerido').addClass("required")
+            $('#igv').prop('required', true)
+            var igv = ($('#igv').val()) + ' %'
+            $('#igv_int').text(igv)
+            sumaTotal()
+        @else
+            if ($("#igv_check").prop('checked')) {
+                $('#igv').attr('disabled', false)
+                $('#igv_requerido').addClass("required")
+            } else {
+                $('#igv').attr('disabled', true)
+                $('#igv_requerido').removeClass("required")
+            }
+        @endif
+
+        @if ($orden->moneda == "SOLES") 
+            $('#tipo_cambio').attr('disabled',true)
+            $("#tipo_cambio").attr("required", false);
+            $("#campo_tipo_cambio").removeClass("required")
+        @else
+            $('#tipo_cambio').attr('disabled',false)
+            $("#tipo_cambio").attr("required", true);
+            $("#campo_tipo_cambio").addClass("required")
+        @endif
+        
+
+
+        @if ($detalles) 
+            obtenerTabla()
+            sumaTotal()
+        @endif
+
+    @endif
+
+
+
 
 })
 
@@ -924,8 +1160,6 @@ function agregarTabla($detalle) {
 
 }
 
-
-
 function obtenerArticulo($id) {
     var articulo = ""
     @foreach($articulos as $articulo)
@@ -972,7 +1206,6 @@ function buscarArticulo(id) {
     return existe
 }
 
-
 function cargarArticulos() {
 
     var articulos = [];
@@ -993,9 +1226,6 @@ function cargarArticulos() {
 
     $('#articulos_tabla').val(JSON.stringify(articulos));
 }
-
-
-
 
 function registrosArticulos() {
     var table = $('.dataTables-orden-detalle').DataTable();
@@ -1058,5 +1288,29 @@ function conIgv(subtotal) {
     }
 
 }
+
+function obtenerTabla() {
+    var t = $('.dataTables-orden-detalle').DataTable();
+    @if (!empty($orden))
+        @foreach($detalles as $detalle)
+        var presentacion = obtenerPresentacion("{{$detalle->articulo->presentacion}}")
+        t.row.add([
+            "{{$detalle->articulo_id}}",
+            '',
+            "{{$detalle->cantidad}}",
+            presentacion,
+            "{{$detalle->articulo->descripcion}}",
+            "{{$detalle->costo_flete}}",
+            "{{$detalle->precio}}",
+            ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2)
+        ]).draw(false);
+        @endforeach
+    @endif
+}
+
+
+
+
+
 </script>
 @endpush

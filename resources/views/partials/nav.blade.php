@@ -35,10 +35,10 @@
     </li>
 
 
-    <li class="">
+    <li class="@yield('pos-active')">
         <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Pos</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li class=""><a href="#">Caja Chica Pos</a></li>
+            <li class="@yield('caja_chica-active')"><a href="{{route('pos.caja.index')}}">Caja Chica Pos</a></li>
         </ul>
     </li>
 

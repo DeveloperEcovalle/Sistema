@@ -215,6 +215,7 @@ $(document).ready(function() {
                     }
                 },
             },
+            
             {
                 data: null,
                 className: "text-center",
@@ -244,6 +245,7 @@ $(document).ready(function() {
                         "<li><a class='dropdown-item' onclick='enviado(" + data.id +
                         ")' title='Ordenes Enviadas'><b><i class='fa fa-send'></i> Enviados</a></b></li>" +
                         "<li><a class='dropdown-item' href='"+url_pago+"' title='Pagos'><b><i class='fa fa-money'></i> Pagos</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='documento("+data.id+")' title='Documento'><b><i class='fa fa-file'></i> Documento</a></b></li>" +
                         "<li><a class='dropdown-item' onclick='concretada(" + data.id +
                         ")' title='Concretada'><b><i class='fa fa-check'></i> Concretada</a></b></li>"
                     "</ul></div>"
@@ -341,5 +343,75 @@ function enviado(id) {
     }).modal('show');
 
 }
+
+function documento(id) {
+    Swal.fire({
+        title: 'Opción Documento de compra',
+        text: "¿Seguro que desea crear un documento de compra?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Documento
+            var url_concretar = '{{ route("compras.orden.documento", ":id")}}';
+            url_concretar = url_concretar.replace(':id', id);
+            $(location).attr('href', url_concretar);
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+}
+
+
+@if(!empty($id))
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+    Swal.fire({
+        title: 'Documento de Compra duplicado',
+        text: "¿Desea anular el documento y crear uno nuevo?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Nuevo Documento
+            var url_nuevo = '{{ route("compras.orden.nuevodocumento", ":id")}}';
+            url_nuevo = url_nuevo.replace(':id', "{{$id}}");
+            $(location).attr('href', url_nuevo);
+
+                
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+@endif
+
+
 </script>
 @endpush

@@ -9,18 +9,21 @@ class Documento extends Model
     protected $table = 'compra_documentos';
     public $timestamps = true;
     protected $fillable = [
-            'empresa_id',
-            'modo_compra',
-            'tipo_compra',
-            'proveedor_id',
             'fecha_emision',
             'fecha_entrega',
+            'empresa_id',
+            'proveedor_id',
+            'modo_compra',
             'moneda',
             'observacion',
             'igv',
             'igv_check',
-            'estado',
             'tipo_cambio',
+            
+            'tipo_compra',
+            'orden_compra',
+        
+            'estado',
             'enviado',
             'usuario_id',
 

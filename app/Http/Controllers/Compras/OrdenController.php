@@ -20,6 +20,7 @@ use PDF;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrdenCompra;
 use Illuminate\Support\Facades\Auth;
+use App\Compras\Documento\Documento;
 use DB;
 
 
@@ -169,7 +170,7 @@ class OrdenController extends Controller
         return DataTables::of($coleccion)->toJson();
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $empresas = Empresa::where('estado','ACTIVO')->get();
         $proveedores = Proveedor::where('estado','ACTIVO')->get();
@@ -569,6 +570,30 @@ class OrdenController extends Controller
         return $coleccion;
     }
 
+    public function document($id){
+        $documento = Documento::where('orden_compra',$id)->where('estado','!=','ANULADO')->first();
+        if ($documento) {
+            return view('compras.ordenes.index',[
+                'id' => $id
+            ]);
+        }else{
+            //REDIRECCIONAR AL DOCUMENTO DE COMPRA
+            return redirect()->route('compras.documento.create',['orden'=>$id]);
+        }
+        
+    }
+
+    
+    public function newDocument($id){
+        $documento_old = Documento::where('orden_compra',$id)->where('estado','!=','ANULADO')->first();
+        //ANULADO ANTERIO DOCUMENTO
+        $documento = Documento::findOrFail($documento_old->id);
+        $documento->estado = 'ANULADO';
+        $documento->update();
+        //REDIRECCIONAR AL NUEVO DOCUMENTO DE COMPRA
+        return redirect()->route('compras.documento.create',['orden'=>$id]);
+
+    }
 
     
 

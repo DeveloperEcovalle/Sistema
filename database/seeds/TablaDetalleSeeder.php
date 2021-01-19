@@ -505,5 +505,29 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 18;
         $detalle->save();
+
+
+        //TIPO DE PAGO CAJA CHICA
+        $detalle = new Detalle();
+        $detalle->descripcion = "EFECTIVO";
+        $detalle->simbolo = 'EFEC.';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 19;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "DEPOSITO";
+        $detalle->simbolo = 'DEP.';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 19;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TRANSFERENCIA";
+        $detalle->simbolo = 'TRANSF.';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 19;
+        $detalle->save();
+        
     }
 }
