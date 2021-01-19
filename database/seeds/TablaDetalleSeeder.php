@@ -468,26 +468,66 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 16;
         $detalle->save();
 
+        //TIPO DE CLIENTE
+        $detalle = new Detalle();
+        $detalle->descripcion = "CLIENTE SOCIO";
+        $detalle->simbolo = 'CLIENTE SOCIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CLIENTE";
+        $detalle->simbolo = 'CLIENTE';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CLIENTE FINAL";
+        $detalle->simbolo = 'CLIENTE FINAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
+
+
+        //TIPO DE CONDICION DE REPARTO
+        $detalle = new Detalle();
+        $detalle->descripcion = "OFICINA";
+        $detalle->simbolo = 'OFICINA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 18;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "DOMICILIO";
+        $detalle->simbolo = 'DOMICILIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 18;
+        $detalle->save();
+
+
         //TIPO DE PAGO CAJA CHICA
         $detalle = new Detalle();
         $detalle->descripcion = "EFECTIVO";
         $detalle->simbolo = 'EFEC.';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 17;
+        $detalle->tabla_id = 19;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "DEPOSITO";
         $detalle->simbolo = 'DEP.';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 17;
+        $detalle->tabla_id = 19;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "TRANSFERENCIA";
         $detalle->simbolo = 'TRANSF.';
         $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 17;
+        $detalle->tabla_id = 19;
         $detalle->save();
+        
     }
 }

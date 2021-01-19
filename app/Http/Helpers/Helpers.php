@@ -14,6 +14,7 @@ use App\Compras\Documento\Documento;
 
 
 // TABLAS-DETALLES
+
 if (!function_exists('tipos_moneda')) {
     function tipos_moneda()
     {
@@ -109,6 +110,20 @@ if (!function_exists('tipo_compra')) {
     function tipo_compra()
     {
         return General::find(16)->detalles;
+    }
+}
+
+if (!function_exists('tipo_clientes')) {
+    function tipo_clientes()
+    {
+        return General::find(17)->detalles;
+    }
+}
+
+if (!function_exists('condicion_reparto')) {
+    function condicion_reparto()
+    {
+        return General::find(18)->detalles;
     }
 }
 
@@ -210,7 +225,7 @@ if (!function_exists('tipos_documentos_tributarios')) {
 if (!function_exists('tipos_pago_caja')) {
     function tipos_pago_caja()
     {
-        return General::findOrFail(17)->detalles;
+        return General::findOrFail(19)->detalles;
     }
 }
 
@@ -218,10 +233,10 @@ if (!function_exists('tipos_pago_caja')) {
 if (!function_exists('calcularMonto')) {
     function calcularMonto($id)
     {
-        
+
         $detalles = Detalle::where('orden_id',$id)->get();
         $orden = Orden::findOrFail($id);
-        $subtotal = 0; 
+        $subtotal = 0;
         $igv = '';
         $tipo_moneda = '';
         foreach($detalles as $detalle){
@@ -233,14 +248,14 @@ if (!function_exists('calcularMonto')) {
             $total = $subtotal + $igv;
             $decimal_subtotal = number_format($subtotal, 2, '.', '');
             $decimal_total = number_format($total, 2, '.', '');
-            $decimal_igv = number_format($igv, 2, '.', ''); 
+            $decimal_igv = number_format($igv, 2, '.', '');
         }else{
             $calcularIgv = $orden->igv/100;
             $base = $subtotal / (1 + $calcularIgv);
             $nuevo_igv = $subtotal - $base;
             $decimal_subtotal = number_format($base, 2, '.', '');
             $decimal_total = number_format($subtotal, 2, '.', '');
-            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+            $decimal_igv = number_format($nuevo_igv, 2, '.', '');
         }
         return $decimal_total;
     }
