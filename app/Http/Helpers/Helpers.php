@@ -7,8 +7,11 @@ use App\Mantenimiento\Ubigeo\Provincia;
 use App\Parametro;
 use Carbon\Carbon;
 //Orden de compra
+use App\Compras\Documento\Detalle as Detalle_Documento;
 use App\Compras\Detalle;
 use App\Compras\Orden;
+use App\Compras\Documento\Documento;
+
 
 // TABLAS-DETALLES
 if (!function_exists('tipos_moneda')) {
@@ -203,6 +206,14 @@ if (!function_exists('tipos_documentos_tributarios')) {
     }
 }
 
+// Tipos de pago caja chica
+if (!function_exists('tipos_pago_caja')) {
+    function tipos_pago_caja()
+    {
+        return General::findOrFail(17)->detalles;
+    }
+}
+
 // Monto a Pagar Orden de compra
 if (!function_exists('calcularMonto')) {
     function calcularMonto($id)
@@ -248,4 +259,77 @@ if (!function_exists('simbolo_monedas')) {
         }
         return $simbolo;
     }
+}
+
+// Monto a Pagar Documento de compra
+if (!function_exists('calcularMontoDocumento')) {
+    function calcularMontoDocumento($id)
+    {
+        
+        $detalles = Detalle_Documento::where('documento_id',$id)->get();
+        $documento = Documento::findOrFail($id);
+        $subtotal = 0; 
+        $igv = '';
+        $tipo_moneda = '';
+        foreach($detalles as $detalle){
+            $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
+        }
+
+        if (!$documento->igv) {
+            $igv = $subtotal * 0.18;
+            $total = $subtotal + $igv;
+            $decimal_subtotal = number_format($subtotal, 2, '.', '');
+            $decimal_total = number_format($total, 2, '.', '');
+            $decimal_igv = number_format($igv, 2, '.', ''); 
+        }else{
+            $calcularIgv = $documento->igv/100;
+            $base = $subtotal / (1 + $calcularIgv);
+            $nuevo_igv = $subtotal - $base;
+            $decimal_subtotal = number_format($base, 2, '.', '');
+            $decimal_total = number_format($subtotal, 2, '.', '');
+            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+        }
+        return $decimal_total;
+    }
+
+}
+
+
+// Monto a Pagar Documento de compra
+if (!function_exists('calcularMontosAcuentaDocumentos')) {
+    function calcularMontosAcuentaDocumentos($id)
+    {
+        
+        $suma_detalle_pago = DB::table('documento_pago_detalle')
+        ->join('compra_documento_pagos','compra_documento_pagos.id','=','documento_pago_detalle.pago_id')
+        ->join('compra_documento_pago_detalle','compra_documento_pago_detalle.id','=','documento_pago_detalle.detalle_id')
+        ->join('compra_documentos','compra_documentos.id','=','compra_documento_pagos.documento_id')
+        ->select('compra_documento_pagos.*','compra_documentos.*')        
+        ->where('compra_documentos.id','=',$id)
+        ->where('compra_documento_pagos.estado','ACTIVO')
+        ->sum('compra_documento_pago_detalle.monto');
+
+        return $suma_detalle_pago;
+    }
+
+}
+
+// Calcular monto restante caja chica
+if (!function_exists('calcularMontoRestanteCaja')) {
+    function calcularMontoRestanteCaja($id)
+    {
+
+
+        $restante= DB::table('compra_documento_pago_detalle')
+        ->join('documento_pago_detalle','documento_pago_detalle.detalle_id','=','compra_documento_pago_detalle.id')
+        ->join('compra_documento_pagos','compra_documento_pagos.id','=','documento_pago_detalle.pago_id')
+        ->select('compra_documento_pago_detalle.*','compra_documentos.*')        
+        ->where('compra_documento_pagos.estado','!=','ANULADO')
+        ->where('compra_documento_pago_detalle.caja_id',$id)
+        ->sum('compra_documento_pago_detalle.monto');
+
+
+        return $restante;
+    }
+
 }

@@ -106,5 +106,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'TIPOS DE DOCUMENTOS DE COMPRA';
         $tabla->sigla = 'TIPO DOCUMENTO COMPRA';
         $tabla->save();
+
+        //17
+        $tabla = new General();
+        $tabla->descripcion = 'TIPOS DE PAGO (CAJA CHICA)';
+        $tabla->sigla = 'TIPO DE PAGO CAJA CHICA';
+        $tabla->save();
     }
 }

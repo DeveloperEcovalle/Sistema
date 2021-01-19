@@ -33,6 +33,7 @@
                             <thead>
                                 <tr>
                                     <th style="display:none;"></th>
+                                    <th class="text-center">O.C</th>
                                     <th class="text-center">EMISION</th>
                                     <th class="text-center">TIPO</th>
                                     <th class="text-center">EMPRESA</th>
@@ -40,6 +41,7 @@
                                     <th class="text-center">SUBTOTAL</th>
                                     <th class="text-center">IGV (%)</th>
                                     <th class="text-center">TOTAL</th>
+                                    <th class="text-center">ESTADO</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -105,6 +107,18 @@ $(document).ready(function() {
                 visible: false
             },
             {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    if (data.orden_compra) {
+                        return "<input type='checkbox' disabled checked>"
+                    }else{
+                        return "<input type='checkbox' disabled>"
+                    }
+                }
+                
+            },
+            {
                 data: 'fecha_emision',
                 className: "text-center"
             },
@@ -140,6 +154,12 @@ $(document).ready(function() {
                 data: 'total',
                 className: "text-center"
             },
+
+            {
+                data: 'estado',
+                className: "text-center"
+            },
+
             {
                 data: null,
                 className: "text-center",
@@ -161,7 +181,8 @@ $(document).ready(function() {
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
                         ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
-                        "<li><a class='dropdown-item' title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
+                        "<li><a class='dropdown-item' onclick='pagar(" + data.orden_compra+","+data.id+
+                        ")' title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
                         
                     "</ul></div>"
                 }
@@ -210,6 +231,18 @@ function eliminar(id) {
             )
         }
     })
+}
+
+function pagar(orden,id) {
+
+    if (orden) {
+        toastr.error('El tipo de pago de este documento de compra fue realizada (transferencia).', 'Error');
+    }else{
+        var url = '{{ route("compras.documentos.pago.index", ":id")}}';
+        url = url.replace(':id', id);
+        $(location).attr('href', url);
+    }
+
 }
 
 

@@ -23,7 +23,7 @@ class CreateCompraDocumentosTable extends Migration
             $table->unsignedInteger('proveedor_id');
             $table->foreign('proveedor_id')->references('id')->on('proveedores')->onDelete('cascade');
             
-            $table->char('orden_compra',1)->nullable();
+            $table->BigInteger('orden_compra')->nullable();
             
             $table->string('modo_compra');
             $table->string('tipo_compra');
@@ -35,7 +35,7 @@ class CreateCompraDocumentosTable extends Migration
             $table->mediumText('observacion')->nullable();
             $table->BigInteger('usuario_id');
 
-            $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
+            $table->enum('estado',['ACTIVO','PAGADA','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
     }

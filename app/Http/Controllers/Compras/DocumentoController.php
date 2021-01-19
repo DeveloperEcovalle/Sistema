@@ -16,6 +16,9 @@ use App\Compras\Documento\Documento;
 use App\Compras\Documento\Detalle;
 use PDF;
 
+use App\Compras\Detalle as Detalle_Orden;
+
+
 class DocumentoController extends Controller
 {
     public function index()
@@ -65,9 +68,10 @@ class DocumentoController extends Controller
                 'empresa' => $documento->empresa->razon_social,
                 'fecha_emision' =>  Carbon::parse($documento->fecha_emision)->format( 'd/m/Y'),
                 'igv' =>  $documento->igv,
+                'orden_compra' =>  $documento->orden_compra,
                 'subtotal' => $tipo_moneda.' '.number_format($subtotal, 2, '.', ''),
                 // 'fecha_entrega' =>  Carbon::parse($documento->fecha_entrega)->format( 'd/m/Y'), 
-                // 'estado' => $orden->estado,
+                'estado' => $documento->estado,
                 'total' => $tipo_moneda.' '.number_format($decimal_total, 2, '.', ''),
             ]);
         }
@@ -75,8 +79,15 @@ class DocumentoController extends Controller
         return DataTables::of($coleccion)->toJson();
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        
+        $orden = '';
+        $detalles = '';
+        if($request->get('orden')){
+            $orden = Orden::findOrFail( $request->get('orden') );
+            $detalles = Detalle_Orden::where('orden_id', $request->get('orden'))->get(); 
+        }
         $empresas = Empresa::where('estado','ACTIVO')->get();
         $proveedores = Proveedor::where('estado','ACTIVO')->get();
         $articulos = Articulo::where('estado','ACTIVO')->get();
@@ -84,14 +95,34 @@ class DocumentoController extends Controller
         $fecha_hoy = Carbon::now()->toDateString();
         $monedas =  tipos_moneda();
         
-        return view('compras.documentos.create',[
-            'empresas' => $empresas,
-            'proveedores' => $proveedores,
-            'articulos' => $articulos, 
-            'modos' => $modos,
-            'monedas' => $monedas,
-            'fecha_hoy' => $fecha_hoy,
-        ]);
+        if (empty($orden)) {
+            
+            return view('compras.documentos.create',[
+                'empresas' => $empresas,
+                'proveedores' => $proveedores,
+                'articulos' => $articulos, 
+                'modos' => $modos,
+                'monedas' => $monedas,
+                'fecha_hoy' => $fecha_hoy,
+            ]);
+
+        }else{
+
+            return view('compras.documentos.create',[
+                'orden' => $orden,
+                'empresas' => $empresas,
+                'proveedores' => $proveedores,
+                'articulos' => $articulos, 
+                'modos' => $modos,
+                'monedas' => $monedas,
+                'fecha_hoy' => $fecha_hoy,
+                'detalles' => $detalles
+            ]);
+        }
+        
+
+
+
     }
 
     public function store(Request $request){
@@ -144,6 +175,7 @@ class DocumentoController extends Controller
         };
 
         $documento->tipo_compra = $request->get('tipo_compra');
+        $documento->orden_compra = $request->get('orden_id');
 
         $documento->save();
 
