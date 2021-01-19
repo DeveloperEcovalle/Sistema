@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TablaSeeder::class);
         $this->call(TablaDetalleSeeder::class);
         $this->call(ParametroSeeder::class);
+        $this->call(DatosPruebaSeeder::class);
 
 
     }
