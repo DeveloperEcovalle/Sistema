@@ -33,7 +33,7 @@ class Cliente extends Model
         'nombre2',
         'fecha_nacimiento2',
         'correo_electronico2',
-        'celula2',
+        'celular2',
         'nombre3',
         'fecha_nacimiento3',
         'correo_electronico3',

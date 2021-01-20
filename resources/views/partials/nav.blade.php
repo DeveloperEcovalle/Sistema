@@ -1,13 +1,13 @@
     <li class="nav-header">
         <div class="dropdown profile-element">
-            
+
             @if(auth()->user()->ruta_imagen)
                 <img alt="image"  alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{Storage::url(auth()->user()->ruta_imagen)}}"/>
             @else
                 <img alt="{{auth()->user()->usuario}}" alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{ asset('storage/usuarios/default.jpg') }}"/>
 
             @endif
-                            
+
 
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <span class="block m-t-xs font-bold">{{auth()->user()->usuario}}</span>
@@ -73,6 +73,7 @@
             <li><a href="lockscreen.html">Sub Familia</a></li>
             <li><a href="invoice.html">Unidad de Medida</a></li>
             <li class="@yield('productos-active')"><a href="{{ route('produccion.producto.index') }}">Producto Terminado</a></li>
+            <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composicion de Productos Terminados</a></li>
             <li><a href="login_two_columns.html">Linea de Producción</a></li>
             <li><a href="forgot_password.html">Detalle de Linea</a></li>
             <li><a href="register.html">Ordenes</a></li>

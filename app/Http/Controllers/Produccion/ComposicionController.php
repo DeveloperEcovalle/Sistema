@@ -16,11 +16,11 @@ use Illuminate\Validation\Rule;
 use Session;
 use Illuminate\Support\Facades\Validator;
 
-class ProductoController extends Controller
+class ComposicionController extends Controller
 {
     public function index()
     {
-        return view('produccion.productos.index');
+        return view('produccion.composicion.index');
     }
 
     public function getTable()
@@ -44,7 +44,7 @@ class ProductoController extends Controller
         $familias = Familia::where('estado', 'ACTIVO')->get();
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
 
-        return view('produccion.productos.create', compact('familias', 'articulos'));
+        return view('produccion.composicion.create', compact('familias', 'articulos'));
     }
 
     public function store(Request $request)
@@ -64,7 +64,7 @@ class ProductoController extends Controller
             'precio_venta_minimo' => 'required|numeric',
             'precio_venta_maximo' => 'required|numeric',
             'igv' => 'required|boolean',
-            //'detalles' => 'required|string'
+            'detalles' => 'required|string'
         ];
 
         $message = [
@@ -106,20 +106,20 @@ class ProductoController extends Controller
             $producto->igv = $request->get('igv');
             $producto->save();
 
-            // foreach (json_decode($request->get('detalles')) as $detalle) {
-            //     $producto_detalle = new ProductoDetalle();
-            //     $producto_detalle->producto_id = $producto->id;
-            //     $producto_detalle->articulo_id = $detalle->articulo_id;
-            //     $producto_detalle->cantidad = $detalle->cantidad;
-            //     $producto_detalle->peso = $detalle->peso;
-            //     $producto_detalle->observacion = $detalle->observacion;
-            //     $producto_detalle->save();
-            // }
+            foreach (json_decode($request->get('detalles')) as $detalle) {
+                $producto_detalle = new ProductoDetalle();
+                $producto_detalle->producto_id = $producto->id;
+                $producto_detalle->articulo_id = $detalle->articulo_id;
+                $producto_detalle->cantidad = $detalle->cantidad;
+                $producto_detalle->peso = $detalle->peso;
+                $producto_detalle->observacion = $detalle->observacion;
+                $producto_detalle->save();
+            }
 
         });
 
         Session::flash('success','Producto creado.');
-        return redirect()->route('produccion.producto.index')->with('guardar', 'success');
+        return redirect()->route('produccion.composicion.index')->with('guardar', 'success');
     }
 
     public function edit($id)
@@ -143,7 +143,7 @@ class ProductoController extends Controller
             array_push($detalles, $data);
         }
 
-        return view('produccion.productos.edit', [
+        return view('produccion.composicion.edit', [
             'producto' => $producto,
             'detalles' => json_encode($detalles),
             'familias' => $familias,
@@ -234,13 +234,13 @@ class ProductoController extends Controller
         }
 
         Session::flash('success','Producto modificado.');
-        return redirect()->route('produccion.producto.index')->with('guardar', 'success');
+        return redirect()->route('produccion.composicion.index')->with('guardar', 'success');
     }
 
     public function show($id)
     {
         $producto = Producto::findOrFail($id);
-        return view('produccion.productos.show', [
+        return view('produccion.composicion.show', [
             'producto' => $producto
         ]);
     }
@@ -254,7 +254,7 @@ class ProductoController extends Controller
         $producto->detalles()->update(['estado'=> 'ANULADO']);
 
         Session::flash('success','Producto eliminado.');
-        return redirect()->route('produccion.producto.index')->with('eliminar', 'success');
+        return redirect()->route('produccion.composicion.index')->with('eliminar', 'success');
     }
 
     public function destroyDetalle(Request $request)

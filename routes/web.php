@@ -263,6 +263,20 @@ Route::prefix('produccion/productos')->group(function() {
     Route::post('/getCodigo', 'Produccion\ProductoController@getCodigo')->name('produccion.producto.getCodigo');
 });
 
+// Composicion
+Route::prefix('produccion/composicion')->group(function() {
+    Route::get('/', 'Produccion\ComposicionController@index')->name('produccion.composicion.index');
+    Route::get('/getTable', 'Produccion\ComposicionController@getTable')->name('produccion.composicion.getTable');
+    Route::get('/registrar', 'Produccion\ComposicionController@create')->name('produccion.composicion.create');
+    Route::post('/registrar', 'Produccion\ComposicionController@store')->name('produccion.composicion.store');
+    Route::get('/actualizar/{id}', 'Produccion\ComposicionController@edit')->name('produccion.composicion.edit');
+    Route::put('/actualizar/{id}', 'Produccion\ComposicionController@update')->name('produccion.composicion.update');
+    Route::get('/datos/{id}', 'Produccion\ComposicionController@show')->name('produccion.composicion.show');
+    Route::get('/destroy/{id}', 'Produccion\ComposicionController@destroy')->name('produccion.composicion.destroy');
+    Route::post('/destroyDetalle', 'Produccion\ComposicionController@destroyDetalle')->name('produccion.composicion.destroyDetalle');
+    Route::post('/getCodigo', 'Produccion\ComposicionController@getCodigo')->name('produccion.composicion.getCodigo');
+});
+
 // Cotizaciones
 Route::prefix('ventas/cotizaciones')->group(function() {
     Route::get('/', 'Ventas\CotizacionController@index')->name('ventas.cotizacion.index');
