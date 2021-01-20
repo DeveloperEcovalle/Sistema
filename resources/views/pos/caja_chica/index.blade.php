@@ -38,13 +38,14 @@
                     <thead>
                         <tr>
                                     
-                            <th colspan="3" class="text-center">CAJA CHICA</th>
+                            <th colspan="4" class="text-center">CAJA CHICA</th>
                             <th colspan="2" class="text-center">FECHA</th>
                             <th colspan="2" class="text-center">SALDO</th>
-                            <th colspan="2" class="text-center"></th>
+                            <th colspan="3" class="text-center"></th>
 
                         </tr>
                         <tr>
+                            <th class="text-center"></th>
                             <th class="text-center"></th>
                             <th class="text-center">REFERENCIA</th>
                             <th class="text-center">VENDEDOR</th>
@@ -52,7 +53,7 @@
                             <th class="text-center">CIERRE</th>
                             <th class="text-center">INICIAL</th>
                             <th class="text-center">RESTANTE</th>
-                           
+                            <th class="text-center">MONEDA</th>
                             <th class="text-center">ESTADO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
@@ -128,13 +129,14 @@
             "columns": [
                 //Caja chica
                 {data: 'id', className:"text-center", "visible":false},
+                {data: 'empleado_id', className:"text-center", "visible":false},
                 {data: 'num_referencia' , className:"text-center"},
                 {data: 'nombre_completo' , className:"text-left"  },
                 {data: 'creado', className:"text-center"},
                 {data: 'cierre', className:"text-center"},
                 {data: 'saldo_inicial', className:"text-center"},
                 {data: 'restante', className:"text-center"},
-              
+                {data: 'moneda', className:"text-center"},
                 {data: 'estado', className:"text-center"},
                 // {data: 'creado', className:"text-center", name: 'almacenes.created_at'},
                 // {data: 'actualizado', className:"text-center", name: 'almacenes.updated_at'},
@@ -232,10 +234,6 @@
         limpiarError() 
     });
 
-    //Old Modal Crear
-    @if ($errors->has('ubicacion_guardar')  ||  $errors->has('descripcion_guardar') )
-        $('#modal_crear_almacen').modal({ show: true });
-    @endif
 
     function guardarError() {
         $('#num_referencia').removeClass( "is-invalid" )

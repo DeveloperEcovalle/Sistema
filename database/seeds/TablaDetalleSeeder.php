@@ -522,12 +522,12 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 19;
         $detalle->save();
 
-        $detalle = new Detalle();
-        $detalle->descripcion = "TRANSFERENCIA";
-        $detalle->simbolo = 'TRANSF.';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 19;
-        $detalle->save();
+        // $detalle = new Detalle();
+        // $detalle->descripcion = "TRANSFERENCIA";
+        // $detalle->simbolo = 'TRANSF.';
+        // $detalle->estado = 'ACTIVO';
+        // $detalle->tabla_id = 19;
+        // $detalle->save();
         
     }
 }

@@ -513,24 +513,11 @@
                                         </div>
 
 
-
-
-
-
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -543,10 +530,17 @@
                             </div>
 
                             <div class="col-md-6 text-right">
+                                @if (!empty($orden))
                                 <a href="{{route('compras.orden.index')}}" id="btn_cancelar"
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
+                                @else
+                                <a href="{{route('compras.documento.index')}}" id="btn_cancelar"
+                                    class="btn btn-w-m btn-default">
+                                    <i class="fa fa-arrow-left"></i> Regresar
+                                </a>
+                                @endif
                                 <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
                                     <i class="fa fa-save"></i> Grabar
                                 </button>

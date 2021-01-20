@@ -149,72 +149,7 @@
 
                                             <hr>
 
-
-                                            <div class="row">
-                                               
-
-
-                                                <div class="col-md-8">
-                                                    <label class="required">Caja: </label>
-                                                    <select
-                                                        class="select2_form form-control"style="text-transform: uppercase; width:100%" name="caja_id" id="caja_id" onchange="cargarCaja(this)">
-                                                        <option></option>
-                                                        @foreach ($cajas as $caja)
-                                                        <option value="{{$caja->id}}" >{{$caja->id.' - '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno.' '.$caja->empleado->persona->nombres}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="invalid-feedback"><b><span id="error-caja_id"></span></b></div>
-                                                    
-                                                </div>
-
-                                                <div class="col-md-4">
-
-                                                    <label class="required">Monto: </label>
-                                                    <input type="text" class="form-control" name="monto_caja" id="monto_caja">
-                                                    <div class="invalid-feedback"><b><span id="error-monto_caja"></span></b></div>
-                                                    <input type="hidden" id="max_input" >
-
-                                                </div>
-     
-                                            </div>
-                                            <input type="hidden" id="pagos_tabla" name="pagos_tabla[]">
-                                            <hr>
-                                            <div class="m-t">
-                                                <a class="btn btn-block btn-warning enviar_caja" style="color:white"> <i class="fa fa-plus"></i> AGREGAR</a>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="table-responsive">
-                                                <table
-                                                    class="table dataTables-caja table-striped table-bordered table-hover"
-                                                    style="text-transform:uppercase">
-                                                    <thead>
-
-                                                        <tr>
-                                                            <th></th>
-                                                            <th class="text-center">ACCIONES</th>
-                                                            <th class="text-center">EMPLEADO</th>
-                                                            <th class="text-center">MONTO</th>
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th colspan="3" class="text-center">TOTAL:</th>
-                                                            <th class="text-center"><span id="total">0.0</span></th>
-
-                                                        </tr>
-                                                    </tfoot>
-   
-                                                </table>
-                                            </div>
-
-                                            <hr>
-
+                                            <p>Registro del Pago:</p>
                                             <div class="form-group row">
                                                 <div class="col-md-6">
                                                 
@@ -238,17 +173,77 @@
                                                     value="{{old('observacion')}}">{{old('observacion')}}</textarea>
                                                 </div>
                                             </div>
+
+
+
+
+                                            <hr>
+                                            <p>Pagos a ingresar a tabla:</p>
+
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    <label class="required">Caja: </label>
+                                                    <select
+                                                        class="select2_form form-control"style="text-transform: uppercase; width:100%" name="caja_id" id="caja_id" onchange="cargarCaja(this)">
+                                                        <option></option>
+                                                        @foreach ($cajas as $caja)
+                                                        <option value="{{$caja->id}}" >{{$caja->id.' - '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno.' '.$caja->empleado->persona->nombres}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="invalid-feedback"><b><span id="error-caja_id"></span></b></div>
+                                                    
+                                                </div>
+
+                                                <div class="col-md-3">
+
+                                                    <label class="required">Monto: </label>
+                                                    <input type="text" class="form-control" name="monto_caja" id="monto_caja">
+                                                    <div class="invalid-feedback"><b><span id="error-monto_caja"></span></b></div>
+                                                    <input type="hidden" id="max_input" >
+
+                                                </div>
+                                                <div class="col-md-3">
+                                                        <label class="m-t"><span></span> </label>
+                                                        <a class="btn btn-block btn-warning enviar_caja" style="color:white"> <i class="fa fa-plus"></i> AGREGAR</a>
+                                                
+                                                </div>
+     
+                                            </div>
+                                            <input type="hidden" id="pagos_tabla" name="pagos_tabla[]">
                                             
+                                            <hr>
 
 
+                                            <div class="table-responsive">
+                                                <table
+                                                    class="table dataTables-caja table-striped table-bordered table-hover"
+                                                    style="text-transform:uppercase">
+                                                    <thead>
 
+                                                        <tr>
+                                                            <th></th>
+                                                            <th class="text-center">ACCIONES</th>
+                                                            <th class="text-center">CAJA</th>
+                                                            <th class="text-center">MONTO</th>
 
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
 
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="3" class="text-center">TOTAL:</th>
+                                                            <th class="text-center"><span id="total">0.0</span></th>
 
-                                            
+                                                        </tr>
+                                                    </tfoot>
+   
+                                                </table>
+                                            </div>
 
-
-                                        </div>
+                                           </div>
 
                                     </div>
                                 </div>
@@ -268,7 +263,7 @@
                                 </div>
 
                                 <div class="col-md-6 text-right">
-                                    <a href="{{route('mantenimiento.empresas.index')}}" id="btn_cancelar"
+                                    <a href="{{route('compras.documentos.pago.index',$documento->id)}}" id="btn_cancelar"
                                         class="btn btn-w-m btn-default">
                                         <i class="fa fa-arrow-left"></i> Regresar
                                     </a>

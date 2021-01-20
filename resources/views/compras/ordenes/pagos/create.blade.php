@@ -712,7 +712,7 @@
                                                     </div>
 
                                                     <div class="col-md-6 text-right">
-                                                        <a href="{{route('mantenimiento.empresas.index')}}" id="btn_cancelar"
+                                                        <a href="{{route('compras.pago.index', $orden->id)}}" id="btn_cancelar"
                                                             class="btn btn-w-m btn-default">
                                                             <i class="fa fa-arrow-left"></i> Regresar
                                                         </a>

@@ -13,6 +13,7 @@
 
     <link href="{{asset('Inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('Inspinia/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('css/style.css')}}" rel="stylesheet">
     
     <!-- Toastr style -->
     <link href="{{asset('Inspinia/css/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
@@ -31,43 +32,65 @@
 
 <body class="gray-bg">
 
-    <div class="middle-box text-center loginscreen animated fadeInDown">
-        <div class="login">
-            <div class="text-center">
+    <div class="container-fluid">
 
-                 <img src="{{asset('img/logo_2.png')}}" class="img-responsive m-b">
-
+        <div class="row" style="height:100vh;">
+        
+            <div class="col-lg-6 col-md-6 d-none d-md-block image-container">
             </div>
-            <h3>Sistema de Producción</h3>
-            <p>
-                Ingresa tus datos para Iniciar Sesión.
-            </p>
-            <form class="m-t" role="form" method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="form-group">
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Correo Electrónico" onkeyup="return mayus(this)" >
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña" onkeyup="return mayus(this)">
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">Iniciar Sesión</button>
 
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}" ><small>¿Olvidaste tu Contraseña?</small></a>
-                @endif
+                    
+            <div class="col-lg-6 col-md-6 form-container">
+            
+                    
+                <div class="login">
+                    <div class="text-center">
 
-            </form>
+                        <img src="{{asset('img/logo_2.png')}}" class="img-responsive m-b">
+
+                    </div>
+                    <h3>Sistema de Producción</h3>
+                    <p>
+                        Ingresa tus datos para Iniciar Sesión.
+                    </p>
+                    <form class="m-t container form-login" role="form" method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="form-group">
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Correo Electrónico" onkeyup="return mayus(this)" >
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña" onkeyup="return mayus(this)">
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary block full-width m-b">Iniciar Sesión</button>
+
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" ><small>¿Olvidaste tu Contraseña?</small></a>
+                        @endif
+
+                    </form>
+                </div>
+
+            
+            </div>
+        
+        
+        
         </div>
+
+
+
+
+
     </div>
 
     <!-- Mainly scripts -->

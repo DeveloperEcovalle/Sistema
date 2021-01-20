@@ -13,6 +13,7 @@ use Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use DB;
+use Illuminate\Validation\Rule;
 
 class ArticuloController extends Controller
 {
@@ -64,7 +65,12 @@ class ArticuloController extends Controller
 
         $rules = [
             'descripcion' => 'required',
-            'codigo_fabrica' => 'required',
+            'codigo_fabrica' => ['required',Rule::unique('articulos','codigo_fabrica')->where(function ($query) {
+                $query->whereIn('estado',["ACTIVO"]);
+            })],
+            'codigo_barra' => ['nullable',Rule::unique('articulos','codigo_barra')->where(function ($query) {
+                $query->whereIn('estado',["ACTIVO"]);
+            })],
             'categoria' => 'required',
             'presentacion' => 'required',
             'almacen' => 'required',
@@ -75,7 +81,9 @@ class ArticuloController extends Controller
         ];
         
         $message = [
-            'codigo_fabrica.required' => 'El campo Codigo es obligatorio.',
+            'codigo_fabrica.required' => 'El campo Código de Fábrica es obligatorio.',
+            'codigo_fabrica.unique' => 'El campo Código de Fábrica debe de ser único.',
+            'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
             'descripcion.required' => 'El campo Descripción es obligatorio.',
             'categoria.required'=> 'El campo Categoria es obligatorio.',
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
@@ -90,6 +98,7 @@ class ArticuloController extends Controller
         ];
 
         Validator::make($data, $rules, $message)->validate();
+        
 
         $articulo = new Articulo();
         $articulo->descripcion = $request->get('descripcion');
@@ -112,7 +121,12 @@ class ArticuloController extends Controller
 
         $rules = [
             'descripcion' => 'required',
-            'codigo_fabrica' => 'required',
+            'codigo_fabrica' => ['required',Rule::unique('articulos','codigo_fabrica')->where(function ($query) {
+                $query->whereIn('estado',["ACTIVO"]);
+            })->ignore($id)],
+            'codigo_barra' => ['nullable',Rule::unique('articulos','codigo_barra')->where(function ($query) {
+                $query->whereIn('estado',["ACTIVO"]);
+            })->ignore($id)],
             'categoria' => 'required',
             'presentacion' => 'required',
             'almacen' => 'required',
@@ -124,7 +138,11 @@ class ArticuloController extends Controller
         
         $message = [
             'descripcion.required' => 'El campo Descripción es obligatorio.',
-            'codigo_fabrica.required'=> 'El campo Codigo es obligatorio.',
+            
+            'codigo_fabrica.required' => 'El campo Código de Fábrica es obligatorio.',
+            'codigo_fabrica.unique' => 'El campo Código de Fábrica debe de ser único.',
+            'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
+
             'categoria.required'=> 'El campo Categoria es obligatorio.',
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
             'almacen.required'=>'El campo Almacen es obligatorio.',

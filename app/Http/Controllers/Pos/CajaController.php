@@ -22,7 +22,7 @@ class CajaController extends Controller
         $cajas = DB::table('pos_caja_chica')
         ->join('empleados','pos_caja_chica.empleado_id','=','empleados.id')
         ->join('personas','empleados.persona_id','=','personas.id')
-        ->select('pos_caja_chica.*','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_materno,\' \',personas.apellido_paterno,\' \',personas.nombres) AS nombre_completo'),DB::raw('DATE_FORMAT(pos_caja_chica.created_at, "%d/%m/%Y %h:%i:%s ") as creado'), DB::raw('DATE_FORMAT(cierre, "%d/%m/%Y %h:%i:%s") as cierre'))
+        ->select('pos_caja_chica.*','empleados.id as empleado_id','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_materno,\' \',personas.apellido_paterno,\' \',personas.nombres) AS nombre_completo'),DB::raw('DATE_FORMAT(pos_caja_chica.created_at, "%d/%m/%Y %h:%i:%s ") as creado'), DB::raw('DATE_FORMAT(cierre, "%d/%m/%Y %h:%i:%s") as cierre'))
         ->where('pos_caja_chica.estado','!=',"ANULADO")
         ->get();
 
@@ -41,12 +41,14 @@ class CajaController extends Controller
                 $quedando = $caja->saldo_inicial - $restante;
                 $coleccion->push([
                     'id' => $caja->id,
+                    'empleado_id' => $caja->empleado_id,
                     'num_referencia' => $caja->num_referencia,
                     'nombre_completo' => $caja->nombre_completo,
                     'creado' => $caja->creado,
                     'cierre' => $caja->cierre,
-                    'restante' => $tipo_moneda.' '.number_format($quedando,2,'.',''),
-                    'saldo_inicial' => $tipo_moneda.' '.$caja->saldo_inicial,
+                    'restante' => number_format($quedando,2,'.',''),
+                    'saldo_inicial' => $caja->saldo_inicial,
+                    'moneda' => $tipo_moneda.' '.$caja->moneda,
                     'estado' => $caja->estado,
                     ]);
         }
@@ -95,8 +97,6 @@ class CajaController extends Controller
             'caja_id' => 'required',
             'empleado_id_editar' => 'required',
             'saldo_inicial_editar' => 'required',
-            'moneda' => 'required',
-            
         ];
         
         $message = [
@@ -110,8 +110,8 @@ class CajaController extends Controller
         $caja->empleado_id = $request->get('empleado_id_editar');
         $caja->saldo_inicial = $request->get('saldo_inicial_editar');
         $caja->num_referencia = $request->get('num_referencia_editar');
-        $caja->moneda = $request->get('moneda');
         $caja->update();
+
 
         Session::flash('success','Caja chica modificada.');
         return redirect()->route('pos.caja.index')->with('modificar', 'success');

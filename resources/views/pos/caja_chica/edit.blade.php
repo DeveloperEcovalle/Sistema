@@ -19,7 +19,7 @@
                    
                    <div class="form-group">
                         <label class="required">Empleado:</label> 
-                        <select class="form-control {{ $errors->has('empleado_id_editar') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id_editar')}}" name="empleado_id_editar" id="empleado_id_editar" required>
+                        <select class="form-control  {{ $errors->has('empleado_id_editar') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id_editar')}}" name="empleado_id_editar" id="empleado_id_editar"  required>
                             <option></option>
                         </select>
 
@@ -33,7 +33,7 @@
                     <div class="form-group row">
 
                         <div class="col-md-6">
-                            <label class="required">Saldo Inicial:</label>
+                            <label class="required">Saldo Inicial :</label>
                             <input type="text" class="form-control {{ $errors->has('saldo_inicial_editar') ? ' is-invalid' : '' }}" id="saldo_inicial_editar" name="saldo_inicial_editar" value="{{old('saldo_inicial_editar')}}" onkeyup="return mayus(this)" required>
                             
                             @if ($errors->has('saldo_inicial_editar'))
