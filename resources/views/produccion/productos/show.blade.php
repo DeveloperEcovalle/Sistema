@@ -89,37 +89,6 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-lg-12 col-xs-12">
-                            <div class="table-responsive">
-                                <table class="table invoice-table table table-bordered"  onkeyup="return mayus(this)">
-                                    <thead>
-                                    <tr>
-                                        <th class=>ARTÍCULO</th>
-                                        <th class="text-center">CANTIDAD</th>
-                                        <th class="text-center">PESO</th>
-                                        <th class="text-center">OBSERVACIÓN</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($producto->detalles as $detalle)
-                                        <tr>
-                                            <td>
-                                                <div><strong>{{ $detalle->articulo->getDescripcionCompleta() }}</strong></div>
-                                            </td>
-                                            <td class="text-center">{{ $detalle->cantidad }}</td>
-                                            <td class="text-center">{{ $detalle->peso }} ({{ $detalle->articulo->presentacion }})</td>
-                                            <td class="text-left">{{ ($detalle->observacion) ? $detalle->observacion : '-' }}</td>
-
-                                        </tr>
-                                    @endforeach
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
