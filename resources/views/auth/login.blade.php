@@ -30,69 +30,88 @@
 
 </head>
 
+
 <body class="gray-bg">
-
-    <div class="container-fluid">
-
-        <div class="row" style="height:100vh;">
-        
-            <div class="col-lg-6 col-md-6 d-none d-md-block image-container">
+    <div class="loader-spinner">
+        <div class="centrado" id="onload">
+            <div class="loadingio-spinner-blocks-zcepr5tohl">
+                <div class="ldio-6fqlsp2qlpd">
+                    <div style='left:38px;top:38px;animation-delay:0s'></div>
+                    <div style='left:80px;top:38px;animation-delay:0.125s'></div>
+                    <div style='left:122px;top:38px;animation-delay:0.25s'></div>
+                    <div style='left:38px;top:80px;animation-delay:0.875s'></div>
+                    <div style='left:122px;top:80px;animation-delay:0.375s'></div>
+                    <div style='left:38px;top:122px;animation-delay:0.75s'></div>
+                    <div style='left:80px;top:122px;animation-delay:0.625s'></div>
+                    <div style='left:122px;top:122px;animation-delay:0.5s'></div>
+                </div>
             </div>
 
-                    
-            <div class="col-lg-6 col-md-6 form-container">
+        </div>
+    </div>
+    <div id="content-system" style="display:none;">
+        <div class="container-fluid">
+
+            <div class="row" style="height:100vh;">
             
-                    
-                <div class="login">
-                    <div class="text-center">
-
-                        <img src="{{asset('img/logo_2.png')}}" class="img-responsive m-b">
-
-                    </div>
-                    <h3>Sistema de Producción</h3>
-                    <p>
-                        Ingresa tus datos para Iniciar Sesión.
-                    </p>
-                    <form class="m-t container form-login" role="form" method="POST" action="{{ route('login') }}">
-                        @csrf
-                        <div class="form-group">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Correo Electrónico" onkeyup="return mayus(this)" >
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña" onkeyup="return mayus(this)">
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <button type="submit" class="btn btn-primary block full-width m-b">Iniciar Sesión</button>
-
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" ><small>¿Olvidaste tu Contraseña?</small></a>
-                        @endif
-
-                    </form>
+                <div class="col-lg-6 col-md-6 d-none d-md-block image-container">
                 </div>
 
+                        
+                <div class="col-lg-6 col-md-6 form-container">
+                
+                        
+                    <div class="login">
+                        <div class="text-center">
+
+                            <img src="{{asset('img/logo_2.png')}}" class="img-responsive m-b">
+
+                        </div>
+                        <h3>Sistema de Producción</h3>
+                        <p>
+                            Ingresa tus datos para Iniciar Sesión.
+                        </p>
+                        <form class="m-t container form-login" role="form" method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="form-group">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Correo Electrónico" onkeyup="return mayus(this)" >
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña" onkeyup="return mayus(this)">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <button type="submit" class="btn btn-primary block full-width m-b">Iniciar Sesión</button>
+
+                            @if (Route::has('password.request'))
+                                <a href="{{ route('password.request') }}" ><small>¿Olvidaste tu Contraseña?</small></a>
+                            @endif
+
+                        </form>
+                    </div>
+
+                
+                </div>
+            
+            
             
             </div>
-        
-        
-        
+    
+
+
+
+
+
         </div>
-
-
-
-
-
     </div>
-
     <!-- Mainly scripts -->
     <script src="{{asset('Inspinia/js/jquery-3.1.1.min.js')}}"></script>
     <script src="{{asset('Inspinia/js/popper.min.js')}}"></script>
@@ -104,6 +123,13 @@
             // toastr.error("{{ Session::get('usuario_anulado') }}")
             dd("sasas");
         @endif
+
+        window.addEventListener("load",function(){
+            $('.loader-spinner').hide();
+            $("#content-system").css("display", "");
+        })
+        
+
     </script>
     
     <!-- Propio scripts -->
