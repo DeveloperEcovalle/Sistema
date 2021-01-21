@@ -130,6 +130,8 @@ Route::prefix('compras/documentos')->group(function(){
     Route::get('show/{id}','Compras\DocumentoController@show')->name('compras.documento.show');
     Route::get('reporte/{id}','Compras\DocumentoController@report')->name('compras.documento.reporte');
 
+    Route::get('tipoPago/{id}','Compras\DocumentoController@TypePay')->name('compras.documento.tipo_pago.existente');
+
     //Pagos
     Route::get('pagos/index/{id}', 'Compras\Documentos\PagoController@index')->name('compras.documentos.pago.index');
     Route::get('getPay/{id}','Compras\Documentos\PagoController@getPayDocument')->name('getPay.documentos');
@@ -137,8 +139,15 @@ Route::prefix('compras/documentos')->group(function(){
     Route::post('pagos/store/', 'Compras\Documentos\PagoController@store')->name('compras.documentos.pago.store');
     Route::get('pagos/destroy/{id}', 'Compras\Documentos\PagoController@destroy')->name('compras.documentos.pago.destroy');
     Route::get('pagos/show/{id}', 'Compras\Documentos\PagoController@show')->name('compras.documentos.pago.show');
-
     Route::get('getBox/document/{id}', 'Compras\Documentos\PagoController@getBox')->name('compras.documentos.pago.getBox');
+
+    //Pago Transferencia
+    Route::get('transferencia/pagos/index/{id}', 'Compras\Documentos\TransferenciaController@index')->name('compras.documentos.transferencia.pago.index');
+    Route::get('transferencia/getPay/{id}','Compras\Documentos\TransferenciaController@getPay')->name('compras.documentos.transferencia.getPay');
+    Route::get('transferencia/pagos/create/{id}', 'Compras\Documentos\TransferenciaController@create')->name('compras.documentos.transferencia.pago.create');
+    Route::post('transferencia/pagos/store/', 'Compras\Documentos\TransferenciaController@store')->name('compras.documentos.transferencia.pago.store');
+    Route::get('transferencia/pagos/destroy/', 'Compras\Documentos\TransferenciaController@destroy')->name('compras.documentos.transferencia.pago.destroy');
+    Route::get('transferencia/pagos/show/', 'Compras\Documentos\TransferenciaController@show')->name('compras.documentos.transferencia.pago.show');
 
 
 
@@ -242,11 +251,15 @@ Route::prefix('produccion/familias')->group(function() {
 //SubFamilias
 Route::prefix('produccion/subfamilias')->group(function() {
     Route::get('index', 'Produccion\SubFamiliaController@index')->name('produccion.subfamilia.index');
-    Route::get('getsubfamilia','Produccion\SubFamiliaController@getfamilia')->name('getsubfamilia');
+    Route::get('getsubfamilia','Produccion\SubFamiliaController@getSub')->name('getSub');
     Route::get('destroy/{id}', 'Produccion\SubFamiliaController@destroy')->name('produccion.subfamilia.destroy');
+
     Route::post('store', 'Produccion\SubFamiliaController@store')->name('produccion.subfamilia.store');
+    
     Route::put('update', 'Produccion\SubFamiliaController@update')->name('produccion.subfamilia.update');
     Route::post('getByFamilia', 'Produccion\SubFamiliaController@getByFamilia')->name('produccion.subfamilia.getByFamilia');
+
+    Route::get('subfamilia/familia', 'Produccion\SubFamiliaController@getFamilia')->name('subfamilia.familia');
 });
 
 // Productos

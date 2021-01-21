@@ -32,15 +32,23 @@
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
+                                    
+                                    <th colspan="7" class="text-center">DOCUMENTO DE COMPRA</th>
+                                    <th colspan="2" class="text-center">FORMAS DE PAGO</th>
+                                    <th colspan="3" class="text-center"></th>
+
+                                </tr>
+                                <tr>
+                                    <th style="display:none;"></th>
                                     <th style="display:none;"></th>
                                     <th class="text-center">O.C</th>
                                     <th class="text-center">EMISION</th>
                                     <th class="text-center">TIPO</th>
-                                    <th class="text-center">EMPRESA</th>
                                     <th class="text-center">PROVEEDOR</th>
-                                    <th class="text-center">SUBTOTAL</th>
-                                    <th class="text-center">IGV (%)</th>
-                                    <th class="text-center">TOTAL</th>
+                                    <th class="text-center">MONTO</th>
+                                    <th class="text-center">TRANSFERENCIA</th>
+                                    <th class="text-center">OTROS</th>
+                                    <th class="text-center">SALDO</th>
                                     <th class="text-center">ESTADO</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
@@ -107,6 +115,11 @@ $(document).ready(function() {
                 visible: false
             },
             {
+                data: 'tipo_pago',
+                className: "text-center",
+                visible: false
+            },
+            {
                 data: null,
                 className: "text-center",
                 render: function(data) {
@@ -127,37 +140,50 @@ $(document).ready(function() {
                 className: "text-center",
             },
             {
-                data: 'empresa',
-                className: "text-left"
-            },
-            {
                 data: 'proveedor',
                 className: "text-left"
-            },
-            {
-                data: 'subtotal',
-                className: "text-center"
-            },
-            {
-                data: null,
-                className: "text-center",
-                render: function(data) {
-                    if (data.igv) {
-                        return data.igv    
-                    }else{
-                        return "18"
-                    }
-                    
-                }
             },
             {
                 data: 'total',
                 className: "text-center"
             },
+            {
+                data: 'transferencia',
+                className: "text-center"
+            },
 
             {
-                data: 'estado',
+                data: 'otros',
                 className: "text-center"
+            },
+            {
+                data: 'saldo',
+                className: "text-center"
+            },
+
+
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    switch (data.estado) {
+                        case "PENDIENTE":
+                            return "<span class='badge badge-warning' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        case "PAGADA":
+                            return "<span class='badge badge-danger' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        case "ADELANTO":
+                            return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        default:
+                            return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                    }
+                },
             },
 
             {
@@ -181,8 +207,7 @@ $(document).ready(function() {
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
                         ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
-                        "<li><a class='dropdown-item' onclick='pagar(" + data.orden_compra+","+data.id+
-                        ")' title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
+                        "<li><a class='dropdown-item' onclick='pagar(" +data.orden_compra+","+data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
                         
                     "</ul></div>"
                 }
@@ -233,17 +258,127 @@ function eliminar(id) {
     })
 }
 
-function pagar(orden,id) {
+function pagar(orden,id,tipo) {
+    // var tipo = this.tipo;
+    console.log(tipo)
 
     if (orden) {
         toastr.error('El tipo de pago de este documento de compra fue realizada (transferencia).', 'Error');
     }else{
-        var url = '{{ route("compras.documentos.pago.index", ":id")}}';
-        url = url.replace(':id', id);
-        $(location).attr('href', url);
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
+
+        Swal.fire({
+            title: 'Opción Formas de Pago',
+            text: "Elija la forma de pago",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Transferencia',
+            cancelButtonText: "Otros",
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                if (tipo == null || tipo == 1  ) {
+                    
+                    var url = '{{ route("compras.documentos.transferencia.pago.index", ":id")}}';
+                    url = url.replace(':id', id);
+                    $(location).attr('href', url);
+
+                }else{
+                    Swal.fire({
+                            customClass: {
+                                container: 'my-swal'
+                            },
+                            title: 'Error',
+                            text: "Existe un tipo de pago, desea anular y crear un tipo de pago nuevo",
+                            icon: 'error',
+                            showCancelButton: true,
+                            confirmButtonColor: "#1ab394",
+                            confirmButtonText: 'Si, Confirmar',
+                            cancelButtonText: "No, Cancelar",
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                var url = '{{ route("compras.documento.tipo_pago.existente", ":id")}}';
+                                url = url.replace(':id', id);
+                                $(location).attr('href', url);
+                                }else if (
+                                /* Read more about handling dismissals below */
+                                result.dismiss === Swal.DismissReason.cancel
+                            ) {
+                                swalWithBootstrapButtons.fire(
+                                'Cancelado',
+                                'La Solicitud se ha cancelado.',
+                                'error'
+                                )
+                            }
+                    })
+
+                }
+            
+            
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+
+                if (tipo  == null || tipo == 0  ) {
+                    
+                    var url = '{{ route("compras.documentos.pago.index", ":id")}}';
+                    url = url.replace(':id', id);
+                    $(location).attr('href', url);
+
+                }else{
+                    
+                    Swal.fire({
+                            customClass: {
+                                container: 'my-swal'
+                            },
+                            title: 'Error',
+                            text: "Existe un tipo de pago, desea anular y crear un tipo de pago nuevo",
+                            icon: 'error',
+                            showCancelButton: true,
+                            confirmButtonColor: "#1ab394",
+                            confirmButtonText: 'Si, Confirmar',
+                            cancelButtonText: "No, Cancelar",
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                var url = '{{ route("compras.documento.tipo_pago.existente", ":id")}}';
+                                url = url.replace(':id', id);
+                                $(location).attr('href', url);
+                                }else if (
+                                /* Read more about handling dismissals below */
+                                result.dismiss === Swal.DismissReason.cancel
+                            ) {
+                                swalWithBootstrapButtons.fire(
+                                'Cancelado',
+                                'La Solicitud se ha cancelado.',
+                                'error'
+                                )
+                            }
+                    })
+
+
+
+                }
+            
+            }
+        })
+
+
     }
 
 }
+
+
 
 
 </script>

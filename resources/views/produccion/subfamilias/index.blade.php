@@ -1,21 +1,23 @@
 @extends('layout') @section('content')
+@include('produccion.subfamilias.create')
+@include('produccion.subfamilias.edit')
 @section('produccion-active', 'active')
 @section('subfamilia-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>LISTADO DE SUB FAMILIA</b></h2>
+       <h2  style="text-transform:uppercase"><b>LISTADO DE SUB FAMILIAS</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>SUB FAMILIA</strong>
+                <strong>Sub Familias</strong>
             </li>
 
         </ol>
     </div>
     <div class="col-lg-2 col-md-2">
-        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('produccion.subfamilia.create')}}">
+        <a data-toggle="modal" data-target="#modal_sub_familia" class="btn btn-block btn-w-m btn-primary m-t-md" href="#">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
@@ -32,13 +34,16 @@
             <div class="ibox-content">
 
                 <div class="table-responsive">
-                    <table class="table dataTables-articulos table-striped table-bordered table-hover"  style="text-transform:uppercase">
+                    <table class="table dataTables-subfamilias table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
                             <th class="text-center"></th>
-                            <th class="text-center">CODIGO</th>
+                            <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">FAMILIA</th>
+                            <th class="text-center">ESTADO</th>
+                            <th class="text-center">CREADO</th>
+                            <th class="text-center">ACTUALIZADO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
@@ -60,6 +65,12 @@
 @push('styles')
 <!-- DataTable -->
 <link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+
+<style>
+    .my-swal {
+        z-index: 3000 !important;
+    }
+</style>
 @endpush 
 
 @push('scripts')
@@ -70,17 +81,16 @@
 <script>
 
     $(document).ready(function() {
-        $('buttons-html5').removeClass('.btn-default');
-        $('#table_articulos_wrapper').removeClass('');
-        $('.dataTables-articulos').DataTable({
+
+
+        $('.dataTables-subfamilias').DataTable({
             "dom": '<"html5buttons"B>lTfgitp',
             "buttons": [
-   
                 {
                     extend:    'excelHtml5',
                     text:      '<i class="fa fa-file-excel-o"></i> Excel',
                     titleAttr: 'Excel',
-                    title: 'SubFamilia'
+                    title: 'Tablas Generales'
                 },
 
                 {   
@@ -103,36 +113,35 @@
             "bInfo": true,
             "bAutoWidth": false,
             "processing":true,
-            "ajax": '{{ route("getArticle")}}',
+            "serverSide":true,
+            "ajax": '{{ route("getSub")}}',
             "columns": [
-                //Articulo
-                {data: 'id' , className:"text-center", visible:false },
-                {data: 'codigo' , className:"text-center" },
-                {data: 'descripcion' },
-                {data: 'familia' , className:"text-center" },
-               
+                //Caja chica
+                {data: 'id', className:"text-center", "visible":false},
+                {data: 'familia_id', className:"text-center", "visible":false},
+                {data: 'descripcion' , className:"text-center"},
+                {data: 'familia' , className:"text-center"},
+                {data: 'estado', className:"text-center"},
+                {data: 'creado', className:"text-center"},
+                {data: 'actualizado', className:"text-center"},
                 {
                     data: null,
                     className:"text-center",
                     render: function (data) {
-                        //Ruta Detalle
-                        var url_detalle = '{{ route("produccion.subfamilia.show", ":id")}}';
-                        url_detalle = url_detalle.replace(':id',data.id);
 
-                        //Ruta Modificar
-                        var url_edit = '{{ route("produccion.subfamilia.edit", ":id")}}';
-                        url_edit = url_edit.replace(':id',data.id);
-
-                        return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-warning btn-sm modificarDetalle' href='"+url_edit+"' title='Modificar'><i class='fa fa-edit'></i></a><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
+                        return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
                 }
+                
+
 
             ],
             "language": {
                         "url": "{{asset('Spanish.json')}}"
             },
             "order": [[ 0, "desc" ]],
-            
+
+           
 
         });
 
@@ -141,19 +150,85 @@
     //Controlar Error
     $.fn.DataTable.ext.errMode = 'throw';
 
-    //Modal Eliminar
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-        confirmButton: 'btn btn-success',
-        cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
+    function obtenerData($id) {
+        var table = $('.dataTables-subfamilias').DataTable();
+        var data = table.rows().data();
+        limpiarError()
+        data.each(function (value, index) {
+            if (value.id == $id) {
+                $('#sub_familia_id_editar').val(value.id);
+                $('#familia_id_2_editar').val(value.familia_id);
+                $('#descripcion_editar').val(value.descripcion);
+            }  
+        });
+
+        
+        var id = $('#familia_id_2_editar').val();
+       
+        $.get("{{route('subfamilia.familia')}}", function (data) {
+            
+        if(data.length > 0){
+            
+            var select = '<option value="" selected disabled >SELECCIONAR</option>'
+            for (var i = 0; i < data.length; i++)
+                if (data[i].id == id) {
+                    select += '<option value="' + data[i].id + '" selected >' + data[i].familia + '</option>';
+                }else{
+                    select += '<option value="' + data[i].id + '">' + data[i].familia + '</option>';
+                }
+  
+
+        }else{
+            toastr.error('Familias no registradas.','Error');
+        }
+
+        $("#familia_id_editar").html(select);
+        $("#familia_id_editar").val(id).trigger("change");
+
+    });
+
+        $('#modal_subfamilia').modal('show');
+
+        
+    }
+
+    //Old Modal Editar
+    @if ($errors->has('familia_id_editar')  ||  $errors->has('descripcion_editar') )
+        $('#modal_subfamilia').modal({ show: true });
+    @endif
+
+    function limpiarError() {
+        $('#num_referencia_editar').removeClass( "is-invalid" )
+        $('#error-num_referencia-editar').text('')
+
+        $('#saldo_inicial_editar').removeClass( "is-invalid" )
+        $('#error-saldo_inicial-editar').text('')
+    }
+
+    $('#modal_subfamilia').on('hidden.bs.modal', function(e) { 
+        limpiarError() 
+    });
+
+
+    function guardarError() {
+        $('#num_referencia').removeClass( "is-invalid" )
+        $('#error-num_referencia-guardar').text('')
+
+        $('#saldo_inicial').removeClass( "is-invalid" )
+        $('#error-saldo_inicial-guardar').text('')
+    }
+
+    $('#modal_sub_familia').on('hidden.bs.modal', function(e) { 
+        guardarError()
+        $('#descripcion').val('')
+
+    });
 
     function eliminar(id) {
+        
         Swal.fire({
             title: 'Opción Eliminar',
-            text: "¿Seguro que desea guardar cambios?",
+            text: "¿Seguro que desea eliminar registro?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: "#1ab394",
@@ -175,10 +250,91 @@
                 'La Solicitud se ha cancelado.',
                 'error'
                 )
+
             }
-            })
+        })
+        
     }
 
+
+
+    $('#editar_subfamilia').submit(function(e){
+        e.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                container: 'my-swal',
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+            
+        })
+
+        Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Opción Modificar',
+            text: "¿Seguro que desea modificar los cambios?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                    this.submit();
+                }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+                )
+                
+            }
+            })
+    })
+
+    $('#crear_subfamilia').submit(function(e){
+        e.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                container: 'my-swal',
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
+
+        Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Opción Guardar',
+            text: "¿Seguro que desea guardar cambios?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                    this.submit();
+                }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+                )
+            }
+            })
+    })
 
 
 

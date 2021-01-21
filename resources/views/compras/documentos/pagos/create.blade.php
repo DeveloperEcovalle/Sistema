@@ -178,70 +178,78 @@
 
 
                                             <hr>
-                                            <p>Pagos a ingresar a tabla:</p>
 
-                                            <div class="row">
+                                            <div id="otroTipo">
+                                                <p>Pagos a ingresar a tabla:</p>
 
-                                                <div class="col-md-6">
-                                                    <label class="required">Caja: </label>
-                                                    <select
-                                                        class="select2_form form-control"style="text-transform: uppercase; width:100%" name="caja_id" id="caja_id" onchange="cargarCaja(this)">
-                                                        <option></option>
-                                                        @foreach ($cajas as $caja)
-                                                        <option value="{{$caja->id}}" >{{$caja->id.' - '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno.' '.$caja->empleado->persona->nombres}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="invalid-feedback"><b><span id="error-caja_id"></span></b></div>
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                        <label class="required">Caja: </label>
+                                                        <select
+                                                            class="select2_form form-control"style="text-transform: uppercase; width:100%" name="caja_id" id="caja_id" onchange="cargarCaja(this)">
+                                                            <option></option>
+                                                            @foreach ($cajas as $caja)
+                                                            <option value="{{$caja->id}}" >{{$caja->id.' - '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno.' '.$caja->empleado->persona->nombres}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="invalid-feedback"><b><span id="error-caja_id"></span></b></div>
+                                                        
+                                                    </div>
+
+                                                    <div class="col-md-3">
+
+                                                        <label class="required">Monto: </label>
+                                                        <input type="text" class="form-control" name="monto_caja" id="monto_caja">
+                                                        <div class="invalid-feedback"><b><span id="error-monto_caja"></span></b></div>
+                                                        <input type="hidden" id="max_input" >
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                            <label class="m-t"><span></span> </label>
+                                                            <a class="btn btn-block btn-warning enviar_caja" style="color:white"> <i class="fa fa-plus"></i> AGREGAR</a>
                                                     
+                                                    </div>
+        
                                                 </div>
-
-                                                <div class="col-md-3">
-
-                                                    <label class="required">Monto: </label>
-                                                    <input type="text" class="form-control" name="monto_caja" id="monto_caja">
-                                                    <div class="invalid-feedback"><b><span id="error-monto_caja"></span></b></div>
-                                                    <input type="hidden" id="max_input" >
-
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <label class="m-t"><span></span> </label>
-                                                        <a class="btn btn-block btn-warning enviar_caja" style="color:white"> <i class="fa fa-plus"></i> AGREGAR</a>
+                                                <input type="hidden" id="pagos_tabla" name="pagos_tabla[]">
                                                 
+                                                <hr>
+
+
+                                                <div class="table-responsive">
+                                                    <table
+                                                        class="table dataTables-caja table-striped table-bordered table-hover"
+                                                        style="text-transform:uppercase">
+                                                        <thead>
+
+                                                            <tr>
+                                                                <th></th>
+                                                                <th class="text-center">ACCIONES</th>
+                                                                <th class="text-center">CAJA</th>
+                                                                <th class="text-center">MONTO</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th colspan="3" class="text-center">TOTAL:</th>
+                                                                <th class="text-center"><span id="total">0.0</span></th>
+
+                                                            </tr>
+                                                        </tfoot>
+    
+                                                    </table>
                                                 </div>
-     
                                             </div>
-                                            <input type="hidden" id="pagos_tabla" name="pagos_tabla[]">
-                                            
-                                            <hr>
 
 
-                                            <div class="table-responsive">
-                                                <table
-                                                    class="table dataTables-caja table-striped table-bordered table-hover"
-                                                    style="text-transform:uppercase">
-                                                    <thead>
 
-                                                        <tr>
-                                                            <th></th>
-                                                            <th class="text-center">ACCIONES</th>
-                                                            <th class="text-center">CAJA</th>
-                                                            <th class="text-center">MONTO</th>
 
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th colspan="3" class="text-center">TOTAL:</th>
-                                                            <th class="text-center"><span id="total">0.0</span></th>
-
-                                                        </tr>
-                                                    </tfoot>
-   
-                                                </table>
-                                            </div>
 
                                            </div>
 
@@ -291,7 +299,27 @@
 <link href="{{ asset('Inspinia/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 <link href="{{ asset('Inspinia/css/plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">
 <link href="{{ asset('Inspinia/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+<style>
+    div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+        margin-left: 2px;
+    }
 
+    #table-bancos tr[data-href] ,
+    #table-bancos-empresa tr[data-href]
+    {
+        cursor: pointer;
+    }
+
+    #table-bancos tbody .fila_entidad.selected,
+    #table-bancos-empresa tbody .fila_entidad-empresa.selected
+    {
+        /* color: #151515 !important;*/
+        font-weight: 400;
+        color: white !important;
+        background-color: #1ab394 !important;
+        /* background-color: #CFCFCF !important; */
+    }
+</style>
 
 <!-- DataTable -->
 <link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
@@ -322,7 +350,7 @@ $(".select2_form").select2({
 
 
 $(document).ready(function() {
-    // DataTables
+    // DATATABLE DIFERENTE AL DE TRANSFERENCIA
     $('.dataTables-caja').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
         "buttons": [{
@@ -383,7 +411,6 @@ $(document).ready(function() {
 
     });
 
-
 })
 
 function limpiarErrores() {
@@ -393,7 +420,6 @@ function limpiarErrores() {
     $('#monto_caja').removeClass("is-invalid")
     $('#error-monto_caja').text('')
 }
-
 
 function buscarCaja(id) {
     var existe = false;
@@ -478,7 +504,6 @@ $(".enviar_caja").click(function() {
     }
 })
 
-
 //Editar Registro
 $(document).on('click', '#editar_documento', function(event) {
     var table = $('.dataTables-caja').DataTable();
@@ -538,8 +563,6 @@ function limpiarDetalle() {
     $('#monto_caja').val('')
     $('#max_input').val('')
     $('#caja_id').val($('#caja_id option:first-child').val()).trigger('change');
-    
-
 }
 
 

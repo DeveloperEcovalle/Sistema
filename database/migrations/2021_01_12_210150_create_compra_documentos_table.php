@@ -27,6 +27,7 @@ class CreateCompraDocumentosTable extends Migration
             
             $table->string('modo_compra');
             $table->string('tipo_compra');
+            $table->string('tipo_pago')->nullable();
             $table->string('moneda');
 
             $table->string('igv_check',2)->nullable();

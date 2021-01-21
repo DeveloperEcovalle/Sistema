@@ -7,15 +7,15 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Artículo</h4>
-                <small class="font-bold">Modificar Artículo.</small>
+                <h4 class="modal-title">Producto</h4>
+                <small class="font-bold">Modificar Producto.</small>
             </div>
             <div class="modal-body">
                 <form role="form" id="">
                     <input type="hidden" id="editar_id_articulo">
                     <input type="hidden" id="indice">
                     <div class="form-group">
-                        <label class="required">Artículo</label>
+                        <label class="required">Producto</label>
                         <select class="select2_form form-control" style="text-transform: uppercase; width:100%"
                             name="articulo_editar_id" id="articulo_id_editar" disabled>
                             <option></option>

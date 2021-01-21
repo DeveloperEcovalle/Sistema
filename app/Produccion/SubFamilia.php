@@ -12,7 +12,8 @@ class SubFamilia extends Model
         'familia_id',
         'estado'
     ];
-
+    public $timestamps = true;
+    
     public function familia()
     {
         return $this->belongsTo('App\Produccion\Familia', 'familia_id');
