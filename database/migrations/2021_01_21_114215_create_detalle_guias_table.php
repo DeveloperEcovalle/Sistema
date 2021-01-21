@@ -14,7 +14,7 @@ class CreateDetalleGuiasTable extends Migration
     public function up()
     {
         Schema::create('detalle_guias', function (Blueprint $table) {
-            $table->id();
+            $table->Increments('id');
             $table->unsignedInteger('guia_id')->unsigned();
             $table->foreign('guia_id')
                   ->references('id')->on('guias')
