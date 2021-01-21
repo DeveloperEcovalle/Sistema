@@ -297,6 +297,27 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 10;
         $detalle->save();
 
+        $detalle = new Detalle();
+        $detalle->descripcion = "PAQUETE";
+        $detalle->simbolo = 'PAQ';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 10;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "UNIDAD";
+        $detalle->simbolo = 'UND';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 10;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "GALON";
+        $detalle->simbolo = 'G';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 10;
+        $detalle->save();
+
         //TIPOS DE PERSONAS
         $detalle = new Detalle();
         $detalle->descripcion = "PERSONA NATURAL";
