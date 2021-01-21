@@ -60,12 +60,10 @@
                                             style="text-transform: uppercase; width:100%" value="{{old('producto_id',$guia->producto_id)}}"
                                             name="producto_id" id="producto_id" required>
                                             <option></option>
-                                            
-
-
-
-
-
+                                            @foreach ($productos as $producto)
+                                            <option value="{{$producto->id}}" @if(old('producto_id',$guia->producto->id)==$producto->id)
+                                                     {{'selected'}} @endif >{{$producto->nombre}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-lg-6 col-xs-12">

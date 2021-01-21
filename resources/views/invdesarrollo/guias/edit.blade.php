@@ -52,21 +52,22 @@
                                             name="producto_id" id="producto_id" required>
                                             <option></option>
                                             @foreach ($productos as $producto)
-                                            <option value="{{$producto->id}}" @if(old('producto_id')==$guia->producto->id )
-                                                {{'selected'}} @endif >{{$producto->nombre}}</option>
+                                            <option value="{{$producto->id}}" @if(old('producto_id',$guia->producto->id)==$producto->id)
+                                                     {{'selected'}} @endif >{{$producto->nombre}}</option>
                                             @endforeach
                                         </select>
+
                                     </div>
-                                    <div class="col-lg-6 col-xs-12">
+                                    <div class="col-lg-6 col-xs-12" id="fecha">
                                         <label>Fecha de Emisión</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                            <input type="date" id="fecha" name="fecha"
+                                            <input type="text" id="fecha" name="fecha"
                                                 class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha',getFechaFormato($guia->fecha, 'd/m/Y'))}}"
-                                                autocomplete="off">
+                                                autocomplete="off" readonly required>
                                             @if ($errors->has('fecha'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('fecha') }}</strong>

@@ -212,9 +212,11 @@ class GuiaController extends Controller
     {
         $guia = Guia::findOrFail($id);
         $detalles = Detalle_guia::where('guia_id',$id)->get(); 
+        $productos = Producto::where('estado','ACTIVO')->get();
         return view('invdesarrollo.guias.show', [
             'guia' => $guia,
             'detalles' => $detalles,
+            'productos' => $productos, 
         ]);
     }
 
@@ -222,11 +224,12 @@ class GuiaController extends Controller
     {
         $guia = Guia::findOrFail($id);
         $detalles = Detalle_guia::where('guia_id',$id)->get();
-
+        $productos = Producto::where('estado','ACTIVO')->get();
         $paper_size = array(0,0,360,360);
         $pdf = PDF::loadview('invdesarrollo.guias.reportes.detalle',[
             'guia' => $guia,
             'detalles' => $detalles,
+            'productos' => $productos, 
             ])->setPaper('a4')->setWarnings(false);
         //dd($pdf);
         //$pdf= new Dompdf();
