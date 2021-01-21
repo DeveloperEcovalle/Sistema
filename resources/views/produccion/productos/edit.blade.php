@@ -164,93 +164,6 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-lg-12 col-xs-12">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading">
-                                        <h4><b>Detalles del producto</b></h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group row">
-                                                    <div class="col-lg-6 col-xs-12">
-                                                        <label class="required">Artículo</label>
-                                                        <select id="articulo" class="select2_form form-control {{ $errors->has('articulo') ? ' is-invalid' : '' }}">
-                                                            <option></option>
-                                                            @foreach($articulos as $articulo)
-                                                                <option value="{{ $articulo->id }}" {{ (old('articulo', $producto->articulo_id) == $articulo->id ? "selected" : "") }} >{{ $articulo->getDescripcionCompleta() }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @if ($errors->has('articulo'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('articulo') }}</strong>
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                    <div class="col-lg-2 col-xs-12">
-                                                        <label class="required">Cantidad</label>
-                                                        <input type="text" id="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad', $producto->cantidad)}}" maxlength="10" onkeypress="return isNumber(event);">
-                                                        @if ($errors->has('cantidad'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('cantidad') }}</strong>
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                    <div class="col-lg-2 col-xs-12">
-                                                        <label class="required">Peso</label>
-                                                        <input type="text" id="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this, true);">
-                                                        @if ($errors->has('peso'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('peso') }}</strong>
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col-lg-10 col-xs-12">
-                                                        <label>Observación</label>
-                                                        <input type="text" id="observacion" class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}" value="{{ old('observacion', $producto->observacion) }}" maxlength="300" onkeyup="return mayus(this)">
-                                                        @if ($errors->has('observacion'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('observacion') }}</strong>
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                    <div class="col-lg-2 col-xs-12">
-                                                        <button type="button" id="btn_agregar_detalle" class="btn btn-warning btn-block m-t-lg"><i class="fa fa-plus-circle"></i> Agregar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row m-t-sm">
-                                            <div class="col-lg-12">
-                                                <div class="table-responsive">
-                                                    <table class="table dataTables-detalle-producto table-striped table-bordered table-hover"  onkeyup="return mayus(this)">
-                                                        <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th class="text-left">ARTÍCULO</th>
-                                                            <th class="text-center">CANTIDAD</th>
-                                                            <th class="text-center">PESO</th>
-                                                            <th class="text-left">OBSERVACIÓN</th>
-                                                            <th class="text-center">ACCIONES</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="detalles" id="detalles" value="{{ old('detalles', $detalles) }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="hr-line-dashed"></div>
                         <div class="row">
                             <div class="col-lg-12">
@@ -394,10 +307,10 @@
             $('#form_actualizar_producto').submit(function(e) {
                 e.preventDefault();
                 if (detalles !== undefined && detalles.length <= 0) {
-                    toastr.error('Debe ingresar los detalles del producto');
-                    return false;
+                    // toastr.error('Debe ingresar los detalles del producto');
+                    // return false;
                 }
-                $("#detalles").val(JSON.stringify(detalles));
+                //$("#detalles").val(JSON.stringify(detalles));
 
                 Swal.fire({
                     title: 'Opción Guardar',

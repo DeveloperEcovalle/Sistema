@@ -1,6 +1,6 @@
 @extends('layout') @section('content')
 @section('produccion-active', 'active')
-@section('productos-active', 'active')
+@section('composicion-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8 col-xs-12">
@@ -10,7 +10,7 @@
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('produccion.producto.index') }}">Productos Terminados</a>
+                <a href="{{ route('produccion.composicion.index') }}">Productos Terminados</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Detalle</strong>
@@ -19,7 +19,7 @@
     </div>
     <div class="col-lg-4 col-xs-12">
         <div class="title-action">
-            <a href="{{route('produccion.producto.edit', $producto->id)}}" class="btn btn-warning btn-sm"><i
+            <a href="{{route('produccion.composicion.edit', $producto->id)}}" class="btn btn-warning btn-sm"><i
                 class="fa fa-edit"></i> Editar
             </a>
         </div>
@@ -32,7 +32,7 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-lg-8 col-xs-12 b-r">
+                        <div class="col-lg-8 col-xs-12">
                             <h4><b><i class="fa fa-caret-right"></i> Datos Generales</b></h4>
                             <div class="form-group row">
                                 <div class="col-lg-4 col-xs-12">
@@ -56,35 +56,6 @@
                                 <div class="col-lg-4 col-xs-12">
                                     <label><strong>PRESENTACIÓN</strong></label>
                                     <p>{{ $producto->presentacion }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-xs-12 b-r">
-                            <h4><b><i class="fa fa-caret-right"></i> Cantidades y Precios</b></h4>
-                            <div class="form-group row">
-                                <div class="col-lg-6 col-xs-12">
-                                    <label><strong>STOCK</strong></label>
-                                    <p>{{ $producto->stock }}</p>
-                                </div>
-                                <div class="col-lg-6 col-xs-12">
-                                    <label><strong>STOCK MÍNIMO</strong></label>
-                                    <p>{{ $producto->stock_minimo }}</p>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-6 col-xs-12">
-                                    <label><strong>P. V. MÍNIMO</strong></label>
-                                    <p>S/ {{ $producto->precio_venta_minimo }}</p>
-                                </div>
-                                <div class="col-lg-6 col-xs-12">
-                                    <label><strong>P. V. MÁXIMO</strong></label>
-                                    <p>S/ {{ $producto->precio_venta_maximo }}</p>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-6 col-xs-12">
-                                    <label><strong>IGV (18%)</strong></label>
-                                    <p>{{ ($producto->igv == 1) ? 'SI' : 'NO' }}</p>
                                 </div>
                             </div>
                         </div>

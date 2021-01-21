@@ -82,6 +82,15 @@
         </ul>
     </li>
 
+    <li class="@yield('invdesarrollo-active')">
+        <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Inv + Desarrollo </span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li class="@yield('registro_sanitario-active')"><a href="{{route('invdesarrollo.registro_sanitario.index')}}">Registro Sanitario</a></li>
+           <li class="@yield('prototipo-active')"><a href="{{route('invdesarrollo.prototipo.index')}}">Prototipos</a></li>
+           <li class="@yield('guia-active')"><a href="{{route('invdesarrollo.guia.index')}}">Guias Internas</a></li>
+        </ul>
+    </li>
+    
     <li class="@yield('almacenes-active')">
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">

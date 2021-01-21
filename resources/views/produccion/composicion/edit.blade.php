@@ -1,7 +1,7 @@
 @extends('layout') @section('content')
-@include('produccion.productos.edit-detalle')
+@include('produccion.composicion.edit-detalle')
 @section('produccion-active', 'active')
-@section('productos-active', 'active')
+@section('composicion-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
@@ -11,7 +11,7 @@
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('produccion.producto.index') }}">Productos Terminados</a>
+                <a href="{{ route('produccion.composicion.index') }}">Productos Terminados</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Modificar</strong>
@@ -25,141 +25,33 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <form action="{{ route('produccion.producto.update', $producto->id) }}" method="POST" id="form_actualizar_producto">
+                    <form action="{{ route('produccion.composicion.update', $producto->id) }}" method="POST" id="form_actualizar_producto">
                         @csrf @method('PUT')
                         <div class="row">
-                            <div class="col-lg-8 col-xs-12 b-r">
-                                <h4><b>Datos Generales</b></h4>
+                            <div class="col-lg-8 col-xs-12">
+                                <h4><b><i class="fa fa-caret-right"></i> Datos Generales</b></h4>
                                 <div class="form-group row">
                                     <div class="col-lg-4 col-xs-12">
-                                        <label class="required">Código ISO</label>
-                                        <input type="text" id="codigo" name="codigo" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{ old('codigo', $producto->codigo) }}" maxlength="50" onkeyup="return mayus(this)" required>
-                                        @if ($errors->has('codigo'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('codigo') }}</strong>
-                                            </span>
-                                        @endif
+                                        <label><strong>CÓDIGO ISO</strong></label>
+                                        <p>{{ $producto->codigo }}</p>
                                     </div>
                                     <div class="col-lg-8 col-xs-12">
-                                        <label class="required">Nombre</label>
-                                        <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre', $producto->nombre) }}" maxlength="191" onkeyup="return mayus(this)" required>
-                                        @if ($errors->has('nombre'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('nombre') }}</strong>
-                                            </span>
-                                        @endif
+                                        <label> <strong>NOMBRE</strong> </label>
+                                        <p>{{ $producto->nombre }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Familia</label>
-                                        <select id="familia" name="familia" class="select2_form form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}">
-                                            <option></option>
-                                            @foreach($familias as $familia)
-                                                <option value="{{ $familia->id }}" {{ (old('familia', $producto->familia_id) == $familia->id ? "selected" : "") }} >{{ $familia->familia }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('familia'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('familia') }}</strong>
-                                            </span>
-                                        @endif
+                                    <div class="col-lg-4 col-xs-12">
+                                        <label> <strong>FAMILIA</strong></label>
+                                        <p>{{ $producto->familia->familia }}</p>
                                     </div>
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Sub Familia</label>
-                                        <select id="sub_familia" name="sub_familia" class="select2_form form-control {{ $errors->has('sub_familia') ? ' is-invalid' : '' }}">
-                                            <option></option>
-                                            @foreach($sub_familias as $sub_familia)
-                                                <option value="{{ $sub_familia->id }}" {{ (old('sub_familia', $producto->sub_familia_id) == $sub_familia->id ? "selected" : "") }} >{{ $sub_familia->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('sub_familia'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('sub_familia') }}</strong>
-                                            </span>
-                                        @endif
+                                    <div class="col-lg-4 col-xs-12">
+                                        <label> <strong>SUB FAMILIA</strong></label>
+                                        <p>{{ $producto->sub_familia->descripcion }}</p>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Presentación</label>
-                                        <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
-                                            <option></option>
-                                            @foreach(presentaciones() as $presentacion)
-                                                <option value="{{ $presentacion->simbolo }}" {{ (old('presentacion', $producto->presentacion) == $presentacion->simbolo ? "selected" : "") }}>{{ $presentacion->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('presentacion'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('presentacion') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-xs-12">
-                                <h4><b>Cantidades y Precios</b></h4>
-                                <div class="form-group row">
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Stock</label>
-                                        <input type="text" id="stock" name="stock" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{ old('stock', $producto->stock) }}" maxlength="10" onkeypress="return isNumber(event);" required>
-                                        @if ($errors->has('stock'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('stock') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Stock mínimo</label>
-                                        <input type="text" id="stock_minimo" name="stock_minimo" class="form-control {{ $errors->has('stock_minimo') ? ' is-invalid' : '' }}" value="{{ old('stock_minimo', $producto->stock_minimo) }}" maxlength="10" onkeypress="return isNumber(event);" required>
-                                        @if ($errors->has('stock_minimo'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('stock_minimo') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Precio venta mínimo</label>
-                                        <input type="text" id="precio_venta_minimo" name="precio_venta_minimo" class="form-control {{ $errors->has('precio_venta_minimo') ? ' is-invalid' : '' }}" value="{{ old('precio_venta_minimo', $producto->precio_venta_minimo) }}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
-                                        @if ($errors->has('precio_venta_minimo'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('precio_venta_minimo') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Precio venta máximo</label>
-                                        <input type="precio_venta_maximo" id="precio_venta_maximo" name="precio_venta_maximo" class="form-control {{ $errors->has('precio_venta_maximo') ? ' is-invalid' : '' }}" value="{{ old('precio_venta_maximo', $producto->precio_venta_maximo) }}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
-                                        @if ($errors->has('precio_venta_maximo'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('precio_venta_maximo') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-12 col-xs-12">
-                                        <label class="required">Incluye IGV</label>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-xs-6">
-                                                <div class="radio">
-                                                    <input type="radio" name="igv" id="igv_si" value="1" {{ ($producto->igv == 1) ? "checked" : "" }}>
-                                                    <label for="igv_si">
-                                                        SI
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-xs-6">
-                                                <div class="radio">
-                                                    <input type="radio" name="igv" id="igv_no" value="0" {{ ($producto->igv == 0) ? "checked" : "" }}>
-                                                    <label for="igv_no">
-                                                        NO
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-4 col-xs-12">
+                                        <label><strong>PRESENTACIÓN</strong></label>
+                                        <p>{{ $producto->presentacion }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +152,7 @@
                                             (<label class="required"></label>) son obligatorios.</small>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <a href="{{route('produccion.producto.index')}}" id="btn_cancelar"
+                                        <a href="{{route('produccion.composicion.index')}}" id="btn_cancelar"
                                            class="btn btn-w-m btn-default">
                                             <i class="fa fa-arrow-left"></i> Regresar
                                         </a>
@@ -443,7 +335,7 @@
             $.ajax({
                 dataType : 'json',
                 type : 'post',
-                url : '{{ route('produccion.producto.getCodigo') }}',
+                url : '{{ route('produccion.composicion.getCodigo') }}',
                 data : {
                     '_token' : $('input[name=_token]').val(),
                     'codigo' : $(this).val(),
@@ -573,7 +465,7 @@
                         $.ajax({
                             dataType : 'json',
                             type : 'post',
-                            url : '{{ route('produccion.producto.destroyDetalle') }}',
+                            url : '{{ route('produccion.composicion.destroyDetalle') }}',
                             data : {
                                 '_token' : $('input[name=_token]').val(),
                                 'id': dataRow[0]

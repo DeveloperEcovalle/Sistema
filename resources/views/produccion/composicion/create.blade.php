@@ -1,5 +1,5 @@
 @extends('layout') @section('content')
-@include('produccion.productos.edit-detalle')
+@include('produccion.composicion.edit-detalle')
 @section('produccion-active', 'active')
 @section('composicion-active', 'active')
 
@@ -11,7 +11,7 @@
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('produccion.producto.index') }}">Productos Terminados</a>
+                <a href="{{ route('produccion.composicion.index') }}">Productos Terminados</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Registrar</strong>
@@ -25,7 +25,7 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <form action="{{ route('produccion.producto.store') }}" method="POST" id="form_registrar_producto">
+                    <form action="{{ route('produccion.composicion.store') }}" method="POST" id="form_registrar_producto">
                         @csrf
                         <div class="row">
                             <div class="col-lg-8 col-xs-12">
@@ -154,7 +154,7 @@
                                             (<label class="required"></label>) son obligatorios.</small>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <a href="{{route('produccion.producto.index')}}" id="btn_cancelar"
+                                        <a href="{{route('produccion.composicion.index')}}" id="btn_cancelar"
                                            class="btn btn-w-m btn-default">
                                             <i class="fa fa-arrow-left"></i> Regresar
                                         </a>
@@ -335,7 +335,7 @@
             $.ajax({
                 dataType : 'json',
                 type : 'post',
-                url : '{{ route('produccion.producto.getCodigo') }}',
+                url : '{{ route('produccion.composicion.getCodigo') }}',
                 data : {
                     '_token' : $('input[name=_token]').val(),
                     'codigo' : $(this).val(),

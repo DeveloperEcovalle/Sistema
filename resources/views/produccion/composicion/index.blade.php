@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Productos con Composicion</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Producto Detalles</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -93,7 +93,7 @@
                 "bInfo": true,
                 "bAutoWidth": false,
                 "processing":true,
-                "ajax": "{{ route('produccion.producto.getTable')}}",
+                "ajax": "{{ route('produccion.composicion.getTable')}}",
                 "columns": [
                     {data: 'codigo', className:"text-left"},
                     {data: 'nombre', className:"text-left"},
@@ -104,17 +104,17 @@
                         className:"text-center",
                         render: function(data) {
                             //Ruta Detalle
-                            var url_detalle = '{{ route("produccion.producto.show", ":id")}}';
-                            url_detalle = url_detalle.replace(':id',data.id);
+                            var url_detalle = '{{ route("produccion.composicion.show", ":id")}}';
+                            url_detalle = url_detalle.replace(':id',data.producto_id);
 
                             //Ruta Modificar
-                            var url_editar = '{{ route("produccion.producto.edit", ":id")}}';
-                            url_editar = url_editar.replace(':id',data.id);
+                            var url_editar = '{{ route("produccion.composicion.edit", ":id")}}';
+                            url_editar = url_editar.replace(':id',data.producto_id);
 
                             return "<div class='btn-group'>" +
                                 "<a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a>" +
                                 "<a class='btn btn-warning btn-sm modificarDetalle' href='"+url_editar+"' title='Modificar'><i class='fa fa-edit'></i></a>" +
-                                "<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                                "<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.producto_id+")' title='Eliminar'><i class='fa fa-trash'></i></a>" +
                                 "</div>";
                         }
                     }
@@ -163,7 +163,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     //Ruta Eliminar
-                    var url_eliminar = '{{ route("produccion.producto.destroy", ":id")}}';
+                    var url_eliminar = '{{ route("produccion.composicion.destroy", ":id")}}';
                     url_eliminar = url_eliminar.replace(':id',id);
                     $(location).attr('href',url_eliminar);
 
