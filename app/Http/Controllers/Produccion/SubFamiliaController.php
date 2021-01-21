@@ -6,111 +6,115 @@ use App\Http\Controllers\Controller;
 use App\Produccion\Familia;
 use App\Produccion\SubFamilia;
 use Illuminate\Http\Request;
+use DB;
+use DataTables;
+use Carbon\Carbon;
+use Session;
+use Illuminate\Support\Facades\Validator;
 
 class SubFamiliaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function index()
     {
-        //
+        $familias = Familia::where('estado','ACTIVO')->get();
+        return view('produccion.subfamilias.index',[
+            'familias' => $familias
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function getSub(){
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function getByFamilia(Request $request)
-    {
-        $error = false;
-        $message = "";
-        $data= null;
-        $collection = collect([]);
-
-        if (!is_null($request->familia_id)) {
-            $familia = Familia::findOrFail($request->familia_id);
-            foreach ($familia->sub_familias as $sub_familia) {
-                $collection->push([
-                    'id' => $sub_familia->id,
-                    'text' => $sub_familia->descripcion
-                ]);
-            }
-        } else {
-            $error = true;
-            $message = "Error interno del servidor";
+        $subfamilias = DB::table('subfamilias')
+        ->join('familias','subfamilias.familia_id','=','familias.id')
+        ->select('familias.familia as nombre_familia','familias.id as familia_id','subfamilias.*')
+        ->where('subfamilias.estado','!=',"ANULADO")
+        ->get();
+        $coleccion = collect([]);
+        foreach($subfamilias as $subfamilia){
+            $coleccion->push([
+                'id' => $subfamilia->id,
+                'familia_id' => $subfamilia->familia_id,
+                'familia' => $subfamilia->nombre_familia,
+                'descripcion' => $subfamilia->descripcion,
+                'creado' =>  Carbon::parse($subfamilia->created_at)->format( 'd/m/Y'),
+                'actualizado' =>  Carbon::parse($subfamilia->updated_at)->format( 'd/m/Y'),
+                'estado' => $subfamilia->estado,
+            ]);
         }
+        return DataTables::of($coleccion)->toJson();
+    }
 
-        $data = [
-            'error' => $error,
-            'message' => $message,
-            'sub_familias' => $collection
+    public function store(Request $request){
+        
+        $data = $request->all();
+
+        $rules = [
+            'descripcion' => 'required',
+            'familia_id' => 'required',
+        ];
+        
+        $message = [
+            'descripcion.required' => 'El campo Descripción es obligatorio.',
+            'familia_id.required' => 'El campo Familia es obligatorio.',
         ];
 
-        return response()->json($data);
+        Validator::make($data, $rules, $message)->validate();
+
+        $subfamilia = new SubFamilia();
+        $subfamilia->descripcion = $request->get('descripcion');
+        $subfamilia->familia_id = $request->get('familia_id');
+        $subfamilia->save();
+
+        Session::flash('success','Sub familia creada.');
+        return redirect()->route('produccion.subfamilia.index')->with('guardar', 'success');
     }
+
+    public function update(Request $request){
+        
+        $data = $request->all();
+
+        $rules = [
+            'familia_id_editar' => 'required',
+            'descripcion_editar' => 'required',
+        ];
+        
+        $message = [
+            'descripcion_editar.required' => 'El campo Descripción es obligatorio.',
+        ];
+
+        Validator::make($data, $rules, $message)->validate();
+        
+        $subfamilia = SubFamilia::findOrFail($request->get('sub_familia_id_editar'));
+        $subfamilia->descripcion = $request->get('descripcion_editar');
+        $subfamilia->familia_id = $request->get('familia_id_editar');
+        $subfamilia->update();
+
+        Session::flash('success','Sub familia modificada.');
+        return redirect()->route('produccion.subfamilia.index')->with('modificar', 'success');
+    }
+
+    
+    public function destroy($id)
+    {
+        
+        $subfamilia = SubFamilia::findOrFail($id);
+        $subfamilia->estado = 'ANULADO';
+        $subfamilia->update();
+
+        Session::flash('success','Sub Familia eliminado.');
+        return redirect()->route('produccion.subfamilia.index')->with('eliminar', 'success');
+
+    }
+
+    public function getFamilia(){
+
+        $familias = DB::table('familias')   
+        ->select('familias.*')
+        ->where('familias.estado','!=',"ANULADO")
+        ->get();
+
+        return $familias;
+    }
+
 }

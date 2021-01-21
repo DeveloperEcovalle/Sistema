@@ -5,8 +5,8 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Pagos del documento de pago #{{$documento->id}} para el proveedor "{{$documento->proveedor->descripcion}} por medio de caja chica"</b></h2>
-        <ol class="breadcrumb">
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos de la Orden #{{$documento->id}} para el proveedor "{{$documento->proveedor->descripcion}} por medio de transferencia"</b></h2>
+       <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
@@ -21,29 +21,45 @@
     
     @if($documento->estado != "PAGADA")
     <div class="col-lg-2 col-md-2" id="boton_agregar_pago">
-        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('compras.documentos.pago.create',$documento->id)}}">
+        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('compras.documentos.transferencia.pago.create',$documento->id)}}">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
     @endif
 
 
+    
     <div class="col-md-12 m-t">
             <div class="alert alert-success">
                 <b>INFORMACION DE PAGOS </b>
                 <ul class="margin-bottom-none padding-left-lg">
                         <div class="form-group row">
+                            @if($documento->moneda != "SOLES")
+                            <div class="col-md-6">                           
+                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
+                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
+                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                @if($documento->estado == "PAGADA")
+                                <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
+                                @endif
+                            </div>
+                            
+                            <div class="col-md-6">                           
+                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>soles</b></span>: <b>S/. {{$total_soles}}</b>.</li>
+                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>soles</b></span>: <b>S/. {{$acuenta_soles}}</b>.</li>
+                            </div>
+                            @else
 
                             <div class="col-md-6">                           
-                                <li>Deuda total del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
+                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
+                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
                                 @if($documento->estado == "PAGADA")
                                 <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
                                 @endif
                             </div>
 
-                            
+                            @endif
                         </div>
 
 
@@ -51,9 +67,6 @@
             </div>
         </div>
   
-
-
-
 
 
 
@@ -70,15 +83,17 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                        <table class="table dataTables-orden table-striped table-bordered table-hover"
+                        <table class="table dataTables-documento table-striped table-bordered table-hover"
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th class="text-center">FECHA Y HORA</th>
-                                    <th class="text-center">TIPO</th>
-                                    <th class="text-center">MONEDA</th>
+                                    <th class="text-center">FECHA PAGO</th>
+                                    <th class="text-center">ENTIDAD</th>
+                                    <th class="text-center">CUENTA EMPRESA</th>
+                                    <th class="text-center">CUENTA PROVEEDOR</th>
                                     <th class="text-center">MONTO</th>
+                                    <th class="text-center">MONTO (S/.)</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -108,10 +123,10 @@
 $(document).ready(function() {
     //Ruta Detalle
     var id = $('#id_documento').val()
-    var url = '{{ route("getPay.documentos", ":id")}}';
+    var url = '{{ route("compras.documentos.transferencia.getPay", ":id")}}';
     url = url.replace(':id',id);
     // DataTables
-    $('.dataTables-orden').DataTable({
+    $('.dataTables-documento').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
         "buttons": [{
                 extend: 'excelHtml5',
@@ -146,31 +161,36 @@ $(document).ready(function() {
                 className: "text-center",
                 visible: false
             },
-
             {
-                data: 'pago_fecha',
-                className: "text-center",
-            },
-            {
-                data: 'tipo',
+                data: 'fecha_pago',
                 className: "text-center"
             },
             {
-                data: 'moneda',
+                data: 'entidad',
                 className: "text-center"
             },
-
+            {
+                data: 'cuenta_empresa',
+                className: "text-center"
+            },
+            {
+                data: 'cuenta_proveedor',
+                className: "text-center"
+            },
             {
                 data: 'monto',
                 className: "text-center"
             },
-
+            {
+                data: 'monto_soles',
+                className: "text-center"
+            },
             {
                     data: null,
                     className:"text-center",
                     render: function (data) {
                         //Ruta Detalle
-                        var url_detalle = "{{ route('compras.documentos.pago.show', ':id') }}".replace(':id', data.id);
+                        var url_detalle = "{{ route('compras.documentos.transferencia.pago.show', [ 'pago' =>'id', 'documento'=>  $documento->id ]) }}".replace('id', data.id);
 
                         return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
@@ -207,7 +227,7 @@ function eliminar(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             //Ruta Eliminar
-            var url = '{{ route("compras.documentos.pago.destroy", ":id") }}'.replace(':id', id);
+            var url = "{{ route('compras.documentos.transferencia.pago.destroy', [ 'pago' =>'id', 'documento'=>  $documento->id ]) }}".replace('id', id);
             $(location).attr('href', url);
 
         } else if (
@@ -223,51 +243,8 @@ function eliminar(id) {
     })
 }
 
-function concretada(id) {
-    Swal.fire({
-        title: 'Opción Concretada',
-        text: "¿Seguro que desea concretar orden de compra?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: "#1ab394",
-        confirmButtonText: 'Si, Confirmar',
-        cancelButtonText: "No, Cancelar",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            //Ruta Concretar
-            var url_concretar = '{{ route("compras.orden.concretada", ":id")}}';
-            url_concretar = url_concretar.replace(':id', id);
-            $(location).attr('href', url_concretar);
 
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-            )
-        }
-    })
-}
 
-function enviado(id) {
 
-    $("#modal_listar_enviados").on("shown.bs.modal", function () { 
-        $.get('/compras/ordenes/consultaEnvios/' + id, function(data) {
-        if (data.length > 0) {
-            enviado_usuario.style.display = "";
-            no_enviado_usuario.style.display = "none";
-            $('#correo_enviado').text(data[0].correo);
-            $('#usuario_enviado').text(data[0].usuario);
-        } else {
-            enviado_usuario.style.display = "none";
-            no_enviado_usuario.style.display = "";
-        }
-    });
-    }).modal('show');
-
-}
 </script>
 @endpush

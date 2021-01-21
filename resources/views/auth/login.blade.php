@@ -54,7 +54,7 @@
 
             <div class="row" style="height:100vh;">
             
-                <div class="col-lg-6 col-md-6 d-none d-md-block image-container">
+                <div class="col-lg-6 col-md-6 d-none d-md-block image-container" style="height:100vh;">
                 </div>
 
                         
@@ -73,7 +73,7 @@
                         </p>
                         <form class="m-t container form-login" role="form" method="POST" action="{{ route('login') }}">
                             @csrf
-                            <div class="form-group">
+                            <div class="form-group input_login">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Correo Electrónico" onkeyup="return mayus(this)" >
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -81,7 +81,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group">
+                            <div class="form-group input_login">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña" onkeyup="return mayus(this)">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -89,8 +89,9 @@
                                     </span>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary block full-width m-b">Iniciar Sesión</button>
-
+                            <div class="btn-iniciar input_login">
+                                <button type="submit" class="btn btn-primary block full-width m-b btn-margin-sesion">Iniciar Sesión</button>
+                            </div>
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}" ><small>¿Olvidaste tu Contraseña?</small></a>
                             @endif

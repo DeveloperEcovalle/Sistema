@@ -219,6 +219,7 @@ class OrdenController extends Controller
     }
 
     public function store(Request $request){
+
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
@@ -430,7 +431,6 @@ class OrdenController extends Controller
                 $tipo_moneda= $moneda->simbolo;
             }
         }
-
 
         if (!$orden->igv) {
             $igv = $subtotal * 0.18;

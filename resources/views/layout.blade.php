@@ -212,6 +212,16 @@
     })
     @endif
 
+    @if(session('exitosa') == 'success')
+    Swal.fire({
+        icon: 'success',
+        title: 'Acción Exitosa',
+        text: '¡Puede ingresar nuevo tipo de pago!',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    @endif
+
 
 
     

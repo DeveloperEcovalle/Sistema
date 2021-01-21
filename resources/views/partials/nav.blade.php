@@ -70,7 +70,7 @@
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('familia-active')"><a href="{{route('produccion.familias.index')}}">Familia</a></li>
-            <li><a href="lockscreen.html">Sub Familia</a></li>
+            <li class="@yield('subfamilia-active')"><a href="{{route('produccion.subfamilia.index')}}">Sub Familia</a></li>
             <li><a href="invoice.html">Unidad de Medida</a></li>
             <li class="@yield('productos-active')"><a href="{{ route('produccion.producto.index') }}">Producto Terminado</a></li>
             <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composicion de Productos Terminados</a></li>

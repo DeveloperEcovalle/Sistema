@@ -241,7 +241,7 @@
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <label class="required">Artículo</label>
+                                                <label class="required">Producto</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="articulo_id"
                                                     id="articulo_id" onchange="cargarPresentacion(this)">
@@ -305,11 +305,11 @@
                                                     <tr>
                                                         <th></th>
                                                         <th class="text-center">ACCIONES</th>
-                                                        <th class="text-center">ARTICULO</th>
-                                                        <th class="text-center">PRESENTACION</th>
-                                                        <th class="text-center">PRECIO</th>
                                                         <th class="text-center">CANTIDAD</th>
-                                                        <th class="text-center">IMPORTE</th>
+                                                        <th class="text-center">PRESENTACION</th>
+                                                        <th class="text-center">PRODUCTO</th>
+                                                        <th class="text-center">PRECIO</th>
+                                                        <th class="text-center">TOTAL</th>
 
                                                     </tr>
                                                 </thead>
@@ -561,7 +561,7 @@ function validarFecha() {
         enviar = true;
     }
     if (articulos == 0) {
-        toastr.error('Ingrese al menos 1  Artículo.', 'Error');
+        toastr.error('Ingrese al menos 1 Producto.', 'Error');
         enviar = true;
     }
     return enviar
@@ -658,6 +658,7 @@ $(document).ready(function() {
             },
             {
                 "targets": [2],
+                className: "text-center",
             },
             {
                 "targets": [3],
@@ -665,7 +666,7 @@ $(document).ready(function() {
             },
             {
                 "targets": [4],
-                className: "text-center",
+                className: "text-left",
             },
             {
                 "targets": [5],
@@ -690,8 +691,8 @@ $(document).on('click', '#editar_articulo', function(event) {
     $('#indice').val(table.row($(this).parents('tr')).index());
     $('#articulo_id_editar').val(data[0]).trigger('change');
     $('#presentacion_editar').val(articuloPresentacion(data[0]));
-    $('#precio_editar').val(data[4]);
-    $('#cantidad_editar').val(data[5]);
+    $('#precio_editar').val(data[5]);
+    $('#cantidad_editar').val(data[2]);
     $('#modal_editar_orden').modal('show');
 })
 
@@ -746,11 +747,11 @@ $(".enviar_articulo").click(function() {
         toastr.error('Seleccione artículo.', 'Error');
         enviar = true;
         $('#articulo_id').addClass("is-invalid")
-        $('#error-articulo').text('El campo Artículo es obligatorio.')
+        $('#error-articulo').text('El campo Producto es obligatorio.')
     } else {
         var existe = buscarArticulo($('#articulo_id').val())
         if (existe == true) {
-            toastr.error('Artículo ya se encuentra ingresado.', 'Error');
+            toastr.error('Producto ya se encuentra ingresado.', 'Error');
             enviar = true;
         }
     }
@@ -782,7 +783,7 @@ $(".enviar_articulo").click(function() {
 
         Swal.fire({
             title: 'Opción Agregar',
-            text: "¿Seguro que desea agregar Artículo?",
+            text: "¿Seguro que desea agregar Producto?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: "#1ab394",
@@ -844,10 +845,10 @@ function agregarTabla($detalle) {
     t.row.add([
         $detalle.articulo_id,
         '',
-        $detalle.descripcion,
-        $detalle.presentacion,
-        $detalle.precio,
         $detalle.cantidad,
+        $detalle.presentacion,
+        $detalle.descripcion,
+        $detalle.precio,
         ($detalle.cantidad * $detalle.precio).toFixed(2),
     ]).draw(false);
 
@@ -913,8 +914,8 @@ function cargarArticulos() {
         let fila = {
             articulo_id: value[0],
             presentacion: value[3],
-            precio: value[4],
-            cantidad: value[5],
+            precio: value[5],
+            cantidad: value[2],
         };
 
         articulos.push(fila);

@@ -8,9 +8,11 @@ use App\Pos\Caja;
 use Illuminate\Http\Request;
 use DataTables;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 use DB;
 use Session;
 use App\Compras\Documento\Pago\Pago;
+
 
 //PAGOS 
 use App\Compras\Documento\Pago\Detalle as Detalle_Pago;
@@ -65,12 +67,39 @@ class PagoController extends Controller
         $monto = calcularMontoDocumento($documento->id);
         $monto_restante = $monto - $suma_detalle_pago;
 
+        $bancos_proveedor = collect([]);
+        $bancos_empresa = collect([]);
+
+        foreach($documento->proveedor->bancos as $moneda_bancos){
+                $bancos_proveedor->push([
+                    'id' => $moneda_bancos->id,
+                    'descripcion'=> $moneda_bancos->descripcion,
+                    'tipo_moneda' => $moneda_bancos->tipo_moneda,
+                    'num_cuenta'=> $moneda_bancos->num_cuenta,
+                    'cci'=> $moneda_bancos->cci,
+                    'estado'=> $moneda_bancos->estado,
+                ]);
+        }
+
+        foreach($documento->empresa->bancos as $moneda_bancos){
+            $bancos_empresa->push([
+                'id' => $moneda_bancos->id,
+                'descripcion'=> $moneda_bancos->descripcion,
+                'tipo_moneda' => $moneda_bancos->tipo_moneda,
+                'num_cuenta'=> $moneda_bancos->num_cuenta,
+                'cci'=> $moneda_bancos->cci,
+                'estado'=> $moneda_bancos->estado,
+            ]);
+        }
+
         return view('compras.documentos.pagos.create',[
             'documento' => $documento,
             'fecha_hoy' => $fecha_hoy,
             'monedas' => $monedas,
             'cajas' => $cajas,
-            'monto' =>  number_format($monto_restante, 2, '.', '')
+            'monto' =>  number_format($monto_restante, 2, '.', ''),
+            'bancos_proveedor' => $bancos_proveedor,
+            'bancos_empresa' => $bancos_empresa,
         ]);
     }
 
@@ -85,6 +114,17 @@ class PagoController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
+
+        $data = $request->all();
+        $rules = [
+            'tipo_pago'=> 'required',            
+        ];
+        $message = [
+            'tipo_pago.required' => 'El campo Tipo de Pago es obligatorio.',
+        ];
+        Validator::make($data, $rules, $message)->validate();
+
 
         $pago = new Pago();
         $pago->documento_id =  $request->get('id_documento');
@@ -106,6 +146,12 @@ class PagoController extends Controller
                 'detalle_id' => $detalle->id,
             ]);
         }
+
+        $documento = Documento::findOrFail($request->get('id_documento'));
+        $documento->tipo_pago = '0';
+        $documento->update();
+
+
 
 
         Session::flash('success','Pago creado.');
@@ -133,7 +179,7 @@ class PagoController extends Controller
         ->join('compra_documento_pagos','compra_documento_pagos.id','=','documento_pago_detalle.pago_id')
         ->join('compra_documento_pago_detalle','compra_documento_pago_detalle.id','=','documento_pago_detalle.detalle_id')
         ->join('compra_documentos','compra_documentos.id','=','compra_documento_pagos.documento_id')
-        ->select('compra_documento_pagos.*','compra_documentos.*','compra_documento_pago_detalle.monto as monto_detalle','compra_documento_pagos.id as pago_cabecera_id')        
+        ->select('compra_documento_pagos.*','compra_documentos.*','compra_documento_pago_detalle.monto as monto_detalle','compra_documento_pagos.id as pago_cabecera_id','compra_documento_pagos.tipo_pago as tipo_pago_cabecera')        
         ->where('compra_documentos.id','=',$id)
         ->where('compra_documento_pagos.estado','!=','ANULADO')
         ->get();
@@ -153,7 +199,7 @@ class PagoController extends Controller
             
                 $coleccion->push([
                     'id' => $pago->pago_cabecera_id,
-                    'tipo' => $pago->tipo_pago,
+                    'tipo' => $pago->tipo_pago_cabecera,
                     'moneda' => $pago->moneda,
                     'pago_fecha' => Carbon::parse($pago->created_at)->format( 'd/m/Y - H:i:s'),
                     'monto' => $tipo_moneda.' '.number_format($pago->monto_detalle,2,'.',''),

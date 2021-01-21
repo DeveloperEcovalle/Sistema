@@ -15,6 +15,10 @@ use App\Compras\Orden;
 use App\Compras\Documento\Documento;
 use App\Compras\Documento\Detalle;
 use PDF;
+use DB;
+
+use App\Compras\Documento\Pago\Pago;
+use App\Compras\Documento\Pago\Transferencia;
 
 use App\Compras\Detalle as Detalle_Orden;
 
@@ -33,7 +37,8 @@ class DocumentoController extends Controller
         foreach($documentos as $documento){
 
             
-            $detalles = Detalle::where('documento_id',$documento->id)->get(); 
+            $detalles = Detalle::where('documento_id',$documento->id)->get();
+            $documento = Documento::findOrFail($documento->id); 
             $subtotal = 0; 
             $igv = '';
             $tipo_moneda = '';
@@ -59,11 +64,83 @@ class DocumentoController extends Controller
                 $decimal_total = number_format($subtotal, 2, '.', '');
             }
 
+            //TIPO DE PAGO (OTROS) 
+            $otros =$suma_detalle_pago = calcularMontosAcuentaDocumentos($documento->id);
+
+            //Pagos a cuenta
+            $pagos = DB::table('compra_documento_transferencia')
+            ->join('compra_documentos','compra_documento_transferencia.documento_id','=','compra_documentos.id')
+            ->select('compra_documento_transferencia.*','compra_documentos.moneda as moneda_orden')
+            ->where('compra_documento_transferencia.documento_id','=',$documento->id)
+            ->where('compra_documento_transferencia.estado','!=','ANULADO')
+            ->get();
             
+            
+            // CALCULAR ACUENTA EN MONEDA
+            $acuenta = 0;
+            $soles = 0;
+            foreach($pagos as $pago){
+
+                if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
+                    $acuenta = $acuenta + $pago->monto;
+                }else{
+    
+                    if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
+                        if ($pago->moneda_orden != 'SOLES') {
+                            $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
+                        }else{
+                            $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
+                        }
+                        
+                    }else{
+                        if ($pago->moneda_orden == $pago->moneda_empresa) {
+                            $acuenta = $acuenta + $pago->monto;
+                        }else{
+                                if ($pago->moneda_empresa == 'SOLES') {
+                                    $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
+                                }else{
+                                    $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
+                                }
+                        }
+                    }
+    
+        
+                }
+
+                //CALCULAR A CUENTA EN SOLES
+                if($pago->moneda_empresa != "SOLES" && $pago->moneda_proveedor != "SOLES" && $pago->moneda_orden != "SOLES"  ){
+                    $soles = $soles + ($pago->monto*$pago->tipo_cambio_soles);
+                }else{
+                    if ($pago->moneda_empresa == "SOLES") {
+                        $soles = $soles + $pago->monto;
+                    }else{
+                        if ($pago->moneda_proveedor == "SOLES") {
+                            $soles = $soles + ($pago->tc_banco*$pago->monto);
+                        }else{
+                            $soles = $soles + ($pago->tipo_cambio_soles*$pago->monto);
+                        }
+                    }
+                }
+
+            }
+
+
+            $saldo = 0 ;
+            if ($documento->tipo_pago == '1') {
+                $saldo = $decimal_total - $acuenta;
+            }else{
+                if ($documento->tipo_pago == '0') {
+                    $saldo = $decimal_total - $otros;
+                }   
+            }
+            
+            // //CALCULAR SALDO
+            // $saldo = $decimal_total - $ac;
 
             $coleccion->push([
                 'id' => $documento->id,
                 'tipo' => $documento->tipo_compra,
+                'tipo_pago' => $documento->tipo_pago,
                 'proveedor' => $documento->proveedor->descripcion,
                 'empresa' => $documento->empresa->razon_social,
                 'fecha_emision' =>  Carbon::parse($documento->fecha_emision)->format( 'd/m/Y'),
@@ -72,6 +149,9 @@ class DocumentoController extends Controller
                 'subtotal' => $tipo_moneda.' '.number_format($subtotal, 2, '.', ''),
                 // 'fecha_entrega' =>  Carbon::parse($documento->fecha_entrega)->format( 'd/m/Y'), 
                 'estado' => $documento->estado,
+                'otros' => $tipo_moneda.' '.number_format($otros, 2, '.', ''),
+                'saldo' => $tipo_moneda.' '.number_format($saldo, 2, '.', ''),
+                'transferencia' => $tipo_moneda.' '.number_format($acuenta, 2, '.', ''),
                 'total' => $tipo_moneda.' '.number_format($decimal_total, 2, '.', ''),
             ]);
         }
@@ -126,7 +206,7 @@ class DocumentoController extends Controller
     }
 
     public function store(Request $request){
-        // dd($request);
+ 
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
@@ -416,6 +496,36 @@ class DocumentoController extends Controller
 
 
 
+    }
+
+    public function TypePay($id)
+    {
+        //ANULAR TIPO DE PAGO OTROS
+        $pagos = Pago::where('documento_id',$id)->get();
+
+        foreach ($pagos as $pago) {
+            $pago->estado = 'ANULADO';
+            $pago->update();
+        }
+
+
+        //ANULAR TIPO TRANSFERENCIAS
+        $transferencias = Transferencia::where('documento_id',$id)->get();
+        foreach ($transferencias as $transferencia) {
+            $transferencia->estado = 'ANULADO';
+            $transferencia->update();
+        }
+
+
+        
+        //TIPO DE DOCUMENTO
+        $documento = Documento::findOrFail($id);
+        $documento->tipo_pago = '';
+        $documento->estado = 'ACTIVO';
+        $documento->update();
+
+        Session::flash('success','Tipo de pagos anulados, puede crear nuevo pago.');
+        return redirect()->route('compras.documento.index')->with('exitosa', 'success');
     }
 
 
