@@ -61,6 +61,15 @@
 
                     </div>
 
+                    <div class="form-group">
+                        
+                        <label class="required" for="amount"># ITF</label>
+                        <input type="text" id="entidad_itf" class="form-control">
+                        <div class="invalid-feedback"><b><span id="error-entidad-itf"></span></b></div>
+                        
+
+                    </div>
+
             </div>
 
 
@@ -145,6 +154,15 @@
 
                     </div>
 
+                    <div class="form-group">
+                        
+                        <label class="required" for="amount"># ITF</label>
+                        <input type="text" id="modificar_entidad_itf" class="form-control">
+                        <div class="invalid-feedback"><b><span id="error-modificar-entidad-itf"></span></b></div>
+                        
+
+                    </div>
+
             </div>
 
 
@@ -178,12 +196,14 @@ $(document).on('click', '#editar_entidad', function(event) {
 
     var tr = $(this).closest("tr");
     var rowindex = tr.index();
+
     $('#modificar_id_banco').val(rowindex);
 
     $("#modificar_entidad_descripcion option:contains("+data[1]+")").attr('selected', true).change();
     $("#modificar_entidad_moneda option:contains("+data[2]+")").attr('selected', true).change();
     $('#modificar_entidad_cuenta').val(data[3]);
     $('#modificar_entidad_cci').val(data[4]);
+    $('#modificar_entidad_itf').val(data[5]);
     $('#modal_editar_entidad').modal('show');
 })
 //Validacion al ingresar tablas
@@ -224,6 +244,14 @@ $(".modificarEntidad").click(function() {
         $('#error-modificar-entidad-cci').text('El campo N° CCI es obligatorio.')
     }
 
+    if ($('#modificar_entidad_itf').val() == '') {
+        toastr.error('Ingrese el N° de CCI.', 'Error');
+        enviar = true;
+
+        $("#modificar_entidad_itf").addClass("is-invalid");
+        $('#error-modificar-entidad-itf').text('El campo N° ITF es obligatorio.')
+    }
+
 
     if (enviar != true) {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -253,10 +281,13 @@ $(".modificarEntidad").click(function() {
                     moneda: $('#modificar_entidad_moneda').val(),
                     cuenta: $('#modificar_entidad_cuenta').val(),
                     cci: $('#modificar_entidad_cci').val(),
+                    itf: $('#modificar_entidad_itf').val(),
                 }
                 var existe = buscarRegistromodificar(entidad)
+
                 if (existe == false) {
                     actualizarTabla($('#modificar_id_banco').val())
+                    
                     $('#modal_editar_entidad').modal('hide');
                 }
                 cargarEntidades()
@@ -285,7 +316,9 @@ function actualizarTabla(i) {
         moneda: $('#modificar_entidad_moneda').val(),
         cuenta: $('#modificar_entidad_cuenta').val(),
         cci: $('#modificar_entidad_cci').val(),
+        itf: $('#modificar_entidad_itf').val(),
     }
+
     agregarTabla(entidad);
 
 }
@@ -293,10 +326,26 @@ function actualizarTabla(i) {
 $('#entidad_cci').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+$('#entidad_itf').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
 
 $('#entidad_cuenta').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+
+
+$('#modificar_entidad_cci').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+$('#modificar_entidad_itf').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('#modificar_entidad_cuenta').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
 
 function limpiarErrores() {
     $('#entidad_descripcion').removeClass("is-invalid")
@@ -393,6 +442,7 @@ $(".agregarEntidad").click(function() {
                     moneda: $('#entidad_moneda').val(),
                     cuenta: $('#entidad_cuenta').val(),
                     cci: $('#entidad_cci').val(),
+                    itf: $('#entidad_itf').val(),
                 }
 
                 var existe = buscarRegistro(entidad)
@@ -432,6 +482,10 @@ function buscarRegistro(entidad) {
             existe = true
             toastr.error('N° de CCI ya se encuentra registrada.', 'Error');
         }
+        if (el[4] == entidad.itf) {
+            existe = true
+            toastr.error('N° de ITF ya se encuentra registrada.', 'Error');
+        }
 
     });
     return existe
@@ -456,6 +510,10 @@ function buscarRegistromodificar(entidad) {
                 existe = true
                 toastr.error('N° de CCI ya se encuentra registrada.', 'Error');
             }
+            if (el[5] == entidad.itf) {
+                existe = true
+                toastr.error('N° de ITF ya se encuentra registrada.', 'Error');
+            }
         }
 
 
@@ -468,6 +526,7 @@ function limpiar() {
     $('#entidad_moneda').val($('#entidad_moneda option:first-child').val()).trigger('change');
     $('#entidad_cuenta').val('')
     $('#entidad_cci').val('')
+    $('#entidad_itf').val('')
     limpiarErrores()
     $('#modal_agregar_entidad').modal('hide');
 }
@@ -534,6 +593,7 @@ function agregarTabla($entidad) {
         $entidad.moneda,
         $entidad.cuenta,
         $entidad.cci,
+        $entidad.itf,
     ]).draw(false);
 
     cargarEntidades()
@@ -551,6 +611,7 @@ function cargarEntidades() {
             moneda: value[2],
             cuenta: value[3],
             cci: value[4],
+            itf: value[5],
         };
 
         entidades.push(fila);

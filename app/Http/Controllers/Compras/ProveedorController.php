@@ -230,6 +230,7 @@ class ProveedorController extends Controller
                     'tipo_moneda' => $entidad->moneda,
                     'num_cuenta' => $entidad->cuenta,
                     'cci' => $entidad->cci,
+                    'itf' => $entidad->itf,
                 ]);
             }
         }
@@ -452,6 +453,7 @@ class ProveedorController extends Controller
                     'tipo_moneda' => $entidad->moneda,
                     'num_cuenta' => $entidad->cuenta,
                     'cci' => $entidad->cci,
+                    'itf' => $entidad->itf,
                 ]);
             }
 

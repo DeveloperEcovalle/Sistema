@@ -132,6 +132,7 @@
                                         <th class="text-center">MONEDA</th>
                                         <th class="text-center">CUENTA</th>
                                         <th class="text-center">CCI</th>
+                                        <th class="text-center">ITF</th>
 
                                     </tr>
                                 </thead>
@@ -378,6 +379,10 @@ $(document).ready(function() {
                 "targets": [3],
                 className: "text-center",
             },
+            {
+                "targets": [4],
+                className: "text-center",
+            },
 
         ],
 
@@ -394,6 +399,7 @@ function obtenerTabla() {
         "{{$ban->tipo_moneda}}",
         "{{$ban->num_cuenta}}",
         "{{$ban->cci}}",
+        "{{$ban->itf}}",
     ]).draw(false);
     @endforeach
 }

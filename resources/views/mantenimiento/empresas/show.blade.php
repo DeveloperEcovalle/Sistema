@@ -108,6 +108,7 @@
                                                 <th class="text-center">MONEDA</th>
                                                 <th class="text-center">CUENTA</th>
                                                 <th class="text-center">CCI</th>
+                                                <th class="text-center">ITF</th>
 
                                             </tr>
                                         </thead>
@@ -118,8 +119,8 @@
                                 </div>
 
                             </div>
-                            <hr>
-
+                          
+                            
                             <p  onkeyup="return mayus(this)"><strong> <i class="fa fa-caret-right"></i> Representante de la empresa:</strong></p>
                             <div class="row"  onkeyup="return mayus(this)">
 
@@ -260,6 +261,10 @@ $(document).ready(function() {
                 "targets": [3],
                 className: "text-center",
             },
+            {
+                "targets": [4],
+                className: "text-center",
+            },
 
         ],
 
@@ -276,6 +281,7 @@ function obtenerTabla() {
         "{{$ban->tipo_moneda}}",
         "{{$ban->num_cuenta}}",
         "{{$ban->cci}}",
+        "{{$ban->itf}}",
     ]).draw(false);
     @endforeach
 }

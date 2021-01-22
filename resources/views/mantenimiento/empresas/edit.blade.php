@@ -38,334 +38,365 @@
                         {{ csrf_field() }} {{method_field('PUT')}}
 
                         <div class="row">
-                            <div class="col-sm-6 b-r">
-                                <h4 class=""><b>Empresa</b></h4>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p>Modificar datos de empresa:</p>
+                            <div class="col-lg-12">
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                        <li title="Datos de la Empresa">
+                                            <a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-check-square"></i> Empresa</a>
+                                        </li>
+                                        <li title="Datos de Contacto">
+                                            <a class="nav-link" data-toggle="tab"href="#tab-2" id="bancos_link"> <i class="fa fa-user"></i> Bancos</a>
+                                        </li>
+                                    </ul>
+
+
+                                    <div class="tab-content">
+                                        <div id="tab-1" class="tab-pane active">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6 b-r">
+                                                        <h4 class=""><b>Empresa</b></h4>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <p>Modificar datos de empresa:</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+
+                                                            <div class="col-md-6">
+                                                                <label class="required">Ruc: </label>
+                                                                <input type="text"
+                                                                    class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"
+                                                                    name="ruc" id="ruc" maxlength="11" value="{{old('ruc', $empresa->ruc)}}">
+
+                                                                @if ($errors->has('ruc'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('ruc') }}</strong>
+                                                                </span>
+                                                                @endif
+
+                                                            </div>
+
+
+                                                            <div class="col-md-6">
+                                                                <label>Estado: </label>
+
+                                                                <input type="text" id="estado"
+                                                                    class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
+                                                                    name="estado" value="{{ $empresa->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}"
+                                                                    onkeyup="return mayus(this)" disabled>
+                                                                @if ($errors->has('estado'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('estado') }}</strong>
+                                                                </span>
+                                                                @endif
+
+
+
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="required">Razón social: </label>
+
+                                                            <input type="text"
+                                                                class="form-control {{ $errors->has('razon_social') ? ' is-invalid' : '' }}"
+                                                                name="razon_social" value="{{ old('razon_social', $empresa->razon_social)}}"
+                                                                id="razon_social"  onkeyup="return mayus(this)">
+
+                                                            @if ($errors->has('razon_social'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('razon_social') }}</strong>
+                                                            </span>
+                                                            @endif
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Razón Social Abreviada: </label>
+                                                            <input type="text" id="razon_social_abreviada"
+                                                                class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}"
+                                                                name="razon_social_abreviada"
+                                                                value="{{ old('razon_social_abreviada',$empresa->razon_social_abreviada)}}"
+                                                                onkeyup="return mayus(this)">
+
+                                                            @if ($errors->has('razon_social_abreviada'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('razon_social_abreviada') }}</strong>
+                                                            </span>
+                                                            @endif
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <label class="required">Dirección Fiscal:</label>
+                                                                <textarea type="text" id="direccion_fiscal" name="direccion_fiscal"
+                                                                    class="form-control {{ $errors->has('direccion_fiscal') ? ' is-invalid' : '' }}"
+                                                                    value="{{old('direccion_fiscal',$empresa->direccion_fiscal)}}"
+                                                                    onkeyup="return mayus(this)">{{old('direccion_fiscal',$empresa->direccion_fiscal)}}</textarea>
+                                                                @if ($errors->has('direccion_fiscal'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('direccion_fiscal') }}</strong>
+                                                                </span>
+                                                                @endif
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <label class="required">Dirección de Planta:</label>
+                                                                <textarea type="text" id="direccion_llegada" name="direccion_llegada"
+                                                                    class="form-control {{ $errors->has('direccion_llegada') ? ' is-invalid' : '' }}"
+                                                                    value="{{old('direccion_llegada', $empresa->direccion_llegada)}}"
+                                                                    onkeyup="return mayus(this)">{{old('direccion_llegada',$empresa->direccion_llegada)}}</textarea>
+                                                                @if ($errors->has('direccion_llegada'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('direccion_llegada') }}</strong>
+                                                                </span>
+                                                                @endif
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="">Correo: </label>
+
+                                                            <input type="email"
+                                                                class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}"
+                                                                name="correo" value="{{ old('correo', $empresa->correo)}}" id="correo"
+                                                                onkeyup="return mayus(this)">
+
+                                                            @if ($errors->has('correo'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('correo') }}</strong>
+                                                            </span>
+                                                            @endif
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-md-6">
+                                                                <label>Teléfono:</label>
+                                                                <input type="text" placeholder="" class="form-control" name="telefono"
+                                                                    id="telefono"  onkeyup="return mayus(this)"
+                                                                    value="{{old('telefono', $empresa->telefono)}}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Celular:</label>
+                                                                <input type="text" placeholder="" class="form-control" name="celular"
+                                                                    id="celular"  onkeyup="return mayus(this)"
+                                                                    value="{{old('celular',$empresa->celular)}}">
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <label>Logo:</label>
+
+                                                                <div class="custom-file">
+                                                                    <input id="logo" type="file" name="logo" id="logo"
+                                                                        class="custom-file-input {{ $errors->has('logo') ? ' is-invalid' : '' }}"
+                                                                        accept="image/*" src="{{ Storage::url($empresa->ruta_logo)}}">
+
+
+                                                                    <label for="logo" id="logo_txt"
+                                                                        class="custom-file-label selected {{ $errors->has('ruta') ? ' is-invalid' : '' }}">
+                                                                        @if($empresa->nombre_logo) {{$empresa->nombre_logo}} @else Seleccionar
+                                                                        @endif</label>
+
+                                                                    @if ($errors->has('logo'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('logo') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row justify-content-center">
+                                                            <div class="col-6 align-content-center">
+                                                                <div class="row justify-content-end">
+                                                                    <a href="javascript:void(0);" id="limpiar_logo">
+                                                                        <span class="badge badge-danger">x</span>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="row justify-content-center">
+                                                                    <p>
+                                                                        @if($empresa->ruta_logo)
+                                                                        <img class="logo" src="{{Storage::url($empresa->ruta_logo)}}" alt="">
+                                                                        <input id="url_logo" name="url_logo" type="hidden"
+                                                                            value="{{$empresa->ruta_logo}}">
+                                                                        @else
+                                                                        <img class="logo" src="{{asset('storage/empresas/logos/default.png')}}"
+                                                                            alt="">
+                                                                        <input id="url_logo" name="url_logo" type="hidden" value="">
+                                                                        @endif
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <hr>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <h4><b>Datos del Representante</b></h4>
+                                                                <p>Modificar datos del representante:</p>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-6">
+                                                                        <label class="required">Dni:</label>
+                                                                        <input type="text" name="dni_representante"
+                                                                            class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"
+                                                                            id="dni_representante"
+                                                                            value="{{old('dni_representante', $empresa->dni_representante)}}"
+                                                                            maxlength="8"  onkeyup="return mayus(this)">
+
+                                                                        @if ($errors->has('dni_representante'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('dni_representante') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <label class="required">Nombre Completo:</label>
+                                                                        <input type="text"
+                                                                            class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
+                                                                            name="nombre_representante" id="nombre_representante"
+                                                                            onkeyup="return mayus(this)"
+                                                                            value="{{old('nombre_representante',$empresa->nombre_representante)}}">
+
+                                                                        @if ($errors->has('nombre_representante'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('nombre_representante') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <hr>
+
+                                                        <div class="row">
+
+                                                            <div class="col-sm-12">
+
+                                                                <h4><b>Datos del R.R.P.P</b></h4>
+                                                                <p>Modificar datos del R.R.P.P:</p>
+
+                                                                <div class="form-group row">
+
+                                                                    <div class="col-md-6">
+                                                                        <label class="required">N° de Asiento:</label>
+
+                                                                        <input type="text"
+                                                                            class="form-control {{ $errors->has('num_asiento') ? ' is-invalid' : '' }}"
+                                                                            name="num_asiento" id="num_asiento"  onkeyup="return mayus(this)"
+                                                                            value="{{old('num_asiento', $empresa->num_asiento)}}">
+
+                                                                        @if ($errors->has('num_asiento'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('num_asiento') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+
+                                                                        <label class="required">N° de Partida:</label>
+                                                                        <input type="text"
+                                                                            class="form-control {{ $errors->has('num_partida') ? ' is-invalid' : '' }}"
+                                                                            name="num_partida" id="num_partida"  onkeyup="return mayus(this)"
+                                                                            value="{{old('num_partida', $empresa->num_partida)}}">
+                                                                        @if ($errors->has('num_partida'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('num_partida') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div id="tab-2" class="tab-pane">
+                                            <div class="panel-body">
+                                                <input type="hidden" id="entidades_tabla" name="entidades_tabla[]">
+                                                <div class="form-group row">
+                                                    <div class="col-md-9">
+                                                        <h4><b>Entidades Financieras</b></h4>
+                                                        <p>Modificar entidad financiera del proveedor:</p>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <a class="btn btn-block btn-primary m-t-md"
+                                                            style="color:white;" onclick="agregarEntidad()">
+                                                            <i class="fa fa-plus-square"></i> Añadir entidad
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="table-responsive">
+                                                        <table class="table dataTables-bancos table-striped table-bordered table-hover"
+                                                        style="text-transform:uppercase">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">ACCIONES</th>
+                                                                    <th class="text-center">DESCRIPCION</th>
+                                                                    <th class="text-center">MONEDA</th>
+                                                                    <th class="text-center">CUENTA</th>
+                                                                    <th class="text-center">CCI</th>
+                                                                    <th class="text-center">ITF</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <div class="col-md-6">
-                                        <label class="required">Ruc: </label>
-                                        <input type="text"
-                                            class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"
-                                            name="ruc" id="ruc" maxlength="11" value="{{old('ruc', $empresa->ruc)}}">
-
-                                        @if ($errors->has('ruc'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('ruc') }}</strong>
-                                        </span>
-                                        @endif
-
-                                    </div>
-
-
-                                    <div class="col-md-6">
-                                        <label>Estado: </label>
-
-                                        <input type="text" id="estado"
-                                            class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
-                                            name="estado" value="{{ $empresa->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}"
-                                             onkeyup="return mayus(this)" disabled>
-                                        @if ($errors->has('estado'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('estado') }}</strong>
-                                        </span>
-                                        @endif
-
-
-
-                                    </div>
-
 
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="required">Razón social: </label>
-
-                                    <input type="text"
-                                        class="form-control {{ $errors->has('razon_social') ? ' is-invalid' : '' }}"
-                                        name="razon_social" value="{{ old('razon_social', $empresa->razon_social)}}"
-                                        id="razon_social"  onkeyup="return mayus(this)">
-
-                                    @if ($errors->has('razon_social'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('razon_social') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Razón Social Abreviada: </label>
-                                    <input type="text" id="razon_social_abreviada"
-                                        class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}"
-                                        name="razon_social_abreviada"
-                                        value="{{ old('razon_social_abreviada',$empresa->razon_social_abreviada)}}"
-                                         onkeyup="return mayus(this)">
-
-                                    @if ($errors->has('razon_social_abreviada'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('razon_social_abreviada') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <label class="required">Dirección Fiscal:</label>
-                                        <textarea type="text" id="direccion_fiscal" name="direccion_fiscal"
-                                            class="form-control {{ $errors->has('direccion_fiscal') ? ' is-invalid' : '' }}"
-                                            value="{{old('direccion_fiscal',$empresa->direccion_fiscal)}}"
-                                             onkeyup="return mayus(this)">{{old('direccion_fiscal',$empresa->direccion_fiscal)}}</textarea>
-                                        @if ($errors->has('direccion_fiscal'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('direccion_fiscal') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <label class="required">Dirección de Planta:</label>
-                                        <textarea type="text" id="direccion_llegada" name="direccion_llegada"
-                                            class="form-control {{ $errors->has('direccion_llegada') ? ' is-invalid' : '' }}"
-                                            value="{{old('direccion_llegada', $empresa->direccion_llegada)}}"
-                                             onkeyup="return mayus(this)">{{old('direccion_llegada',$empresa->direccion_llegada)}}</textarea>
-                                        @if ($errors->has('direccion_llegada'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('direccion_llegada') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="">Correo: </label>
-
-                                    <input type="email"
-                                        class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}"
-                                        name="correo" value="{{ old('correo', $empresa->correo)}}" id="correo"
-                                         onkeyup="return mayus(this)">
-
-                                    @if ($errors->has('correo'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('correo') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <label>Teléfono:</label>
-                                        <input type="text" placeholder="" class="form-control" name="telefono"
-                                            id="telefono"  onkeyup="return mayus(this)"
-                                            value="{{old('telefono', $empresa->telefono)}}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Celular:</label>
-                                        <input type="text" placeholder="" class="form-control" name="celular"
-                                            id="celular"  onkeyup="return mayus(this)"
-                                            value="{{old('celular',$empresa->celular)}}">
-                                    </div>
-
-                                </div>
-
-
-
                             </div>
-
-                            <div class="col-sm-6">
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <label>Logo:</label>
-
-                                        <div class="custom-file">
-                                            <input id="logo" type="file" name="logo" id="logo"
-                                                class="custom-file-input {{ $errors->has('logo') ? ' is-invalid' : '' }}"
-                                                accept="image/*" src="{{ Storage::url($empresa->ruta_logo)}}">
-
-
-                                            <label for="logo" id="logo_txt"
-                                                class="custom-file-label selected {{ $errors->has('ruta') ? ' is-invalid' : '' }}">
-                                                @if($empresa->nombre_logo) {{$empresa->nombre_logo}} @else Seleccionar
-                                                @endif</label>
-
-                                            @if ($errors->has('logo'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('logo') }}</strong>
-                                            </span>
-                                            @endif
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group row justify-content-center">
-                                    <div class="col-6 align-content-center">
-                                        <div class="row justify-content-end">
-                                            <a href="javascript:void(0);" id="limpiar_logo">
-                                                <span class="badge badge-danger">x</span>
-                                            </a>
-                                        </div>
-                                        <div class="row justify-content-center">
-                                            <p>
-                                                @if($empresa->ruta_logo)
-                                                <img class="logo" src="{{Storage::url($empresa->ruta_logo)}}" alt="">
-                                                <input id="url_logo" name="url_logo" type="hidden"
-                                                    value="{{$empresa->ruta_logo}}">
-                                                @else
-                                                <img class="logo" src="{{asset('storage/empresas/logos/default.png')}}"
-                                                    alt="">
-                                                <input id="url_logo" name="url_logo" type="hidden" value="">
-                                                @endif
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <input type="hidden" id="entidades_tabla" name="entidades_tabla[]">
-                                <div class="form-group row">
-                                    <div class="col-md-8">
-                                        <h4><b>Entidades Financieras</b></h4>
-                                        <p>Modificar entidad financiera del proveedor:</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a class="btn btn-block btn-primary m-t-md btn-sm"
-                                            style="color:white;" onclick="agregarEntidad()">
-                                            <i class="fa fa-plus-square"></i> Añadir entidad
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="table-responsive">
-                                        <table class="table dataTables-bancos table-striped table-bordered table-hover"
-                                        style="text-transform:uppercase">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center">ACCIONES</th>
-                                                    <th class="text-center">DESCRIPCION</th>
-                                                    <th class="text-center">MONEDA</th>
-                                                    <th class="text-center">CUENTA</th>
-                                                    <th class="text-center">CCI</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-
-
-
-
-
-                            </div>
-
                         </div>
-
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-sm-6 b-r">
-                                <h4><b>Datos del Representante</b></h4>
-                                <p>Modificar datos del representante:</p>
-
-                                <div class="form-group row">
-                                    <div class="col-md-4">
-                                        <label class="required">Dni:</label>
-                                        <input type="text" name="dni_representante"
-                                            class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"
-                                            id="dni_representante"
-                                            value="{{old('dni_representante', $empresa->dni_representante)}}"
-                                            maxlength="8"  onkeyup="return mayus(this)">
-
-                                        @if ($errors->has('dni_representante'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('dni_representante') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="col-md-8">
-                                        <label class="required">Nombre Completo:</label>
-                                        <input type="text"
-                                            class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
-                                            name="nombre_representante" id="nombre_representante"
-                                             onkeyup="return mayus(this)"
-                                            value="{{old('nombre_representante',$empresa->nombre_representante)}}">
-
-                                        @if ($errors->has('nombre_representante'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('nombre_representante') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-                            <div class="col-sm-6">
-
-                                <h4><b>Datos del R.R.P.P</b></h4>
-                                <p>Modificar datos del R.R.P.P:</p>
-
-                                <div class="form-group row">
-
-                                    <div class="col-md-6">
-                                        <label class="required">N° de Asiento:</label>
-
-                                        <input type="text"
-                                            class="form-control {{ $errors->has('num_asiento') ? ' is-invalid' : '' }}"
-                                            name="num_asiento" id="num_asiento"  onkeyup="return mayus(this)"
-                                            value="{{old('num_asiento', $empresa->num_asiento)}}">
-
-                                        @if ($errors->has('num_asiento'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('num_asiento') }}</strong>
-                                        </span>
-                                        @endif
-
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <label class="required">N° de Partida:</label>
-                                        <input type="text"
-                                            class="form-control {{ $errors->has('num_partida') ? ' is-invalid' : '' }}"
-                                            name="num_partida" id="num_partida"  onkeyup="return mayus(this)"
-                                            value="{{old('num_partida', $empresa->num_partida)}}">
-                                        @if ($errors->has('num_partida'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('num_partida') }}</strong>
-                                        </span>
-                                        @endif
-
-
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-                        </div>
-
 
 
                         <div class="hr-line-dashed"></div>
@@ -501,13 +532,51 @@ $('#enviar_empresa_editar').submit(function(e) {
         confirmButtonText: 'Si, Confirmar',
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
+
         if (result.isConfirmed) {
-            if ($('#estado').val() == "ACTIVO") {
-                $("#estado").prop('disabled', false)
-                this.submit();
-            } else {
-                toastr.error('Ingrese una empresa activa', 'Error');
+            
+            var existe = entidadFinanciera()
+            if (existe == false) {
+                
+                Swal.fire({
+                    title: 'Entidad Financiera',
+                    text: "¿Seguro que desea modificar Empresa sin ninguna entidad financiera?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#1ab394",
+                    confirmButtonText: 'Si, Confirmar',
+                    cancelButtonText: "No, Cancelar",
+                }).then((result) => {
+                    
+                    if (result.isConfirmed) {
+                        if ($('#estado').val() == "ACTIVO") {
+                            $("#estado").prop('disabled', false)
+                            cargarEntidades()
+                            this.submit();
+                        } else {
+                            $("#estado").prop('disabled', true)
+                            toastr.error('Ingrese una empresa activa', 'Error');
+                        }
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        $('#bancos_link').click();
+                    }
+                })
+            }else{
+                if ($('#estado').val() == "ACTIVO") {
+                    $("#estado").prop('disabled', false)
+                    cargarEntidades()
+                    this.submit();
+                } else {
+                    $("#estado").prop('disabled', true)
+                    toastr.error('Ingrese una empresa activa', 'Error');
+                }
             }
+    
+    
+
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
@@ -699,6 +768,7 @@ $(document).ready(function() {
             {
 
                 "targets": [0],
+                "width": "10%" ,
                 className: "text-center",
                 render: function(data, type, row) {
                     return "<div class='btn-group'>" +
@@ -709,18 +779,27 @@ $(document).ready(function() {
             },
             {
                 "targets": [1],
+                "width": "20%" 
             },
             {
                 "targets": [2],
                 className: "text-center",
+                "width": "10%" 
             },
             {
                 "targets": [3],
                 className: "text-center",
+                "width": "20%"
             },
             {
                 "targets": [4],
                 className: "text-center",
+                "width": "20%"
+            },
+            {
+                "targets": [5],
+                className: "text-center",
+                "width": "20%"
             },
 
         ],
@@ -740,6 +819,7 @@ var t = $('.dataTables-bancos').DataTable();
         "{{$ban->tipo_moneda}}",
         "{{$ban->num_cuenta}}",
         "{{$ban->cci}}",
+        "{{$ban->itf}}",
     ]).draw(false);
     @endforeach
 }
@@ -747,6 +827,22 @@ var t = $('.dataTables-bancos').DataTable();
 //Añadir Entidad Financiera
 function agregarEntidad() {
     $('#modal_agregar_entidad').modal('show');
+}
+
+//Consultar si ingesar entidad financiera
+function entidadFinanciera() {
+    var existe = true
+    var table = $('.dataTables-bancos').DataTable();
+    var registros = table.rows().data().length;
+
+    if (registros == 0) {
+        existe = false
     }
+    return existe
+}
+
+</script>
+
+
 </script>
 @endpush
