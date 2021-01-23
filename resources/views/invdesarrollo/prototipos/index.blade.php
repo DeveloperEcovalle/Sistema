@@ -121,7 +121,7 @@
                 //Tabla General
                 //{data: 'producto_id', className:"text-center", "visible":false, name:'prototipos.producto_id'},
 				{data: 'id', className:"text-center", name:'prototipos.id'},
-				{data: 'nombre', className:"text-center", name:'prototipos.nombre'},
+				{data: 'producto', className:"text-center", name:'prototipos.producto'},
 				{data: 'fecha_registro', className:"text-center", name:'prototipos.fecha_registro'},
 				{data: 'fecha_inicio', className:"text-center", name:'prototipos.fecha_inicio'},
 				{data: 'fecha_fin', className:"text-center", name:'prototipos.fecha_fin'},
@@ -175,7 +175,7 @@
         data.each(function (value, index) {
             if (value.id == $id) {
 				$('#id_editar').val(value.id);
-				$('#producto_id_editar').val(value.producto_id);
+				$('#producto_editar').val(value.producto);
 				$('#fecha_registro_editar').val(value.fecha_registro);
 				$('#fecha_inicio_editar').val(value.fecha_inicio);
 				$('#fecha_fin_editar').val(value.fecha_fin);
@@ -194,7 +194,7 @@
     }
 
     //Old Modal Editar
-    @if ($errors->has('producto_id')  ||  $errors->has('fecha_inicio') )
+    @if ($errors->has('producto')  ||  $errors->has('fecha_inicio') )
         $('#modal_editar_prototipo').modal({ show: true });
     @endif
 

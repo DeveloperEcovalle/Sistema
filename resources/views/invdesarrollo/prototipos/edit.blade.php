@@ -16,18 +16,15 @@
 
                    <input type="hidden" name="id" id="id_editar" value="{{old('id')}}">
    
+   
                     <div class="form-group">
-                        <label class="required">Productos : </label>
-                        <select
-                            class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}"
-                            style="text-transform: uppercase; width:100%" value="{{old('producto_id')}}"
-                            name="producto_id" id="producto_id_editar" required>
-                            <option></option>
-                            @foreach ($productos as $producto)
-                            <option value="{{$producto->id}}" @if(old('producto_id')==$producto->id )
-                                {{'selected'}} @endif >{{$producto->nombre}}</option>
-                            @endforeach
-                        </select>
+                        <label>Producto :</label>
+                        <input type="text" id="producto_editar" name="producto" class="form-control {{ $errors->has('producto') ? ' is-invalid' : '' }}" value="{{old('producto')}}" >
+                        @if ($errors->has('producto'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('producto') }}</strong>
+                        </span>
+                        @endif
                     </div>
 
                    <div class="form-group">

@@ -18,16 +18,14 @@ class PrototipoController extends Controller
 {
        public function index()
     {
-        $productos = Producto::where('estado','ACTIVO')->get();
-        return view('invdesarrollo.prototipos.index',["productos"=>$productos]);
+        return view('invdesarrollo.prototipos.index');
     }
     public function getPrototipo(){
         return datatables()->query(
             DB::table('prototipos')
-            ->join('productos','productos.id','=','prototipos.producto_id')
             ->select('prototipos.*', 
                 DB::raw('DATE_FORMAT(prototipos.created_at, "%d/%m/%Y") as creado'),
-                DB::raw('DATE_FORMAT(prototipos.updated_at, "%d/%m/%Y") as actualizado'),'productos.nombre'
+                DB::raw('DATE_FORMAT(prototipos.updated_at, "%d/%m/%Y") as actualizado')
             )->where('prototipos.estado','ACTIVO')
         )->toJson();
     }
@@ -36,7 +34,7 @@ class PrototipoController extends Controller
         
         $data = $request->all();
         $rules = [
-            'producto_id'=>'',
+            'producto'=>'',
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
@@ -47,7 +45,7 @@ class PrototipoController extends Controller
         ];
         
         $message = [
-            'producto_id'=>'',
+            'producto'=>'',
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
@@ -59,7 +57,7 @@ class PrototipoController extends Controller
         Validator::make($data, $rules, $message)->validate();
         
         $prototipos=new Prototipo;
-        $prototipos->producto_id = $request->get('producto_id');
+        $prototipos->producto = $request->get('producto');
         $prototipos->fecha_registro = $request->get('fecha_registro');
         $prototipos->fecha_inicio = $request->get('fecha_inicio');
         $prototipos->fecha_fin = $request->get('fecha_fin');
@@ -89,7 +87,7 @@ class PrototipoController extends Controller
         
         $data = $request->all();
         $rules = [
-            'producto_id'=>'',
+            'producto'=>'',
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
@@ -100,7 +98,7 @@ class PrototipoController extends Controller
         ];
         
         $message = [
-            'producto_id'=>'',
+            'producto'=>'',
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
@@ -112,7 +110,7 @@ class PrototipoController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $prototipos = Prototipo::findOrFail($request->get('id'));
-        $prototipos->producto_id = $request->get('producto_id');
+        $prototipos->producto = $request->get('producto');
         $prototipos->fecha_registro = $request->get('fecha_registro');
         $prototipos->fecha_inicio = $request->get('fecha_inicio');
         $prototipos->fecha_fin = $request->get('fecha_fin');
