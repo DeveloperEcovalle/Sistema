@@ -23,6 +23,7 @@ class CreateBancoEmpresasTable extends Migration
             $table->string('tipo_moneda');
             $table->string('num_cuenta');
             $table->string('cci');
+            $table->string('itf');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

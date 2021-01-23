@@ -13,7 +13,8 @@ class Banco extends Model
             'descripcion',
             'tipo_moneda',
             'num_cuenta',
-            'cci'
+            'cci',
+            'itf'
         ];
 
     public function proveedor()

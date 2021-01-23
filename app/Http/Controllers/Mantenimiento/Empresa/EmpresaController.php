@@ -133,6 +133,7 @@ class EmpresaController extends Controller
                     'tipo_moneda' => $entidad->moneda,
                     'num_cuenta' => $entidad->cuenta,
                     'cci' => $entidad->cci,
+                    'itf' => $entidad->itf,
                 ]);
             }
         }
@@ -185,6 +186,7 @@ class EmpresaController extends Controller
     }
 
     public function update(Request $request, $id){
+        
         $data = $request->all();
         $rules = [
             'ruc' => ['required','numeric','min:11', Rule::unique('empresas','ruc')->where(function ($query) {
@@ -274,6 +276,7 @@ class EmpresaController extends Controller
                     'tipo_moneda' => $entidad->moneda,
                     'num_cuenta' => $entidad->cuenta,
                     'cci' => $entidad->cci,
+                    'itf' => $entidad->itf,
                 ]);
             }
 
