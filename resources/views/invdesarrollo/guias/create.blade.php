@@ -48,16 +48,16 @@
 
                                 <div class="form-group row">
 
-                                    <div class="col-lg-6 col-xs-12" id="producto">
-                                        <label class="required">Productos : </label>
+                                    <div class="col-lg-6 col-xs-12" id="prototipo">
+                                        <label class="required">Producto : </label>
                                         <select
-                                            class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('producto_id')}}"
-                                            name="producto_id" id="producto_id" required>
+                                            class="select2_form form-control {{ $errors->has('prototipo_id') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('prototipo_id')}}"
+                                            name="prototipo_id" id="prototipo_id" required>
                                             <option></option>
-                                            @foreach ($productos as $producto)
-                                            <option value="{{$producto->id}}" @if(old('producto_id')==$producto->id )
-                                                {{'selected'}} @endif >{{$producto->nombre}}</option>
+                                            @foreach ($prototipos as $prototipo)
+                                            <option value="{{$prototipo->id}}" @if(old('prototipo_id')==$prototipo->id )
+                                                {{'selected'}} @endif >{{$prototipo->producto}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -181,19 +181,19 @@
                                         <div class="row">
                                             <div class="col-sm-3">
                                                 <label class="col-form-label">Cantidad Solicitada</label>
-                                                <input type="text" id="cantidad_solicitada" class="form-control">
+                                                <input type="number" id="cantidad_solicitada" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad_solicitada"></span></b>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <label class="col-form-label">Cantidad Entregada</label>
-                                                <input type="text" id="cantidad_entregada" class="form-control">
+                                                <input type="number" id="cantidad_entregada" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad_entregada"></span></b>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <label class="col-form-label">Cantidad Devuelta</label>
-                                                <input type="text" id="cantidad_devuelta" class="form-control">
+                                                <input type="number" id="cantidad_devuelta" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad_devuelta"></span></b>
                                                 </div>
                                             </div>
@@ -331,17 +331,15 @@ $('#precio').keyup(function() {
 });
 
 
-$('#cantidad_solicitada').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-$('#cantidad_entregada').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-$('#cantidad_devuelta').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-
+// $('#cantidad_solicitada').on('input', function() {
+//     this.value = this.value.replace(/[^0-9]/g, '');
+// });
+// $('#cantidad_entregada').on('input', function() {
+//     this.value = this.value.replace(/[^0-9]/g, '');
+// });
+// $('#cantidad_devuelta').on('input', function() {
+//     this.value = this.value.replace(/[^0-9]/g, '');
+// });
 
 
 function validarFecha() {

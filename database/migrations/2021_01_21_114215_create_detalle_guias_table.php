@@ -24,9 +24,9 @@ class CreateDetalleGuiasTable extends Migration
             $table->foreign('articulo_id')
                 ->references('id')->on('articulos')
                 ->onDelete('cascade');
-            $table->BigInteger('cantidad_solicitada')->nullable();
-            $table->BigInteger('cantidad_entregada')->nullable();
-            $table->BigInteger('cantidad_devuelta')->nullable();
+            $table->unsignedDecimal('cantidad_solicitada',15,6)->nullable();
+            $table->unsignedDecimal('cantidad_entregada',15,6)->nullable();
+            $table->unsignedDecimal('cantidad_devuelta',15,6)->nullable();
             $table->string('observacion')->nullable();
             $table->timestamps();
         });
