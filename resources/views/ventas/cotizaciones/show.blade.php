@@ -76,7 +76,7 @@
                             <table class="table table-bordered" style="text-transform: uppercase;" id="tabla-fecha">
                                 <thead>
                                     <tr>
-                                        <th colspan="2" class="text-center">ORDEN DE COMPRA</th>
+                                        <th colspan="2" class="text-center">COTIZACION</th>
 
                                     </tr>
                                 </thead>
