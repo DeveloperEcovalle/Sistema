@@ -95,12 +95,12 @@ class CotizacionController extends Controller
         $cotizacion->total = (float) $request->get('monto_total');
         
         $cotizacion->user_id = Auth::id();
-        $orden->igv = $request->get('igv');
+        $cotizacion->igv = $request->get('igv');
         $cotizacion->igv = $request->get('igv');
         if ($request->get('igv_check') == "on") {
-            $orden->igv_check = "1";
+            $cotizacion->igv_check = "1";
         }else{
-            $orden->igv_check = '';
+            $cotizacion->igv_check = '';
         }
         $cotizacion->save();
 
