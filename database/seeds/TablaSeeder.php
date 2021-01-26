@@ -124,5 +124,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'TIPOS DE PAGO (CAJA CHICA)';
         $tabla->sigla = 'TIPO DE PAGO CAJA CHICA';
         $tabla->save();
+
+        //20
+        $tabla = new General();
+        $tabla->descripcion = 'HERRAMIENTAS DE PLANTA';
+        $tabla->sigla = 'HERRAMIENTAS DE PLANTA';
+        $tabla->save();
     }
 }
