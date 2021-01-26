@@ -391,3 +391,12 @@ Route::prefix('invdesarrollo/guias')->group(function() {
     Route::get('reporte/{id}','InvDesarrollo\GuiaController@report')->name('invdesarrollo.guia.reporte');
     Route::get('email/{id}','InvDesarrollo\GuiaController@email')->name('invdesarrollo.guia.email');
 });
+
+// Maquinaria_equipos
+Route::prefix('produccion/maquinarias_equipos')->group(function() {
+    Route::get('index', 'Produccion\Maquinarias_equiposController@index')->name('produccion.maquinaria_equipo.index');
+    Route::get('getPrototipo','Produccion\Maquinarias_equiposController@getMaquinaria_equipo')->name('getMaquinaria_equipo');
+    Route::get('destroy/{id}', 'Produccion\Maquinarias_equiposController@destroy')->name('produccion.maquinaria_equipo.destroy');
+    Route::post('store', 'Produccion\Maquinarias_equiposController@store')->name('produccion.maquinaria_equipo.store');
+    Route::put('update', 'Produccion\Maquinarias_equiposController@update')->name('produccion.maquinaria_equipo.update');
+});

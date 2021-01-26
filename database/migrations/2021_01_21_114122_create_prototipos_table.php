@@ -15,10 +15,7 @@ class CreatePrototiposTable extends Migration
     {
         Schema::create('prototipos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('producto_id')->unsigned();
-            // $table->foreign('producto_id')
-            //       ->references('id')->on('productos')
-            //       ->onDelete('cascade');
+            $table->string('producto');
             $table->date('fecha_registro')->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();

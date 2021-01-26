@@ -229,6 +229,14 @@ if (!function_exists('tipos_pago_caja')) {
     }
 }
 
+// Tipo: Maquina o equipo
+if (!function_exists('tipos_maq_eq')) {
+    function tipos_maq_eq()
+    {
+        return General::find(20)->detalles;
+    }
+}
+
 // Monto a Pagar Orden de compra
 if (!function_exists('calcularMonto')) {
     function calcularMonto($id)

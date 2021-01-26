@@ -1,23 +1,23 @@
 @extends('layout') @section('content')
-@include('invdesarrollo.prototipos.create')
-@include('invdesarrollo.prototipos.edit')
-@section('invdesarrollo-active', 'active')
-@section('prototipo-active', 'active')
+@include('produccion.maquinarias_equipos.create')
+@include('produccion.maquinarias_equipos.edit')
+@section('produccion-active', 'active')
+@section('maquinaria_equipo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Prototipos</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Maquinarias_equipos</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Prototipos</strong>
+                <strong>Maquinarias_equipos</strong>
             </li>
 
         </ol>
     </div>
     <div class="col-lg-2 col-md-2">
-        <a data-toggle="modal" data-target="#modal_crear_prototipo" class="btn btn-block btn-w-m btn-primary m-t-md" href="#">
+        <a data-toggle="modal" data-target="#modal_crear_maquinaria_equipo" class="btn btn-block btn-w-m btn-primary m-t-md" href="#">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
@@ -34,19 +34,19 @@
             <div class="ibox-content">
 
                 <div class="table-responsive">
-                    <table class="table dataTables-prototipos table-striped table-bordered table-hover"  style="text-transform:uppercase">
+                    <table class="table dataTables-maquinarias_equipos table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
                             
 							<th class="text-center">Id</th>
-							<th class="text-center">Producto</th>
-							<th class="text-center">Fecha Registro</th>
-							<th class="text-center">Fecha Inicio</th>
-							<th class="text-center">Fecha Fin</th>
-							<th class="text-center">Linea Caja Texto Registrar</th>
-							<th class="text-center">Imagen</th>
-							<th class="text-center">Archivo Word</th>
-                            <th class="text-center">Estado</th>
+							<th class="text-center">Tipo</th>
+							<th class="text-center">Nombre</th>
+							<th class="text-center">Serie</th>
+							<th class="text-center">Tipocorriente</th>
+							<th class="text-center">Caracteristicas</th>
+							<th class="text-center">Nombre Imagen</th>
+							<th class="text-center">Vidautil</th>
+							<th class="text-center">Estado</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
@@ -85,7 +85,8 @@
 
     $(document).ready(function() {
 
-        $('.dataTables-prototipos').DataTable({
+
+        $('.dataTables-maquinarias_equipos').DataTable({
             "dom": '<"html5buttons"B>lTfgitp',
             "buttons": [
                 {
@@ -116,33 +117,25 @@
             "bAutoWidth": false,
             "processing":true,
             "serverSide":true,
-            "ajax": '{{ route("getPrototipo") }}',
+            "ajax": '{{ route("getMaquinaria_equipo")}}',
             "columns": [
                 //Tabla General
-                //{data: 'producto_id', className:"text-center", "visible":false, name:'prototipos.producto_id'},
-				{data: 'id', className:"text-center", name:'prototipos.id'},
-				{data: 'producto', className:"text-center", name:'prototipos.producto'},
-				{data: 'fecha_registro', className:"text-center", name:'prototipos.fecha_registro'},
-				{data: 'fecha_inicio', className:"text-center", name:'prototipos.fecha_inicio'},
-				{data: 'fecha_fin', className:"text-center", name:'prototipos.fecha_fin'},
-				{data: 'linea_caja_texto_registrar', className:"text-center", name:'prototipos.linea_caja_texto_registrar'},
-                {data: 'imagen', className:"text-center", name:'prototipos.imagen'},
-                // {
-                //     data: null,
-                //     className:"text-center",
-                //     name: 'prototipos.id',
-                //     render: function (data) {
-                        
-                //         return "<div class='btn-group'><img class='imagen' id='ruta_imagen' src='{{Storage::url('public/prototipos/ce6UQd8pQVDyrA86lLP2ZuKtsLmjU4kgC6FMZM9d.jpg')}}' height='100px' width='100px'</div>"
-                //     }
-                // },
-                {data: 'archivo_word', className:"text-center", name:'prototipos.archivo_word'},
-                {data: 'estado', className:"text-center", name:'prototipos.estado'},
+                //{data: 'id', className:"text-center", "visible":false, name:'maquinarias_equipos.id'},
+                
+				{data: 'id', className:"text-center", name:'maquinarias_equipos.id'},
+				{data: 'tipo', className:"text-center", name:'maquinarias_equipos.tipo'},
+				{data: 'nombre', className:"text-center", name:'maquinarias_equipos.nombre'},
+				{data: 'serie', className:"text-center", name:'maquinarias_equipos.serie'},
+				{data: 'tipocorriente', className:"text-center", name:'maquinarias_equipos.tipocorriente'},
+				{data: 'caracteristicas', className:"text-center", name:'maquinarias_equipos.caracteristicas'},
+				{data: 'nombre_imagen', className:"text-center", name:'maquinarias_equipos.nombre_imagen'},
+				{data: 'vidautil', className:"text-center", name:'maquinarias_equipos.vidautil'},
+				{data: 'estado', className:"text-center", name:'maquinarias_equipos.estado'},
 
                 {
                     data: null,
                     className:"text-center",
-                    name: 'prototipos.id',
+                    name: 'maquinarias_equipos.id',
                     render: function (data) {
                         
                         return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
@@ -165,72 +158,36 @@
     $.fn.DataTable.ext.errMode = 'throw';
 
     function obtenerData($id) {
-        console.log($id);
-        var table = $('.dataTables-prototipos').DataTable();
-        console.log(table);
+        var table = $('.dataTables-maquinarias_equipos').DataTable();
         var data = table.rows().data();
-        console.log(data);
-        limpiarError();
-
+        limpiarError()
         data.each(function (value, index) {
             if (value.id == $id) {
-				$('#id_editar').val(value.id);
-				$('#producto_editar').val(value.producto);
-				$('#fecha_registro_editar').val(value.fecha_registro);
-				$('#fecha_inicio_editar').val(value.fecha_inicio);
-				$('#fecha_fin_editar').val(value.fecha_fin);
-				$('#linea_caja_texto_registrar_editar').val(value.linea_caja_texto_registrar);
-                console.log(value.ruta_imagen);
-                //document.getElementById("ruta_imagen_editar").src=value.ruta_imagen;
-                //$('#imagen_editar').val(value.imagen);
                 
-                //$('#ruta_imagen_editar').attr("src",Storage::url(value.ruta_imagen));
-                //$('#ruta_imagen_editar').val(value.ruta_imagen);
-                //$('#archivo_word_editar').val(value.archivo_word);
+				$('#id_editar').val(value.id);
+				$('#tipo_editar').val(value.tipo);
+				$('#nombre_editar').val(value.nombre);
+				$('#serie_editar').val(value.serie);
+				$('#tipocorriente_editar').val(value.tipocorriente);
+				$('#caracteristicas_editar').val(value.caracteristicas);
+				//$('#nombre_imagen_editar').val(value.nombre_imagen);
+				$('#vidautil_editar').val(value.vidautil);
+				$('#estado_editar').val(value.estado);
             }  
         });
-        $('#modal_editar_prototipo').modal('show');
+        $('#modal_editar_maquinaria_equipo').modal('show');
 
     }
-
-    //Old Modal Editar
-    @if ($errors->has('producto')  ||  $errors->has('fecha_inicio') )
-        $('#modal_editar_prototipo').modal({ show: true });
-    @endif
 
     function limpiarError() {
-        $('#descripcion').removeClass( "is-invalid" )
-        $('#error-descripcion').text('')
+        $('#tipo').removeClass( "is-invalid" )
+        $('#error-tipo').text('')
 
-        $('#ubicacion').removeClass( "is-invalid" )
-        $('#error-ubicacion').text('')
+        $('#nombre').removeClass( "is-invalid" )
+        $('#error-nombre').text('')
     }
-
-    $('#modal_editar_prototipo').on('hidden.bs.modal', function(e) { 
-        limpiarError() 
-    });
-
-    //Old Modal Crear
-    @if ($errors->has('ubicacion')  ||  $errors->has('descripcion') )
-        $('#modal_crear_prototipo').modal({ show: true });
-    @endif
-
-    function guardarError() {
-        $('#descripcion').removeClass( "is-invalid" )
-        $('#error-descripcion-guardar').text('')
-        $('#ubicacion').removeClass( "is-invalid" )
-        $('#error-ubicacion-guardar').text('')
-    }
-
-    $('#modal_crear_prototipo').on('hidden.bs.modal', function(e) { 
-        guardarError()
-        $('#descripcion').val('')
-        $('#ubicacion').val('')
-
-    });
-
+    
     function eliminar(id) {
-        
         Swal.fire({
             title: 'Opción Eliminar',
             text: "¿Seguro que desea eliminar registro?",
@@ -239,29 +196,22 @@
             confirmButtonColor: "#1ab394",
             confirmButtonText: 'Si, Confirmar',
             cancelButtonText: "No, Cancelar",
-            }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                //Ruta Eliminar
-                var url_eliminar = '{{ route("invdesarrollo.prototipo.destroy", ":id")}}';
+                var url_eliminar = '{{ route("produccion.maquinaria_equipo.destroy", ":id")}}'; //Ruta Eliminar
                 url_eliminar = url_eliminar.replace(':id',id);
                 $(location).attr('href',url_eliminar);
-
-                }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
+            }else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
                 )
-
             }
-        })
-        
+       })
     }
-
-    $('#editar_prototipo').submit(function(e){
+    
+    $('#editar_maquinaria_equipo').submit(function(e){
         e.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -270,7 +220,6 @@
                 cancelButton: 'btn btn-danger',
             },
             buttonsStyling: false
-            
         })
 
         Swal.fire({
@@ -284,24 +233,20 @@
             confirmButtonColor: "#1ab394",
             confirmButtonText: 'Si, Confirmar',
             cancelButtonText: "No, Cancelar",
-            }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                     this.submit();
-                }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
+            }else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
                 )
-                
             }
-            })
+        })
     })
 
-    $('#crear_prototipo').submit(function(e){
+    $('#crear_maquinaria_equipo').submit(function(e){
         e.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -323,23 +268,17 @@
             confirmButtonColor: "#1ab394",
             confirmButtonText: 'Si, Confirmar',
             cancelButtonText: "No, Cancelar",
-            }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                    this.submit();
-                }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
+                this.submit();
+            }else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
                 )
             }
-            })
+        })
     })
-
-
-
 </script>
 @endpush

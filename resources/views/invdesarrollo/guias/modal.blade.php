@@ -28,31 +28,29 @@
 
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-3">
-                            <label class="required">Cantidad Solicitada</label>
-                            <input type="text" id="cantidad_solicitada_editar" class="form-control">
-                            <div class="invalid-feedback"><b><span id="error-cantidad_solicitada_editar"></span></b></div>
-                        </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Cantidad Solicitada</label>
+                        <input type="text" id="cantidad_solicitada_editar" class="form-control">
+                        <div class="invalid-feedback"><b><span id="error-cantidad_solicitada_editar"></span></b></div>
+                    </div>
 
-                        <div class="col-md-3">
-                            <label class="required">Cantidad Entregada</label>
-                            <input type="text" id="cantidad_entregada_editar" class="form-control">
-                            <div class="invalid-feedback"><b><span id="error-cantidad_entregada_editar"></span></b></div>
-                        </div>
+                    <div class="form-group">
+                        <label class="required">Cantidad Entregada</label>
+                        <input type="text" id="cantidad_entregada_editar" class="form-control">
+                        <div class="invalid-feedback"><b><span id="error-cantidad_entregada_editar"></span></b></div>
+                    </div>
 
-                        <div class="col-md-3">
-                            <label class="required">Cantidad Devuelta</label>
-                            <input type="text" id="cantidad_devuelta_editar" class="form-control">
-                            <div class="invalid-feedback"><b><span id="error-cantidad_devuelta_editar"></span></b></div>
-                        </div>
+                    <div class="form-group">
+                        <label class="required">Cantidad Devuelta</label>
+                        <input type="text" id="cantidad_devuelta_editar" class="form-control">
+                        <div class="invalid-feedback"><b><span id="error-cantidad_devuelta_editar"></span></b></div>
+                    </div>
 
-                         <div class="col-md-3">
-                            <label class="required">Observación</label>
-                            <input type="text" id="observacion__editar" class="form-control">
-                            <div class="invalid-feedback"><b><span id="error-observacion_editar"></span></b></div>
-                        </div>
-
+                     <div class="form-group">
+                        <label class="required">Observación</label>
+                        <input type="text" id="observacion2_editar" class="form-control">
+                        <div class="invalid-feedback"><b><span id="error-observacion2_editar"></span></b></div>
                     </div>
 
             </div>
@@ -117,7 +115,6 @@ $(".editarRegistro").click(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 actualizarTabla($('#indice').val())
-                sumaTotal()
                 limpiar()
 
             } else if (
@@ -146,7 +143,7 @@ function actualizarTabla(i) {
         cantidad_solicitada: $('#cantidad_solicitada_editar').val(),
         cantidad_entregada: $('#cantidad_entregada_editar').val(),
         cantidad_devuelta: $('#cantidad_devuelta_editar').val(),
-        observacion: $('#observacion_editar').val(),
+        observacion: $('#observacion2_editar').val(),
     }
     agregarTabla(detalle);
 
@@ -163,8 +160,8 @@ function limpiar() {
     $("#cantidad_devuelta_editar").removeClass("is-invalid");
     $('#error-cantidad_devuelta_editar').text('')
 
-    $("#observacion_editar").removeClass("is-invalid");
-    $('#error-observacion_editar').text('')
+    $("#observacion2_editar").removeClass("is-invalid");
+    $('#error-observacion2_editar').text('')
 
     $('#modal_editar_guia').modal('hide');
 }

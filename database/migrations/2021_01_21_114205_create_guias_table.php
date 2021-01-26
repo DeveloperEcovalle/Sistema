@@ -15,7 +15,7 @@ class CreateGuiasTable extends Migration
     {
         Schema::create('guias', function (Blueprint $table) {
             $table->Increments('id');
-            $table->unsignedInteger('producto_id')->unsigned();
+            $table->unsignedInteger('prototipo_id')->unsigned();
             // $table->foreign('producto_id')
             //       ->references('id')->on('productos');
             //       ->onDelete('cascade');

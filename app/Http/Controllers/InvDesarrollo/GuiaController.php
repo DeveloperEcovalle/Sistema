@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\InvDesarrollo\Guia;
 use App\InvDesarrollo\Detalle_guia;
 use App\Almacenes\Producto;
+use App\InvDesarrollo\Prototipo;
 // use App\InvDesarrollo\Enviado;
 // use App\Mantenimiento\Empresa\Empresa;
 use App\Compras\Articulo;
@@ -31,7 +32,11 @@ class GuiaController extends Controller
 
     public function getGuia(){
 
-        $guias = Guia::where('estado','!=','ANULADO')->get();
+        $guias =  DB::table('guias')
+            ->join('prototipos','prototipos.id','=','guias.prototipo_id')
+            ->where('guias.estado','!=','ANULADO')   
+            ->select('guias.*','prototipos.producto')         
+            ->get();
 
         $coleccion = collect([]);
         foreach($guias as $guia){
@@ -39,7 +44,7 @@ class GuiaController extends Controller
 
             $coleccion->push([
                 'id' => $guia->id,
-                'producto_id' => $guia->producto_id,
+                'producto' => $guia->producto,
                 'unidades_a_producir' => $guia->unidades_a_producir,
                 'area_responsable1' => $guia->area_responsable1,
                 'area_responsable2' => $guia->area_responsable2,
@@ -57,12 +62,12 @@ class GuiaController extends Controller
     {
         $articulos = Articulo::where('estado','ACTIVO')->get();
         $fecha_hoy = Carbon::now()->toDateString();
-        $productos = Producto::where('estado','ACTIVO')->get();
+        $prototipos = Prototipo::where('estado','ACTIVO')->get();
         $presentaciones =  presentaciones();
 
         return view('invdesarrollo.guias.create',[
             'articulos' => $articulos, 
-            'productos' => $productos, 
+            'prototipos' => $prototipos, 
             'fecha_hoy' => $fecha_hoy,
             'presentaciones'  => $presentaciones, 
         ]);
@@ -73,7 +78,7 @@ class GuiaController extends Controller
     {
         $detalles = Detalle_guia::where('Guia_id',$id)->get();        
         $guia = Guia::findOrFail($id);
-        $productos = Producto::where('estado','ACTIVO')->get();
+        $prototipos = Prototipo::where('estado','ACTIVO')->get();
         $articulos = Articulo::where('estado','ACTIVO')->get();
         $fecha_hoy = Carbon::now()->toDateString();
         $presentaciones =  presentaciones();
@@ -83,7 +88,7 @@ class GuiaController extends Controller
             'articulos' => $articulos, 
             'fecha_hoy' => $fecha_hoy, 
             'detalles' => $detalles,
-            'productos' => $productos, 
+            'prototipos' => $prototipos, 
             'presentaciones'  => $presentaciones, 
         ]);
     }
@@ -91,7 +96,7 @@ class GuiaController extends Controller
     public function store(Request $request){
         $data = $request->all();
         $rules = [
-            'producto_id'=>'required',
+            'prototipo_id'=>'required',
             'unidades_a_producir'=>'required',
             'area_responsable1'=>'max:191',
             'area_responsable2'=>'max:191',
@@ -99,7 +104,7 @@ class GuiaController extends Controller
             'observacion'=>'max:191',
         ];
         $message = [
-            'producto_id.required'=>'Producto es Obligatorio',
+            'prototipo_id.required'=>'Producto es Obligatorio',
             'unidades_a_producir.required'=>'Unidades a producir es obligatorio',
             'area_responsable1'=>'Tamaño Maximo 191',
             'area_responsable2'=>'Tamaño Maximo 191',
@@ -109,7 +114,7 @@ class GuiaController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $guia = new Guia();        
-        $guia->producto_id=$request->get('producto_id');
+        $guia->prototipo_id=$request->get('prototipo_id');
         $guia->unidades_a_producir=$request->get('unidades_a_producir');
         $guia->area_responsable1=$request->get('area_responsable1');
         $guia->area_responsable2=$request->get('area_responsable2');
@@ -142,7 +147,7 @@ class GuiaController extends Controller
     public function update(Request $request, $id){
         $data = $request->all();
         $rules = [
-            'producto_id'=>'required',
+            'prototipo_id'=>'required',
             'unidades_a_producir'=>'required',
             'area_responsable1'=>'max:191',
             'area_responsable2'=>'max:191',
@@ -150,7 +155,7 @@ class GuiaController extends Controller
             'observacion'=>'max:191',
         ];
         $message = [
-            'producto_id.required'=>'Producto es Obligatorio',
+            'prototipo_id.required'=>'Producto es Obligatorio',
             'unidades_a_producir.required'=>'Unidades a producir es obligatorio',
             'area_responsable1'=>'Tamaño Maximo 191',
             'area_responsable2'=>'Tamaño Maximo 191',
@@ -160,7 +165,7 @@ class GuiaController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $guia = Guia::findOrFail($id);        
-        $guia->producto_id=$request->get('producto_id');
+        $guia->prototipo_id=$request->get('prototipo_id');
         $guia->unidades_a_producir=$request->get('unidades_a_producir');
         $guia->area_responsable1=$request->get('area_responsable1');
         $guia->area_responsable2=$request->get('area_responsable2');
@@ -182,12 +187,12 @@ class GuiaController extends Controller
             }
             foreach ($articulotabla as $articulo) {
                 Detalle_guia::create([
-                    'Guia_id' => $guia->id,
-	                'articulo_id' => $articulo->articulo_id,
-	                'cantidad_solicitada' => $articulo->cantidad_solicitada,
-	                'cantidad_entregada' => $articulo->cantidad_entregada,
-	                'cantidad_devuelta' => $articulo->cantidad_devuelta,
-	                'observacion' => $articulo->observacion,
+                    'guia_id' => $guia->id,
+                    'articulo_id' => $articulo->articulo_id,
+                    'cantidad_solicitada' => $articulo->cantidad_solicitada,
+                    'cantidad_entregada' => $articulo->cantidad_entregada,
+                    'cantidad_devuelta' => $articulo->cantidad_devuelta,
+                    'observacion' => $articulo->observacion,
                 ]);
             }
         }
@@ -212,11 +217,11 @@ class GuiaController extends Controller
     {
         $guia = Guia::findOrFail($id);
         $detalles = Detalle_guia::where('guia_id',$id)->get(); 
-        $productos = Producto::where('estado','ACTIVO')->get();
+        $prototipos = Prototipo::where('estado','ACTIVO')->get();
         return view('invdesarrollo.guias.show', [
             'guia' => $guia,
             'detalles' => $detalles,
-            'productos' => $productos, 
+            'prototipos' => $prototipos, 
         ]);
     }
 
@@ -224,12 +229,12 @@ class GuiaController extends Controller
     {
         $guia = Guia::findOrFail($id);
         $detalles = Detalle_guia::where('guia_id',$id)->get();
-        $productos = Producto::where('estado','ACTIVO')->get();
+        $prototipos = Prototipo::where('estado','ACTIVO')->get();
         $paper_size = array(0,0,360,360);
         $pdf = PDF::loadview('invdesarrollo.guias.reportes.detalle',[
             'guia' => $guia,
             'detalles' => $detalles,
-            'productos' => $productos, 
+            'prototipos' => $prototipos, 
             ])->setPaper('a4')->setWarnings(false);
         //dd($pdf);
         //$pdf= new Dompdf();

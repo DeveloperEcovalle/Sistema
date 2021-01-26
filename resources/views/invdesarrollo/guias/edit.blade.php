@@ -44,16 +44,16 @@
 
                                 <div class="form-group row">
 
-                                    <div class="col-lg-6 col-xs-12" id="producto">
+                                    <div class="col-lg-6 col-xs-12" id="prototipo">
                                         <label class="required">Productos : </label>
                                         <select
-                                            class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('producto_id',$guia->producto_id)}}"
-                                            name="producto_id" id="producto_id" required>
+                                            class="select2_form form-control {{ $errors->has('prototipo_id') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('prototipo_id',$guia->prototipo_id)}}"
+                                            name="prototipo_id" id="prototipo_id" required>
                                             <option></option>
-                                            @foreach ($productos as $producto)
-                                            <option value="{{$producto->id}}" @if(old('producto_id',$guia->producto->id)==$producto->id)
-                                                     {{'selected'}} @endif >{{$producto->nombre}}</option>
+                                            @foreach ($prototipos as $prototipo)
+                                                <option value="{{$prototipo->id}}" @if(old('prototipo_id',$guia->prototipo_id)==$prototipo->id)
+                                                         {{'selected'}} @endif >{{$prototipo->producto}}</option>
                                             @endforeach
                                         </select>
 
@@ -75,6 +75,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
 
@@ -309,29 +310,30 @@ $('#fecha .input-group.date').datepicker({
     autoclose: true,
     language: 'es',
     format: "dd/mm/yyyy",
-    startDate: "today"
+    //startDate: "today"
 })
 
 
-$('#cantidad_solicitada').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-$('#cantidad_entregada').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-$('#cantidad_devuelta').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
+// $('#cantidad_solicitada').on('input', function() {
+//     this.value = this.value.replace(/[^0-9]/g, '');
+// });
+// $('#cantidad_entregada').on('input', function() {
+//     this.value = this.value.replace(/[^0-9]/g, '');
+// });
+// $('#cantidad_devuelta').on('input', function() {
+//     this.value = this.value.replace(/[^0-9]/g, '');
+// });
 
 function validarFecha() {
     var enviar = false
     var articulos = registrosArticulos()
 
-    if ($('#fecha').val() == '') {
-        toastr.error('Ingrese Fecha de Emisión de la Guia.', 'Error');
-        $("#fecha").focus();
-        enviar = true;
-    }
+    // No cumple correctamente la validación
+    // if ($('#fecha').val() == '') {
+    //     toastr.error('Ingrese Fecha de Emisión de la Guia.', 'Error');
+    //     $("#fecha").focus();
+    //     enviar = true;
+    // }
 
     if (articulos == 0) {
         toastr.error('Ingrese al menos 1  Artículo.', 'Error');
@@ -476,7 +478,7 @@ $(document).on('click', '#editar_articulo', function(event) {
     $('#cantidad_solicitada_editar').val(data[3]);
     $('#cantidad_entregada_editar').val(data[4]);
     $('#cantidad_devuelta_editar').val(data[5]);
-    $('#observacion_editar').val(data[6]);
+    $('#observacion2_editar').val(data[6]);
     $('#modal_editar_guia').modal('show');
 })
 
@@ -576,7 +578,6 @@ $(".enviar_articulo").click(function() {
                 var detalle = {
                     articulo_id: $('#articulo_id').val(),
                     descripcion: descripcion_articulo,
-                    presentacion: presentacion_articulo,
                     precio: $('#precio').val(),
                     cantidad_solicitada: $('#cantidad_solicitada').val(), 
                     cantidad_entregada: $('#cantidad_entregada').val(), 
@@ -715,13 +716,6 @@ function articuloPresentacion(articulo) {
     return presentacion
 }
 
-function sumaTotal() {
-    var t = $('.dataTables-guia-detalle').DataTable();
-    var subtotal = 0;
-    t.rows().data().each(function(el, index) {
-        subtotal = Number(el[8]) + subtotal
-    });
-}
 
 </script>
 @endpush
