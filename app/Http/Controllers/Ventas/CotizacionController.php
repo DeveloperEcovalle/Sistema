@@ -375,7 +375,7 @@ class CotizacionController extends Controller
         Mail::send('email.cotizacion',compact("cotizacion"), function ($mail) use ($pdf,$cotizacion) {
             $mail->to($cotizacion->cliente->correo_electronico);
             $mail->subject('COTIZACION OC-0'.$cotizacion->id);
-            $mail->attachdata($pdf->output(), 'COTIZACION OC-0'.$cotizacion->id.'.pdf');
+            $mail->attachdata($pdf->output(), 'COTIZACION CO-0'.$cotizacion->id.'.pdf');
         });
 
 
