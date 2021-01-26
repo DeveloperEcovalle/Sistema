@@ -59,8 +59,6 @@
         <ul class="nav nav-second-level collapse">
             <li class="@yield('clientes-active')"><a href="{{ route('ventas.cliente.index') }}">Clientes</a></li>
             <li class="@yield('cotizaciones-active')"><a href="{{ route('ventas.cotizacion.index') }}">Cotizaciones</a></li>
-            <li><a href="lockscreen.html">Pedidos</a></li>
-            <li><a href="lockscreen.html">Documentos</a></li>
 
         </ul>
     </li>
@@ -69,10 +67,6 @@
     <li class="@yield('produccion-active')">
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
-            <li class="@yield('familia-active')"><a href="{{route('produccion.familias.index')}}">Familia</a></li>
-            <li class="@yield('subfamilia-active')"><a href="{{route('produccion.subfamilia.index')}}">Sub Familia</a></li>
-            <li><a href="invoice.html">Unidad de Medida</a></li>
-            <li class="@yield('productos-active')"><a href="{{ route('produccion.producto.index') }}">Producto Terminado</a></li>
             <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composicion de Productos Terminados</a></li>
             <li><a href="login_two_columns.html">Linea de Producción</a></li>
             <li><a href="forgot_password.html">Detalle de Linea</a></li>
@@ -95,6 +89,9 @@
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('almacen-active')"><a href="{{route('almacenes.almacen.index')}}">Almacen</a></li>
+            <li class="@yield('familia-active')"><a href="{{route('almacenes.familias.index')}}">Familia</a></li>
+            <li class="@yield('subfamilia-active')"><a href="{{route('almacenes.subfamilia.index')}}">Sub Familia</a></li>
+            <li class="@yield('productos-active')"><a href="{{ route('almacenes.producto.index') }}">Producto Terminado</a></li>
             <li><a href="search_results.html">Transferencias</a></li>
             <li>
                 <a href="#">Consultas <span class="fa arrow"></span></a>

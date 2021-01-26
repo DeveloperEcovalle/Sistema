@@ -13,18 +13,19 @@ class Cotizacion extends Model
         'moneda',
         'fecha_documento',
         'fecha_atencion',
-        'total_afecto',
         'sub_total',
         'total_igv',
         'total',
         'total_exento',
         'user_id',
-        'estado'
+        'estado',
+        'igv',
+        'igv_check'
     ];
 
     public function empresa()
     {
-        return $this->belongsTo('App\Mantenimiento\Empresa', 'empresa_id');
+        return $this->belongsTo('App\Mantenimiento\Empresa\Empresa', 'empresa_id');
     }
 
     public function cliente()

@@ -14,8 +14,8 @@ class CreateEmpleadosTable extends Migration
     public function up()
     {
         Schema::create('empleados', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('persona_id');
+            $table->Increments('id');
+            $table->unsignedInteger('persona_id');
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->string('area');
             $table->string('profesion');

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\InvDesarrollo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\InvDesarrollo\Prototipo;
-use App\Produccion\Producto;
+use App\Almacenes\Producto;
 use DataTables;
 use Carbon\Carbon;
 use Session;

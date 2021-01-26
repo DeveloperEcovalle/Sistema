@@ -14,10 +14,10 @@ class CreateCotizacionDetallesTable extends Migration
     public function up()
     {
         Schema::create('cotizacion_detalles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('cotizacion_id');
+            $table->Increments('id');
+            $table->unsignedInteger('cotizacion_id');
             $table->foreign('cotizacion_id')->references('id')->on('cotizaciones')->onDelete('cascade');
-            $table->foreignId('producto_id');
+            $table->unsignedInteger('producto_id');
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
             $table->unsignedInteger('cantidad');
             $table->unsignedDecimal('precio', 15, 2);

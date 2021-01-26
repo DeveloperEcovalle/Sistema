@@ -23,6 +23,6 @@ class CotizacionDetalle extends Model
 
     public function producto()
     {
-        return $this->belongsTo('App\Produccion\Producto');
+        return $this->belongsTo('App\Almacenes\Producto');
     }
 }

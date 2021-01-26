@@ -193,6 +193,65 @@ Route::prefix('almacenes/almacen')->group(function() {
     Route::put('update', 'Almacenes\AlmacenController@update')->name('almacenes.almacen.update');
 });
 
+//Familias
+Route::prefix('almacenes/familias')->group(function() {
+    Route::get('index', 'Almacenes\FamiliaController@index')->name('almacenes.familias.index');
+    Route::get('getfamilia','Almacenes\FamiliaController@getfamilia')->name('getfamilia');
+    Route::get('destroy/{id}', 'Almacenes\FamiliaController@destroy')->name('almacenes.familias.destroy');
+    Route::post('store', 'Almacenes\FamiliaController@store')->name('almacenes.familias.store');
+    Route::put('update', 'Almacenes\FamiliaController@update')->name('almacenes.familias.update');
+});
+
+//SubFamilias
+Route::prefix('almacenes/subfamilias')->group(function() {
+    Route::get('index', 'Almacenes\SubFamiliaController@index')->name('almacenes.subfamilia.index');
+    Route::get('getsubfamilia','Almacenes\SubFamiliaController@getSub')->name('getSub');
+    Route::get('destroy/{id}', 'Almacenes\SubFamiliaController@destroy')->name('almacenes.subfamilia.destroy');
+
+    Route::post('store', 'Almacenes\SubFamiliaController@store')->name('almacenes.subfamilia.store');
+    
+    Route::put('update', 'Almacenes\SubFamiliaController@update')->name('almacenes.subfamilia.update');
+    Route::post('getByFamilia', 'Almacenes\SubFamiliaController@getByFamilia')->name('almacenes.subfamilia.getByFamilia');
+
+    Route::get('getBySubFamilia/{id}', 'Almacenes\SubFamiliaController@getBySubFamilia')->name('almacenes.subfamilia.getBySubFamilia');
+
+    Route::get('subfamilia/familia', 'Almacenes\SubFamiliaController@getFamilia')->name('subfamilia.familia');
+});
+
+// Productos
+Route::prefix('almacenes/productos')->group(function() {
+    Route::get('/', 'Almacenes\ProductoController@index')->name('almacenes.producto.index');
+    Route::get('/getTable', 'Almacenes\ProductoController@getTable')->name('almacenes.producto.getTable');
+    Route::get('/registrar', 'Almacenes\ProductoController@create')->name('almacenes.producto.create');
+    Route::post('/registrar', 'Almacenes\ProductoController@store')->name('almacenes.producto.store');
+    Route::get('/actualizar/{id}', 'Almacenes\ProductoController@edit')->name('almacenes.producto.edit');
+    Route::put('/actualizar/{id}', 'Almacenes\ProductoController@update')->name('almacenes.producto.update');
+    Route::get('/datos/{id}', 'Almacenes\ProductoController@show')->name('almacenes.producto.show');
+    Route::get('/destroy/{id}', 'Almacenes\ProductoController@destroy')->name('almacenes.producto.destroy');
+    Route::post('/destroyDetalle', 'Almacenes\ProductoController@destroyDetalle')->name('almacenes.producto.destroyDetalle');
+    Route::post('/getCodigo', 'Almacenes\ProductoController@getCodigo')->name('almacenes.producto.getCodigo');
+
+    Route::get('/obtenerProducto/{id}', 'Almacenes\ProductoController@obtenerProducto')->name('almacenes.producto.obtenerProducto');
+
+    Route::get('/productoDescripcion/{id}', 'Almacenes\ProductoController@productoDescripcion')->name('almacenes.producto.productoDescripcion');
+
+});
+
+// Composicion
+Route::prefix('produccion/composicion')->group(function() {
+    Route::get('/', 'Produccion\ComposicionController@index')->name('produccion.composicion.index');
+    Route::get('/getTable', 'Produccion\ComposicionController@getTable')->name('produccion.composicion.getTable');
+    Route::get('/registrar', 'Produccion\ComposicionController@create')->name('produccion.composicion.create');
+    Route::post('/registrar', 'Produccion\ComposicionController@store')->name('produccion.composicion.store');
+    Route::get('/actualizar/{id}', 'Produccion\ComposicionController@edit')->name('produccion.composicion.edit');
+    Route::put('/actualizar/{id}', 'Produccion\ComposicionController@update')->name('produccion.composicion.update');
+    Route::get('/datos/{id}', 'Produccion\ComposicionController@show')->name('produccion.composicion.show');
+    Route::get('/destroy/{id}', 'Produccion\ComposicionController@destroy')->name('produccion.composicion.destroy');
+    Route::post('/destroyDetalle', 'Produccion\ComposicionController@destroyDetalle')->name('produccion.composicion.destroyDetalle');
+    Route::post('/getCodigo', 'Produccion\ComposicionController@getCodigo')->name('produccion.composicion.getCodigo');
+});
+
+
 // Ubigeo
 Route::prefix('mantenimiento/ubigeo')->group(function() {
     Route::post('/provincias', 'Mantenimiento\Ubigeo\UbigeoController@provincias')->name('mantenimiento.ubigeo.provincias');
@@ -239,56 +298,6 @@ Route::prefix('ventas/clientes')->group(function() {
     Route::post('/getDocumento', 'Ventas\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
 });
 
-//Familias
-Route::prefix('produccion/familias')->group(function() {
-    Route::get('index', 'Produccion\FamiliaController@index')->name('produccion.familias.index');
-    Route::get('getfamilia','Produccion\FamiliaController@getfamilia')->name('getfamilia');
-    Route::get('destroy/{id}', 'Produccion\FamiliaController@destroy')->name('produccion.familias.destroy');
-    Route::post('store', 'Produccion\FamiliaController@store')->name('produccion.familias.store');
-    Route::put('update', 'Produccion\FamiliaController@update')->name('produccion.familias.update');
-});
-
-//SubFamilias
-Route::prefix('produccion/subfamilias')->group(function() {
-    Route::get('index', 'Produccion\SubFamiliaController@index')->name('produccion.subfamilia.index');
-    Route::get('getsubfamilia','Produccion\SubFamiliaController@getSub')->name('getSub');
-    Route::get('destroy/{id}', 'Produccion\SubFamiliaController@destroy')->name('produccion.subfamilia.destroy');
-
-    Route::post('store', 'Produccion\SubFamiliaController@store')->name('produccion.subfamilia.store');
-    
-    Route::put('update', 'Produccion\SubFamiliaController@update')->name('produccion.subfamilia.update');
-    Route::post('getByFamilia', 'Produccion\SubFamiliaController@getByFamilia')->name('produccion.subfamilia.getByFamilia');
-
-    Route::get('subfamilia/familia', 'Produccion\SubFamiliaController@getFamilia')->name('subfamilia.familia');
-});
-
-// Productos
-Route::prefix('produccion/productos')->group(function() {
-    Route::get('/', 'Produccion\ProductoController@index')->name('produccion.producto.index');
-    Route::get('/getTable', 'Produccion\ProductoController@getTable')->name('produccion.producto.getTable');
-    Route::get('/registrar', 'Produccion\ProductoController@create')->name('produccion.producto.create');
-    Route::post('/registrar', 'Produccion\ProductoController@store')->name('produccion.producto.store');
-    Route::get('/actualizar/{id}', 'Produccion\ProductoController@edit')->name('produccion.producto.edit');
-    Route::put('/actualizar/{id}', 'Produccion\ProductoController@update')->name('produccion.producto.update');
-    Route::get('/datos/{id}', 'Produccion\ProductoController@show')->name('produccion.producto.show');
-    Route::get('/destroy/{id}', 'Produccion\ProductoController@destroy')->name('produccion.producto.destroy');
-    Route::post('/destroyDetalle', 'Produccion\ProductoController@destroyDetalle')->name('produccion.producto.destroyDetalle');
-    Route::post('/getCodigo', 'Produccion\ProductoController@getCodigo')->name('produccion.producto.getCodigo');
-});
-
-// Composicion
-Route::prefix('produccion/composicion')->group(function() {
-    Route::get('/', 'Produccion\ComposicionController@index')->name('produccion.composicion.index');
-    Route::get('/getTable', 'Produccion\ComposicionController@getTable')->name('produccion.composicion.getTable');
-    Route::get('/registrar', 'Produccion\ComposicionController@create')->name('produccion.composicion.create');
-    Route::post('/registrar', 'Produccion\ComposicionController@store')->name('produccion.composicion.store');
-    Route::get('/actualizar/{id}', 'Produccion\ComposicionController@edit')->name('produccion.composicion.edit');
-    Route::put('/actualizar/{id}', 'Produccion\ComposicionController@update')->name('produccion.composicion.update');
-    Route::get('/datos/{id}', 'Produccion\ComposicionController@show')->name('produccion.composicion.show');
-    Route::get('/destroy/{id}', 'Produccion\ComposicionController@destroy')->name('produccion.composicion.destroy');
-    Route::post('/destroyDetalle', 'Produccion\ComposicionController@destroyDetalle')->name('produccion.composicion.destroyDetalle');
-    Route::post('/getCodigo', 'Produccion\ComposicionController@getCodigo')->name('produccion.composicion.getCodigo');
-});
 
 // Cotizaciones
 Route::prefix('ventas/cotizaciones')->group(function() {
@@ -300,6 +309,45 @@ Route::prefix('ventas/cotizaciones')->group(function() {
     Route::put('/actualizar/{id}', 'Ventas\CotizacionController@update')->name('ventas.cotizacion.update');
     Route::get('/datos/{id}', 'Ventas\CotizacionController@show')->name('ventas.cotizacion.show');
     Route::get('/destroy/{id}', 'Ventas\CotizacionController@destroy')->name('ventas.cotizacion.destroy');
+    Route::get('reporte/{id}','Ventas\CotizacionController@report')->name('ventas.cotizacion.reporte');
+    Route::get('email/{id}','Ventas\CotizacionController@email')->name('ventas.cotizacion.email');
+});
+
+// Documentos - cotizaciones
+Route::prefix('ventas/documentos')->group(function(){
+
+    Route::get('index', 'Ventas\DocumentoController@index')->name('ventas.documento.index');
+    Route::get('getDocument','Ventas\DocumentoController@getDocument')->name('ventas.getDocument');
+    Route::get('create', 'Ventas\DocumentoController@create')->name('ventas.documento.create');
+    Route::post('store', 'Ventas\DocumentoController@store')->name('ventas.documento.store');
+    Route::get('edit/{id}','Ventas\DocumentoController@edit')->name('ventas.documento.edit');
+    Route::put('update/{id}', 'Ventas\DocumentoController@update')->name('ventas.documento.update');
+    Route::get('destroy/{id}', 'Ventas\DocumentoController@destroy')->name('ventas.documento.destroy');
+    Route::get('show/{id}','Ventas\DocumentoController@show')->name('ventas.documento.show');
+    Route::get('reporte/{id}','Ventas\DocumentoController@report')->name('ventas.documento.reporte');
+    Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente');
+
+    //Pagos
+    // Route::get('pagos/index/{id}', 'Compras\Documentos\PagoController@index')->name('compras.documentos.pago.index');
+    // Route::get('getPay/{id}','Compras\Documentos\PagoController@getPayDocument')->name('getPay.documentos');
+    // Route::get('pagos/create/{id}', 'Compras\Documentos\PagoController@create')->name('compras.documentos.pago.create');
+    // Route::post('pagos/store/', 'Compras\Documentos\PagoController@store')->name('compras.documentos.pago.store');
+    // Route::get('pagos/destroy/{id}', 'Compras\Documentos\PagoController@destroy')->name('compras.documentos.pago.destroy');
+    // Route::get('pagos/show/{id}', 'Compras\Documentos\PagoController@show')->name('compras.documentos.pago.show');
+    // Route::get('getBox/document/{id}', 'Compras\Documentos\PagoController@getBox')->name('compras.documentos.pago.getBox');
+
+    //Pago Transferencia
+    // Route::get('transferencia/pagos/index/{id}', 'Compras\Documentos\TransferenciaController@index')->name('compras.documentos.transferencia.pago.index');
+    // Route::get('transferencia/getPay/{id}','Compras\Documentos\TransferenciaController@getPay')->name('compras.documentos.transferencia.getPay');
+    // Route::get('transferencia/pagos/create/{id}', 'Compras\Documentos\TransferenciaController@create')->name('compras.documentos.transferencia.pago.create');
+    // Route::post('transferencia/pagos/store/', 'Compras\Documentos\TransferenciaController@store')->name('compras.documentos.transferencia.pago.store');
+    // Route::get('transferencia/pagos/destroy/', 'Compras\Documentos\TransferenciaController@destroy')->name('compras.documentos.transferencia.pago.destroy');
+    // Route::get('transferencia/pagos/show/', 'Compras\Documentos\TransferenciaController@show')->name('compras.documentos.transferencia.pago.show');
+
+
+
+
+
 });
 
 

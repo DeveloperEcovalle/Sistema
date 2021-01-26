@@ -14,11 +14,14 @@ class CreateProductoDetallesTable extends Migration
     public function up()
     {
         Schema::create('producto_detalles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('producto_id');
+            $table->Increments('id');
+            
+            $table->unsignedInteger('producto_id');
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
+
             $table->unsignedInteger('articulo_id');
             $table->foreign('articulo_id')->references('id')->on('articulos')->onDelete('cascade');
+            
             $table->unsignedInteger('cantidad');
             $table->unsignedDecimal('peso', 15, 6);
             $table->mediumText('observacion')->nullable();

@@ -137,8 +137,8 @@
                     @endif
                 </div>
                 <div class="form-group col-lg-4 col-xs-12">
-                    <label>Correo electrónico</label>
-                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico') ? old('correo_electronico') : $cliente->correo_electronico}}" maxlength="100" onkeyup="return mayus(this)">
+                    <label class="required">Correo electrónico</label>
+                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico') ? old('correo_electronico') : $cliente->correo_electronico}}" maxlength="100" onkeyup="return mayus(this)"required>
                     @if ($errors->has('correo_electronico'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('correo_electronico') }}</strong>
@@ -720,10 +720,12 @@
             var distrito = $("#distrito").val();
             var telefono_movil = $("#telefono_movil").val();
             var tipo_cliente = $("#tipo_cliente").val();
+            var correo_electronico = $("#correo_electronico").val();
+
             $('.datepicker-days').removeAttr("style").hide();
             var sexo = $("#sexo_hombre").is(':checked') ? 'H' : 'M';
 
-            if ((tipo_documento !== null && tipo_documento.length === 0) || documento.length === 0 || nombres.length === 0 || departamento.length === 0 || provincia.length === 0 || sexo.length === 0 || distrito.length === 0 || telefono_movil.length === 0 || tipo_cliente.length === 0) {
+            if ((tipo_documento !== null && tipo_documento.length === 0) || correo_electronico.length === 0 || documento.length === 0 || nombres.length === 0 || departamento.length === 0 || provincia.length === 0 || sexo.length === 0 || distrito.length === 0 || telefono_movil.length === 0 || tipo_cliente.length === 0) {
                 toastr.error('Complete la información de los campos obligatorios (*)','Error');
                 return false;
             }

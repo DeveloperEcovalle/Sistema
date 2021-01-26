@@ -353,7 +353,7 @@
             $.ajax({
                 dataType : 'json',
                 type : 'post',
-                url : '{{ route('produccion.subfamilia.getByFamilia') }}',
+                url : '{{ route('almacenes.subfamilia.getByFamilia') }}',
                 data : {
                     '_token' : $('input[name=_token]').val(),
                     'familia_id' : $(this).val()

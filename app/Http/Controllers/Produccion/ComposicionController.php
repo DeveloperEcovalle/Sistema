@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Compras\Articulo;
 use App\Http\Controllers\Controller;
-use App\Produccion\Familia;
-use App\Produccion\Producto;
-use App\Produccion\ProductoDetalle;
-use App\Produccion\SubFamilia;
+use App\Almacenes\Familia;
+use App\Almacenes\Producto;
+use App\Almacenes\ProductoDetalle;
+use App\Almacenes\SubFamilia;
 use Illuminate\Http\Request;
 use DataTables;
 use Carbon\Carbon;
