@@ -14,11 +14,11 @@ class CreateClientesTable extends Migration
     public function up()
     {
         Schema::create('clientes', function (Blueprint $table) {
-            $table->id();
+            $table->Increments('id');
             $table->string('tipo_documento');
             $table->string('documento', 25);
             $table->mediumText('nombre')->nullable();
-            $table->integer('tabladetalles_id')->unsigned()->nullable();
+            $table->unsignedInteger('tabladetalles_id')->unsigned()->nullable();
             $table->foreign('tabladetalles_id')->references('id')->on('tabladetalles')->onDelete('cascade');
             $table->char('departamento_id', 2)->nullable();
             $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
@@ -27,7 +27,7 @@ class CreateClientesTable extends Migration
             $table->char('distrito_id', 6)->nullable();
             $table->foreign('distrito_id')->references('id')->on('distritos')->onDelete('cascade');
             $table->string('direccion');
-            $table->string('correo_electronico')->nullable();
+            $table->string('correo_electronico');
             $table->string('telefono_movil');
             $table->string('telefono_fijo')->nullable();
             $table->string('moneda_credito')->nullable();

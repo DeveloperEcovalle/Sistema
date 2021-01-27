@@ -20,7 +20,7 @@ class CreatePosCajaChicaTable extends Migration
             $table->unsignedDecimal('saldo_inicial', 15,2);
             $table->unsignedDecimal('saldo_final', 15,2)->nullable();
             $table->enum('estado',['APERTURADA','CERRADA','ANULADO'])->default('APERTURADA');
-            $table->foreignId('empleado_id');
+            $table->unsignedInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
             $table->string('num_referencia')->nullable();
             $table->timestamps();

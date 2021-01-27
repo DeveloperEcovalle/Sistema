@@ -11,6 +11,7 @@ class Cliente extends Model
         'tipo_documento',
         'documento',
         'nombre',
+        'tabladetalles_id',
         'departamento_id',
         'provincia_id',
         'distrito_id',
@@ -53,6 +54,11 @@ class Cliente extends Model
     public function cotizaciones()
     {
         return $this->hasMany('App\Ventas\Cotizacion');
+    }
+
+    public function detalle()
+    {
+        return $this->belongsTo('App\Mantenimiento\Tabla\Detalle', 'tabladetalles_id');
     }
 
     public function getDocumento(): string

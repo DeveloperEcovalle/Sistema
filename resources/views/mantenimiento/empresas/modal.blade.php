@@ -334,12 +334,25 @@ $('#modificar_entidad_cuenta').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
-$('#entidad_itf').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
+
+$('#entidad_itf').keyup(function(){
+    var val = $(this).val();
+    if(isNaN(val)){
+        val = val.replace(/[^0-9\.]/g,'');
+        if(val.split('.').length>2) 
+            val =val.replace(/\.+$/,"");
+    }
+    $(this).val(val); 
 });
 
-$('#modificar_entidad_itf').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
+$('#modificar_entidad_itf').keyup(function(){
+    var val = $(this).val();
+    if(isNaN(val)){
+        val = val.replace(/[^0-9\.]/g,'');
+        if(val.split('.').length>2) 
+            val =val.replace(/\.+$/,"");
+    }
+    $(this).val(val); 
 });
 
 function limpiarErrores() {

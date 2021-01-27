@@ -99,8 +99,31 @@
                     {data: 'empresa', className:"text-left"},
                     {data: 'cliente', className:"text-left"},
                     {data: 'fecha_documento', className:"text-center"},
-                    {data: 'total', className:"text-left"},
-                    {data: 'estado', className:"text-left"},
+                    {data: 'total', className:"text-center"},
+                    
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data) {
+                            switch (data.estado) {
+                                case "PENDIENTE":
+                                    return "<span class='badge badge-warning' d-block>" + data.estado +
+                                        "</span>";
+                                    break;
+                                case "VENCIDA":
+                                    return "<span class='badge badge-danger' d-block>" + data.estado +
+                                        "</span>";
+                                    break;
+                                case "ATENDIDA":
+                                    return "<span class='badge badge-success' d-block>" + data.estado +
+                                        "</span>";
+                                    break;
+                                default:
+                                    return "<span class='badge badge-success' d-block>" + data.estado +
+                                        "</span>";
+                            }
+                        },
+                    },
                     {
                         data: null,
                         className:"text-center",
@@ -113,11 +136,20 @@
                             var url_editar = '{{ route("ventas.cotizacion.edit", ":id")}}';
                             url_editar = url_editar.replace(':id',data.id);
 
-                            return "<div class='btn-group'>" +
-                                "<a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a>" +
-                                "<a class='btn btn-warning btn-sm modificarDetalle' href='"+url_editar+"' title='Modificar'><i class='fa fa-edit'></i></a>" +
-                                "<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a>" +
-                                "</div>";
+                            return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+
+                                    "<li><a class='dropdown-item' href='" + url_editar +
+                                    "' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                                    "<li><a class='dropdown-item' href='" + url_detalle +
+                                    "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                                    "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
+                                    ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
+                                    "<li class='dropdown-divider'></li>" +
+                                    "<li><a class='dropdown-item' onclick='documento("+data.id+")' title='Documento'><b><i class='fa fa-file'></i> Documento</a></b></li>" +
+
+                            "</ul></div>"
+
+
                         }
                     }
 

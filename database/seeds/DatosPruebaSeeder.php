@@ -3,8 +3,8 @@
 use App\Almacenes\Almacen;
 use App\Compras\Articulo;
 use App\Compras\Categoria;
-use App\Produccion\Familia;
-use App\Produccion\Producto;
+use App\Almacenes\Familia;
+use App\Almacenes\Producto;
 use App\Produccion\ProductoDetalle;
 use App\Produccion\SubFamilia;
 use Illuminate\Database\Seeder;

@@ -242,7 +242,7 @@
 
                                 
                                 <td class="text-center">{{$moneda.'  '.$detalle->precio}}</td>
-                                <td class="text-center subtotal">{{$moneda.'  '.$detalle->cantidad * $detalle->precio}}</td>
+                                <td class="text-center subtotal">{{$moneda.'  '.number_format($detalle->cantidad * $detalle->precio, 2, '.', '')}}</td>
 
                             </tr>
                             @endforeach

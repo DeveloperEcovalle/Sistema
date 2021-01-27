@@ -129,7 +129,8 @@ class ClienteController extends Controller
             'distrito' => 'required',
             'direccion' => 'required',
             'telefono_movil' => 'required|numeric',
-            'activo' => 'required'
+            'activo' => 'required',
+            'correo_electronico' => 'required|email'
         ];
         $message = [
             'tipo_documento.required' => 'El campo Tipo de documento es obligatorio.',
@@ -142,7 +143,9 @@ class ClienteController extends Controller
             'direccion.required' => 'El campo Dirección completa es obligatorio',
             'telefono_movil.required' => 'El campo Teléfono móvil es obligatorio',
             'telefono_movil.numeric' => 'El campo Teléfono móvil debe ser numérico',
-            'activo.required' => 'El campo Estado es obligatorio'
+            'activo.required' => 'El campo Estado es obligatorio',
+            'correo_electronico.required' => 'El campo Correo electrónico es obligatorio',
+            'correo_electronico.email' => 'El campo Correo electrónico es de tipo Email (@).'
         ];
 
         Validator::make($data, $rules, $message)->validate();

@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVA COMPOPSICION DE PRODUCTO TERMINADO</b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVA COMPOSICION DE PRODUCTO TERMINADO</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -27,38 +27,49 @@
                 <div class="ibox-content">
                     <form action="{{ route('produccion.composicion.store') }}" method="POST" id="form_registrar_producto">
                         @csrf
+                        <h4><b>Producto</b></h4>
+
                         <div class="row">
-                            <div class="col-lg-8 col-xs-12">
-                                <h4><b>Producto</b></h4>
-                                <div class="form-group row">
-                                    <div class="col-lg-8 col-xs-12">
-                                        <label class="required">Nombre</label>
-                                        <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                                        @if ($errors->has('nombre'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('nombre') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Presentación</label>
-                                        <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
-                                            <option></option>
-                                            @foreach(presentaciones() as $presentacion)
-                                                <option value="{{ $presentacion->simbolo }}" {{ (old('presentacion') == $presentacion->simbolo ? "selected" : "") }}>{{ $presentacion->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('presentacion'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('presentacion') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                            <div class="col-md-12">
+                                    <p>Registrar datos de la nueva composicion del producto terminado:</p>
+                            </div>
+                        </div>  
+
+                        <div class="form-group row">
+                            
+                            <div class="col-lg-6 col-xs-12">
+
+                                <label class="required">Nombre</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
+                                @if ($errors->has('nombre'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('nombre') }}</strong>
+                                    </span>
+                                @endif
+
+
+                            </div>
+                            
+                            <div class="col-lg-6 col-xs-12">
+
+
+                                <label class="required">Presentación</label>
+                                <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
+                                    <option></option>
+                                    @foreach(presentaciones() as $presentacion)
+                                        <option value="{{ $presentacion->simbolo }}" {{ (old('presentacion') == $presentacion->simbolo ? "selected" : "") }}>{{ $presentacion->descripcion }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('presentacion'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('presentacion') }}</strong>
+                                    </span>
+                                @endif
+                        
                             </div>
                         </div>
+
+
                         <hr>
                         <div class="row">
                             <div class="col-lg-12 col-xs-12">
@@ -353,7 +364,7 @@
             $.ajax({
                 dataType : 'json',
                 type : 'post',
-                url : '{{ route('produccion.subfamilia.getByFamilia') }}',
+                url : '{{ route('almacenes.subfamilia.getByFamilia') }}',
                 data : {
                     '_token' : $('input[name=_token]').val(),
                     'familia_id' : $(this).val()

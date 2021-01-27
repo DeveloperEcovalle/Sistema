@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\InvDesarrollo\Guia;
 use App\InvDesarrollo\Detalle_guia;
+use App\Almacenes\Producto;
 use App\InvDesarrollo\Prototipo;
 // use App\InvDesarrollo\Enviado;
 // use App\Mantenimiento\Empresa\Empresa;
