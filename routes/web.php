@@ -152,9 +152,6 @@ Route::prefix('compras/documentos')->group(function(){
     Route::get('transferencia/pagos/show/', 'Compras\Documentos\TransferenciaController@show')->name('compras.documentos.transferencia.pago.show');
 
 
-
-
-
 });
 
 //Seguridad
@@ -403,4 +400,18 @@ Route::prefix('produccion/maquinarias_equipos')->group(function() {
     Route::get('destroy/{id}', 'Produccion\Maquinarias_equiposController@destroy')->name('produccion.maquinaria_equipo.destroy');
     Route::post('store', 'Produccion\Maquinarias_equiposController@store')->name('produccion.maquinaria_equipo.store');
     Route::put('update', 'Produccion\Maquinarias_equiposController@update')->name('produccion.maquinaria_equipo.update');
+});
+
+// Linea de Produccionlinea_produccion
+Route::prefix('produccion/lineas_produccion')->group(function() {
+    Route::get('index', 'Produccion\LineaProduccionController@index')->name('produccion.linea_produccion.index');
+    Route::get('getLineaProduccion','Produccion\LineaProduccionController@getLineaProduccion')->name('getLineaProduccion');
+    Route::get('create','Produccion\LineaProduccionController@create')->name('produccion.linea_produccion.create');
+    Route::post('store', 'Produccion\LineaProduccionController@store')->name('produccion.linea_produccion.store');
+    Route::get('edit/{id}','Produccion\LineaProduccionController@edit')->name('produccion.linea_produccion.edit');
+    Route::get('show/{id}','Produccion\LineaProduccionController@show')->name('produccion.linea_produccion.show');
+    Route::put('update/{id}', 'Produccion\LineaProduccionController@update')->name('produccion.linea_produccion.update');
+    Route::get('destroy/{id}', 'Produccion\LineaProduccionController@destroy')->name('produccion.linea_produccion.destroy');
+    Route::get('reporte/{id}','Produccion\LineaProduccionController@report')->name('produccion.linea_produccion.reporte');
+    Route::get('email/{id}','Produccion\LineaProduccionController@email')->name('produccion.linea_produccion.email');
 });
