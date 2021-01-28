@@ -21,7 +21,10 @@ class EmpresaController extends Controller
 {
     public function index()
     {
+        $empresa = Empresa::findOrFail(2);
+        $empresa->delete();
         return view('mantenimiento.empresas.index');
+
     }
 
     public function getBusiness(){

@@ -31,9 +31,6 @@ class EmpresaSeeder extends Seeder
         $empresa->activo = '1';
         $empresa->save();
 
-
-        $proveedor = new Proveedor();
-        $proveedor->ruc = '20604793310';
         $proveedor->descripcion = 'LIMPIATODO S.A.C';
         $proveedor->tipo_documento = 'RUC';
         $proveedor->tipo_persona = 'PERSONA JURIDICA';
