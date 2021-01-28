@@ -14,7 +14,7 @@ class CreateDetalleLineasProduccionTable extends Migration
     public function up()
     {
         Schema::create('detalle_lineas_produccion', function (Blueprint $table) {
-            $table->id();
+            $table->Increments('id');
             $table->unsignedInteger('linea_produccion_id')->unsigned();
             $table->foreign('linea_produccion_id')
                   ->references('id')->on('lineas_produccion')

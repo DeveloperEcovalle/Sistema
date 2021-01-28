@@ -14,7 +14,7 @@ class CreateLineasProduccionTable extends Migration
     public function up()
     {
         Schema::create('lineas_produccion', function (Blueprint $table) {
-            $table->id();
+            $table->Increments('id');
             $table->string('nombre_linea',200);
             $table->unsignedInteger('cantidad_personal')->unsigned();
             $table->string('ruta_imagen')->nullable();
