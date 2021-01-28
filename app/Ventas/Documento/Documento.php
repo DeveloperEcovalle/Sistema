@@ -20,7 +20,8 @@ class Documento extends Model
         'user_id',
         'estado',
         'igv',
-        'igv_check'
+        'igv_check',
+        'tipo_venta'
     ];
 
     public function empresa()

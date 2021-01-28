@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Pagos de la Orden #{{$documento->id}} para el proveedor "{{$documento->proveedor->descripcion}} por medio de transferencia"</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos de documento de compra #{{$documento->id}} para el proveedor "{{$documento->proveedor->descripcion}} por medio de transferencia"</b></h2>
        <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -36,9 +36,10 @@
                         <div class="form-group row">
                             @if($documento->moneda != "SOLES")
                             <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                <li>Deuda total del documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
+                                <li>Tipo de cambio del documento de compra <span style="text-transform:lowercase"><b> A SOLES</b></span>: <b>{{$documento->tipo_cambio}}</b>.</li>
+                                <li>Monto a cuenta del documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
+                                <li>Saldo del documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
                                 @if($documento->estado == "PAGADA")
                                 <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
                                 @endif
@@ -51,9 +52,9 @@
                             @else
 
                             <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                <li>Deuda total del documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
+                                <li>Monto a cuenta del documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
+                                <li>Saldo del documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
                                 @if($documento->estado == "PAGADA")
                                 <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
                                 @endif
@@ -93,6 +94,7 @@
                                     <th class="text-center">CUENTA EMPRESA</th>
                                     <th class="text-center">CUENTA PROVEEDOR</th>
                                     <th class="text-center">MONTO</th>
+                                    <th class="text-center">TIPO DE CAMBIO</th>
                                     <th class="text-center">MONTO (S/.)</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
@@ -179,6 +181,10 @@ $(document).ready(function() {
             },
             {
                 data: 'monto',
+                className: "text-center"
+            },
+            {
+                data: 'tipo_cambio',
                 className: "text-center"
             },
             {

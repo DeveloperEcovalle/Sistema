@@ -30,40 +30,6 @@ class TransferenciaController extends Controller
         //MONTO DEL DOCUMENTO DE COMPRA (DOCUMENTO - DETALLE)
         $montoTotal = calcularMontoDocumento($documento->id);
 
-        //TRANSFERENCIA DEL DOCUMENTO
-        $pagos = DB::table('compra_documento_transferencia')
-        ->select('compra_documento_transferencia.*')
-        ->where('compra_documento_transferencia.documento_id','=',$id)
-        ->where('compra_documento_transferencia.estado','!=','ANULADO')
-        ->get();
-
-        //SUMA DE TODOS LOS PAGOS DE (ORDEN A SOLES) EN SOLES DE ESA ORDEN
-        $soles = 0;
-        foreach($pagos as $pago){
-
-            if ($pago->moneda_empresa == "SOLES") {
-                $soles = $soles + $pago->monto;
-            }else{
-                if ($pago->moneda_proveedor == "SOLES") {
-                    $soles = $soles + ($pago->tc_banco*$pago->monto);
-                }else{
-                    $soles = $soles + ($pago->tipo_cambio_soles*$pago->monto);
-                }
-            }
-
-
-        }
-
-        //TOTAL DEL DOCUMENTO DE COMPRA A SOLES 
-        $total_cambio = 0;
-        if ($documento->moneda != "SOLES") {
-            $total_cambio= $montoTotal * $documento->tipo_cambio;    
-        }else{
-            $total_cambio = $montoTotal;
-        }
-
-        //SALDO EN RESTANTE EN SOLES
-        $saldo_restante_soles = $total_cambio - $soles;
 
         //CALCULAR LA SUMA DE TODOS LOS PAGOS
         $pagos = DB::table('compra_documento_transferencia')
@@ -75,43 +41,30 @@ class TransferenciaController extends Controller
 
         // MONTOS ACUENTA EN LA MONEDA DE LA ORDEN
         $acuenta = 0;
+        $soles = 0;
         foreach($pagos as $pago){
-
-            if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                $acuenta = $acuenta + $pago->monto;
-            }else{
-
-                if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                    if ($pago->moneda_orden != 'SOLES') {
-                        $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                    }else{
-                        $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                    }
-                    
-                }else{
-                    if ($pago->moneda_orden == $pago->moneda_empresa) {
-                        $acuenta = $acuenta + $pago->monto;
-                    }else{
-                            if ($pago->moneda_empresa == 'SOLES') {
-                                $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                            }else{
-                                $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                            }
-                    }
-                }
-
- 
-            }
+            $acuenta = $acuenta + $pago->monto;
+            $soles = $soles + $pago->cambio;
         }
+
+
+        //SALDO EN RESTANTE EN SOLES
+        $total_cambio = $documento->total * $documento->tipo_cambio;
+        $saldo_restante_soles =  $total_cambio - $soles;
 
         // //CALCULAR SALDO
         $saldo = $montoTotal - $acuenta;
 
-        if ($saldo < 1) {
+        
+        if ($saldo == 0.0) {
             $documento->estado = "PAGADA";
+            $documento->update();
+        }else{
+            $documento->estado = "PENDIENTE";
             $documento->update();
         }
         
+        // dd($total_cambio);
         return view('compras.documentos.transferencia.index',[
             'documento' => $documento,
             'moneda' => $tipo_moneda,
@@ -140,62 +93,18 @@ class TransferenciaController extends Controller
         $coleccion = collect([]);
 
             foreach($pagos as $pago){
-                foreach(tipos_moneda() as $moneda){
-                    if ($moneda->descripcion == $pago->moneda) {
-                        $tipo_moneda= $moneda->simbolo;
-                    }
-                }
 
-                //PAGO EN SOLES
-                $soles = "";
-
-                if ($pago->moneda_empresa != "SOLES" && $pago->moneda_proveedor != "SOLES") {
-                    $soles = $pago->tipo_cambio_soles*$pago->monto;
+                $simbolo = simbolo_monedas($pago->moneda_orden);
+                $cambio = 0 ;
+                $tipo_cambio = '';
+                if ($pago->moneda_orden == "SOLES") {
+                    $cambio = $pago->monto;
+                    $tipo_cambio = '-';
                 }else{
-                    if ($pago->moneda_empresa == "SOLES") {
-                        $soles = $pago->monto;
-                    }else{
-                        if ($pago->moneda_proveedor == "SOLES") {
-                            $soles = $pago->tc_banco*$pago->monto;
-                        }else{
-                            $soles = $pago->tipo_cambio_soles*$pago->monto;
-                        }
-                    }
-
+                    $cambio = $pago->cambio;
+                    $tipo_cambio = $pago->tipo_cambio;
                 }
 
-
-                //MONTO ENTREGADO AL PROVEEDOR
-                $monto_entregado = '';
-                if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                    $monto_entregado = $pago->monto;
-                }else{
-    
-                    if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                        if ($pago->moneda_orden != 'SOLES') {
-                            $monto_entregado = ($pago->monto/$pago->tc_dia);
-                        }else{
-                            $monto_entregado = ($pago->monto*$pago->tc_dia);
-                        }
-                        
-                    }else{
-                        if ($pago->moneda_orden == $pago->moneda_empresa) {
-                            $monto_entregado = $pago->monto;
-                        }else{
-                                if ($pago->moneda_empresa == 'SOLES') {
-                                    $monto_entregado = ($pago->monto/$pago->tc_banco);
-                                }else{
-                                    $monto_entregado = ($pago->monto*$pago->tc_banco);
-                                }
-                        }
-                    }
-    
-     
-                }
-
-                //SIMBOLO DEL PROVEEDOR
-                $simbolo_proveedor = simbolo_monedas($pago->moneda_orden);
-                // dd($simbolo_proveedor);
 
                 if ($pago->estado == "ACTIVO") {
                     $coleccion->push([
@@ -204,8 +113,9 @@ class TransferenciaController extends Controller
                         'entidad'=> $pago->banco,
                         'cuenta_proveedor' => $pago->moneda_proveedor,
                         'cuenta_empresa' => $pago->moneda_empresa,
-                        'monto' => $simbolo_proveedor.' '.number_format($monto_entregado,2,'.',''),
-                        'monto_soles' => 'S/. '.number_format($soles,2,'.',''),
+                        'monto' => $simbolo.' '.number_format($pago->monto,2,'.',''),
+                        'tipo_cambio' => $tipo_cambio,
+                        'monto_soles' => 'S/. '.number_format($cambio,2,'.',''),
                         ]);
                 }
     
@@ -256,36 +166,12 @@ class TransferenciaController extends Controller
         // TOTAL DE PAGOS EN SU MONEDA DE LA ORDEN
         $acuenta = 0;
         foreach($pagos as $pago){
-
-            if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                $acuenta = $acuenta + $pago->monto;
-            }else{
-
-                if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                    if ($pago->moneda_orden != 'SOLES') {
-                        $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                    }else{
-                        $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                    }
-                    
-                }else{
-                    if ($pago->moneda_orden == $pago->moneda_empresa) {
-                        $acuenta = $acuenta + $pago->monto;
-                    }else{
-                            if ($pago->moneda_empresa == 'SOLES') {
-                                $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                            }else{
-                                $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                            }
-                    }
-                }
-
- 
-            }
+            $acuenta = $acuenta + $pago->monto;
         }
-     
+           
         $monto = calcularMontoDocumento($documento->id);
         $montoRestate = $monto - $acuenta;
+        
         return view('compras.documentos.transferencia.create',[
             'documento' => $documento,
             'bancos' => $bancos,
@@ -293,8 +179,7 @@ class TransferenciaController extends Controller
             'monedas' => $monedas,
             'bancos_proveedor' => $bancos_proveedor,
             'bancos_empresa' => $bancos_empresa,
-            'monto_restante' =>  number_format($montoRestate, 2, '.', ''),
-            'monto' =>  number_format($monto, 2, '.', '')
+            'monto' =>  number_format($montoRestate, 2, '.', '')
         ]);
     }
 
@@ -313,6 +198,7 @@ class TransferenciaController extends Controller
             'monto' => 'required|numeric',
             'moneda' => 'required',
             'observacion' => 'nullable',
+            'cambio' => 'nullable',
 
         ];
         
@@ -352,9 +238,8 @@ class TransferenciaController extends Controller
         $pago->monto =  $request->get('monto');
         $pago->moneda =  $request->get('moneda');
 
-        $pago->tipo_cambio_soles =  $request->get('tipo_cambio_soles');
-        $pago->tc_dia =  $request->get('tc_dia');
-        $pago->tc_banco =  $request->get('tc_empresa_proveedor');
+        $pago->tipo_cambio =  $request->get('tipo_cambio');
+        $pago->cambio =  $request->get('cambio');
 
         $pago->observacion =  $request->get('observacion');
 

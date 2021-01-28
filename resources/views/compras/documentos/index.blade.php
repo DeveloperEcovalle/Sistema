@@ -194,16 +194,14 @@ $(document).ready(function() {
                     var url_detalle = '{{ route("compras.documento.show", ":id")}}';
                     url_detalle = url_detalle.replace(':id', data.id);
 
-                    //Ruta Modificar
-                    var url_editar = '{{ route("compras.documento.edit", ":id")}}';
-                    url_editar = url_editar.replace(':id', data.id);
+
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
 
-                        "<li><a class='dropdown-item' href='" + url_editar +
-                        "' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='modificar("+data.orden_compra+","+data.id +")' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
                         "<li><a class='dropdown-item' href='" + url_detalle +
                         "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
                         ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
@@ -258,9 +256,42 @@ function eliminar(id) {
     })
 }
 
+function modificar(orden,id) {
+    if (orden) {
+        toastr.error('El documento de compra fue generado por una orden (Opción "Editar" en orden de compra).', 'Error');
+    }else{
+        Swal.fire({
+            title: 'Opción Modificar',
+            text: "¿Seguro que desea guardar cambios?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                //Ruta Modificar
+                var url_editar = '{{ route("compras.documento.edit", ":id")}}';
+                url_editar = url_editar.replace(':id', id);
+                $(location).attr('href', url_editar);
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                )
+            }
+        })
+    }
+}
+
 function pagar(orden,id,tipo) {
     // var tipo = this.tipo;
-    console.log(tipo)
 
     if (orden) {
         toastr.error('El tipo de pago de este documento de compra fue realizada (transferencia).', 'Error');

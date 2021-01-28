@@ -90,10 +90,10 @@
                                     <select
                                         class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
-                                        name="empresa_id" id="empresa_id" required>
+                                        name="empresa_id" id="empresa_id" disabled>
                                         <option></option>
                                         @foreach ($empresas as $empresa)
-                                        <option value="{{$empresa->id}}" @if(old('empresa_id')==$empresa->id )
+                                            <option value="{{$empresa->id}}" @if($empresa->id == '1' )
                                             {{'selected'}} @endif >{{$empresa->razon_social}}</option>
                                         @endforeach
                                     </select>
@@ -348,6 +348,10 @@
 
                         </div>
 
+                        <input type="hidden" name="monto_sub_total" id="monto_sub_total" value="{{ old('monto_sub_total') }}">
+                        <input type="hidden" name="monto_total_igv" id="monto_total_igv" value="{{ old('monto_total_igv') }}">
+                        <input type="hidden" name="monto_total" id="monto_total" value="{{ old('monto_total') }}">
+
                         <div class="hr-line-dashed"></div>
                         <div class="form-group row">
 
@@ -579,6 +583,11 @@ $('#enviar_orden').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
+                //CARGAR DATOS TOTAL
+                cargarArticulos()
+                $('#monto_sub_total').val($('#subtotal').text())
+                $('#monto_total_igv').val($('#igv_monto').text())
+                $('#monto_total').val($('#total').text())
                 this.submit();
             } else if (
                 /* Read more about handling dismissals below */

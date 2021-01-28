@@ -15,17 +15,24 @@ use Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\RequiredIf;
+// use App\Compras\Pago as Pago_Compras;
+use App\Compras\Documento\Documento;
+use App\Compras\Documento\Pago\Transferencia;
+
+use App\Compras\Pago as Pago_Compras;
 
 class PagoController extends Controller
 {
     public function index($id)
     {
         $orden = Orden::findOrFail($id);
+
         foreach(tipos_moneda() as $moneda){
             if ($moneda->descripcion == $orden->moneda) {
                 $tipo_moneda= $moneda->simbolo;
             }
         }
+
         //MONTO DE LA ORDEN DE COMPRA (ORDEN - DETALLE)
         $montoTotal = calcularMonto($id);
         
@@ -35,34 +42,6 @@ class PagoController extends Controller
         ->where('pagos.orden_id','=',$id)
         ->where('pagos.estado','!=','ANULADO')
         ->get();
-
-        //SUMA DE TODOS LOS PAGOS DE (ORDEN A SOLES) EN SOLES DE ESA ORDEN
-        $soles = 0;
-        foreach($pagos as $pago){
-
-            if ($pago->moneda_empresa == "SOLES") {
-                $soles = $soles + $pago->monto;
-            }else{
-                if ($pago->moneda_proveedor == "SOLES") {
-                    $soles = $soles + ($pago->tc_banco*$pago->monto);
-                }else{
-                    $soles = $soles + ($pago->tipo_cambio_soles*$pago->monto);
-                }
-            }
-
-
-        }
-        
-        //TOTAL DE LA ORDEN DE COMPRA A SOLES 
-        $total_cambio = 0;
-        if ($orden->moneda != "SOLES") {
-            $total_cambio= $montoTotal * $orden->tipo_cambio;    
-        }else{
-            $total_cambio = $montoTotal;
-        }
-
-        //SALDO EN RESTANTE EN SOLES
-        $saldo_restante_soles = $total_cambio - $soles;
 
         //CALCULAR LA SUMA DE TODOS LOS PAGOS
         $pagos = DB::table('pagos')
@@ -74,40 +53,24 @@ class PagoController extends Controller
 
         // MONTOS ACUENTA EN LA MONEDA DE LA ORDEN
         $acuenta = 0;
+        $soles = 0;
         foreach($pagos as $pago){
-
-            if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                $acuenta = $acuenta + $pago->monto;
-            }else{
-
-                if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                    if ($pago->moneda_orden != 'SOLES') {
-                        $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                    }else{
-                        $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                    }
-                    
-                }else{
-                    if ($pago->moneda_orden == $pago->moneda_empresa) {
-                        $acuenta = $acuenta + $pago->monto;
-                    }else{
-                            if ($pago->moneda_empresa == 'SOLES') {
-                                $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                            }else{
-                                $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                            }
-                    }
-                }
-
- 
-            }
+            $acuenta = $acuenta + $pago->monto;
+            $soles = $soles + $pago->cambio;
         }
 
-        // //CALCULAR SALDO
+        //SALDO EN RESTANTE EN SOLES
+        $total_cambio = $orden->total * $orden->tipo_cambio;
+        $saldo_restante_soles =  $total_cambio - $soles;
+
+        //CALCULAR SALDO
         $saldo = $montoTotal - $acuenta;
 
-        if ($saldo < 1) {
+        if ($saldo == 0.0) {
             $orden->estado = "PAGADA";
+            $orden->update();
+        }else{
+            $orden->estado = "PENDIENTE";
             $orden->update();
         }
         
@@ -128,7 +91,6 @@ class PagoController extends Controller
         $pagos = DB::table('pagos')
         ->join('ordenes','pagos.orden_id','=','ordenes.id')
         ->join('bancos', 'pagos.id_banco_proveedor', '=', 'bancos.id')
-        // ->join('orden', 'pagos.orden_id', '=', 'ordenes.id')
         ->select('pagos.*','bancos.descripcion as banco', 'ordenes.moneda as moneda_orden')
         ->where('pagos.orden_id','=',$id)
         ->where('pagos.estado','!=','ANULADO')
@@ -136,62 +98,18 @@ class PagoController extends Controller
         $coleccion = collect([]);
 
             foreach($pagos as $pago){
-                foreach(tipos_moneda() as $moneda){
-                    if ($moneda->descripcion == $pago->moneda) {
-                        $tipo_moneda= $moneda->simbolo;
-                    }
-                }
 
-                //PAGO EN SOLES
-                $soles = "";
 
-                if ($pago->moneda_empresa != "SOLES" && $pago->moneda_proveedor != "SOLES") {
-                    $soles = $pago->tipo_cambio_soles*$pago->monto;
+                $simbolo = simbolo_monedas($pago->moneda_orden);
+                $cambio = 0 ;
+                $tipo_cambio = '';
+                if ($pago->moneda_orden == "SOLES") {
+                    $cambio = $pago->monto;
+                    $tipo_cambio = '-';
                 }else{
-                    if ($pago->moneda_empresa == "SOLES") {
-                        $soles = $pago->monto;
-                    }else{
-                        if ($pago->moneda_proveedor == "SOLES") {
-                            $soles = $pago->tc_banco*$pago->monto;
-                        }else{
-                            $soles = $pago->tipo_cambio_soles*$pago->monto;
-                        }
-                    }
-
+                    $cambio = $pago->cambio;
+                    $tipo_cambio = $pago->tipo_cambio;
                 }
-
-
-                //MONTO ENTREGADO AL PROVEEDOR
-                $monto_entregado = '';
-                if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                    $monto_entregado = $pago->monto;
-                }else{
-    
-                    if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                        if ($pago->moneda_orden != 'SOLES') {
-                            $monto_entregado = ($pago->monto/$pago->tc_dia);
-                        }else{
-                            $monto_entregado = ($pago->monto*$pago->tc_dia);
-                        }
-                        
-                    }else{
-                        if ($pago->moneda_orden == $pago->moneda_empresa) {
-                            $monto_entregado = $pago->monto;
-                        }else{
-                                if ($pago->moneda_empresa == 'SOLES') {
-                                    $monto_entregado = ($pago->monto/$pago->tc_banco);
-                                }else{
-                                    $monto_entregado = ($pago->monto*$pago->tc_banco);
-                                }
-                        }
-                    }
-    
-     
-                }
-
-                //SIMBOLO DEL PROVEEDOR
-                $simbolo_proveedor = simbolo_monedas($pago->moneda_orden);
-                // dd($simbolo_proveedor);
 
                 if ($pago->estado == "ACTIVO") {
                     $coleccion->push([
@@ -200,8 +118,9 @@ class PagoController extends Controller
                         'entidad'=> $pago->banco,
                         'cuenta_proveedor' => $pago->moneda_proveedor,
                         'cuenta_empresa' => $pago->moneda_empresa,
-                        'monto' => $simbolo_proveedor.' '.number_format($monto_entregado,2,'.',''),
-                        'monto_soles' => 'S/. '.number_format($soles,2,'.',''),
+                        'monto' => $simbolo.' '.number_format($pago->monto,2,'.',''),
+                        'tipo_cambio' => $tipo_cambio,
+                        'monto_soles' => 'S/. '.number_format($cambio,2,'.',''),
                         ]);
                 }
     
@@ -252,37 +171,12 @@ class PagoController extends Controller
         // TOTAL DE PAGOS EN SU MONEDA DE LA ORDEN
         $acuenta = 0;
         foreach($pagos as $pago){
-
-            if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                $acuenta = $acuenta + $pago->monto;
-            }else{
-
-                if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                    if ($pago->moneda_orden != 'SOLES') {
-                        $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                    }else{
-                        $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                    }
-                    
-                }else{
-                    if ($pago->moneda_orden == $pago->moneda_empresa) {
-                        $acuenta = $acuenta + $pago->monto;
-                    }else{
-                            if ($pago->moneda_empresa == 'SOLES') {
-                                $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                            }else{
-                                $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                            }
-                    }
-                }
-
- 
-            }
+            $acuenta = $acuenta + $pago->monto;
         }
-     
+             
         $monto = calcularMonto($orden->id);
         $montoRestate = $monto - $acuenta;
-        
+
         return view('compras.ordenes.pagos.create',[
             'orden' => $orden,
             'bancos' => $bancos,
@@ -290,16 +184,13 @@ class PagoController extends Controller
             'monedas' => $monedas,
             'bancos_proveedor' => $bancos_proveedor,
             'bancos_empresa' => $bancos_empresa,
-            'monto_restante' =>  number_format($montoRestate, 2, '.', ''),
-            'monto' =>  number_format($monto, 2, '.', '')
+            'monto' =>  number_format($montoRestate, 2, '.', '')
         ]);
     }
 
-
-
-
     public function store(Request $request)
     {
+        // dd($request);
        
         $data = $request->all();
 
@@ -311,6 +202,7 @@ class PagoController extends Controller
             'archivo' => 'required|mimetypes:application/pdf,image/jpeg,image/png,image/jpg|max:40000',
             'fecha_pago' => 'required',
             'monto' => 'required|numeric',
+            'cambio' => 'nullable',
             'moneda' => 'required',
             'observacion' => 'nullable',
 
@@ -352,9 +244,8 @@ class PagoController extends Controller
         $pago->monto =  $request->get('monto');
         $pago->moneda =  $request->get('moneda');
 
-        $pago->tipo_cambio_soles =  $request->get('tipo_cambio_soles');
-        $pago->tc_dia =  $request->get('tc_dia');
-        $pago->tc_banco =  $request->get('tc_empresa_proveedor');
+        $pago->tipo_cambio =  $request->get('tipo_cambio');
+        $pago->cambio =  $request->get('cambio');
 
         $pago->observacion =  $request->get('observacion');
 
@@ -365,6 +256,43 @@ class PagoController extends Controller
             $pago->ruta_archivo = $request->file('archivo')->store('public/ordenes/pagos');
         }
         $pago->save();
+
+
+        
+       //AGREGAR PAGO TAMBIEN A LA TRANSFERENCIA de DOCUMENTOS PAGO
+
+        $transferencia = Documento::where('orden_compra',$request->get('id_orden'))->where('estado','!=','ANULADO')->first();
+
+        if ($transferencia) {
+            
+            $pago_transferencia = new Transferencia();
+            $pago_transferencia->documento_id = $transferencia->id;
+            $pago_transferencia->id_banco_proveedor = $request->get('id_entidad');
+            $pago_transferencia->id_banco_empresa = $request->get('id_entidad_empresa');
+            
+            $pago_transferencia->moneda_empresa = $request->get('moneda_empresa_pago');
+            $pago_transferencia->moneda_proveedor = $request->get('moneda_proveedor_pago');
+
+            $pago_transferencia->fecha_pago = Carbon::createFromFormat('d/m/Y', $request->get('fecha_pago'))->format('Y-m-d');
+            $pago_transferencia->monto =  $request->get('monto');
+            $pago_transferencia->moneda =  $request->get('moneda');
+
+            $pago_transferencia->tipo_cambio =  $request->get('tipo_cambio');
+            $pago_transferencia->cambio =  $request->get('cambio');
+
+            $pago_transferencia->observacion =  $request->get('observacion');
+
+            if($request->hasFile('archivo')){                
+                $file = $request->file('archivo');
+                $name = $file->getClientOriginalName();
+                $pago_transferencia->nombre_archivo = $name;
+                $pago_transferencia->ruta_archivo = $request->file('archivo')->store('public/documentos/pagos');
+            }
+            $pago_transferencia->save();
+        
+        }
+
+
 
         Session::flash('success','Pago creado.');
         return redirect()->route('compras.pago.index',$request->get('id_orden'))->with('guardar', 'success');
@@ -378,6 +306,42 @@ class PagoController extends Controller
         $pago = Pago::findOrFail($request->get('pago'));
         $pago->estado = 'ANULADO';
         $pago->update();
+
+        $transferencia = Documento::where('orden_compra',$pago->orden_id)->where('estado','!=','ANULADO')->first();
+        
+        if ($transferencia) {
+
+            $transferencias = Transferencia::where('documento_id',$transferencia->id)->get();
+
+            foreach($transferencias as $trans){
+                $trans->estado = "ANULADO";
+                $trans->update();
+            }
+            
+            $pagos =  Pago_Compras::where('orden_id',$pago->orden_id)->where('estado','ACTIVO')->get();
+
+            foreach ($pagos as $pago) {
+                Transferencia::create([
+                    'documento_id' => $transferencia->id,
+                    'id_banco_proveedor' => $pago->id_banco_proveedor,
+                    'id_banco_empresa' => $pago->id_banco_empresa,
+                    'ruta_archivo' => $pago->ruta_archivo,
+                    'nombre_archivo' => $pago->nombre_archivo,
+                    'fecha_pago' => $pago->fecha_pago,
+                    'monto' => $pago->monto,
+                    'moneda' => $pago->moneda,
+                    'moneda_empresa' => $pago->moneda_empresa,
+                    'moneda_proveedor' => $pago->moneda_proveedor,
+                    'tipo_cambio' => $pago->tipo_cambio,
+                    'cambio' => $pago->cambio,
+                    'observacion' => $pago->observacion,
+                    'estado' => $pago->estado,
+                ]);
+            }
+
+        }
+        
+
 
         Session::flash('success','Pago eliminado.');
         return redirect()->route('compras.pago.index', $request->get('amp;orden'))->with('eliminar', 'success');
@@ -400,6 +364,7 @@ class PagoController extends Controller
             }
         }
         $orden = Orden::findOrFail($request->get('orden') );
+        // dd($orden);
         return view('compras.ordenes.pagos.show',[
             'pago' => $pago,
             'orden' => $orden,

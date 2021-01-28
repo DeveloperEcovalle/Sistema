@@ -127,6 +127,13 @@ if (!function_exists('condicion_reparto')) {
     }
 }
 
+if (!function_exists('tipos_venta')) {
+    function tipos_venta()
+    {
+        return General::find(21)->detalles;
+    }
+}
+
 // UBIGEO
 if (!function_exists('departamentos')) {
     function departamentos($id = null)

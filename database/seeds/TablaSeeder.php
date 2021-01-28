@@ -130,5 +130,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'HERRAMIENTAS DE PLANTA';
         $tabla->sigla = 'HERRAMIENTAS DE PLANTA';
         $tabla->save();
+
+        //21
+        $tabla = new General();
+        $tabla->descripcion = 'TIPOS DE VENTA';
+        $tabla->sigla = 'TIPO DE VENTA';
+        $tabla->save();
     }
 }

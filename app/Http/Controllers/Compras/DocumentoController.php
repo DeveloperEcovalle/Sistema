@@ -20,6 +20,8 @@ use DB;
 use App\Compras\Documento\Pago\Pago;
 use App\Compras\Documento\Pago\Transferencia;
 
+use App\Compras\Pago as Pago_Compras;
+
 use App\Compras\Detalle as Detalle_Orden;
 
 
@@ -79,63 +81,44 @@ class DocumentoController extends Controller
             // CALCULAR ACUENTA EN MONEDA
             $acuenta = 0;
             $soles = 0;
+            
             foreach($pagos as $pago){
-
-                if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                    $acuenta = $acuenta + $pago->monto;
+                $acuenta = $acuenta + $pago->monto;
+                if ($pago->moneda_orden == "SOLES") {
+                    $soles = $soles + $pago->monto;
                 }else{
-    
-                    if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                        if ($pago->moneda_orden != 'SOLES') {
-                            $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                        }else{
-                            $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                        }
-                        
-                    }else{
-                        if ($pago->moneda_orden == $pago->moneda_empresa) {
-                            $acuenta = $acuenta + $pago->monto;
-                        }else{
-                                if ($pago->moneda_empresa == 'SOLES') {
-                                    $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                                }else{
-                                    $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                                }
-                        }
-                    }
-    
-        
+                    $soles = $soles + $pago->cambio;
                 }
-
-                //CALCULAR A CUENTA EN SOLES
-                if($pago->moneda_empresa != "SOLES" && $pago->moneda_proveedor != "SOLES" && $pago->moneda_orden != "SOLES"  ){
-                    $soles = $soles + ($pago->monto*$pago->tipo_cambio_soles);
-                }else{
-                    if ($pago->moneda_empresa == "SOLES") {
-                        $soles = $soles + $pago->monto;
-                    }else{
-                        if ($pago->moneda_proveedor == "SOLES") {
-                            $soles = $soles + ($pago->tc_banco*$pago->monto);
-                        }else{
-                            $soles = $soles + ($pago->tipo_cambio_soles*$pago->monto);
-                        }
-                    }
-                }
-
+                
             }
 
 
-            $saldo = 0 ;
+
+
+
+            $saldo = 0;
+
             if ($documento->tipo_pago == '1') {
                 $saldo = $decimal_total - $acuenta;
             }else{
-                if ($documento->tipo_pago == '0') {
-                    $saldo = $decimal_total - $otros;
-                }   
+            
+                 $saldo = $decimal_total - $otros;
+                   
             }
             
-            // //CALCULAR SALDO
-            // $saldo = $decimal_total - $ac;
+            //CALCULAR SALDO
+            // $saldo = $decimal_total - $acuenta;
+
+            //CAMBIAR ESTADO DE LA ORDEN A PAGADA
+        
+            if ($saldo == 0.0) {
+                $documento->estado = "PAGADA";
+                $documento->update();
+            }else{
+                $documento->estado = "PENDIENTE";
+                $documento->update();
+            }
+            
 
             $coleccion->push([
                 'id' => $documento->id,
@@ -212,7 +195,7 @@ class DocumentoController extends Controller
             'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
             'tipo_compra'=> 'required',
-            'empresa_id'=> 'required',
+            'numero_tipo'=> 'required',
             'proveedor_id'=> 'required',
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
@@ -225,7 +208,7 @@ class DocumentoController extends Controller
             'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'tipo_compra.required' => 'El campo Tipo es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
-            'empresa_id.required' => 'El campo Empresa es obligatorio.',
+            'numero_tipo.required' => 'El campo Número es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
             'modo_compra.required' => 'El campo Modo de Compra es obligatorio.',
             'moneda.required' => 'El campo Moneda es obligatorio.',
@@ -242,7 +225,15 @@ class DocumentoController extends Controller
         $documento = new Documento();        
         $documento->fecha_emision = Carbon::createFromFormat('d/m/Y', $request->get('fecha_emision'))->format('Y-m-d');
         $documento->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
-        $documento->empresa_id = $request->get('empresa_id');
+
+        $documento->sub_total = (float) $request->get('monto_sub_total');
+        $documento->total_igv = (float) $request->get('monto_total_igv');
+        $documento->total = (float) $request->get('monto_total');
+
+        $documento->empresa_id = '1';
+        
+        $documento->numero_tipo = $request->get('numero_tipo');
+
         $documento->proveedor_id = $request->get('proveedor_id');
         $documento->modo_compra = $request->get('modo_compra');
         $documento->observacion = $request->get('observacion');
@@ -272,6 +263,41 @@ class DocumentoController extends Controller
                 'costo_flete' => $articulo->costo_flete,
             ]);
         }
+
+        // TRANSFERRIR PAGOS DE LA ORDEN SI EXISTEN
+        if($request->get('orden_id')){
+
+            $pagos =  Pago_Compras::where('orden_id',$request->get('orden_id'))->where('estado','ACTIVO')->get();
+
+            $documento = Documento::findOrFail($documento->id);
+            $documento->tipo_pago =  "1";
+            $documento->update();
+
+            if (count($pagos) > 0) {
+                foreach ($pagos as $pago) {
+                    Transferencia::create([
+                        'documento_id' => $documento->id,
+                        'id_banco_proveedor' => $pago->id_banco_proveedor,
+                        'id_banco_empresa' => $pago->id_banco_empresa,
+                        'ruta_archivo' => $pago->ruta_archivo,
+                        'nombre_archivo' => $pago->nombre_archivo,
+                        'fecha_pago' => $pago->fecha_pago,
+                        'monto' => $pago->monto,
+                        'moneda' => $pago->moneda,
+                        'moneda_empresa' => $pago->moneda_empresa,
+                        'moneda_proveedor' => $pago->moneda_proveedor,
+                        'tipo_cambio' => $pago->tipo_cambio,
+                        'cambio' => $pago->cambio,
+                        'observacion' => $pago->observacion,
+                        'estado' => $pago->estado,
+                    ]);
+                }
+            }
+
+
+        }
+
+
 
         Session::flash('success','Documento de Compra creada.');
         return redirect()->route('compras.documento.index')->with('guardar', 'success');
@@ -306,7 +332,7 @@ class DocumentoController extends Controller
             'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
             'tipo_compra'=> 'required',
-            'empresa_id'=> 'required',
+            'numero_tipo'=> 'required',
             'proveedor_id'=> 'required',
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
@@ -318,7 +344,7 @@ class DocumentoController extends Controller
             'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'tipo_compra.required' => 'El campo Tipo es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
-            'empresa_id.required' => 'El campo Empresa es obligatorio.',
+            'numero_tipo.required' => 'El campo Número es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
             'modo_compra.required' => 'El campo Modo de Compra es obligatorio.',
             'moneda.required' => 'El campo Moneda es obligatorio.',
@@ -334,12 +360,13 @@ class DocumentoController extends Controller
         $documento = Documento::findOrFail($id);        
         $documento->fecha_emision = Carbon::createFromFormat('d/m/Y', $request->get('fecha_emision'))->format('Y-m-d');
         $documento->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
-        $documento->empresa_id = $request->get('empresa_id');
+        $documento->empresa_id = '1';
         $documento->proveedor_id = $request->get('proveedor_id');
         $documento->modo_compra = $request->get('modo_compra');
         $documento->observacion = $request->get('observacion');
         $documento->moneda = $request->get('moneda');
         $documento->tipo_cambio = $request->get('tipo_cambio');
+        $documento->numero_tipo = $request->get('numero_tipo');
         $documento->usuario_id = auth()->user()->id;
         
         if ($request->get('igv_check') == "on") {

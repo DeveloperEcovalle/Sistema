@@ -97,49 +97,15 @@ class OrdenController extends Controller
             // CALCULAR ACUENTA EN MONEDA
             $acuenta = 0;
             $soles = 0;
+            
             foreach($pagos as $pago){
-
-                if ($pago->moneda_orden == $pago->moneda_empresa && $pago->moneda_orden == $pago->moneda_proveedor ) {
-                    $acuenta = $acuenta + $pago->monto;
+                $acuenta = $acuenta + $pago->monto;
+                if ($pago->moneda_orden == "SOLES") {
+                    $soles = $soles + $pago->monto;
                 }else{
-    
-                    if ($pago->moneda_empresa == $pago->moneda_proveedor ) {
-                        if ($pago->moneda_orden != 'SOLES') {
-                            $acuenta = $acuenta + ($pago->monto/$pago->tc_dia);
-                        }else{
-                            $acuenta = $acuenta + ($pago->monto*$pago->tc_dia);
-                        }
-                        
-                    }else{
-                        if ($pago->moneda_orden == $pago->moneda_empresa) {
-                            $acuenta = $acuenta + $pago->monto;
-                        }else{
-                                if ($pago->moneda_empresa == 'SOLES') {
-                                    $acuenta = $acuenta + ($pago->monto/$pago->tc_banco);
-                                }else{
-                                    $acuenta = $acuenta + ($pago->monto*$pago->tc_banco);
-                                }
-                        }
-                    }
-    
-     
+                    $soles = $soles + $pago->cambio;
                 }
-
-                //CALCULAR A CUENTA EN SOLES
-                if($pago->moneda_empresa != "SOLES" && $pago->moneda_proveedor != "SOLES" && $pago->moneda_orden != "SOLES"  ){
-                    $soles = $soles + ($pago->monto*$pago->tipo_cambio_soles);
-                }else{
-                    if ($pago->moneda_empresa == "SOLES") {
-                        $soles = $soles + $pago->monto;
-                    }else{
-                        if ($pago->moneda_proveedor == "SOLES") {
-                            $soles = $soles + ($pago->tc_banco*$pago->monto);
-                        }else{
-                            $soles = $soles + ($pago->tipo_cambio_soles*$pago->monto);
-                        }
-                    }
-                }
-
+                
             }
 
             //CALCULAR SALDO
@@ -147,7 +113,7 @@ class OrdenController extends Controller
 
             //CAMBIAR ESTADO DE LA ORDEN A PAGADA
         
-            if ($saldo < 1) {
+            if ($saldo == 0.0) {
                 $orden->estado = "PAGADA";
                 $orden->update();
             }
@@ -199,32 +165,54 @@ class OrdenController extends Controller
         $proveedores = Proveedor::where('estado','ACTIVO')->get();
         $orden = Orden::findOrFail($id);
 
+        $documento = Documento::where('orden_compra',$id)->where('estado','!=','ANULADO')->first();
+
+        if ($documento) {
+            $aviso = $documento->id;
+        }
+
         $articulos = Articulo::where('estado','ACTIVO')->get();
         $presentaciones =  presentaciones();
         $modos =  modo_compra();
         $monedas =  tipos_moneda();
         $fecha_hoy = Carbon::now()->toDateString();
 
-        return view('compras.ordenes.edit',[
-            'empresas' => $empresas,
-            'proveedores' => $proveedores,
-            'orden' => $orden,
-            'articulos' => $articulos, 
-            'presentaciones' => $presentaciones,
-            'fecha_hoy' => $fecha_hoy, 
-            'detalles' => $detalles,
-            'modos' => $modos,
-            'monedas' => $monedas,
-        ]);
+        if($documento){
+            return view('compras.ordenes.edit',[
+                'empresas' => $empresas,
+                'proveedores' => $proveedores,
+                'orden' => $orden,
+                'articulos' => $articulos, 
+                'presentaciones' => $presentaciones,
+                'fecha_hoy' => $fecha_hoy, 
+                'detalles' => $detalles,
+                'modos' => $modos,
+                'monedas' => $monedas,
+                'aviso' => $aviso
+            ]);
+        }else{       
+            return view('compras.ordenes.edit',[
+                'empresas' => $empresas,
+                'proveedores' => $proveedores,
+                'orden' => $orden,
+                'articulos' => $articulos, 
+                'presentaciones' => $presentaciones,
+                'fecha_hoy' => $fecha_hoy, 
+                'detalles' => $detalles,
+                'modos' => $modos,
+                'monedas' => $monedas,
+            ]);
+        }
     }
 
     public function store(Request $request){
 
+        
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
-            'empresa_id'=> 'required',
+            // 'empresa_id'=> 'required',
             'proveedor_id'=> 'required',
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
@@ -236,7 +224,7 @@ class OrdenController extends Controller
         $message = [
             'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
-            'empresa_id.required' => 'El campo Empresa es obligatorio.',
+            // 'empresa_id.required' => 'El campo Empresa es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
             'modo_compra.required' => 'El campo Modo de Compra es obligatorio.',
             'moneda.required' => 'El campo Moneda es obligatorio.',
@@ -252,7 +240,12 @@ class OrdenController extends Controller
         $orden = new Orden();        
         $orden->fecha_emision = Carbon::createFromFormat('d/m/Y', $request->get('fecha_emision'))->format('Y-m-d');
         $orden->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
-        $orden->empresa_id = $request->get('empresa_id');
+        
+        $orden->sub_total = (float) $request->get('monto_sub_total');
+        $orden->total_igv = (float) $request->get('monto_total_igv');
+        $orden->total = (float) $request->get('monto_total');
+
+        $orden->empresa_id = '1';
         $orden->proveedor_id = $request->get('proveedor_id');
         $orden->modo_compra = $request->get('modo_compra');
         $orden->observacion = $request->get('observacion');
@@ -287,7 +280,7 @@ class OrdenController extends Controller
         $rules = [
             'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
-            'empresa_id'=> 'required',
+            // 'empresa_id'=> 'required',
             'proveedor_id'=> 'required',
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
@@ -297,7 +290,7 @@ class OrdenController extends Controller
         $message = [
             'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
-            'empresa_id.required' => 'El campo Empresa es obligatorio.',
+            // 'empresa_id.required' => 'El campo Empresa es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
             'modo_compra.required' => 'El campo Modo de Compra es obligatorio.',
             'moneda.required' => 'El campo Moneda es obligatorio.',
@@ -311,7 +304,13 @@ class OrdenController extends Controller
         $orden = Orden::findOrFail($id);        
         $orden->fecha_emision = Carbon::createFromFormat('d/m/Y', $request->get('fecha_emision'))->format('Y-m-d');
         $orden->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
-        $orden->empresa_id = $request->get('empresa_id');
+        
+        $orden->sub_total = (float) $request->get('monto_sub_total');
+        $orden->total_igv = (float) $request->get('monto_total_igv');
+        $orden->total = (float) $request->get('monto_total');
+
+
+        $orden->empresa_id = '1';
         $orden->proveedor_id = $request->get('proveedor_id');
         $orden->modo_compra = $request->get('modo_compra');
         $orden->moneda = $request->get('moneda');
@@ -345,22 +344,59 @@ class OrdenController extends Controller
                 ]);
             }
         }
+
+        //ELIMINAR DOCUMENTO DE ORDEN DE COMPRA SI EXISTE
+        $documento = Documento::where('orden_compra',$id)->where('estado','!=','ANULADO')->first();
+        if ($documento) {
+            $documento->estado = 'ANULADO';
+            $documento->update();
+        }
         
         Session::flash('success','Orden de Compra modificada.');
         return redirect()->route('compras.orden.index')->with('modificar', 'success');
     }
 
+
+
     public function destroy($id)
     {
-        
-        $orden = Orden::findOrFail($id);
-        $orden->estado = 'ANULADO';
-        $orden->update();
+    
+        $documento = Documento::where('orden_compra',$id)->where('estado','!=','ANULADO')->first();
+        if ($documento) {
+            $id_eliminar = $id;
+            return view('compras.ordenes.index',[
+                'id_eliminar' => $id_eliminar
+            ]);
 
-        Session::flash('success','Orden de Compra eliminada.');
-        return redirect()->route('compras.orden.index')->with('eliminar', 'success');
+        }else{
+            $orden = Orden::findOrFail($id);
+            $orden->estado = 'ANULADO';
+            $orden->update();
+
+            Session::flash('success','Orden de compra eliminado.');
+            return redirect()->route('compras.orden.index')->with('eliminar', 'success');
+    
+        }
 
     }
+
+
+    public function confirmDestroy($id)
+    {
+        $orden = Orden::findOrFail($id);
+        $documento = Documento::where('orden_compra',$id)->where('estado','!=','ANULADO')->first();
+        if ($documento) {
+            $documento->estado = 'ANULADO';
+            $documento->update();
+            
+            $orden->estado = 'ANULADO';
+            $orden->update();
+        }
+
+        Session::flash('success','Orden y Documento de compra eliminado.');
+        return redirect()->route('compras.orden.index')->with('eliminar', 'success');
+    }
+
 
     public function show($id)
     {

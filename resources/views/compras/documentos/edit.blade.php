@@ -91,11 +91,10 @@
                                     <select
                                         class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
-                                        name="empresa_id" id="empresa_id" required>
+                                        name="empresa_id" id="empresa_id"  disabled>
                                         <option></option>
                                         @foreach ($empresas as $empresa)
-                                        <option value="{{$empresa->id}}" @if(old('empresa_id', $documento->empresa_id)
-                                            == $empresa->id ) {{'selected'}} @endif >{{$empresa->razon_social}}
+                                        <option value="{{$empresa->id}}"  @if($empresa->id == '1' ) {{'selected'}} @endif >{{$empresa->razon_social}}
                                         </option>
                                         @endforeach
                                     </select>
@@ -133,47 +132,28 @@
                             <div class="col-sm-6">
 
 
-                                <div class="form-group">
-                                    <label class="required">Modo de Compra: </label>
-                                    <select
-                                        class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%"
-                                        value="{{old('modo_compra',$documento->modo_compra)}}" name="modo_compra"
-                                        id="modo_compra" required>
-                                        <option></option>
-                                        @foreach (modo_compra() as $modo)
-                                        <option value="{{$modo->descripcion}}" @if(old('modo_compra',$documento->
-                                            modo_compra)==$modo->
-                                            descripcion ) {{'selected'}} @endif
-                                            >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
-                                        @endforeach
-                                        @if ($errors->has('modo_compra'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('modo_compra') }}</strong>
-                                        </span>
-                                        @endif
-                                    </select>
-                                </div>
-
                                 <div class="form-group row">
                                     <div class="col-md-6">
-                                        <label class="required">Tipo: </label>
+                                        <label class="required">Modo de Compra: </label>
                                         <select
-                                            class="select2_form form-control {{ $errors->has('tipo_compra') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('tipo_compra')}}"
-                                            name="tipo_compra" id="tipo_compra" required>
+                                            class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%"
+                                            value="{{old('modo_compra',$documento->modo_compra)}}" name="modo_compra"
+                                            id="modo_compra" required>
                                             <option></option>
-                                            @foreach (tipo_compra() as $modo)
-                                            <option value="{{$modo->descripcion}}" @if(old('tipo_compra',$documento->tipo_compra)==$modo->
+                                            @foreach (modo_compra() as $modo)
+                                            <option value="{{$modo->descripcion}}" @if(old('modo_compra',$documento->
+                                                modo_compra)==$modo->
                                                 descripcion ) {{'selected'}} @endif
-                                                >{{$modo->descripcion}}</option>
+                                                >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
                                             @endforeach
-                                            @if ($errors->has('tipo_compra'))
+                                            @if ($errors->has('modo_compra'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('tipo_compra') }}</strong>
+                                                <strong>{{ $errors->first('modo_compra') }}</strong>
                                             </span>
                                             @endif
                                         </select>
+                                    
                                     </div>
                                     <div class="col-md-6">
                                         <label class="required">Moneda: </label>
@@ -194,6 +174,44 @@
                                             </span>
                                             @endif
                                         </select>
+                                    
+                                    
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label class="required">Tipo: </label>
+                                        <select
+                                            class="select2_form form-control {{ $errors->has('tipo_compra') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('tipo_compra')}}"
+                                            name="tipo_compra" id="tipo_compra" required onchange="activarNumero()">
+                                            <option></option>
+                                            @foreach (tipo_compra() as $modo)
+                                            <option value="{{$modo->descripcion}}" @if(old('tipo_compra',$documento->tipo_compra)==$modo->
+                                                descripcion ) {{'selected'}} @endif
+                                                >{{$modo->descripcion}}</option>
+                                            @endforeach
+                                            @if ($errors->has('tipo_compra'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('tipo_compra') }}</strong>
+                                            </span>
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="required" id="numero_comprobante">Nº: </label>
+                                        <input type="text" id="numero_tipo" name="numero_tipo" class="form-control {{ $errors->has('numero_tipo') ? ' is-invalid' : '' }}" value="{{old('numero_tipo',$documento->numero_tipo)}}" required >
+                                        
+                                        @if ($errors->has('numero_tipo'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('numero_tipo') }}</strong>
+                                        </span>
+                                        @endif
+
+
                                     </div>
 
                                 </div>
@@ -612,6 +630,18 @@ $('#costo_flete').keyup(function() {
             val = val.replace(/\.+$/, "");
     }
     $(this).val(val);
+});
+
+function activarNumero(){
+    $('#numero_tipo').val('')
+    $('#numero_comprobante').addClass('required')
+    $('#numero_tipo').prop('required', true)
+    $('#numero_tipo').prop('disabled', false)
+}
+
+
+$('#numero_tipo').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
 });
 
 $('#cantidad_editar').on('input', function() {

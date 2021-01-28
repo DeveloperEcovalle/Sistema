@@ -26,6 +26,7 @@ class CreateCompraDocumentosTable extends Migration
             $table->BigInteger('orden_compra')->nullable();
             
             $table->string('modo_compra');
+            $table->string('numero_tipo');
             $table->string('tipo_compra');
             $table->string('tipo_pago')->nullable();
             $table->string('moneda');
@@ -33,10 +34,16 @@ class CreateCompraDocumentosTable extends Migration
             $table->string('igv_check',2)->nullable();
             $table->char('igv',3)->nullable();
             $table->unsignedDecimal('tipo_cambio', 15,2)->nullable();
+
+            $table->unsignedDecimal('sub_total', 15, 2);
+            $table->unsignedDecimal('total_igv', 15, 2);
+            $table->unsignedDecimal('total', 15, 2);
+
             $table->mediumText('observacion')->nullable();
             $table->BigInteger('usuario_id');
 
-            $table->enum('estado',['ACTIVO','PAGADA','ANULADO'])->default('ACTIVO');
+            $table->enum('estado',['VIGENTE','PENDIENTE','ADELANTO','CONCRETADA','ANULADO','PAGADA'])->default('VIGENTE');
+            
             $table->timestamps();
         });
     }

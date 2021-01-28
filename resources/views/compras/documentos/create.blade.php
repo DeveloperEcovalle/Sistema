@@ -113,11 +113,11 @@
                                         @if (!empty($orden))
                                             <select
                                             class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('empresa_id',$orden->empresa_id)}}"
-                                            name="empresa_id" id="empresa_id" required>
+                                            style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
+                                            name="empresa_id" id="empresa_id"  disabled>
                                             <option></option>
                                             @foreach ($empresas as $empresa)
-                                            <option value="{{$empresa->id}}" @if(old('empresa_id',$orden->empresa_id)==$empresa->id )
+                                            <option value="{{$empresa->id}}"  @if($empresa->id == '1' )
                                                 {{'selected'}} @endif >{{$empresa->razon_social}}</option>
                                             @endforeach
                                         </select>
@@ -125,10 +125,10 @@
                                             <select
                                             class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
                                             style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
-                                            name="empresa_id" id="empresa_id" required>
+                                            name="empresa_id" id="empresa_id" disabled>
                                             <option></option>
                                             @foreach ($empresas as $empresa)
-                                            <option value="{{$empresa->id}}" @if(old('empresa_id')==$empresa->id )
+                                            <option value="{{$empresa->id}}"  @if($empresa->id == '1' )
                                                 {{'selected'}} @endif >{{$empresa->razon_social}}</option>
                                             @endforeach
                                             </select>
@@ -196,28 +196,30 @@
 
                             <div class="col-sm-6">
 
-                                <div class="form-group">
-                                    <label class="required">Modo de Compra: </label>
+                                <div class="form-group row">
+                                    
+                                    <div class="col-md-6">
+                                        <label class="required">Modo de Compra: </label>
 
                                         @if (!empty($orden))
                                         <select
-                                        class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%" value="{{old('modo_compra',$orden->modo_compra)}}"
-                                        name="modo_compra" id="modo_compra" required>
-                                        <option></option>
-                                            @foreach ($modos as $modo)
-                                            <option value="{{$modo->descripcion}}" @if(old('modo_compra',$orden->modo_compra)==$modo->
-                                                descripcion ) {{'selected'}} @endif
-                                                >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
-                                            @endforeach
-                                            @if ($errors->has('modo_compra'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('modo_compra') }}</strong>
-                                            </span>
-                                            @endif
+                                            class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('modo_compra',$orden->modo_compra)}}"
+                                            name="modo_compra" id="modo_compra" required>
+                                            <option></option>
+                                                @foreach ($modos as $modo)
+                                                <option value="{{$modo->descripcion}}" @if(old('modo_compra',$orden->modo_compra)==$modo->
+                                                    descripcion ) {{'selected'}} @endif
+                                                    >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
+                                                @endforeach
+                                                @if ($errors->has('modo_compra'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('modo_compra') }}</strong>
+                                                </span>
+                                                @endif
                                         </select>
                                         @else
-                                            <select
+                                        <select
                                             class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
                                             style="text-transform: uppercase; width:100%" value="{{old('modo_compra')}}"
                                             name="modo_compra" id="modo_compra" required>
@@ -232,9 +234,53 @@
                                                 <strong>{{ $errors->first('modo_compra') }}</strong>
                                             </span>
                                             @endif
-                                            </select>
+                                        </select>
 
                                         @endif
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="required">Moneda: </label>
+
+                                        @if (!empty($orden))
+                                        <select
+                                        class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('moneda',$orden->moneda)}}"
+                                        name="moneda" id="moneda" required>
+                                            <option></option>
+                                            
+                                            @foreach ($monedas as $moneda)
+                                            <option value="{{$moneda->descripcion}}" @if(old('moneda',$orden->moneda)==$moneda->descripcion ) {{'selected'}} @endif
+                                                >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
+                                            @endforeach
+                                            @if ($errors->has('moneda'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('moneda') }}</strong>
+                                            </span>
+                                            @endif
+                                        </select> 
+                                        @else
+                                            <select
+                                            class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
+                                            style="text-transform: uppercase; width:100%" value="{{old('moneda')}}"
+                                            name="moneda" id="moneda" required>
+                                                <option></option>
+                                            @foreach ($monedas as $moneda)
+                                            <option value="{{$moneda->descripcion}}" @if(old('moneda')==$moneda->descripcion ) {{'selected'}} @endif
+                                                >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
+                                            @endforeach
+                                            @if ($errors->has('moneda'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('moneda') }}</strong>
+                                            </span>
+                                            @endif
+
+                                            </select> 
+
+                                        @endif
+                                    
+                                    
+                                    </div>
 
 
                                   
@@ -246,7 +292,7 @@
                                         <select
                                             class="select2_form form-control {{ $errors->has('tipo_compra') ? ' is-invalid' : '' }}"
                                             style="text-transform: uppercase; width:100%" value="{{old('tipo_compra')}}"
-                                            name="tipo_compra" id="tipo_compra" required>
+                                            name="tipo_compra" id="tipo_compra" required onchange="activarNumero()">
                                             <option></option>
                                             
                                                 @foreach (tipo_compra() as $modo)
@@ -266,45 +312,16 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="required">Moneda: </label>
+                                        <label class="" id="numero_comprobante">Nº: </label>
+                                        <input type="text" id="numero_tipo" name="numero_tipo" class="form-control {{ $errors->has('numero_tipo') ? ' is-invalid' : '' }}" value="{{old('numero_tipo')}}" disabled>
+                                        
+                                        @if ($errors->has('numero_tipo'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('tipo_compra') }}</strong>
+                                        </span>
+                                        @endif
 
-                                            @if (!empty($orden))
-                                            <select
-                                            class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('moneda',$orden->moneda)}}"
-                                            name="moneda" id="moneda" required>
-                                                <option></option>
-                                                
-                                                @foreach ($monedas as $moneda)
-                                                <option value="{{$moneda->descripcion}}" @if(old('moneda',$orden->moneda)==$moneda->descripcion ) {{'selected'}} @endif
-                                                    >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
-                                                @endforeach
-                                                @if ($errors->has('moneda'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('moneda') }}</strong>
-                                                </span>
-                                                @endif
-                                            </select> 
-                                            @else
-                                                <select
-                                                class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
-                                                style="text-transform: uppercase; width:100%" value="{{old('moneda')}}"
-                                                name="moneda" id="moneda" required>
-                                                    <option></option>
-                                                @foreach ($monedas as $moneda)
-                                                <option value="{{$moneda->descripcion}}" @if(old('moneda')==$moneda->descripcion ) {{'selected'}} @endif
-                                                    >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
-                                                @endforeach
-                                                @if ($errors->has('moneda'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('moneda') }}</strong>
-                                                </span>
-                                                @endif
-
-                                                </select> 
-
-                                            @endif
-                                                                               
+                                                                             
                                     </div>
 
                                     
@@ -519,6 +536,9 @@
 
                         </div>
 
+                        <input type="hidden" name="monto_sub_total" id="monto_sub_total" value="{{ old('monto_sub_total') }}">
+                        <input type="hidden" name="monto_total_igv" id="monto_total_igv" value="{{ old('monto_total_igv') }}">
+                        <input type="hidden" name="monto_total" id="monto_total" value="{{ old('monto_total') }}">
 
 
                         <div class="hr-line-dashed"></div>
@@ -663,10 +683,6 @@ $("#igv").on("change", function() {
 });
 
 
-
-
-
-
 // Solo campos numericos
 $('#precio').keyup(function() {
     var val = $(this).val();
@@ -698,6 +714,13 @@ $('#tipo_cambio').keyup(function() {
     $(this).val(val);
 });
 
+function activarNumero(){
+    $('#numero_tipo').val('')
+    $('#numero_comprobante').addClass('required')
+    $('#numero_tipo').prop('required', true)
+    $('#numero_tipo').prop('disabled', false)
+}
+
 $('#flete_table').keyup(function() {
     
     var val = $(this).val();
@@ -710,6 +733,10 @@ $('#flete_table').keyup(function() {
 });
 
 $('#cantidad').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('#numero_tipo').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
@@ -775,14 +802,21 @@ $('#enviar_documento').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
+                
+                $('#monto_sub_total').val($('#subtotal').text())
+                $('#monto_total_igv').val($('#igv_monto').text())
+                $('#monto_total').val($('#total').text())
+
                 @if (!empty($orden))
                     var validar = montosFlete()
                     if (validar == true) {
+                        cargarArticulos()
                         document.getElementById("modo_compra").disabled = false;
                         this.submit();    
                     }
 
                 @else
+                    cargarArticulos()
                     this.submit();
                 @endif
                     

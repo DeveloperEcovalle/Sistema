@@ -1,18 +1,18 @@
 @extends('layout') @section('content')
 
-@section('compras-active', 'active')
-@section('documento-active', 'active')
+@section('ventas-active', 'active')
+@section('documentos-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>MODIFICAR DOCUMENTO DE COMPRA # {{$documento->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR DOCUMENTO DE VENTA # {{$documento->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documento.index')}}">Documentos de Compra</a>
+                <a href="{{route('ventas.documento.index')}}">Documentos de Venta</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Modificar</strong>
@@ -34,51 +34,51 @@
 
                 <div class="ibox-content">
 
-                    <form action="{{route('compras.documento.update', $documento->id)}}" method="POST" id="enviar_orden">
+                    <form action="{{route('ventas.documento.update', $documento->id)}}" method="POST" id="enviar_documento">
                         @csrf @method('PUT')
 
                         <div class="row">
                             <div class="col-sm-6 b-r">
-                                <h4 class=""><b>Documento de compra</b></h4>
+                                <h4 class=""><b>Documento de venta</b></h4>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p>Modificar datos del documento de compra:</p>
+                                        <p>Modificar datos del documento de venta:</p>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_documento">
-                                        <label class="required">Fecha de Emisión</label>
+                                        <label class="required">Fecha de Documento</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                            <input type="text" id="fecha_documento" name="fecha_emision"
-                                                class="form-control {{ $errors->has('fecha_emision') ? ' is-invalid' : '' }}"
-                                                value="{{old('fecha_emision', getFechaFormato($documento->fecha_emision, 'd/m/Y'))}}"
+                                            <input type="text" id="fecha_documento_campo" name="fecha_documento_campo"
+                                                class="form-control {{ $errors->has('fecha_documento') ? ' is-invalid' : '' }}"
+                                                value="{{old('fecha_documento_campo', getFechaFormato($documento->fecha_documento, 'd/m/Y'))}}"
                                                 autocomplete="off" readonly required>
-                                            @if ($errors->has('fecha_emision'))
+                                            @if ($errors->has('fecha_documento'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('fecha_emision') }}</strong>
+                                                <strong>{{ $errors->first('fecha_documento') }}</strong>
                                             </span>
                                             @endif
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6 col-xs-12" id="fecha_entrega">
-                                        <label class="required">Fecha de Entrega</label>
+                                    <div class="col-lg-6 col-xs-12" id="fecha_atencion">
+                                        <label class="required">Fecha de Atención</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                            <input type="text" id="fecha_entrega_campo" name="fecha_entrega"
-                                                class="form-control {{ $errors->has('fecha_entrega') ? ' is-invalid' : '' }}"
-                                                value="{{old('fecha_entrega', getFechaFormato($documento->fecha_entrega, 'd/m/Y'))}}"
+                                            <input type="text" id="fecha_atencion_campo" name="fecha_atencion_campo"
+                                                class="form-control {{ $errors->has('fecha_atencion_campo') ? ' is-invalid' : '' }}"
+                                                value="{{old('fecha_atencion_campo', getFechaFormato($documento->fecha_atencion, 'd/m/Y'))}}"
                                                 autocomplete="off" required readonly>
-                                            @if ($errors->has('fecha_entrega'))
+                                            @if ($errors->has('fecha_atencion_campo'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('fecha_entrega') }}</strong>
+                                                <strong>{{ $errors->first('fecha_atencion_campo') }}</strong>
                                             </span>
                                             @endif
                                         </div>
@@ -86,129 +86,28 @@
 
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="required">Empresa: </label>
-                                    <select
-                                        class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
-                                        name="empresa_id" id="empresa_id" required>
-                                        <option></option>
-                                        @foreach ($empresas as $empresa)
-                                        <option value="{{$empresa->id}}" @if(old('empresa_id', $documento->empresa_id)
-                                            == $empresa->id ) {{'selected'}} @endif >{{$empresa->razon_social}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="required">Proveedor: </label>
-                                    <select
-                                        class="select2_form form-control {{ $errors->has('proveedor_id') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%" value="{{old('proveedor_id',$documento->proveedor_id)}}"
-                                        name="proveedor_id" id="proveedor_id" required>
-                                        <option></option>
-                                        @foreach ($proveedores as $proveedor)
-                                        @if($proveedor->ruc)
-                                        <option value="{{$proveedor->id}}" @if(old('proveedor_id',$documento->proveedor_id)
-                                            == $proveedor->id ) {{'selected'}} @endif
-                                            >{{$proveedor->ruc.' - '.$proveedor->descripcion}}</option>
-                                        @else
-                                        @if($proveedor->dni)
-                                        <option value="{{$proveedor->id}}" @if(old('proveedor_id',$documento->proveedor_id)
-                                            == $proveedor->id ) {{'selected'}} @endif
-                                            >{{$proveedor->dni.' - '.$proveedor->descripcion}}</option>
-                                        @endif
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-
-
-
-
-                            </div>
-
-                            <div class="col-sm-6">
-
-
-                                <div class="form-group">
-                                    <label class="required">Modo de Compra: </label>
-                                    <select
-                                        class="select2_form form-control {{ $errors->has('modo_compra') ? ' is-invalid' : '' }}"
-                                        style="text-transform: uppercase; width:100%"
-                                        value="{{old('modo_compra',$documento->modo_compra)}}" name="modo_compra"
-                                        id="modo_compra" required>
-                                        <option></option>
-                                        @foreach (modo_compra() as $modo)
-                                        <option value="{{$modo->descripcion}}" @if(old('modo_compra',$documento->
-                                            modo_compra)==$modo->
-                                            descripcion ) {{'selected'}} @endif
-                                            >{{$modo->simbolo.' - '.$modo->descripcion}}</option>
-                                        @endforeach
-                                        @if ($errors->has('modo_compra'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('modo_compra') }}</strong>
-                                        </span>
-                                        @endif
-                                    </select>
-                                </div>
 
                                 <div class="form-group row">
+
                                     <div class="col-md-6">
                                         <label class="required">Tipo: </label>
                                         <select
-                                            class="select2_form form-control {{ $errors->has('tipo_compra') ? ' is-invalid' : '' }}"
+                                            class="select2_form form-control {{ $errors->has('tipo_venta') ? ' is-invalid' : '' }}"
                                             style="text-transform: uppercase; width:100%" value="{{old('tipo_compra')}}"
-                                            name="tipo_compra" id="tipo_compra" required>
+                                            name="tipo_venta" id="tipo_venta" required>
                                             <option></option>
-                                            @foreach (tipo_compra() as $modo)
-                                            <option value="{{$modo->descripcion}}" @if(old('tipo_compra',$documento->tipo_compra)==$modo->
-                                                descripcion ) {{'selected'}} @endif
-                                                >{{$modo->descripcion}}</option>
+                                            @foreach (tipos_venta() as $tipo)
+                                            <option value="{{$tipo->descripcion}}" @if(old('tipo_venta',$documento->tipo_venta)==$tipo->descripcion ) {{'selected'}} @endif
+                                                >{{$tipo->descripcion}}</option>
                                             @endforeach
-                                            @if ($errors->has('tipo_compra'))
+                                            @if ($errors->has('tipo_venta'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('tipo_compra') }}</strong>
-                                            </span>
-                                            @endif
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="required">Moneda: </label>
-                                        <select
-                                            class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%"
-                                            value="{{old('moneda',$documento->moneda)}}" name="moneda" id="moneda" required>
-                                            <option></option>
-                                            @foreach (tipos_moneda() as $moneda)
-                                            <option value="{{$moneda->descripcion}}" @if(old('moneda',$documento->
-                                                moneda)==$moneda->
-                                                descripcion ) {{'selected'}} @endif
-                                                >{{$moneda->simbolo.' - '.$moneda->descripcion}}</option>
-                                            @endforeach
-                                            @if ($errors->has('moneda'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('moneda') }}</strong>
+                                                <strong>{{ $errors->first('tipo_venta') }}</strong>
                                             </span>
                                             @endif
                                         </select>
                                     </div>
 
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <label class=""  id="campo_tipo_cambio">Tipo de Cambio (S/.):</label>
-                                        <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio',$documento->tipo_cambio)}}" disabled>
-                                        @if ($errors->has('tipo_cambio'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('tipo_cambio') }}</strong>
-                                        </span>
-                                        @endif
-
-                                    </div>
 
                                     <div class="col-md-6">
                                         <label id="igv_requerido">IGV (%):</label>
@@ -238,6 +137,43 @@
 
 
 
+                            </div>
+
+                            <div class="col-sm-6">
+
+                                <div class="form-group">
+                                    <label class="required">Empresa: </label>
+                                    <select
+                                        class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('empresa_id', $documento->empresa_id)}}"
+                                        name="empresa_id" id="empresa_id" required>
+                                        <option></option>
+                                        @foreach ($empresas as $empresa)
+                                        <option value="{{$empresa->id}}" @if(old('empresa_id', $documento->empresa_id)
+                                            == $empresa->id ) {{'selected'}} @endif >{{$empresa->razon_social}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="required">Cliente: </label>
+                                    <select
+                                        class="select2_form form-control {{ $errors->has('cliente_id') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('cliente_id', $documento->cliente_id)}}"
+                                        name="cliente_id" id="cliente_id" required>
+                                        <option></option>
+                                        @foreach ($clientes as $cliente)
+                                       
+                                            <option value="{{$cliente->id}}" @if(old('cliente_id',$documento->cliente_id)  == $cliente->id ) {{'selected'}} @endif >{{$cliente->tipo_documento.': '.$cliente->documento.' - '.$cliente->nombre}}</option>
+                                        
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
+
                                 <div class="form-group">
                                     <label>Observación:</label>
                                     <textarea type="text" placeholder=""
@@ -260,10 +196,13 @@
                                 </div>
 
 
-
-
-
-                                <input type="hidden" id="articulos_tabla" name="articulos_tabla[]">
+                                <!-- OBTENER TIPO DE CLIENTE -->
+                                <input type="hidden" name="" id="tipo_cliente" value="{{$documento->cliente->detalle->descripcion}}">
+                                <!-- OBTENER DATOS DEL PRODUCTO -->
+                                <input type="hidden" name="" id="presentacion_producto">
+                                <input type="hidden" name="" id="codigo_nombre_producto">
+                                <!-- LLENAR DATOS EN UN ARRAY -->
+                                <input type="hidden" id="productos_tabla" name="productos_tabla[]">
 
                             </div>
 
@@ -276,7 +215,7 @@
                             <div class="col-lg-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
-                                        <h4 class=""><b>Detalle de Documento de Compra</b></h4>
+                                        <h4 class=""><b>Detalle de Documento de Venta</b></h4>
                                     </div>
                                     <div class="panel-body">
 
@@ -284,84 +223,54 @@
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <label class="required">Producto</label>
+                                                <label class="required">Producto:</label>
                                                 <select class="select2_form form-control"
-                                                    style="text-transform: uppercase; width:100%" name="articulo_id"
-                                                    id="articulo_id" onchange="cargarPresentacion(this)">
+                                                    style="text-transform: uppercase; width:100%" name="producto"
+                                                    id="producto" onchange="obtenerMonto(this)">
                                                     <option></option>
-                                                    @foreach ($articulos as $articulo)
-                                                    <option value="{{$articulo->id}}">{{$articulo->descripcion}}
+                                                    @foreach ($productos as $producto)
+                                                    <option value="{{$producto->id}}">{{$producto->codigo.' - '.$producto->nombre}}
                                                     </option>
                                                     @endforeach
                                                 </select>
-                                                <div class="invalid-feedback"><b><span id="error-articulo"></span></b>
+                                                <div class="invalid-feedback"><b><span id="error-producto"></span></b>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2 col-xs-12">
+
+                                                <label class="col-form-label required">Cantidad:</label>
+                                                <input type="text" id="cantidad" class="form-control">
+                                                <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-form-label required" for="amount">Precio:</label>
+                                                    <input type="text" id="precio" class="form-control">
+                                                    <div class="invalid-feedback"><b><span id="error-precio"></span></b>
+                                                    </div>
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <div class="col-md-6">
-                                                        <label class="">Presentación</label>
-                                                        <input type="text" id="presentacion" name="presentacion" class="form-control" disabled>
-                                                        <div class="invalid-feedback"><b><span id="error-presentacion"></span></b></div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="required">Costo Flete:</label>
-                                                        <input type="text" id="costo_flete" name="costo_flete" class="form-control">
-                                                        <div class="invalid-feedback"><b><span id="error-costo-flete"></span></b></div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="col-form-label required" for="amount">Precio</label>
-                                                            <input type="text" id="precio" class="form-control">
-                                                            <div class="invalid-feedback"><b><span id="error-precio"></span></b>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-
-                                                        <label class="col-form-label required">Cantidad</label>
-                                                        <input type="text" id="cantidad" class="form-control">
-                                                        <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-
-                                            <div class="col-sm-6">
+                                            <div class="col-lg-2 col-xs-12">
 
                                                 <div class="form-group">
                                                     <label class="col-form-label" for="amount">&nbsp;</label>
-                                                    <a class="btn btn-block btn-warning enviar_articulo"
-                                                        style='color:white;'>
-                                                        <i class="fa fa-plus"></i> AGREGAR</a>
+                                                    <a class="btn btn-block btn-warning" style='color:white;' id="btn_agregar_detalle"> <i class="fa fa-plus"></i> AGREGAR</a>
                                                 </div>
 
                                             </div>
-                                        </div>
 
+
+                                        </div>
 
                                         <hr>
 
                                         <div class="table-responsive">
                                             <table
-                                                class="table dataTables-orden-detalle table-striped table-bordered table-hover"
+                                                class="table dataTables-detalle-documento table-striped table-bordered table-hover"
                                                 style="text-transform:uppercase">
                                                 <thead>
                                                     <tr>
@@ -369,8 +278,7 @@
                                                         <th class="text-center">ACCIONES</th>
                                                         <th class="text-center">CANTIDAD</th>
                                                         <th class="text-center">PRESENTACION</th>
-                                                        <th class="text-center">PRODUCTO</th>
-                                                        <th class="text-center">COSTO FLETE</th>
+                                                        <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                                         <th class="text-center">PRECIO</th>
                                                         <th class="text-center">TOTAL</th>
 
@@ -381,19 +289,19 @@
                                                 </tbody>
                                                 <tfoot style="text-transform:uppercase">
                                                     <tr>
-                                                        <th colspan="7" style="text-align:right">Sub Total:</th>
-                                                        <th><span id="subtotal"></span></th>
+                                                        <th colspan="6" style="text-align:right">Sub Total:</th>
+                                                        <th>S/. <span id="subtotal"></span></th>
 
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="7" class="text-center">IGV <span
+                                                        <th colspan="6" class="text-center">IGV <span
                                                                 id="igv_int"></span>:</th>
-                                                        <th class="text-center"><span id="igv_monto"></span></th>
+                                                        <th class="text-center">S/. <span id="igv_monto"></span></th>
 
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="7" class="text-center">TOTAL:</th>
-                                                        <th class="text-center"><span id="total"></span></th>
+                                                        <th colspan="6" class="text-center">TOTAL:</th>
+                                                        <th class="text-center">S/. <span id="total"></span></th>
 
                                                     </tr>
                                                 </tfoot>
@@ -411,10 +319,9 @@
 
                         </div>
 
-
-
-
-
+                        <input type="hidden" name="monto_sub_total" id="monto_sub_total" value="{{ old('monto_sub_total') }}">
+                        <input type="hidden" name="monto_total_igv" id="monto_total_igv" value="{{ old('monto_total_igv') }}">
+                        <input type="hidden" name="monto_total" id="monto_total" value="{{ old('monto_total') }}">
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group row">
@@ -448,7 +355,7 @@
 </div>
 
 
-@include('compras.documentos.modal')
+@include('ventas.documentos.modal')
 
 @stop
 
@@ -493,17 +400,7 @@ $(document).ready(function() {
         $('#igv').attr('disabled', true)
         $('#igv_requerido').removeClass("required")
     }
-    //TIPO DE CAMBIO
 
-    if ("{{old('moneda',$documento->moneda)}}" == "SOLES") {
-        $('#tipo_cambio').attr('disabled',true)
-        $("#tipo_cambio").attr("required", false);
-        $("#campo_tipo_cambio").removeClass("required")
-    }else{
-        $('#tipo_cambio').attr('disabled',false)
-        $("#tipo_cambio").attr("required", true);
-        $("#campo_tipo_cambio").addClass("required")
-    }
 
 })
 
@@ -584,7 +481,7 @@ $('#fecha_documento .input-group.date').datepicker({
     format: "dd/mm/yyyy"
 });
 
-$('#fecha_entrega .input-group.date').datepicker({
+$('#fecha_atencion .input-group.date').datepicker({
     todayBtn: "linked",
     keyboardNavigation: false,
     forceParse: false,
@@ -604,15 +501,6 @@ $('#precio').keyup(function() {
     $(this).val(val);
 });
 
-$('#costo_flete').keyup(function() {
-    var val = $(this).val();
-    if (isNaN(val)) {
-        val = val.replace(/[^0-9\.]/g, '');
-        if (val.split('.').length > 2)
-            val = val.replace(/\.+$/, "");
-    }
-    $(this).val(val);
-});
 
 $('#cantidad_editar').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
@@ -628,15 +516,6 @@ $('#precio_editar').keyup(function() {
     $(this).val(val);
 });
 
-$('#tipo_cambio').keyup(function() {
-    var val = $(this).val();
-    if (isNaN(val)) {
-        val = val.replace(/[^0-9\.]/g, '');
-        if (val.split('.').length > 2)
-            val = val.replace(/\.+$/, "");
-    }
-    $(this).val(val);
-});
 
 $('#cantidad').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
@@ -649,21 +528,21 @@ $('#igv').on('input', function() {
 
 function validarFecha() {
     var enviar = false
-    var articulos = registrosArticulos()
+    var productos = registrosProductos() 
 
     if ($('#fecha_documento_campo').val() == '') {
-        toastr.error('Ingrese Fecha de Documento de la Orden.', 'Error');
+        toastr.error('Ingrese Fecha de Documento.', 'Error');
         $("#fecha_documento_campo").focus();
         enviar = true;
     }
 
-    if ($('#fecha_entrega_campo').val() == '') {
-        toastr.error('Ingrese Fecha de Entrega de la Orden.', 'Error');
-        $("#fecha_entrega_campo").focus();
+    if ($('#fecha_atencion_campo').val() == '') {
+        toastr.error('Ingrese Fecha de Atencion.', 'Error');
+        $("#fecha_atencion_campo").focus();
         enviar = true;
     }
 
-    if (articulos == 0) {
+    if (productos == 0) {
         toastr.error('Ingrese al menos 1  Producto.', 'Error');
         enviar = true;
     }
@@ -671,7 +550,7 @@ function validarFecha() {
     return enviar
 }
 
-$('#enviar_orden').submit(function(e) {
+$('#enviar_documento').submit(function(e) {
     e.preventDefault();
     var correcto = validarFecha()
     if (correcto == false) {
@@ -693,7 +572,11 @@ $('#enviar_orden').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                cargarArticulos()
+                cargarProductos()
+                //CARGAR DATOS TOTAL
+                $('#monto_sub_total').val($('#subtotal').text())
+                $('#monto_total_igv').val($('#igv_monto').text())
+                $('#monto_total').val($('#total').text())
                 this.submit();
 
             } else if (
@@ -737,7 +620,7 @@ $("#igv_check").click(function() {
 $(document).ready(function() {
 
     // DataTables
-    $('.dataTables-orden-detalle').DataTable({
+    $('.dataTables-detalle-documento').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
         "buttons": [{
                 extend: 'excelHtml5',
@@ -778,8 +661,8 @@ $(document).ready(function() {
                 className: "text-center",
                 render: function(data, type, row) {
                     return "<div class='btn-group'>" +
-                        "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_articulo' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
-                        "<a class='btn btn-danger btn-sm' id='borrar_articulo' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                        "<a class='btn btn-warning btn-sm modificarDetalle' id='editar-documento' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
+                        "<a class='btn btn-danger btn-sm' id='eliminar-documento' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
                         "</div>";
                 }
             },
@@ -803,10 +686,7 @@ $(document).ready(function() {
                 "targets": [6],
                 className: "text-center",
             },
-            {
-                "targets": [7],
-                className: "text-center",
-            },
+
 
         ],
     });
@@ -830,271 +710,196 @@ $(document).ready(function() {
 
     obtenerTabla()
     sumaTotal()
-     
-    
-
-
 
 })
 
 
 
-function obtenerTabla() {
-    var t = $('.dataTables-orden-detalle').DataTable();
-    @foreach($detalles as $detalle)
-    var presentacion = obtenerPresentacion("{{$detalle->articulo->presentacion}}")
-    t.row.add([
-        "{{$detalle->articulo_id}}",
-        '',
-        "{{$detalle->cantidad}}",
-        presentacion,
-        "{{$detalle->articulo->descripcion}}",
-        "{{$detalle->costo_flete}}",
-        "{{$detalle->precio}}",
-        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2)
-    ]).draw(false);
-    @endforeach
-}
-//Editar Registro
-$(document).on('click', '#editar_articulo', function(event) {
-    var table = $('.dataTables-orden-detalle').DataTable();
-    var data = table.row($(this).parents('tr')).data();
-
-    $('#indice').val(table.row($(this).parents('tr')).index());
-    $('#articulo_id_editar').val(data[0]).trigger('change');
-    $('#presentacion_editar').val(articuloPresentacion(data[0]));
-    $('#precio_editar').val(data[7]);
-    $('#costo_flete_editar').val(data[6]);
-    $('#cantidad_editar').val(data[2]);
-    $('#modal_editar_orden').modal('show');
-
-})
-
-//Borrar registro de articulos
-$(document).on('click', '#borrar_articulo', function(event) {
-
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
-
-    Swal.fire({
-        title: 'Opción Eliminar',
-        text: "¿Seguro que desea eliminar Producto?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: "#1ab394",
-        confirmButtonText: 'Si, Confirmar',
-        cancelButtonText: "No, Cancelar",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var table = $('.dataTables-orden-detalle').DataTable();
-            table.row($(this).parents('tr')).remove().draw();
-            sumaTotal()
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-            )
-        }
+    function obtenerTabla() {
+        var t = $('.dataTables-detalle-documento').DataTable();
+        @foreach($detalles as $detalle)
+        t.row.add([
+            "{{$detalle->producto_id}}",
+            '',
+            "{{$detalle->cantidad}}",
+            "{{$detalle->producto->presentacion}}",
+            "{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}",
+            "{{$detalle->precio}}",
+            "{{$detalle->importe}}"
+        ]).draw(false);
+        @endforeach
+    }
+    //Editar Registro
+    $(document).on('click', '#editar-documento', function(event) {
+        var table = $('.dataTables-detalle-documento').DataTable();
+        var data = table.row($(this).parents('tr')).data();
+        
+        console.log(data)
+        $('#indice').val(table.row($(this).parents('tr')).index());
+        $('#producto_editar').val(data[0]).trigger('change');
+        $('#precio_editar').val(data[5]);
+        $('#presentacion_producto_editar').val(data[3]);
+        $('#codigo_nombre_producto_editar').val(data[4]);
+        $('#cantidad_editar').val(data[2]);
+        $('#modal_editar_detalle').modal('show');
     })
 
 
+    //Borrar registro de Producto
+    $(document).on('click', '#eliminar-documento', function(event) {
 
-});
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger',
+                },
+                buttonsStyling: false
+            })
 
-//Validacion al ingresar tablas
-$(".enviar_articulo").click(function() {
-    limpiarErrores()
-    var enviar = false;
-    if ($('#articulo_id').val() == '') {
-        toastr.error('Seleccione Producto.', 'Error');
-        enviar = true;
-        $('#articulo_id').addClass("is-invalid")
-        $('#error-articulo').text('El campo Producto es obligatorio.')
-    } else {
-        var existe = buscarArticulo($('#articulo_id').val())
-        if (existe == true) {
-            toastr.error('Producto ya se encuentra ingresado.', 'Error');
-            enviar = true;
-        }
-    }
-    if ($('#precio').val() == '') {
+            Swal.fire({
+                title: 'Opción Eliminar',
+                text: "¿Seguro que desea eliminar Producto?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var table = $('.dataTables-detalle-documento').DataTable();
+                    table.row($(this).parents('tr')).remove().draw();
+                    sumaTotal()
 
-        toastr.error('Ingrese el precio del producto.', 'Error');
-        enviar = true;
-
-        $("#precio").addClass("is-invalid");
-        $('#error-precio').text('El campo Precio es obligatorio.')
-    }
-
-    if ($('#cantidad').val() == '') {
-        toastr.error('Ingrese cantidad del producto.', 'Error');
-        enviar = true;
-
-        $("#cantidad").addClass("is-invalid");
-        $('#error-cantidad').text('El campo Cantidad es obligatorio.')
-    }
-
-    if ($('#costo_flete').val() == '') {
-        toastr.error('Ingrese Costo de Flete del producto.', 'Error');
-        enviar = true;
-
-        $("#costo_flete").addClass("is-invalid");
-        $('#error-costo_flete').text('El campo Costo de Flete es obligatorio.')
-    }
-
-
-
-    if (enviar != true) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
-
-        Swal.fire({
-            title: 'Opción Agregar',
-            text: "¿Seguro que desea agregar Producto?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var descripcion_articulo = obtenerArticulo($('#articulo_id').val())
-                var presentacion_articulo = obtenerPresentacion($('#presentacion').val())
-                var detalle = {
-                    articulo_id: $('#articulo_id').val(),
-                    descripcion: descripcion_articulo,
-                    presentacion: presentacion_articulo,
-                    costo_flete: $('#costo_flete').val(),
-                    precio: $('#precio').val(),
-                    cantidad: $('#cantidad').val(),
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'La Solicitud se ha cancelado.',
+                        'error'
+                    )
                 }
-                limpiarDetalle()
-                agregarTabla(detalle);
-                sumaTotal()
+            })
 
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelado',
-                    'La Solicitud se ha cancelado.',
-                    'error'
-                )
+
+
+    });
+
+    //Validacion al ingresar tablas
+    $("#btn_agregar_detalle").click(function() {
+        limpiarErrores()
+        var enviar = false;
+        if ($('#producto').val() == '') {
+            toastr.error('Seleccione Producto.', 'Error');
+            enviar = true;
+            $('#producto').addClass("is-invalid")
+            $('#error-producto').text('El campo Producto es obligatorio.')
+        } else {
+            var existe = buscarProducto($('#producto').val())
+            if (existe == true) {
+                toastr.error('Producto ya se encuentra ingresado.', 'Error');
+                enviar = true;
             }
-        })
+        }
+
+        if ($('#precio').val() == '') {
+
+            toastr.error('Ingrese el precio del producto.', 'Error');
+            enviar = true;
+
+            $("#precio").addClass("is-invalid");
+            $('#error-precio').text('El campo Precio es obligatorio.')
+        }
+
+        if ($('#cantidad').val() == '') {
+            toastr.error('Ingrese cantidad del artículo.', 'Error');
+            enviar = true;
+
+            $("#cantidad").addClass("is-invalid");
+            $('#error-cantidad').text('El campo Cantidad es obligatorio.')
+        }
+        if (enviar != true) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger',
+                },
+                buttonsStyling: false
+            })
+
+            Swal.fire({
+                title: 'Opción Agregar',
+                text: "¿Seguro que desea agregar Producto?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    obtenerProducto($('#producto').val())
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'La Solicitud se ha cancelado.',
+                        'error'
+                    )
+                }
+            })
+
+        }
+
+
+
+    })
+
+    function limpiarDetalle() {
+        $('#precio').val('')
+        $('#cantidad').val('')
+        $('#presentacion_producto').val('')
+        $('#codigo_nombre_producto').val('')
+        $('#producto').val($('#producto option:first-child').val()).trigger('change');
 
     }
-})
 
-function limpiarDetalle() {
-    $('#presentacion').val('')
-    $('#precio').val('')
-    $('#cantidad').val('')
-    $('#costo_flete').val('')
-    $('#articulo_id').val($('#articulo_id option:first-child').val()).trigger('change');
+    function limpiarErrores() {
+        $('#cantidad').removeClass("is-invalid")
+        $('#error-cantidad').text('')
 
-}
+        $('#precio').removeClass("is-invalid")
+        $('#error-precio').text('')
 
-function limpiarErrores() {
-    $('#cantidad').removeClass("is-invalid")
-    $('#error-cantidad').text('')
-
-    $('#precio').removeClass("is-invalid")
-    $('#error-precio').text('')
-
-    $('#articulo_id').removeClass("is-invalid")
-    $('#error-articulo').text('')
-
-    $('#costo_flete').removeClass("is-invalid")
-    $('#error-costo_flete').text('')
-}
-
-function obtenerArticulo($id) {
-    var articulo = ""
-    @foreach($articulos as $articulo)
-    if ("{{$articulo->id}}" == $id) {
-        articulo = "{{$articulo->descripcion}}"
+        $('#producto').removeClass("is-invalid")
+        $('#error-producto').text('')
     }
-    @endforeach
-    return articulo;
-}
-
-function cargarPresentacion(articulo) {
-    var id = articulo.value
-    var presentacion = ""
-    @foreach($articulos as $articulo)
-    if ("{{$articulo->id}}" == id) {
-        presentacion = "{{$articulo->presentacion}}"
-        precio = "{{$articulo->precio_compra}}"
-    }
-    @endforeach
-    //Añadir a input presentacion
-    $('#presentacion').val(presentacion)
-    $('#precio').val(precio)
-}
-
-$("#moneda").on("change", function() {
-    var val = $(this).val();
-    if (val == "SOLES") {
-        $('#tipo_cambio').attr('disabled',true)
-        $('#tipo_cambio').val('')
-        $("#tipo_cambio").attr("required", false);
-        $("#campo_tipo_cambio").removeClass("required")
-
-    }else{
-        $('#tipo_cambio').attr('disabled',false)
-        $('#tipo_cambio').val('')
-        $("#tipo_cambio").attr("required", true);
-        $("#campo_tipo_cambio").addClass("required")
-    }
-});
-
-function articuloPresentacion(articulo) {
-    var presentacion = ""
-    @foreach($articulos as $articulo)
-    if ("{{$articulo->id}}" == articulo) {
-        presentacion = "{{$articulo->presentacion}}"
-    }
-    @endforeach
-    return presentacion
-}
 
 
 function agregarTabla($detalle) {
 
-    var t = $('.dataTables-orden-detalle').DataTable();
+    console.log($detalle)
+    var t = $('.dataTables-detalle-documento').DataTable();
     t.row.add([
-        $detalle.articulo_id,
+        $detalle.producto_id,
         '',
         $detalle.cantidad,
         $detalle.presentacion,
-        $detalle.descripcion,
-        $detalle.costo_flete,
+        $detalle.producto,
         $detalle.precio,
         ($detalle.cantidad * $detalle.precio).toFixed(2),
     ]).draw(false);
-    cargarArticulos()
+    cargarProductos()
 
 }
 
-function buscarArticulo(id) {
+function buscarProducto(id) {
     var existe = false;
-    var t = $('.dataTables-orden-detalle').DataTable();
+    var t = $('.dataTables-detalle-documento').DataTable();
     t.rows().data().each(function(el, index) {
         if (el[0] == id) {
             existe = true
@@ -1104,89 +909,139 @@ function buscarArticulo(id) {
 }
 
 
-function cargarArticulos() {
 
-    var articulos = [];
-    var table = $('.dataTables-orden-detalle').DataTable();
-    var data = table.rows().data();
-    data.each(function(value, index) {
-        let fila = {
-            articulo_id: value[0],
-            cantidad: value[2],
-            presentacion: value[3],
-            costo_flete: value[5],
-            precio: value[6],
-        };
+    function cargarProductos() {
 
-        articulos.push(fila);
+        var productos = [];
+        var table = $('.dataTables-detalle-documento').DataTable();
+        var data = table.rows().data();
+        data.each(function(value, index) {
+            let fila = {
+                producto_id: value[0],
+                presentacion: value[3],
+                precio: value[5],
+                cantidad: value[2],
+                total: value[6],
+            };
 
-    });
+            productos.push(fila);
 
-    $('#articulos_tabla').val(JSON.stringify(articulos));
-}
+        });
 
-function obtenerPresentacion($descripcion) {
-    var presentacion = ""
-    @foreach($presentaciones as $presentacion)
-    if ("{{$presentacion->descripcion}}" == $descripcion) {
-        presentacion = "{{$presentacion->simbolo}}"
-    }
-    @endforeach
-    return presentacion;
-}
-
-function registrosArticulos() {
-    var table = $('.dataTables-orden-detalle').DataTable();
-    var registros = table.rows().data().length;
-    return registros
-}
-
-
-function sumaTotal() {
-    var t = $('.dataTables-orden-detalle').DataTable();
-    var subtotal = 0;
-    t.rows().data().each(function(el, index) {
-        subtotal = Number(el[7]) + subtotal
-    });
-
-    var igv = $('#igv').val()
-    if (!igv) {
-        sinIgv(subtotal)   
-    }else{
-        conIgv(subtotal)
-    }
-}
-
-function sinIgv(subtotal) {
-    // calular igv (calcular la base)
-    var igv =  subtotal * 0.18
-    var total = subtotal + igv
-    $('#igv_int').text('18%')
-    $('#subtotal').text(subtotal.toFixed(2))
-    $('#igv_monto').text(igv.toFixed(2))
-    $('#total').text(total.toFixed(2))
-
-}
-
-function conIgv(subtotal) {
-    // calular igv (calcular la base)
-    var igv = $('#igv').val()
-    ///////////////////////////////
-
-    if (igv) {
-        var calcularIgv = igv/100
-        var base = subtotal / (1 + calcularIgv)
-        var nuevo_igv = subtotal - base;
-        $('#igv_int').text(igv+'%')
-        $('#subtotal').text(base.toFixed(2))
-        $('#igv_monto').text(nuevo_igv.toFixed(2))
-        $('#total').text(subtotal.toFixed(2))
-
-    }else{
-        toastr.error('Ingrese Igv.', 'Error');
+        $('#productos_tabla').val(JSON.stringify(productos));
     }
 
-}
+
+
+    function registrosProductos() {
+        var table = $('.dataTables-detalle-documento').DataTable();
+        var registros = table.rows().data().length;
+        return registros
+    }
+
+
+    function sumaTotal() {
+        var t = $('.dataTables-detalle-documento').DataTable();
+        var subtotal = 0;
+        t.rows().data().each(function(el, index) {
+            subtotal = Number(el[6]) + subtotal
+        });
+
+        var igv = $('#igv').val()
+        if (!igv) {
+            sinIgv(subtotal)   
+        }else{
+            conIgv(subtotal)
+        }
+    }
+
+    function sinIgv(subtotal) {
+        // calular igv (calcular la base)
+        var igv =  subtotal * 0.18
+        var total = subtotal + igv
+        $('#igv_int').text('18%')
+        $('#subtotal').text(subtotal.toFixed(2))
+        $('#igv_monto').text(igv.toFixed(2))
+        $('#total').text(total.toFixed(2))
+
+    }
+
+    function conIgv(subtotal) {
+        // calular igv (calcular la base)
+        var igv = $('#igv').val()
+        ///////////////////////////////
+
+        if (igv) {
+            var calcularIgv = igv/100
+            var base = subtotal / (1 + calcularIgv)
+            var nuevo_igv = subtotal - base;
+            $('#igv_int').text(igv+'%')
+            $('#subtotal').text(base.toFixed(2))
+            $('#igv_monto').text(nuevo_igv.toFixed(2))
+            $('#total').text(subtotal.toFixed(2))
+
+        }else{
+            toastr.error('Ingrese Igv.', 'Error');
+        }
+
+    }
+
+
+    function obtenerTipo(tipo){
+            
+        if (tipo.value) {
+            
+            $('#producto').prop('disabled' , false)
+            $('#precio').prop('disabled' , false)
+            $('#cantidad').prop('disabled' , false)
+
+            @foreach ($clientes as $cliente)
+
+                if ("{{$cliente->id}}" == tipo.value) {
+                    $('#tipo_cliente').val("{{$cliente->detalle->descripcion}}")
+                }
+
+            @endforeach
+        }else{
+            $('#producto').prop('disabled' , true)
+            $('#precio').prop('disabled' , true)
+            $('#cantidad').prop('disabled' , true)
+        }
+    }
+
+    function obtenerMonto(producto){
+        var tipo = $('#tipo_cliente').val()
+        // alert(tipo)
+        $.get('/almacenes/productos/obtenerProducto/'+ producto.value, function (data) {
+
+            for (var i = 0; i < data.length; i++)
+                if (data[i].cliente == tipo) {
+                    $('#precio').val(data[i].monto)
+                }
+
+        });
+
+    }
+
+    function obtenerProducto(id) {
+        // Consultamos nuestra BBDD
+        var url = '{{ route("almacenes.producto.productoDescripcion", ":id")}}';
+        url = url.replace(':id',id);
+        $.ajax({
+            dataType : 'json',
+            type : 'get',
+            url : url,
+        }).done(function (result){
+
+            $('#presentacion_producto').val(result.presentacion)
+            $('#codigo_nombre_producto').val(result.codigo+' - '+result.nombre)
+            llegarDatos()
+            sumaTotal()
+            limpiarDetalle()
+        });
+    }
+
+
 </script>
 
 

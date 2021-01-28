@@ -233,6 +233,7 @@ $(document).ready(function() {
                     url_pago = url_pago.replace(':id', data.id);
 
 
+
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
 
                         "<li><a class='dropdown-item' href='" + url_editar +
@@ -411,6 +412,49 @@ function documento(id) {
         }
     })
 @endif
+
+@if (!empty($id_eliminar)) 
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+    Swal.fire({
+        title: 'Orden ingresado a documentos',
+        text: "¿Desea eliminar la orden, recuerde que tambien eliminará el documento de compra?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Nuevo Documento
+            var url_nuevo = '{{ route("compras.orden.confirmDestroy", ":id")}}';
+            url_nuevo = url_nuevo.replace(':id', "{{$id_eliminar}}");
+            $(location).attr('href', url_nuevo);
+
+                
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+
+@endif
+
+
+
 
 
 </script>

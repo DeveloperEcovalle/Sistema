@@ -158,7 +158,7 @@
             <h3>DATOS DE NEGOCIO</h3>
             <div class="row">
                 <div class="form-group col-lg-5 col-xs-12">
-                    <label class="required">Direccion de Negocio</label>
+                    <label class="required">Direccion de Negocio (Direccion de Llegada)</label>
                     <input type="text" id="direccion_negocio" name="direccion_negocio" class="form-control {{ $errors->has('direccion_negocio') ? ' is-invalid' : '' }}" value="{{old('direccion_negocio') ? old('direccion_negocio') : $cliente->direccion_negocio}}" maxlength="191" onkeyup="return mayus(this)" required>
                         @if ($errors->has('direccion_negocio'))
                             <span class="invalid-feedback" role="alert">

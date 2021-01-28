@@ -228,7 +228,7 @@
                             <tr>
                                 <th class="text-center">CANTIDAD</th>
                                 <th class="text-center">PRESENTACIÓN</th>
-                                <th class="text-center">PRODUCTO</th>
+                                <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                 <th class="text-center">PRECIO</th>
                                 <th class="text-center">TOTAL</th>
                             </tr>

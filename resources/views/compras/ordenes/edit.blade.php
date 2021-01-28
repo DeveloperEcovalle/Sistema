@@ -91,12 +91,11 @@
                                     <select
                                         class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('empresa_id')}}"
-                                        name="empresa_id" id="empresa_id" required>
+                                        name="empresa_id" id="empresa_id" disabled>
                                         <option></option>
                                         @foreach ($empresas as $empresa)
-                                        <option value="{{$empresa->id}}" @if(old('empresa_id', $orden->empresa_id)
-                                            == $empresa->id ) {{'selected'}} @endif >{{$empresa->razon_social}}
-                                        </option>
+                                            <option value="{{$empresa->id}}" @if($empresa->id == '1' )
+                                            {{'selected'}} @endif >{{$empresa->razon_social}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -371,7 +370,10 @@
 
 
 
-
+                        <!-- MONTOS -->
+                        <input type="hidden" name="monto_sub_total" id="monto_sub_total" value="{{ old('monto_sub_total',$orden->sub_total) }}">
+                        <input type="hidden" name="monto_total_igv" id="monto_total_igv" value="{{ old('monto_total_igv',$orden->total_igv) }}">
+                        <input type="hidden" name="monto_total" id="monto_total" value="{{ old('monto_total',$orden->total) }}">
 
 
                         <div class="hr-line-dashed"></div>
@@ -624,6 +626,10 @@ $('#enviar_orden').submit(function(e) {
         }).then((result) => {
             if (result.isConfirmed) {
                 cargarArticulos()
+                    //CARGAR DATOS TOTAL
+                $('#monto_sub_total').val($('#subtotal').text())
+                $('#monto_total_igv').val($('#igv_monto').text())
+                $('#monto_total').val($('#total').text())
                 this.submit();
 
             } else if (
@@ -1096,7 +1102,22 @@ function conIgv(subtotal) {
     }
 
 }
+
+
+
+@if(!empty($aviso))
+
+        Swal.fire({
+            title: 'Recuerde',
+            text: "Al modificar eliminará el documento generado por la orden, luego tendra que generar otro documento de compra",
+            icon: 'question',
+            showCancelButton: false,
+        })
+
+@endif
 </script>
+
+
 
 
 

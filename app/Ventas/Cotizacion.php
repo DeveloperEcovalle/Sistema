@@ -10,13 +10,11 @@ class Cotizacion extends Model
     protected $fillable = [
         'empresa_id',
         'cliente_id',
-        'moneda',
         'fecha_documento',
         'fecha_atencion',
         'sub_total',
         'total_igv',
         'total',
-        'total_exento',
         'user_id',
         'estado',
         'igv',

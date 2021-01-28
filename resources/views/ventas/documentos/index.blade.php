@@ -33,7 +33,8 @@
                             <thead>
                                 <tr>
                                     
-                                    <th colspan="7" class="text-center">DOCUMENTO DE COMPRA</th>
+                                    <th colspan="3" class="text-center"></th>
+                                    <th colspan="4" class="text-center">DOCUMENTO DE VENTA</th>
                                     <th colspan="2" class="text-center">FORMAS DE PAGO</th>
                                     <th colspan="3" class="text-center"></th>
 
@@ -41,10 +42,10 @@
                                 <tr>
                                     <th style="display:none;"></th>
                                     <th style="display:none;"></th>
-                                    <th class="text-center">O.C</th>
-                                    <th class="text-center">EMISION</th>
+                                    <th class="text-center">C.O</th>
+                                    <th class="text-center">FEC.DOCUMENTO</th>
                                     <th class="text-center">TIPO</th>
-                                    <th class="text-center">PROVEEDOR</th>
+                                    <th class="text-center">CLIENTE</th>
                                     <th class="text-center">MONTO</th>
                                     <th class="text-center">TRANSFERENCIA</th>
                                     <th class="text-center">OTROS</th>
@@ -106,24 +107,25 @@ $(document).ready(function() {
         "bInfo": true,
         "bAutoWidth": false,
         "processing": true,
-        "ajax": "{{ route('getDocument')}}",
+        "ajax": "{{ route('ventas.getDocument')}}",
         "columns": [
-            //DOCUMENTO DE COMPRA
+            //DOCUMENTO DE VENTA
             {
                 data: 'id',
                 className: "text-center",
                 visible: false
             },
             {
-                data: 'tipo_pago',
+                data: 'cotizacion_venta',
                 className: "text-center",
                 visible: false
             },
+
             {
                 data: null,
                 className: "text-center",
                 render: function(data) {
-                    if (data.orden_compra) {
+                    if (data.cotizacion_venta) {
                         return "<input type='checkbox' disabled checked>"
                     }else{
                         return "<input type='checkbox' disabled>"
@@ -132,17 +134,20 @@ $(document).ready(function() {
                 
             },
             {
-                data: 'fecha_emision',
+                data: 'fecha_documento',
                 className: "text-center"
             },
             {
-                data: 'tipo',
+                data: 'tipo_venta',
                 className: "text-center",
             },
             {
-                data: 'proveedor',
+                data: 'cliente',
                 className: "text-left"
             },
+
+
+
             {
                 data: 'total',
                 className: "text-center"
@@ -191,11 +196,11 @@ $(document).ready(function() {
                 className: "text-center",
                 render: function(data) {
                     //Ruta Detalle
-                    var url_detalle = '{{ route("compras.documento.show", ":id")}}';
+                    var url_detalle = '{{ route("ventas.documento.show", ":id")}}';
                     url_detalle = url_detalle.replace(':id', data.id);
 
                     //Ruta Modificar
-                    var url_editar = '{{ route("compras.documento.edit", ":id")}}';
+                    var url_editar = '{{ route("ventas.documento.edit", ":id")}}';
                     url_editar = url_editar.replace(':id', data.id);
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +

@@ -19,6 +19,10 @@ class Orden extends Model
             'igv',
             'igv_check',
             'tipo_cambio',
+            
+            'sub_total',
+            'total_igv',
+            'total',
 
             'estado',
             

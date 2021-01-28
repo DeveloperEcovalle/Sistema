@@ -46,16 +46,13 @@
                                             <p class="text-navy">{{ Carbon\Carbon::parse($pago[0]->fecha_pago)->format('d/m/y') }}</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <label><strong>Monto: </strong></label>
-                                            @if($pago[0]->tipo_moneda == "SOLES" && $pago[0]->moneda_empresa == "SOLES" &&  $pago[0]->moneda == "SOLES")
-                                                <p>{{simbolo_monedas($pago[0]->tipo_moneda).' '.$pago[0]->monto}}</p>
-                                            @else
+                                            <label><strong>Monto de la Orden: </strong></label>
+
                                                 @if($pago[0]->moneda_empresa == "SOLES" )
-                                                    <p>S/. {{($pago[0]->monto)}}</p>
+                                                    <p>S/. {{($orden->total)}}</p>
                                                 @else
-                                                    <p>{{simbolo_monedas($pago[0]->moneda_empresa).' '.($pago[0]->monto)}}</p>
+                                                    <p>{{simbolo_monedas($pago[0]->moneda_empresa).' '.($orden->total)}}</p>
                                                 @endif
-                                            @endif
                                             
                                         </div>
                                     </div>
@@ -69,6 +66,16 @@
                                                 <p>-</p>
                                             @endif
                                         </div>
+                                        <div class="col-md-6">
+                                            <label><strong>Monto A cuenta: </strong></label>
+
+                                                @if($pago[0]->moneda_empresa == "SOLES" )
+                                                    <p>S/. {{($pago[0]->monto)}}</p>
+                                                @else
+                                                    <p>{{simbolo_monedas($pago[0]->moneda_empresa).' '.($pago[0]->monto)}}</p>
+                                                @endif
+                                            
+                                        </div>
                                     </div>
 
                         
@@ -76,34 +83,30 @@
 
                                 <div class="col-md-6">
 
-                                    
-                                    <div class="form-group row">
-                                        <div class="col-md-6">
-                                            <label><strong>Tipo de Cambio del dia: </strong></label> 
-                                            @if($pago[0]->tc_dia != "")
-                                                <p>{{$pago[0]->tc_dia}}</p>
-                                            @else
-                                                <p>-</p>
-                                            @endif
+                                    <div class="form-group row" >
+                                        @if($pago[0]->tipo_cambio)
+                                        <div class="col-md-12 m-b">
+                                                <label><strong>Tipo de Cambio: </strong></label> 
+                                                @if($pago[0]->tipo_cambio != "")
+                                                    <p>{{$pago[0]->tipo_cambio}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                        
                                         </div>
-                                        <div class="col-md-6">
-                                            <label><strong>Tipo de Cambio del banco: </strong></label> 
-                                            @if($pago[0]->tc_banco != "")
-                                                <p>{{$pago[0]->tc_banco}}</p>
-                                            @else
-                                                <p>-</p>
-                                            @endif
-                                        </div>
-                                    </div>
+                                        @endif
+                                        
+        
 
-                                    <div class="form-group">
-                                            <label><strong>Observación: </strong></label> 
-                                            @if($pago[0]->observacion != "")
-                                                <p>{{$pago[0]->observacion}}</p>
-                                            @else
-                                                <p>-</p>
-                                            @endif
-                                       
+                                        <div class="col-md-12">
+                                                <label><strong>Observación: </strong></label> 
+                                                @if($pago[0]->observacion != "")
+                                                    <p>{{$pago[0]->observacion}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                        
+                                        </div>
                                     </div>
 
                                 </div>
@@ -319,7 +322,7 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="wrapper wrapper-content project-manager"  onkeyup="return mayus(this)">
+                <div class="wrapper wrapper-content project-manager"  style="text-transform:uppercase">
                     <h4>Pago</h4>
                     <p><b>Información adicional:</b><p>
                     <div class="text-center">

@@ -37,6 +37,7 @@
                             @if($orden->moneda != "SOLES")
                             <div class="col-md-6">                           
                                 <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
+                                <li>Tipo de cambio de la orden de compra <span style="text-transform:lowercase"><b> A SOLES</b></span>: <b>{{$orden->tipo_cambio}}</b>.</li>
                                 <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
                                 <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$orden->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
                                 @if($orden->estado == "PAGADA")
@@ -93,7 +94,8 @@
                                     <th class="text-center">CUENTA EMPRESA</th>
                                     <th class="text-center">CUENTA PROVEEDOR</th>
                                     <th class="text-center">MONTO</th>
-                                    <th class="text-center">MONTO (S/.)</th>
+                                    <th class="text-center">TIPO DE CAMBIO</th>
+                                    <th class="text-center">CAMBIO (S/.)</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -179,6 +181,10 @@ $(document).ready(function() {
             },
             {
                 data: 'monto',
+                className: "text-center"
+            },
+            {
+                data: 'tipo_cambio',
                 className: "text-center"
             },
             {

@@ -23,6 +23,11 @@ class Documento extends Model
             'tipo_compra',
             'orden_compra',
             'tipo_pago',
+
+            'sub_total',
+            'total_igv',
+            'total',
+
         
             'estado',
             'enviado',

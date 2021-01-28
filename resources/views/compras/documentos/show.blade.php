@@ -341,6 +341,15 @@
                                     </tr>
                                     <tr>
                                         <th class="text-left title-adicional" style="width:30%">
+                                            NUMERO DEL DOCUMENTO:
+                                        </th>
+                                        <th class="text-left" style="width:70%">
+                                            <span style="font-weight: normal">{{'N° '.$documento->numero_tipo}}</span>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left title-adicional" style="width:30%">
                                             CONDICION DE DOCUMENTO:
                                         </th>
                                         <th class="text-left" style="width:70%">

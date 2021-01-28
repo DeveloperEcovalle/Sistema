@@ -63,7 +63,6 @@ class CotizacionController extends Controller
         $rules = [
             'empresa' => 'required',
             'cliente' => 'required',
-            'moneda' => 'required',
             'fecha_documento' => 'required|date_format:d/m/Y',
             'fecha_atencion_campo' => 'nullable|date_format:d/m/Y',
             // 'productos_tabla' => 'required|string'
@@ -86,7 +85,6 @@ class CotizacionController extends Controller
         $cotizacion = new Cotizacion();
         $cotizacion->empresa_id = $request->get('empresa');
         $cotizacion->cliente_id = $request->get('cliente');
-        $cotizacion->moneda = $request->get('moneda');
         $cotizacion->fecha_documento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_documento'))->format('Y-m-d');
         $cotizacion->fecha_atencion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_atencion_campo'))->format('Y-m-d');
 
@@ -193,7 +191,6 @@ class CotizacionController extends Controller
         $rules = [
             'empresa' => 'required',
             'cliente' => 'required',
-            'moneda' => 'required',
             'fecha_documento' => 'required|date_format:d/m/Y',
             'fecha_atencion' => 'nullable|date_format:d/m/Y',
             'monto_sub_total' => 'required',
@@ -205,7 +202,6 @@ class CotizacionController extends Controller
         $message = [
             'empresa.required' => 'El campo Empresa es obligatorio',
             'cliente.required' => 'El campo Cliente es obligatorio',
-            'moneda' => 'El campo Moneda es obligatorio',
             'fecha_documento.required' => 'El campo Fecha de Documento es obligatorio',
             'fecha_documento.date_format:d/m/Y' => 'El formato de la Fecha de Documento es incorrecto',
             'fecha_atencion.date_format:d/m/Y' => 'El formato de la Fecha de Atención es incorrecto',
@@ -220,7 +216,6 @@ class CotizacionController extends Controller
             $cotizacion =  Cotizacion::findOrFail($id);
             $cotizacion->empresa_id = $request->get('empresa');
             $cotizacion->cliente_id = $request->get('cliente');
-            $cotizacion->moneda = $request->get('moneda');
 
             $cotizacion->fecha_documento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_documento'))->format('Y-m-d');
             $cotizacion->fecha_atencion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_atencion'))->format('Y-m-d');

@@ -29,10 +29,9 @@ class CreatePagosTable extends Migration
             $table->string('moneda_empresa');
             $table->string('moneda_proveedor');
             $table->string('moneda');
-
-            $table->unsignedDecimal('tipo_cambio_soles', 15,2)->nullable();
-            $table->unsignedDecimal('tc_dia', 15,2)->nullable();
-            $table->unsignedDecimal('tc_banco', 15,2)->nullable();
+            
+            $table->unsignedDecimal('tipo_cambio', 15,2)->nullable();
+            $table->unsignedDecimal('cambio', 15,2)->nullable();
 
             $table->string('ruta_archivo')->nullable();
             $table->string('nombre_archivo')->nullable();

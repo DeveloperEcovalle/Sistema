@@ -65,11 +65,8 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Moneda</label>
-                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}">
-                                            <option></option>
-                                            @foreach(tipos_moneda() as $moneda)
-                                                <option value="{{ $moneda->simbolo }}" {{ (old('moneda', $cotizacion->moneda) == $moneda->simbolo ? "selected" : "") }}>{{ $moneda->descripcion }}</option>
-                                            @endforeach
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" disabled>
+                                            <option selected>SOLES</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-6 col-xs-12">

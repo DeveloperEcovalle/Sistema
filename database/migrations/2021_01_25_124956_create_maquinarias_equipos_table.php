@@ -14,7 +14,7 @@ class CreateMaquinariasEquiposTable extends Migration
     public function up()
     {
         Schema::create('maquinarias_equipos', function (Blueprint $table) {
-            $table->id();
+            $table->Increments('id');
             $table->string('tipo');
             $table->string('nombre', 200);
             $table->string('serie', 50)->nullable();

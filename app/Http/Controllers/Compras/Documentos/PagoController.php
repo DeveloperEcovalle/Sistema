@@ -41,7 +41,7 @@ class PagoController extends Controller
             $documento->estado = "PAGADA";
             $documento->update();
         }else{
-            $documento->estado = "ACTIVO";
+            $documento->estado = "PENDIENTE";
             $documento->update();
         }
 

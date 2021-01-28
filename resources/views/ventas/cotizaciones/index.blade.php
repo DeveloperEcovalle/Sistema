@@ -210,5 +210,34 @@
             })
         }
 
+        function documento(id) {
+            Swal.fire({
+                title: 'Opción Documento de compra',
+                text: "¿Seguro que desea crear un documento de compra?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //Ruta Documento
+                    var url_concretar = '{{ route("ventas.cotizacion.documento", ":id")}}';
+                    url_concretar = url_concretar.replace(':id', id);
+                    $(location).attr('href', url_concretar);
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'La Solicitud se ha cancelado.',
+                        'error'
+                    )
+                }
+            })
+        }
+
     </script>
 @endpush

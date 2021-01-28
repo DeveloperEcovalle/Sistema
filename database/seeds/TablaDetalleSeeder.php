@@ -476,13 +476,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "BOLETA ELECTRÓNICA";
-        $detalle->simbolo = 'BOL-ELEC';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 16;
-        $detalle->save();
-
-        $detalle = new Detalle();
         $detalle->descripcion = "RECIBO";
         $detalle->simbolo = 'REC';
         $detalle->estado = 'ACTIVO';
@@ -541,6 +534,29 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'DEP.';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 19;
+        $detalle->save();
+
+        //TIPO DE DOCUMENTO (VENTA)
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "FACTURA ELECTRÓNICA";
+        $detalle->simbolo = 'FAC-ELEC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 21;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "NOTA DE VENTA ELECTRÓNICA";
+        $detalle->simbolo = 'NV-ELEC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 21;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOLETA ELECTRÓNICA";
+        $detalle->simbolo = 'BOL-ELEC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 21;
         $detalle->save();
         
     }

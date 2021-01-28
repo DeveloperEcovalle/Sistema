@@ -64,9 +64,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label><strong>Monto: </strong></label>
-                                            <p>{{simbolo_monedas($orden->moneda).' '.$orden->total}}</p>
+                                            <p>{{simbolo_monedas($orden->moneda).' '.$monto}}</p>
                                         </div>
 
+
+                                        
                                     </div>
 
 
@@ -378,34 +380,40 @@
                                                                             <div class="col-md-6">
                                                                                 <h4 class="">Monto de la Orden</h4>
                                                                                 <p class="text-navy"><b>
-                                                                                    <span id="simbolo_restante"></span>
-                                                                                    <span id="restante"></span>
-                                                                                </b></p>
+                                                                                    @foreach ($monedas as $moneda)
+                                                                                        @if ($moneda->descripcion == $orden->moneda)
+                                                                                            {{$moneda->simbolo}}
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                {{$monto}}</b></p>
                                                                             </div>
 
                                                                             <div class="col-md-6">
-                                                                                <h4 class="">Monto A cuenta</h4>
+                                                                                <h4 class="">Tipo de Cambio (S/.)</h4>
                                                                                 <p class="text-navy"><b>
-                                                                                    <span id="monto_acuenta"></span>
+                                                                                @if($orden->tipo_cambio)
+                                                                                    {{$orden->tipo_cambio}}
+                                                                                @else
+                                                                                    -
+                                                                                @endif
+                                                                                
+                                                                                
                                                                                 </b></p>
                                                                             </div>
                                                                             
 
                                                                         </div>
 
-
-
-
+                                                                    
+                                                                    
+                                                                    
                                                                     </div>
 
                                                                     <div class="col-md-6 text-left">
                                                                         <div class="form-group row">
                                                                             <div class="col-md-6">
-                                                                                <h4 class="">Monto Restante</h4>
-                                                                                <p class="text-navy"><b>
-                                                                                    <span id="simbolo_equivalente"></span> 
-                                                                                    <span id="equivalente"></span>
-                                                                                </b></p>
+                                                                                <h4 class="">Monto Restante  (Equivalente)</h4>
+                                                                                <p class="text-navy"><b><span id="simbolo_equivalente"></span> <span id="monto_equivalente"></span></b></p>
                                                                             </div>
 
                                                                         </div>
@@ -413,10 +421,9 @@
 
                                                                     </div>
 
-                                                                </div>
 
+                                                                </div>
                                                                 <hr>
- 
                                                                 <div class="row">
 
                                                                     <div class="col-md-6 text-left b-r">
@@ -463,7 +470,7 @@
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td><b>ORDEN DE COMPRA</b></td>
-                                                                                    <td class="text-center"><span  id="moneda_orden_compra">{{$orden->moneda}}</span></td>
+                                                                                    <td class="text-center"><span  id="moneda_orden_compra"></span></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td><b>CUENTA DE ORIGEN (EMPRESA)</b></td>
@@ -474,6 +481,11 @@
 
                                                                         </table>
 
+                                                                        <div class="row form-group" id="campo_tipo_cambio_dia"><label class="col-lg-7 col-form-label text-right"><b>TIPO DE CAMBIO DEL DIA (<span id="simbolo_orden"></span> - <span id="simbolo_proveedor_2"></span>):</b></label>
+
+                                                                            <div class="col-lg-5"><input type="text" placeholder="0.00" class="form-control text-center" name="tc_dia" id="tc_dia"> 
+                                                                            </div>
+                                                                        </div>
                                                                                                                 
 
                                                                     </div>
@@ -529,6 +541,14 @@
 
                                                                         </table>
 
+                                                                        <div class="row form-group" id="campo_tipo_cambio_banco"><label class="col-lg-7 col-form-label text-right"><b>TIPO DE CAMBIO DEL BANCO (<span id="simbolo_empresa"></span> - <span id="simbolo_proveedor"></span>) :</b></label>
+
+                                                                            <div class="col-lg-5"><input type="text" placeholder="0.00" class="form-control text-center" name="tc_empresa_proveedor" id="tc_empresa_proveedor"> 
+                                                                            </div>
+                                                                        </div>
+
+
+
    
                                                                     </div>
 
@@ -563,7 +583,7 @@
 
                                                                         <div class="col-lg-6 col-xs-12" id="">
                                                                             <label class="" id="requerido_tipo_cambio_label">Tipo de Cambio:</label>
-                                                                            <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio')}}" placeholder="0.00">                                                                            
+                                                                            <input type="text" id="tipo_cambio" name="tipo_cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio')}}" disabled placeholder="0.00">                                                                            
 
                                                                         </div>
 
@@ -578,8 +598,8 @@
                                                                         <div class="col-lg-6 col-xs-12" id="">
                                                                                 
                                                                                 <label class="required" style="text-transform:none">Monto en 
-                                                                                <span id="simbolo_monto_orden"></span> :</label>
-                                                                                <input type="text" id="monto" name="monto" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{old('monto')}}" required placeholder="0.00" >
+                                                                                <span id="simbolo_monto_empresa"></span>:</label>
+                                                                                <input type="text" id="monto" name="monto" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{old('monto')}}" required placeholder="0.00" disabled>
                                                                                 @if ($errors->has('monto'))
                                                                                 <span class="invalid-feedback" role="alert">
                                                                                     <strong>{{ $errors->first('monto') }}</strong>
@@ -592,8 +612,8 @@
                                                                        
 
                                                                         <div class="col-lg-6 col-xs-12" id="requerido_cambio">
-                                                                                <label class="" id="">Cambio en S/. :</label>
-                                                                                <input type="text" id="cambio" name="cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('cambio')}}"  placeholder="0.00" disabled >
+                                                                                <label class="required" id="requerido_tipo_cambio_label">Cambio en <span id="tipo_cambio_destino"></span>:</label>
+                                                                                <input type="text" id="cambio" name="cambio" class="form-control {{ $errors->has('tipo_cambio') ? ' is-invalid' : '' }}" value="{{old('cambio')}}"  placeholder="0.00"required disabled>
                                                                                 @if ($errors->has('cambio'))
                                                                                 <span class="invalid-feedback" role="alert">
                                                                                     <strong>{{ $errors->first('cambio') }}</strong>
@@ -605,6 +625,28 @@
 
                                                                     </div>
 
+                                                                    <div id="cambio_soles">
+                                                                        <hr>
+                                                                        <p>Monto desembolsado en Soles (S/.)</p>
+                                                                        <div class="row">
+                                                                            <div class="col-md-4">
+                                                                                <label class="" >Monto <span id="tipo_cambio_destino"></span>:</label>
+                                                                                <input type="text" id="monto_soles_tipo" name="monto_soles_tipo" class="form-control {{ $errors->has('monto_soles_tipo') ? ' is-invalid' : '' }}" value="{{old('monto_soles_tipo')}}"  placeholder="0.00"  disabled>
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <label class="" id="">Tipo de Cambio :</label>
+                                                                                    <input type="text" id="tipo_cambio_soles" name="tipo_cambio_soles" class="form-control {{ $errors->has('tipo_cambio_soles') ? ' is-invalid' : '' }}" value="{{old('tipo_cambio_soles')}}"  placeholder="0.00">
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <label class="" id="">Monto en Soles <span id="tipo_cambio_destino"></span>:</label>
+                                                                                    <input type="text" id="monto_soles" name="monto_soles" class="form-control {{ $errors->has('monto_soles') ? ' is-invalid' : '' }}" value="{{old('monto_soles')}}" disabled  placeholder="0.00">
+                                                                            </div>
+                                                                        
+                                                                        </div>
+
+                                                                    </div>
 
                                                                 </div>
                                                                 <div class="col-md-6">
@@ -753,12 +795,12 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 //VALIDACION EN TABS 
 $('.tabs-container .nav-tabs #empresa_link').click(function() {
 
-    if ($('#id_entidad').val()!='') {
-        return true;
-    } else {
-        toastr.error("Seleccionar entidad financiera del proveedor.", 'Error');
-        return false;
-    }
+  if ($('#id_entidad').val()!='') {
+    return true;
+  } else {
+    toastr.error("Seleccionar entidad financiera del proveedor.", 'Error');
+    return false;
+  }
 
 })
 
@@ -772,20 +814,10 @@ $('.tabs-container .nav-tabs #pago_link').click(function() {
             return false;
         }
     } else {
-        toastr.error("Seleccionar entidad financiera del proveedor.", 'Error');
+    toastr.error("Seleccionar entidad financiera del proveedor.", 'Error');
     return false;
     }
 })
-
-// Error entidad bancaria
-@if ($errors->has('id_entidad'))
-    toastr.error("{{ $errors->first('id_entidad') }}", 'Error');    
-@endif
-
-// Error entidad bancaria Empresa
-@if ($errors->has('id_entidad_empresa'))
-    toastr.error("{{ $errors->first('id_entidad_empresa') }}", 'Error');    
-@endif
 
 //Select2
 $(".select2_form").select2({
@@ -814,6 +846,15 @@ $('#tipo_cambio').keyup(function() {
     $(this).val(val);
 });
 
+$('#cambio').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+});
 
 $('#monto').keyup(function() {
     var val = $(this).val();
@@ -825,6 +866,16 @@ $('#monto').keyup(function() {
     $(this).val(val);
 });
 
+
+// Error entidad bancaria
+@if ($errors->has('id_entidad'))
+    toastr.error("{{ $errors->first('id_entidad') }}", 'Error');    
+@endif
+
+// Error entidad bancaria Empresa
+@if ($errors->has('id_entidad_empresa'))
+    toastr.error("{{ $errors->first('id_entidad_empresa') }}", 'Error');    
+@endif
 
 function registrosBancos() {
     var table = $('.dataTables-bancos').DataTable();
@@ -921,7 +972,7 @@ $(document).ready(function() {
     });
     obtenerTabla()
     obtenerEmpresa()
-    // cambiarMonto()
+    cambiarMonto()
 
     var registros = registrosBancos() 
     if (registros == '0') {
@@ -965,9 +1016,69 @@ $(document).ready(function() {
         $('#cuenta_detalle').val(data[3])
         $('#cci_detalle').val(data[4])
 
-        //MONEDA EN LA TABLA CUENTA DESTINO (PROVEEDOR)
+        //CONVERSIONES TIPO DE CAMBIO MONEDA (EMPRESA)
         $('#moneda_cuenta_destino').text(data[2])
 
+        //CAMBIO DE MONEDA MONSTRAR U OCULTAR INPUT TIPO DE CAMBIO (EMPRESA - PROVEEDOR)
+        if ($('#moneda_cuenta_origen_empresa').text() != data[2] ) {
+            $("#campo_tipo_cambio_banco").css("display", "")
+            $("tc_empresa_proveedor").val('')
+            
+        }else{
+            $("#campo_tipo_cambio_banco").css("display", "none");
+            $("tc_empresa_proveedor").val('')
+        }
+
+        //CAMBIO DE MONEDA MONSTRAR U OCULTAR INPUT TIPO DE CAMBIO DIA
+        if ("{{$orden->moneda}}" == data[2] ) {
+            $("#campo_tipo_cambio_dia").css("display", "none")
+            $("tc_dia").val('')
+            $("#monto").attr('disabled', false)
+        }else{
+            $("#campo_tipo_cambio_dia").css("display", "");
+            $("tc_dia").val('')
+            $("#monto").attr('disabled', false)
+        }
+
+
+        //SIMBOLO DE MONEDA EN CAMPO CAMBIO MONEDA
+        $('#tipo_cambio_destino').text(simboloMoneda(data[2]))
+
+        //SIMBOLO EN EL TIPO DE CAMBIO MONEDA (EMPRESA - PROVEEDOR)
+        $('#simbolo_proveedor').text(simboloMoneda(data[2]))
+        $('#simbolo_proveedor_2').text(simboloMoneda(data[2]))
+        $('#simbolo_monto_proveedor_soles').text(simboloMoneda(data[2]))
+
+
+        //MONTO EQUIVALENTE 
+        $('#simbolo_equivalente').text(simboloMoneda("{{$orden->moneda}}"))
+        $('#monto_equivalente').text("{{$monto_restante}}")
+        $('#suma_monto_restante').val("{{$monto_restante}}")
+
+        //CASO EN QUE SE DEBA PONER UN TIPO DE CAMBIO SOLES
+        if (($('#moneda_cuenta_origen_empresa').text() != "SOLES")  && ($('#moneda_cuenta_destino').text() != "SOLES") ) {
+            $("#cambio_soles").css("display", "")
+            $('#monto_soles_tipo').val("")
+            $('#tipo_cambio_soles').val("")
+            $('#monto_soles').val("")
+        }else{
+            $("#cambio_soles").css("display", "none")
+            $('#monto_soles_tipo').val("")
+            $('#tipo_cambio_soles').val("")
+            $('#monto_soles').val("")
+        }
+        
+
+        if($('#moneda_orden_compra').text() == "SOLES"){
+            $('#tipo_cambio_soles').attr('disabled',true)
+        }else{
+            $('#tipo_cambio_soles').attr('disabled',false)
+        }
+
+
+
+
+    
     });
 
     $('.dataTables-bancos-empresa').on('click', 'tbody td' , function() {
@@ -986,39 +1097,216 @@ $(document).ready(function() {
         $('#cuenta_empresa_detalle').val(data[3])
         $('#cci_empresa_detalle').val(data[4])
 
-        //MONEDA EN LA TABLA CUENTA ORIGEN (EMPRESA)
+        //CONVERSIONES TIPO DE CAMBIO MONEDA (EMPRESA)
         $('#moneda_cuenta_origen').text(data[2])
-        //MONEDA EN LA TABLA CUENTA ORIGEN - PROVEEDOR 
+        $('#moneda_orden_compra').text("{{$orden->moneda}}")
         $('#moneda_cuenta_origen_empresa').text(data[2])
 
+
+        //CAMBIO DE MONEDA MONSTRAR U OCULTAR INPUT TIPO DE CAMBIO (EMPRESA - PROVEEDOR)
+        if ($('#moneda_cuenta_origen_empresa').text() != $('#moneda_cuenta_destino').text() ) {
+            $("#campo_tipo_cambio_banco").css("display", "")
+            $("tc_empresa_proveedor").val('')
+
+        }else{
+            $("#campo_tipo_cambio_banco").css("display", "none");
+            $("tc_empresa_proveedor").val('')
+        }
+
+        //CAMBIAR SIMBOLO DE MONTO
+        $('#simbolo_monto_empresa').text(simboloMoneda(data[2]))
+
+        //SIMBOLO EN EL TIPO DE CAMBIO MONEDA (ORDEN - EMPRESA)
+        $('#simbolo_orden').text(simboloMoneda("{{$orden->moneda}}"))
+        $('#simbolo_empresa').text(simboloMoneda(data[2]))
         
+
+        //MOSTRAR TIPO DE CAMBIO ORDEN - EMPRESA
+        if ("{{$orden->moneda}}" != $('#moneda_empresa_detalle').val() ) {
+            $("#campo_tipo_cambio_dia").css("display", "")
+            $("tc_dia").val('')
+        }else{
+            $("#campo_tipo_cambio_dia").css("display", "none")
+            $("tc_dia").val('')
+        }
+
+
+        //CAMBIO DE MONEDA MONSTRAR U OCULTAR INPUT TIPO DE CAMBIO DIA
+        if ("{{$orden->moneda}}" == $('#moneda_cuenta_destino').text() ) {
+            $("#campo_tipo_cambio_dia").css("display", "none")
+            $("tc_dia").val('')
+            $("#monto").attr('disabled', false)
+            // $("#tc_empresa_proveedor").attr('disabled', false)
+        }else{
+            $("#campo_tipo_cambio_dia").css("display", "");
+            $("tc_dia").val('')
+            $("#monto").attr('disabled', true)
+            // $("#tc_empresa_proveedor").attr('disabled', true)
+        }
+
+        //MONTO EQUIVALENTE 
+        $('#simbolo_equivalente').text(simboloMoneda("{{$orden->moneda}}"))
+        $('#monto_equivalente').text("{{$monto_restante}}")
     
-    })
 
-    // SIMBOLO DE LA ORDEN EN MONTO
-    $('#simbolo_monto_orden').text(simboloMoneda("{{$orden->moneda}}"))
-    //INICIANDO MONTO A CUENTA
-    $('#monto_acuenta').text(simboloMoneda("{{$orden->moneda}}")+' 0.00')
-    //INICIALIZAMOS MONTO
-    $('#simbolo_restante').text(simboloMoneda("{{$orden->moneda}}"))
-    $('#restante').text("{{$monto}}")
-    //INICIALIZAMOS MONTO RESTANTE
-    $('#simbolo_equivalente').text(simboloMoneda("{{$orden->moneda}}"))
-    $('#equivalente').text(' 0.00')
+        //CASO EN QUE SE DEBA PONER UN TIPO DE CAMBIO SOLES
+        if (($('#moneda_cuenta_origen_empresa').text() != "SOLES")  && ($('#moneda_cuenta_destino').text() != "SOLES") ) {
+            $("#cambio_soles").css("display", "")
+            $('#monto_soles_tipo').val("")
+            $('#tipo_cambio_soles').val("")
+            $('#monto_oles').val("")
+        }else{
+            $("#cambio_soles").css("display", "none")
+            $('#monto_soles_tipo').val("")
+            $('#tipo_cambio_soles').val("")
+            $('#monto_oles').val("")
+        }
 
-    // HABILITAR O DESABILITAR LOS CAMPOS SEGUN LA MONEDA
-    if ("{{$orden->moneda}}" == "SOLES") {
-        $('#tipo_cambio').prop('required', false)
-        $('#tipo_cambio').prop('disabled', true)
-        $('#requerido_tipo_cambio_label').removeClass('required')
-    }else{
-        $('#tipo_cambio').prop('required', true)
-        $('#tipo_cambio').prop('disabled', false)
-        $('#requerido_tipo_cambio_label').addClass('required')
-    }
+        if($('#moneda_orden_compra').text() == "SOLES"){
+            $('#tipo_cambio_soles').attr('disabled',true)
+        }else{
+            $('#tipo_cambio_soles').attr('disabled',false)
+        }
 
+    });
+    //Monto restante inicial
+    $('#moneda_orden').text(simboloMoneda("{{$orden->moneda}}"))
+    $('#monto_restante').text("{{$monto_restante}}")
+    $('#suma_monto_restante').val("{{$monto_restante}}")
 })
 
+
+function cambiarMonto() {
+    var val = $('#tc_dia').val()
+    var monto_restante = "{{$monto_restante}}"
+    if ("{{$orden->moneda}}" != $('#moneda_empresa_detalle').val() ) {
+        if (val > 0) {
+            
+            var nuevo_restante = Number(val) * Number(monto_restante) 
+            $('#moneda_orden').text(simboloMoneda($('#moneda_empresa_detalle').val()))
+            //Simbolo en el campo monto
+            $('#simbolo_monto_empresa').text(simboloMoneda($('#moneda_empresa_detalle').val()))
+            $('#monto_restante').text((nuevo_restante).toFixed(2))
+        }else{
+            $('#moneda_orden').text(simboloMoneda("{{$orden->moneda}}"))
+            //Simbolo en el campo monto
+            $('#simbolo_monto_empresa').text(simboloMoneda("{{$orden->moneda}}"))
+            $('#monto_restante').text(monto_restante)
+        }
+    }else{
+        //Simbolo en el campo monto
+        // $('#simbolo_monto_empresa').text(monto_restante)
+        $('#monto_restante').text(monto_restante)
+    }
+    // $('#suma_monto_restante').text(monto_restante)
+}
+
+//TIPO DE CAMBIO DEL DIA
+$('#tc_dia').keyup(function() {
+
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+
+
+
+    if (val) {
+        $('#monto').attr('disabled',false)
+        $("#tc_empresa_proveedor").attr('disabled', false)
+    }else{
+        $('#monto').attr('disabled',true)
+        $('#monto').val('')
+
+        $("#tc_empresa_proveedor").attr('disabled', true)
+        $('#tc_empresa_proveedor').val('')
+    }
+
+
+    var cambio = ''
+    if ($('#moneda_orden_compra').text() == "SOLES") {
+        cambio = Number("{{$monto_restante}}") / val    
+    }else{
+        cambio = val * Number("{{$monto_restante}}")
+    }
+    
+
+    if (cambio) {
+        $('#monto_equivalente').text((cambio).toFixed(2))    
+    }else{
+        $('#monto_equivalente').text("{{$monto_restante}}")
+    }
+    
+    $('#simbolo_equivalente').text(simboloMoneda($('#moneda_cuenta_destino').text()))
+
+    //AÑADIR MONTO
+    $('#suma_monto_restante').val((cambio).toFixed(2))
+
+
+    if($('#cambio').val()){
+        var cambio = $('#cambio').val()
+        //NUEVO MONTO RESTANTE
+        var min = 0
+        var monto_restante
+        //nuevo monto restante
+        if ("{{$orden->moneda}}" != $('#moneda_detalle').val() ) {
+
+            monto_restante = Number($('#suma_monto_restante').val())    
+
+            if(cambio > Number(monto_restante) || cambio < min   ){
+                toastr.error("El monto ingresado no está en el rango permitido del monto restante.", 'Error');
+                $('#monto').val('');
+                $('#cambio').val('');
+                $('#monto_equivalente').text((monto_restante).toFixed(2))
+            }else{
+                const max = (Number(monto_restante) -  Number(cambio)).toFixed(2);
+                // Nuevo monto restante
+                $('#monto_equivalente').text(max)
+            }
+
+
+        }
+
+    }
+
+
+    if($('#moneda_orden_compra').text() == "SOLES"){
+        $('#tipo_cambio_soles').val(val)
+    }
+    
+
+});
+//TIPO DE CAMBIO
+$('#tipo_cambio_soles').keyup(function() {
+ 
+ var val = $(this).val();
+ if (isNaN(val)) {
+     val = val.replace(/[^0-9\.]/g, '');
+     if (val.split('.').length > 2)
+         val = val.replace(/\.+$/, "");
+ }
+ $(this).val(val);
+
+ var monto = $('#monto_soles_tipo').val()
+ 
+ $('#monto_soles').val((monto*val).toFixed(2))
+
+});
+////////////////////
+
+$('#tc_empresa_proveedor').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        val = val.replace(/[^0-9\.]/g, '');
+        if (val.split('.').length > 2)
+            val = val.replace(/\.+$/, "");
+    }
+    $(this).val(val);
+    $('#tipo_cambio').val(val)
+});
 
 //Obtener el simbolo para el pago
 function simboloMoneda(moneda) {
@@ -1102,12 +1390,8 @@ $('#enviar_pago').submit(function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             
-                var monto_correcto =  montoCorrecto()
-                if (monto_correcto == true) {
-                    $('#cambio').attr('disabled',false)
-                    this.submit();
-                }
-               
+                $('#cambio').attr('disabled',false)
+                this.submit();               
 
         } else if (
             /* Read more about handling dismissals below */
@@ -1122,46 +1406,192 @@ $('#enviar_pago').submit(function(e) {
     })
 })
 
+//Calcular cambio soles
 
-function montoCorrecto() {
-    var correcto = true
-    var monto = $('#equivalente').text()
-    if (Number(monto) < 0) {
-        toastr.error("El monto restante es un valor incorrecto.", 'Error'); 
-        correcto = false
-    }
-    return correcto
-}
+$('#tc_empresa_proveedor').keyup(function() {
 
-
-
-$('#monto').keyup(function() {
-    if ("{{$orden->moneda}}" == "SOLES") {
-        var monto = $(this).val()
-        $('#monto_acuenta').text(simboloMoneda("{{$orden->moneda}}")+' '+Number(monto).toFixed(2))
-        // CALCULAR EL MONTO RESTANTE 
-        var restante = $('#restante').text()
-        var resto = Number(restante) - Number(monto)
-        $('#equivalente').text(Number(resto).toFixed(2))
-
+    
+    var val = $(this).val();
+    
+    if ("{{$orden->moneda}}" != $('#moneda_detalle').val() ) {
+        if (!$('#tc_dia').val()) {
+            $('#tc_empresa_proveedor').val('')     
+            toastr.error("EL tipo de cambio del dia no esta definido.", 'Error');   
+        }
+        
     }else{
-        if (!$('#tipo_cambio').val()) {
-            toastr.error("Ingrese el tipo de cambio del dia", 'Error');     
-            $('#monto').val('');
+        var monto_restante = "{{$monto_restante}}"
+        //Solo se convierte el pago si es diferente la cuenta de origen con la orden
+        if ("{{$orden->moneda}}" != $('#moneda_detalle').val() ) {
+            if (val > 0) {
+                // SIMBOLO EN EL MONTO EQUIVALENTE
+                $('#moneda_orden').text(simboloMoneda($('#moneda_detalle').val()))
+            }else{
+                $('#moneda_orden').text(simboloMoneda("{{$orden->moneda}}"))
+                $('#monto_restante').text(monto_restante)
+            }
         }else{
-            var monto = $(this).val()
-            var tipo_cambio =  $('#tipo_cambio').val()
-            var cambio = monto * tipo_cambio
-            $('#cambio').val(cambio.toFixed(2))
-            $('#monto_acuenta').text(simboloMoneda("{{$orden->moneda}}")+' '+Number(monto).toFixed(2))
-            // CALCULAR EL MONTO RESTANTE 
-            var restante = $('#restante').text()
-            var resto = Number(restante) - Number(monto)
-            $('#equivalente').text(Number(resto).toFixed(2))
+            $('#suma_monto_restante').val(monto_restante)
+        }
+        var monto = $('#monto').val()
+        var tipo_cambio = $('#tc_empresa_proveedor').val()
+        var cambio = monto*tipo_cambio
+        $('#cambio').val(cambio.toFixed(2))
+
+        //NUEVO MONTO RESTANTE
+        var min = 0
+        var monto_restante
+        //nuevo monto restante
+        if ("{{$orden->moneda}}" != $('#moneda_detalle').val() ) {
+
+            monto_restante = Number($('#suma_monto_restante').val())    
+
+            if(cambio > Number(monto_restante) || cambio < min   ){
+                toastr.error("El monto ingresado no está en el rango permitido del monto restante.", 'Error');
+                $('#monto').val('');
+                $('#cambio').val('');
+                $('#monto_equivalente').text((monto_restante).toFixed(2))
+                //LIMPIAR MONTO ERRADO
+                $('#monto_soles').val('');
+            }else{
+                const max = (Number(monto_restante) -  Number(cambio)).toFixed(2);
+                // Nuevo monto restante
+                $('#monto_equivalente').text(max)
+            }
+
+
+        }else{
+            monto_restante = Number($('#suma_monto_restante').val())  
+            if(cambio > Number(monto_restante) || cambio < min   ){
+            
+                toastr.error("El monto ingresado no está en el rango permitido del monto restante.", 'Error');
+                $('#monto').val('');
+                $('#cambio').val('');
+                $('#monto_equivalente').text((monto_restante).toFixed(2))
+                //LIMPIAR MONTO ERRADO
+                $('#monto_soles').val('');
+            }else{
+                const max = (Number(monto_restante) - Number(cambio)).toFixed(2); 
+                // Nuevo monto restante
+                $('#monto_equivalente').text(max)
+            }
+
+
+
 
         }
 
+
     }
+    
+})
+
+$('#tc_empresa_proveedor').keyup(function() {
+    $('#monto').prop('disabled',false)
+})
+
+$('#monto').keyup(function() {
+    
+    var monto = $(this).val();
+    var tipo_cambio = $('#tipo_cambio').val()
+    var cambio = ""
+    var error = false
+
+    if ($('#moneda_cuenta_origen_empresa').text() == $('#moneda_cuenta_destino').text() ) {
+        cambio = monto*1
+        tipo_cambio = 1
+    }else{
+        if ($('#moneda_cuenta_origen_empresa').text() != "SOLES") {
+            cambio =  monto * tipo_cambio
+        }else{
+            cambio =  monto / tipo_cambio
+        }
+        
+    }
+
+    if (!tipo_cambio) {
+        toastr.error("EL tipo de cambio no esta definido.", 'Error');
+        $( "#tipo_cambio" ).focus();
+        $('#cambio').val('');
+        $('#monto').val('');
+        error = true
+    }else{
+        error = false
+        tipo_cambio = 1
+        $('#cambio').val(cambio.toFixed(2))
+    }
+
+  
+    var min = 0
+    var monto_restante
+    //nuevo monto restante
+
+    if ("{{$orden->moneda}}" != $('#moneda_detalle').val() ) {
+
+        monto_restante = Number($('#suma_monto_restante').val())    
+
+        if(cambio > Number(monto_restante) || cambio < min   ){
+
+            if (error!=true) {
+                toastr.error("El monto ingresado no está en el rango permitido del monto restante.", 'Error');
+                $('#monto').val('');
+                $('#cambio').val('');
+                $('#monto_equivalente').text((monto_restante).toFixed(2))
+                //LIMPIAR MONTO ERRADO
+                $('#monto_soles').val('');
+                
+            }
+
+        
+        }else{
+            const max = (Number(monto_restante) -  Number(cambio)).toFixed(2);
+            // Nuevo monto restante
+            $('#monto_equivalente').text(max)
+        }
+
+
+    }else{
+        monto_restante = Number($('#suma_monto_restante').val())  
+        
+        if(cambio > Number(monto_restante) || cambio < min   ){
+        
+            if (error!=true) {
+                toastr.error("El monto ingresado no está en el rango permitido del monto restante.", 'Error');
+                $('#monto').val('');
+                $('#cambio').val('');
+                $('#monto_equivalente').text((monto_restante).toFixed(2))
+
+                //LIMPIAR MONTO ERRADO
+                $('#monto_soles').val('');
+            }
+            
+            
+            
+        }else{
+            const max = (Number(monto_restante) - Number(cambio)).toFixed(2); 
+            // Nuevo monto restante
+            $('#monto_equivalente').text(max)
+        }
+
+
+
+
+    }
+
+
+    if (($('#moneda_cuenta_origen_empresa').text() != "SOLES")  && ($('#moneda_cuenta_destino').text() != "SOLES") ) {
+        $('#monto_soles_tipo').val(cambio)
+        var tipo  = $('#tipo_cambio_soles').val()
+        $('#monto_soles').val((cambio*tipo).toFixed(2))
+    }
+
+
+
+
+
+
+
+
 })
 
 
@@ -1170,6 +1600,11 @@ function limpiarCampos() {
     //Agregar montos inicial
     
     $('#moneda_orden').text(simboloMoneda("{{$orden->moneda}}"))
+    $('#monto_restante').text("{{$monto_restante}}")
+
+    //TIPOS DE CAMBIO DE ACUERDO A LA CUENTA
+    $('#tc_dia').val('')
+    $('#tc_empresa_proveedor').val('')
 
     //TIPO DE CAMBIO 
     $('#tipo_cambio').val('')

@@ -65,11 +65,8 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Moneda</label>
-                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" required >
-                                            <option></option>
-                                            @foreach(tipos_moneda() as $moneda)
-                                                <option value="{{ $moneda->simbolo }}" {{ (old('moneda') == $moneda->simbolo ? "selected" : "") }}>{{ $moneda->descripcion }}</option>
-                                            @endforeach
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" disabled >
+                                            <option selected>SOLES</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
@@ -185,7 +182,7 @@
                                                             <th class="text-center">ACCIONES</th>
                                                             <th class="text-center">CANTIDAD</th>
                                                             <th class="text-center">PRESENTACION</th>
-                                                            <th class="text-center">PRODUCTO</th>
+                                                            <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                                             <th class="text-center">PRECIO</th>
                                                             <th class="text-center">TOTAL</th>
                                                         </tr>
@@ -768,9 +765,6 @@
             }
             return enviar
         }
-
-
-
 
         $('#form_registrar_cotizacion').submit(function(e) {
             e.preventDefault();

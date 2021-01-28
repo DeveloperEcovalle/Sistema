@@ -193,7 +193,7 @@
           <tr>
             <th class="no">CANT.</th>
             <th class="desc">PRESENTACION</th>
-            <th class="unit">PRODUCTO</th>
+            <th class="unit">DESCRIPCION DEL PRODUCTO</th>
             <th class="qty">PRECIO</th>
             <th class="total">TOTAL</th>
           </tr>

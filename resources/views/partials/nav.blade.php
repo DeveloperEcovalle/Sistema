@@ -59,6 +59,7 @@
         <ul class="nav nav-second-level collapse">
             <li class="@yield('clientes-active')"><a href="{{ route('ventas.cliente.index') }}">Clientes</a></li>
             <li class="@yield('cotizaciones-active')"><a href="{{ route('ventas.cotizacion.index') }}">Cotizaciones</a></li>
+            <li class="@yield('documentos-active')"><a href="{{route('ventas.documento.index')}}">Documentos</a></li>
 
         </ul>
     </li>

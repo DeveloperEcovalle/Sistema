@@ -109,6 +109,8 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('documento/{id}','Compras\OrdenController@document')->name('compras.orden.documento');
     Route::get('nuevodocumento/{id}','Compras\OrdenController@newdocument')->name('compras.orden.nuevodocumento');
 
+    Route::get('confirmarEliminar/{id}','Compras\OrdenController@confirmDestroy')->name('compras.orden.confirmDestroy');
+
     //Pagos
     Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index');
     Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
@@ -311,6 +313,8 @@ Route::prefix('ventas/cotizaciones')->group(function() {
     Route::get('/destroy/{id}', 'Ventas\CotizacionController@destroy')->name('ventas.cotizacion.destroy');
     Route::get('reporte/{id}','Ventas\CotizacionController@report')->name('ventas.cotizacion.reporte');
     Route::get('email/{id}','Ventas\CotizacionController@email')->name('ventas.cotizacion.email');
+    Route::get('documento/{id}','Ventas\CotizacionController@document')->name('ventas.cotizacion.documento');
+    
 });
 
 // Documentos - cotizaciones

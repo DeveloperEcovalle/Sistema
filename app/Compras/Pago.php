@@ -23,10 +23,8 @@ class Pago extends Model
             'moneda_empresa',
             'moneda_proveedor',
             
-            'tipo_cambio_soles',
-            'tc_dia',
-            'tc_banco',
-            
+            'tipo_cambio',
+            'cambio',
             
             'observacion',
             'estado'
