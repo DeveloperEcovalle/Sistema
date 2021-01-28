@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLineaProduccionTable extends Migration
+class CreateLineasProduccionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateLineaProduccionTable extends Migration
      */
     public function up()
     {
-        Schema::create('linea_produccion', function (Blueprint $table) {
+        Schema::create('lineas_produccion', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_linea',200)->nullable();
+            $table->string('nombre_linea',200);
             $table->unsignedInteger('cantidad_personal')->unsigned();
             $table->string('ruta_imagen')->nullable();
             $table->string('nombre_imagen')->nullable();
             $table->string('ruta_archivo_word')->nullable();
             $table->string('archivo_word')->nullable();
+            $table->enum('estado',['ACTIVA','ANULADA'])->default('ACTIVA');
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ class CreateLineaProduccionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('linea_produccion');
+        Schema::dropIfExists('lineas_produccion');
     }
 }
