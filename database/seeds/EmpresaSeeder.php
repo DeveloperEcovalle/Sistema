@@ -28,9 +28,11 @@ class EmpresaSeeder extends Seeder
         $empresa->nombre_representante = 'AXEL GASTON KEVIN GUTIERREZ LOPEZ';
         $empresa->num_asiento = 'A00001';
         $empresa->num_partida = '11036086';
-        $empresa->activo = '1';
+        $empresa->estado_ruc = 'ACTIVO';
+        $empresa->estado_dni_representante= 'ACTIVO';
         $empresa->save();
 
+        $proveedor = new Proveedor();
         $proveedor->descripcion = 'LIMPIATODO S.A.C';
         $proveedor->tipo_documento = 'RUC';
         $proveedor->tipo_persona = 'PERSONA JURIDICA';
@@ -45,8 +47,8 @@ class EmpresaSeeder extends Seeder
         $proveedor->ruc_transporte = '20136341066';
         $proveedor->direccion_transporte = 'JR. LA CALETA NRO. 176 A.H.  MANUEL SEOANE CORRALES - ANCASH - SANTA - CHIMBOTE';
 
-        $proveedor->activo_transporte = '1';
-        $proveedor->activo = '1';
+        $proveedor->estado_transporte = 'ACTIVO';
+        $proveedor->estado_documento = 'ACTIVO';
         $proveedor->save();
 
         // $persona = new Persona();

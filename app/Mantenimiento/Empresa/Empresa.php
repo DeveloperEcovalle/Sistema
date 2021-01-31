@@ -25,7 +25,8 @@ class Empresa extends Model
 
         'num_asiento',
         'num_partida',
-        'activo',
+        'estado_ruc',
+        'estado_dni_representante',
         'estado',
     ];
 

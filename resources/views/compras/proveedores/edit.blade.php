@@ -100,6 +100,8 @@
                                                                     @endforeach
                                                                 </select>
 
+                                                                <div class="invalid-feedback"><b><span id="error-tipo"></span></b></div>
+
                                                                 <input type="text" disabled id="tipo_persona_dni" class="form-control"
                                                                     name="tipo_persona_dni" value="PERSONA CON DNI">
 
@@ -118,39 +120,43 @@
 
                                                             <div class="col-md-6" id="ruc_requerido">
                                                                 <label class="required">Ruc: </label>
-                                                                <input type="text" id="ruc"
-                                                                    class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"
-                                                                    name="ruc" maxlength="11" value="{{old('ruc', $proveedor->ruc)}}"
-                                                                    onkeyup="return mayus(this)">
 
-                                                                @if ($errors->has('ruc'))
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $errors->first('ruc') }}</strong>
-                                                                </span>
-                                                                @endif
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"  name="ruc" id="ruc" maxlength="11" value="{{old('ruc',$proveedor->ruc)}}" required> 
+                                                                    <span class="input-group-append"><a style="color:white" onclick="consultarRuc()" class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
+                                                                    @if ($errors->has('ruc'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('ruc') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-ruc"></span></b></div>
+                                                                </div>
 
                                                             </div>
 
                                                             <div class="col-md-6" id="dni_requerido" style="display:none;">
                                                                 <label class="required">Dni: </label>
-                                                                <input type="text" id="dni"
-                                                                    class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}"
-                                                                    name="dni" value="{{ old('dni',$proveedor->dni)}}" maxlength="8"
-                                                                    onkeyup="return mayus(this)">
 
-                                                                @if ($errors->has('dni'))
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $errors->first('dni') }}</strong>
-                                                                </span>
-                                                                @endif
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}"  name="dni" id="dni" maxlength="8" value="{{old('dni',$proveedor->dni)}}"> 
+                                                                    <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+                                                                    @if ($errors->has('dni'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('dni') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-dni"></span></b></div>
+                                                                </div>
 
                                                             </div>
 
                                                             <div class="col-md-6">
                                                                 <label class="">Estado: </label>
                                                                 <input type="text" id="estado"
-                                                                    class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
-                                                                    name="estado" value="{{ $proveedor->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}"
+                                                                    class="form-control text-center {{ $errors->has('estado') ? ' is-invalid' : '' }}"
+                                                                    name="estado" value="{{ $proveedor->estado_documento }}"
                                                                     onkeyup="return mayus(this)" disabled>
                                                                 @if ($errors->has('estado'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -178,6 +184,7 @@
                                                                     <strong>{{ $errors->first('descripcion') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-descripcion"></span></b></div>
                                                             </div>
                                                         </div>
 
@@ -196,6 +203,7 @@
                                                                     <strong>{{ $errors->first('direccion') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-direccion"></span></b></div>
                                                             </div>
 
                                                         </div>
@@ -220,6 +228,7 @@
                                                                     <strong>{{ $errors->first('zona') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-zona"></span></b></div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label class="required">Correo:</label>
@@ -232,6 +241,7 @@
                                                                     <strong>{{ $errors->first('correo') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-correo"></span></b></div>
 
 
                                                             </div>
@@ -249,6 +259,7 @@
                                                                     <strong>{{ $errors->first('telefono') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-telefono"></span></b></div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Celular:</label>
@@ -320,6 +331,7 @@
                                                                                         <strong>{{ $errors->first('calidad') }}</strong>
                                                                                     </span>
                                                                                     @endif
+                                                                                    
 
                                                                                 </div>
 
@@ -450,32 +462,33 @@
 
                                                                                     <div class="col-md-6">
                                                                                         <label class="required" >Ruc:</label>
-                                                                                        <input type="text" placeholder=""
-                                                                                            class="form-control {{ $errors->has('ruc_transporte') ? ' is-invalid' : '' }}"
-                                                                                            name="ruc_transporte" maxlength="11" id="ruc_transporte"
-                                                                                            onkeyup="return mayus(this)"
-                                                                                            value="{{old('ruc_transporte',$proveedor->ruc_transporte)}}">
-                                                                                        @if ($errors->has('ruc_transporte'))
-                                                                                        <span class="invalid-feedback" role="alert">
-                                                                                            <strong>{{ $errors->first('ruc_transporte') }}</strong>
-                                                                                        </span>
-                                                                                        @endif
-                                                                                        <div class="invalid-feedback"><b><span id="error-ruc_transporte"></span></b></div>
+                                                                                        <div class="input-group">
+                                                                                            <input type="text" class="form-control {{ $errors->has('ruc_transporte') ? ' is-invalid' : '' }}"  name="ruc_transporte" id="ruc_transporte" maxlength="11" value="{{old('ruc_transporte', $proveedor->ruc_transporte)}}"> 
+                                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarRuctransporte()" class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
+                                                                                            @if ($errors->has('ruc_transporte'))
+                                                                                            <span class="invalid-feedback" role="alert">
+                                                                                                <strong>{{ $errors->first('ruc_transporte') }}</strong>
+                                                                                            </span>
+                                                                                            @endif
+
+                                                                                            <div class="invalid-feedback"><b><span id="error-ruc_transporte"></span></b></div>
+                                                                                        </div>
+                                 
                                                                                     </div>
 
                                                                                     <div class="col-md-6">
 
                                                                                         <label>Estado: </label>
                                                                                         <input type="text" id="estado_transporte"
-                                                                                            class="form-control {{ $errors->has('estado_transporte') ? ' is-invalid' : '' }}"
-                                                                                            name="estado_transporte" value="{{ $proveedor->activo_transporte == 1 ? 'ACTIVO' : 'INACTIVO'}}"
+                                                                                            class="form-control text-center {{ $errors->has('estado_transporte') ? ' is-invalid' : '' }}"
+                                                                                            name="estado_transporte" value="{{ $proveedor->estado_transporte }}"
                                                                                             onkeyup="return mayus(this)" disabled>
                                                                                         @if ($errors->has('estado_transporte'))
                                                                                         <span class="invalid-feedback" role="alert">
                                                                                             <strong>{{ $errors->first('estado_transporte') }}</strong>
                                                                                         </span>
                                                                                         @endif
-                                                                                        <div class="invalid-feedback"><b><span id="error-estado_transporte"></span></b></div> 
+                                                                                        <!-- <div class="invalid-feedback"><b><span id="error-estado_transporte"></span></b></div>  -->
 
                                                                                     </div>
                                                                                 </div>
@@ -728,39 +741,48 @@ $('#celular_calidad').on('input', function () {
 @endif
 
 @if(old('tipo_documento', $proveedor -> tipo_documento) == "RUC")
-//Ocultar Tipo de Persona
-$('#ruc_requerido').show();
-$("#tipo_persona").select2().next().show();
-$("#tipo_persona").select2({
-    placeholder: "SELECCIONAR",
-    allowClear: true,
-    height: '200px',
-    width: '100%',
-});
-//Mostrar Campos Dni
-$('#dni_requerido').hide();
-$('#tipo_persona_dni').hide();
-$("#tipo_persona").prop('required', true);
+    //Ocultar Tipo de Persona
+    $('#ruc_requerido').show();
+    $("#tipo_persona").select2().next().show();
+    $("#tipo_persona").select2({
+        placeholder: "SELECCIONAR",
+        allowClear: true,
+        height: '200px',
+        width: '100%',
+    });
+    //Mostrar Campos Dni
+    $('#dni_requerido').hide();
+    $('#tipo_persona_dni').hide();
+    $("#tipo_persona").prop('required', true);
+
+    $("#dni").prop('required', false);
+    $("#ruc").prop('required', true);
 
 @endif
 
 @if(old('tipo_documento', $proveedor -> tipo_documento) == "DNI")
 
-//Ocultar Tipo de Persona
-$('#ruc_requerido').hide();
-$("#tipo_persona").select2().next().hide();
-//Mostrar Campos Dni
-$('#dni_requerido').show();
-$('#tipo_persona_dni').show();
-$("#tipo_persona").prop('required', false);
+    //Ocultar Tipo de Persona
+    $('#ruc_requerido').hide();
+    $("#tipo_persona").select2().next().hide();
+    //Mostrar Campos Dni
+    $('#dni_requerido').show();
+    $('#tipo_persona_dni').show();
+    $("#tipo_persona").prop('required', false);
+    
+
+    $("#dni").prop('required', true);
+    $("#ruc").prop('required', false);
 
 @endif
 
 
-$('input:radio[name="tipo_documento"]').change(function() {
+$("input[name=tipo_documento]").click(function () {    
+    //Limpiar comentarios de errores
+    limpiarErrores()
     // Cambiar el estado
-    $('#estado').val('INACTIVO')
-    /////////////////////////////
+    $('#estado').val('SIN VERIFICAR')
+    /////////////////////////////////// 
     if ($(this).val() == 'RUC') {
         //Limpiar Inputs
         $('#ruc').val('');
@@ -768,6 +790,7 @@ $('input:radio[name="tipo_documento"]').change(function() {
         $('#descripcion').val('');
         $('#direccion').val('');
         $("#tipo_persona").val('');
+       
 
         //////////////////////////
 
@@ -789,6 +812,7 @@ $('input:radio[name="tipo_documento"]').change(function() {
         $("#tipo_persona").prop('required', true);
     } else {
         //Limpiar Inputs
+
         $('#ruc').val('');
         $('#dni').val('');
         $('#descripcion').val('');
@@ -808,36 +832,46 @@ $('input:radio[name="tipo_documento"]').change(function() {
     }
 });
 
+
 $("#ruc").keyup(function() {
-    $('#estado').val('INACTIVO');
+    if ($('#estado').val('ACTIVO')) {
+        $('#estado').val('SIN VERIFICAR');
+    }
+})
+
+$("#descripcion").keyup(function() {
+    if ($('#estado').val('ACTIVO')) {
+        $('#estado').val('SIN VERIFICAR');
+    }
+})
+
+$("#direccion").keyup(function() {
+    if ($('input:radio[name=tipo_documento]:checked').val() == "RUC") {
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('SIN VERIFICAR');
+        }
+    }
+
 })
 
 //Validar datos del tranportista
 $("#ruc_transporte").keyup(function() {
     if ($('#estado_transporte').val('ACTIVO')) {
-        $('#estado_transporte').val('INACTIVO');
-        $('#transporte').val('');
-        $('#direccion_transporte').val('');
+        $('#estado_transporte').val('SIN VERIFICAR');
     }
 })
 
 $("#transporte").keyup(function() {
-    $('#estado_transporte').val('INACTIVO');
-    $('#transporte').val('');
-    $('#direccion_transporte').val('');
-    $('#ruc_transporte').val('');
+    $('#estado_transporte').val('SIN VERIFICAR')
 })
 
 $("#direccion_transporte").keyup(function() {
-    $('#estado_transporte').val('INACTIVO');
-    $('#transporte').val('');
-    $('#direccion_transporte').val('');
-    $('#ruc_transporte').val('');
+    $('#estado_transporte').val('SIN VERIFICAR');
 })
 
 $("#dni").keyup(function() {
     if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('INACTIVO');
+        $('#estado').val('SIN VERIFICAR');
     }
 })
 
@@ -863,6 +897,7 @@ $('#enviar_proveedor').submit(function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             var error = false
+            limpiarErrores()
             //Transportista
             var enviar = enviarDatosTransportista()
             if (enviar != false) {
@@ -880,22 +915,23 @@ $('#enviar_proveedor').submit(function(e) {
             }
 
 
-            if ($('#estado_transporte').val() != "ACTIVO") {
-                toastr.error('Ingrese un transporte activo', 'Error');
-                error = true 
+            if ($('#estado_transporte').val() != "ACTIVO" ) {
+                    if ($('#estado_transporte').val() != "SIN VERIFICAR" ) {
+                        toastr.error('Ingrese un transporte activo', 'Error');
+                        error = true 
+                    }
+
             } 
 
             if ($('#estado').val() != "ACTIVO") {
-                toastr.error('Ingrese un proveedor activo', 'Error');
-                error = true
+                    if ($('#estado').val() != "SIN VERIFICAR" ) {
+                        toastr.error('Ingrese un proveedor activo', 'Error');
+                        error = true 
+                    }
             } 
 
             if (error == false) {
-                $("#estado").prop('disabled', false)
-                $("#tipo_persona").prop('disabled', false);
-                $("#tipo_persona_dni").prop('disabled', false);
 
-                $("#estado_transporte").prop('disabled', false)
 
                 var existe = entidadFinanciera()
                 if (existe == false) {
@@ -911,6 +947,10 @@ $('#enviar_proveedor').submit(function(e) {
                     }).then((result) => {
                         
                         if (result.isConfirmed) {
+                            $("#estado").prop('disabled', false)
+                            $("#tipo_persona").prop('disabled', false);
+                            $("#tipo_persona_dni").prop('disabled', false);
+                            $("#estado_transporte").prop('disabled', false)
                             //Cargar Entidades en modal
                             cargarEntidades()
                             this.submit();
@@ -924,6 +964,10 @@ $('#enviar_proveedor').submit(function(e) {
                     })
                 }else{
                     //Cargar Entidades en modal
+                    $("#estado").prop('disabled', false)
+                    $("#tipo_persona").prop('disabled', false);
+                    $("#tipo_persona_dni").prop('disabled', false);
+                    $("#estado_transporte").prop('disabled', false)
                     cargarEntidades()
                     this.submit();
 
@@ -945,25 +989,10 @@ $('#enviar_proveedor').submit(function(e) {
 })
 
 
-// Consulta Ruc
-$("#ruc").keypress(function() {
-    if (event.which == 13) {
-        event.preventDefault();
-        var ruc = $("#ruc").val()
-        evaluarRuc(ruc);
-    }
-})
+function consultarRuc() {
+    limpiarErrores()
+    var ruc = $('#ruc').val()
 
-$("#ruc_transporte").keypress(function() {
-    if (event.which == 13) {
-        event.preventDefault();
-        var ruc = $("#ruc_transporte").val()
-        evaluarRuctransporte(ruc);
-    }
-})
-
-
-function evaluarRuc(ruc) {
     if (ruc.length == 11) {
 
         Swal.fire({
@@ -997,18 +1026,19 @@ function evaluarRuc(ruc) {
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             console.log(result)
-            $('#ruc').removeClass('is-invalid')
+            // $('#ruc').removeClass('is-invalid')
+            $('#tipo_documento_ruc').val("RUC")
             camposRuc(result)
             consultaExitosa()
         })
     } else {
         toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
     }
-
-
 }
 
-function evaluarRuctransporte(ruc) {
+function consultarRuctransporte(ruc) {
+    limpiarErroresTransportista()
+    var ruc = $('#ruc_transporte').val()
     if (ruc.length == 11) {
 
         Swal.fire({
@@ -1040,7 +1070,7 @@ function evaluarRuctransporte(ruc) {
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             console.log(result)
-            $('#ruc_transporte').removeClass('is-invalid')
+            // $('#ruc_transporte').removeClass('is-invalid')
             camposRuctransporte(result)
             consultaExitosa()
         })
@@ -1066,7 +1096,8 @@ function camposRuctransporte(objeto) {
     if (estado == "ACTIVO") {
         $('#estado_transporte').val(estado)
     } else {
-        toastr.error('Proveedor no se encuentra "Activo"', 'Error');
+        $('#estado_transporte').val('INACTIVO')
+        toastr.error('Transportista no se encuentra "Activo"', 'Error');
     }
 
     if (direccion != '-' && direccion != "NULL") {
@@ -1093,20 +1124,16 @@ function camposRuc(objeto) {
     if (estado == "ACTIVO") {
         $('#estado').val(estado)
     } else {
+        $('#estado').val('INACTIVO')
         toastr.error('Proveedor no se encuentra "Activo"', 'Error');
     }
+
 }
 
 // Consulta Dni
-$("#dni").keypress(function() {
-    if (event.which == 13) {
-        event.preventDefault();
-        var dni = $("#dni").val()
-        evaluarDni(dni);
-    }
-})
-// Consulta Dni
-function evaluarDni(dni) {
+function consultarDni(dni) {
+    var dni = $('#dni').val()
+    limpiarErrores()
     if (dni.length == 8) {
 
         Swal.fire({
@@ -1131,7 +1158,7 @@ function evaluarDni(dni) {
                     })
                     .catch(error => {
                         console.log(error)
-                        $('#estado').val('INACTIVO')
+                        $('#estado').val('SIN VERIFICAR')
                         Swal.showValidationMessage(
                             `Dni Inválido`
                         )
@@ -1141,6 +1168,7 @@ function evaluarDni(dni) {
         }).then((result) => {
             camposDni(result)
             consultaExitosa()
+            $('#tipo_documento_ruc').val("")
         })
     } else {
         toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
@@ -1173,8 +1201,6 @@ function camposDni(objeto) {
     $('#descripcion').val(nombre_completo.join(' '))
 
 }
-
-
 
 $(document).ready(function() {
 
@@ -1275,11 +1301,14 @@ function enviarDatosTransportista() {
     
     limpiarErroresTransportista();
     var enviar = false;
-    if ($('#estado_transporte').val()!='ACTIVO'){
-        toastr.error('EL Ruc del transportista debe de estar Activo.','Error');
-        enviar = true;
-        $('#estado_transporte').addClass( "is-invalid" )
-        $('#error-estado_transporte').text('El campo Estado debe estar Activo.')            
+    if ($('#estado_transporte').val()!='ACTIVO') {
+        if ($('#estado_transporte').val()!='SIN VERIFICAR'){
+            toastr.error('EL Ruc del transportista debe de estar Activo.','Error');
+            enviar = true;
+            $('#estado_transporte').addClass( "is-invalid" )
+            $('#error-estado_transporte').text('El campo Estado debe estar Activo.')
+        }            
+    
     }
 
     if ($('#ruc_transporte').val()==''){
@@ -1355,6 +1384,119 @@ function entidadFinanciera() {
     }
     return existe
 }
+
+
+$('.tabs-container .nav-tabs #bancos_link').click(function() {
+    limpiarErrores()
+    var enviar = true;
+    
+    if ($('input:radio[name=tipo_documento]:checked').val() == "RUC") {
+        if ($('#ruc').val() == '') {
+            enviar = false
+            $('#ruc').addClass("is-invalid")
+            toastr.error("Ingrese Ruc del proveedor.", 'Error');
+            $('#error-ruc').text("El campo Ruc es obligatorio.")
+        }
+        if ($('#tipo_persona').val() == '') {
+            enviar = false
+            $('#tipo_persona').addClass("is-invalid")
+            toastr.error("Ingrese el Tipo de persona del proveedor.", 'Error');
+            $('#error-tipo').text("El campo Tipo es obligatorio.")
+        }
+    }else{
+        if ($('#dni').val() == '') {
+            enviar = false
+            $('#dni').addClass("is-invalid")
+            toastr.error("Ingrese Dni del proveedor.", 'Error');
+            $('#error-dni').text("El campo Dni es obligatorio.")
+        }
+    }
+
+
+
+    if ($('#descripcion').val() == '') {
+        enviar = false
+        $('#descripcion').addClass("is-invalid")
+        toastr.error("Ingrese Descripción del Proveedor.", 'Error');
+        $('#error-descripcion').text("El campo Descripción es obligatorio.")
+    }
+
+    if ($('#direccion').val() == '') {
+        enviar = false
+        $('#direccion').addClass("is-invalid")
+        toastr.error("Ingrese la Dirección del Proveedor.", 'Error');
+        $('#error-direccion').text("El campo Dirección es obligatorio.")
+    }
+
+    
+    if ($('#zona').val() == '') {
+        enviar = false
+        $('#zona').addClass("is-invalid")
+        toastr.error("Ingrese la Zona del Proveedor.", 'Error');
+        $('#error-zona').text("El campo Zona es obligatorio.")
+    }
+
+    if ($('#correo').val() == '') {
+        enviar = false
+        $('#correo').addClass("is-invalid")
+        toastr.error("Ingrese el Correo del Proveedor.", 'Error');
+        $('#error-correo').text("El campo Correo es obligatorio.")
+    }
+
+    if ($('#telefono').val() == '') {
+        enviar = false
+        $('#telefono').addClass("is-invalid")
+        toastr.error("Ingrese el Telefono del Proveedor.", 'Error');
+        $('#error-telefono').text("El campo Telefono es obligatorio.")
+    }
+
+
+    //Transportista
+    var error = enviarDatosTransportista()
+    if (error != false) {
+        toastr.error('Campos incompletos en Transportista', 'Error');
+        $('#transporte_link').click();
+        enviar = false
+    }
+    //Contacto
+    var contacto = enviarDatosContacto()
+    if (contacto != false) {
+        toastr.error('Campos incompletos en Contacto', 'Error');
+        $('#contacto_link').click();
+        enviar = false
+    }
+
+
+    return enviar
+
+})
+
+function limpiarErrores() {
+    $('#ruc').removeClass("is-invalid")
+    $('#error-ruc').text("")
+
+    $('#tipo_persona').removeClass("is-invalid")
+    $('#error-tipo').text("")
+
+    $('#dni').removeClass("is-invalid")
+    $('#error-dni').text("")
+
+    $('#descripcion').removeClass("is-invalid")
+    $('#error-descripcion').text("")
+
+    $('#direccion').removeClass("is-invalid")
+    $('#error-direccion').text("")
+
+    $('#zona').removeClass("is-invalid")
+    $('#error-zona').text("")
+
+    $('#correo').removeClass("is-invalid")
+    $('#error-correo').text("")
+
+    $('#telefono').removeClass("is-invalid")
+    $('#error-telefono').text("")
+}
+
 
 
 </script>

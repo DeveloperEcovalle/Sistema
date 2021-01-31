@@ -193,7 +193,7 @@ Route::prefix('almacenes/almacen')->group(function() {
 });
 
 //Familias
-Route::prefix('almacenes/familias')->group(function() {
+Route::prefix('almacenes/categorias/pt')->group(function() {
     Route::get('index', 'Almacenes\FamiliaController@index')->name('almacenes.familias.index');
     Route::get('getfamilia','Almacenes\FamiliaController@getfamilia')->name('getfamilia');
     Route::get('destroy/{id}', 'Almacenes\FamiliaController@destroy')->name('almacenes.familias.destroy');
@@ -202,7 +202,7 @@ Route::prefix('almacenes/familias')->group(function() {
 });
 
 //SubFamilias
-Route::prefix('almacenes/subfamilias')->group(function() {
+Route::prefix('almacenes/subcategoria/pt')->group(function() {
     Route::get('index', 'Almacenes\SubFamiliaController@index')->name('almacenes.subfamilia.index');
     Route::get('getsubfamilia','Almacenes\SubFamiliaController@getSub')->name('getSub');
     Route::get('destroy/{id}', 'Almacenes\SubFamiliaController@destroy')->name('almacenes.subfamilia.destroy');
@@ -295,6 +295,18 @@ Route::prefix('ventas/clientes')->group(function() {
     Route::get('/datos/{id}', 'Ventas\ClienteController@show')->name('ventas.cliente.show');
     Route::get('/destroy/{id}', 'Ventas\ClienteController@destroy')->name('ventas.cliente.destroy');
     Route::post('/getDocumento', 'Ventas\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
+
+    //Tiendas
+    Route::get('tiendas/index/{id}', 'Ventas\TiendaController@index')->name('clientes.tienda.index');
+    Route::get('tiendas/getShop/{id}','Ventas\TiendaController@getShop')->name('clientes.tienda.shop');
+    Route::get('tiendas/create/{id}', 'Ventas\TiendaController@create')->name('clientes.tienda.create');
+    Route::post('tiendas/store/', 'Ventas\TiendaController@store')->name('clientes.tienda.store');
+    Route::put('tiendas/update/{id}', 'Ventas\TiendaController@update')->name('clientes.tienda.update');
+    Route::get('tiendas/destroy/{id}', 'Ventas\TiendaController@destroy')->name('clientes.tienda.destroy');
+    Route::get('tiendas/show/{id}', 'Ventas\TiendaController@show')->name('clientes.tienda.show');
+    Route::get('tiendas/actualizar/{id}', 'Ventas\TiendaController@edit')->name('clientes.tienda.edit');
+
+
 });
 
 

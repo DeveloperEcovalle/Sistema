@@ -18,6 +18,8 @@ class CreateClientesTable extends Migration
             $table->string('tipo_documento');
             $table->string('documento', 25);
             $table->mediumText('nombre')->nullable();
+            $table->string('nombre_comercial')->nullable();
+            $table->string('codigo')->nullable();
             $table->unsignedInteger('tabladetalles_id')->unsigned()->nullable();
             $table->foreign('tabladetalles_id')->references('id')->on('tabladetalles')->onDelete('cascade');
             $table->char('departamento_id', 2)->nullable();

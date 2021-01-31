@@ -208,13 +208,9 @@ class ProveedorController extends Controller
         $proveedor->transporte = $request->get('transporte');
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
         $proveedor->direccion_almacen = $request->get('direccion_almacen');
-        if ($request->get('estado') == "ACTIVO") {
-            $proveedor->activo = "1";
-        };
-
-        if ($request->get('estado_transporte') == "ACTIVO") {
-            $proveedor->activo_transporte = "1";
-        };
+        
+        $proveedor->estado_transporte = $request->get('estado_transporte');
+        $proveedor->estado_documento = $request->get('estado');
 
         $proveedor->save();
 
@@ -427,13 +423,9 @@ class ProveedorController extends Controller
         $proveedor->direccion_transporte = $request->get('direccion_transporte');
         $proveedor->direccion_almacen = $request->get('direccion_almacen');
 
-        if ($request->get('estado') == "ACTIVO") {
-            $proveedor->activo = "1";
-        };
+        $proveedor->estado_transporte = $request->get('estado_transporte');
+        $proveedor->estado_documento = $request->get('estado');
 
-        if ($request->get('estado_transporte') == "ACTIVO") {
-            $proveedor->activo_transporte = "1";
-        };
         $proveedor->update();
 
         $entidadesJSON = $request->get('entidades_tabla');

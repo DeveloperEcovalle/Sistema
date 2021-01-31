@@ -1,0 +1,79 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateClienteTiendasTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('cliente_tiendas', function (Blueprint $table) {
+            $table->Increments('id');
+            $table->string('nombre');
+            $table->unsignedInteger('cliente_id');
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
+            $table->string('tipo_tienda');
+            $table->string('tipo_negocio');
+            $table->mediumText('direccion')->nullable();
+
+            $table->string('facebook')->nullable();
+            $table->string('web')->nullable();            
+            $table->string('instagram')->nullable();
+
+            $table->string('correo')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('celular')->nullable();
+
+            // $table->string('dias');
+            // $table->string('hora_inicio');
+            // $table->string('hora_fin');
+            
+            
+
+            //CONTACTO ADMINISTRADOR
+            $table->string('contacto_admin_nombre')->nullable();
+            $table->string('contacto_admin_cargo')->nullable();
+            $table->date('contacto_admin_fecha_nacimiento')->nullable();
+            $table->string('contacto_admin_correo')->nullable();
+            $table->string('contacto_admin_celular')->nullable();
+            $table->string('contacto_admin_telefono')->nullable();
+
+            //CONTACTO CREDITO
+            $table->string('contacto_credito_nombre')->nullable();
+            $table->string('contacto_credito_cargo')->nullable();
+            $table->date('contacto_credito_fecha_nacimiento')->nullable();
+            $table->string('contacto_credito_correo')->nullable();
+            $table->string('contacto_credito_celular')->nullable();
+            $table->string('contacto_credito_telefono')->nullable();
+
+            //CONTACTO VENDEDOR
+            $table->string('contacto_vendedor_nombre')->nullable();
+            $table->string('contacto_vendedor_cargo')->nullable();
+            $table->date('contacto_vendedor_fecha_nacimiento')->nullable();
+            $table->string('contacto_vendedor_correo')->nullable();
+            $table->string('contacto_vendedor_celular')->nullable();
+            $table->string('contacto_vendedor_telefono')->nullable();
+
+            $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
+
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('cliente_tiendas');
+    }
+}

@@ -7,8 +7,8 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Sub Familia</h4>
-                <small class="font-bold">Crear nueva sub familia.</small>
+                <h4 class="modal-title">Sub Categoria</h4>
+                <small class="font-bold">Crear nueva sub categoria.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('almacenes.subfamilia.store')}}" method="POST" id="crear_subfamilia">
@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="required">Familia:</label> 
+                        <label class="required">Categoria:</label> 
                         <select class="form-control {{ $errors->has('familia_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('familia_id')}}" name="familia_id" id="familia_id" required>
                             <option></option>
                         </select>

@@ -111,7 +111,12 @@
                             var url_editar = '{{ route("ventas.cliente.edit", ":id")}}';
                             url_editar = url_editar.replace(':id',data.id);
 
+                            //Ruta Tiendas
+                            var url_tienda = '{{ route("clientes.tienda.index", ":id")}}';
+                            url_tienda = url_tienda.replace(':id',data.id);
+
                             return "<div class='btn-group'>" +
+                                "<a class='btn btn-primary btn-sm' href='"+url_tienda+"' title='Tiendas'><i class='fa fa-shopping-cart'></i></a>" +
                                 "<a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a>" +
                                 "<a class='btn btn-warning btn-sm modificarDetalle' href='"+url_editar+"' title='Modificar'><i class='fa fa-edit'></i></a>" +
                                 "<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a>" +

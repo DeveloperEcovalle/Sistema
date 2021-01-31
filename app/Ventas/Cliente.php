@@ -11,6 +11,8 @@ class Cliente extends Model
         'tipo_documento',
         'documento',
         'nombre',
+        'nombre_comercial',
+        'codigo',
         'tabladetalles_id',
         'departamento_id',
         'provincia_id',

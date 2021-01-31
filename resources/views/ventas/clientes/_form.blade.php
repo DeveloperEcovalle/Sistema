@@ -4,153 +4,212 @@
         @csrf
         <h1>Datos Del Cliente</h1>
         <fieldset  style="position: relative;">
+
             <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label class="required">Tipo de documento</label>
-                    <select id="tipo_documento" name="tipo_documento" class="select2_form form-control {{ $errors->has('tipo_documento') ? ' is-invalid' : '' }}">
-                        <option></option>
-                        @foreach(tipos_documento() as $tipo_documento)
-                            <option value="{{ $tipo_documento->simbolo }}" {{ old('tipo_documento') ? (old('tipo_documento') == $tipo_documento->simbolo ? "selected" : "") : ($cliente->tipo_documento == $tipo_documento->simbolo ? "selected" : "") }} >{{ $tipo_documento->simbolo }}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('tipo_documento'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('tipo_documento') }}</strong>
-                        </span>
-                    @endif
+                <div class="col-md-6 b-r">
+
+                    <div class="form-group row">
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Tipo de documento</label>
+                            <select id="tipo_documento" name="tipo_documento" class="select2_form form-control {{ $errors->has('tipo_documento') ? ' is-invalid' : '' }}">
+                                <option></option>
+                                @foreach(tipos_documento() as $tipo_documento)
+                                    <option value="{{ $tipo_documento->simbolo }}" {{ old('tipo_documento') ? (old('tipo_documento') == $tipo_documento->simbolo ? "selected" : "") : ($cliente->tipo_documento == $tipo_documento->simbolo ? "selected" : "") }} >{{ $tipo_documento->simbolo }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('tipo_documento'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('tipo_documento') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Nro. Documento</label>
+                            <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')?old('documento'):$cliente->documento}}" maxlength="8" onkeypress="return isNumber(event)" required>
+                            @if ($errors->has('documento'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('documento') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Tipo Cliente</label>
+                            <select id="tipo_cliente" name="tipo_cliente" class="select2_form form-control {{ $errors->has('tipo_cliente') ? ' is-invalid' : '' }}" style="width: 100%">
+                                <option></option>
+                                @foreach(tipo_clientes() as $tipo_cliente)
+                                    <option value="{{ $tipo_cliente->id }}" {{ old('tipo_cliente') ? (old('tipo_cliente') == $tipo_cliente->id ? "selected" : "") : ($cliente->tabladetalles_id == $tipo_cliente->id ? "selected" : "") }} >{{ $tipo_cliente->descripcion }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('tipo_cliente'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('tipo_cliente') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <input type="hidden" id="codigo_verificacion" name="codigo_verificacion">
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Estado</label>
+                            <input type="text" id="activo" name="activo" class="form-control {{ $errors->has('activo') ? ' is-invalid' : '' }}" value="{{old('activo', 'INACTIVO')}}" maxlength="8" readonly>
+                            @if ($errors->has('activo'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('activo') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    
+                    </div>
+
+                    <div class="form-group">
+                        <label class="" id="">Código</label>
+                        <input type="text" id="codigo" name="codigo" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{old('codigo')?old('codigo'):$cliente->codigo}}" maxlength="191" onkeyup="return mayus(this)">
+                        @if ($errors->has('codigo'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('codigo') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required" id="lblNombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')?old('nombre'):$cliente->nombre}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('nombre'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('nombre') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label class="" id="">Nombre Comercial</label>
+                        <input type="text" id="nombre_comercial" name="nombre_comercial" class="form-control {{ $errors->has('nombre_comercial') ? ' is-invalid' : '' }}" value="{{old('nombre_comercial')?old('nombre_comercial'):$cliente->nombre_comercial}}" maxlength="191" onkeyup="return mayus(this)">
+                        @if ($errors->has('nombre_comercial'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('nombre_comercial') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                
                 </div>
-                <div class="form-group col-lg-3 col-xs-12">
-                    <label class="required">Nro. Documento</label>
-                    <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')?old('documento'):$cliente->documento}}" maxlength="8" onkeypress="return isNumber(event)" required>
-                    @if ($errors->has('documento'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('documento') }}</strong>
-                        </span>
-                    @endif
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label class="required">Dirección Fiscal</label>
+                        <input type="text" id="direccion" name="direccion" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion')?old('direccion'):$cliente->direccion}}" maxlength="191" onkeyup="return mayus(this)" required>
+                        @if ($errors->has('direccion'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('direccion') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Departamento</label>
+                            <select id="departamento" name="departamento" class="select2_form form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%">
+                                <option></option>
+                                @foreach(departamentos() as $departamento)
+                                    <option value="{{ $departamento->id }}" {{ old('departamento') ? (old('departamento') == $departamento->id ? "selected" : "") : ($cliente->departamento_id == $departamento->id ? "selected" : "")}} >{{ $departamento->nombre }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('departamento'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('departamento') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Provincia</label>
+                            <select id="provincia" name="provincia" class="select2_form form-control {{ $errors->has('provincia') ? ' is-invalid' : '' }}" style="width: 100%">
+                                <option></option>
+                                @foreach(provincias() as $provincia)
+                                    <option value="{{ $provincia->id }}" {{ old('provincia') ? (old('provincia') == $provincia->id ? "selected" : "") : ($cliente->provincia_id == $provincia->id ? "selected" : "")}} >{{ $provincia->nombre }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('provincia'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('provincia') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Distrito</label>
+                            <select id="distrito" name="distrito" class="select2_form form-control {{ $errors->has('distrito') ? ' is-invalid' : '' }}" style="width: 100%">
+                                <option></option>
+                                @foreach(distritos() as $distrito)
+                                    <option value="{{ $distrito->id }}" {{ old('distrito') ? (old('distrito') == $distrito->id ? "selected" : "") : ($cliente->distrito_id == $distrito->id ? "selected" : "")}} >{{ $distrito->nombre }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('distrito'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('distrito') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Teléfono móvil</label>
+                            <input type="text" id="telefono_movil" name="telefono_movil" class="form-control {{ $errors->has('telefono_movil') ? ' is-invalid' : '' }}" value="{{old('telefono_movil') ? old('telefono_movil') : $cliente->telefono_movil}}" onkeypress="return isNumber(event)" maxlength="9" required>
+                            @if ($errors->has('telefono_movil'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('telefono_movil') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label>Teléfono fijo</label>
+                            <input type="text" id="telefono_fijo" name="telefono_fijo" class="form-control {{ $errors->has('telefono_fijo') ? ' is-invalid' : '' }}" value="{{old('telefono_fijo') ? old('telefono_fijo') : $cliente->telefono_fijo}}" onkeypress="return isNumber(event)" maxlength="10">
+                            @if ($errors->has('telefono_fijo'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('telefono_fijo') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    
+                    
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Correo electrónico</label>
+                        <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico') ? old('correo_electronico') : $cliente->correo_electronico}}" maxlength="100" onkeyup="return mayus(this)"required>
+                        @if ($errors->has('correo_electronico'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('correo_electronico') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+
+                
                 </div>
-                <div class="form-group col-lg-3 col-xs-12">
-                    <label class="required">Tipo Cliente</label>
-                    <select id="tipo_cliente" name="tipo_cliente" class="select2_form form-control {{ $errors->has('tipo_cliente') ? ' is-invalid' : '' }}" style="width: 100%">
-                        <option></option>
-                        @foreach(tipo_clientes() as $tipo_cliente)
-                            <option value="{{ $tipo_cliente->id }}" {{ old('tipo_cliente') ? (old('tipo_cliente') == $tipo_cliente->id ? "selected" : "") : ($cliente->tabladetalles_id == $tipo_cliente->id ? "selected" : "") }} >{{ $tipo_cliente->descripcion }}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('tipo_cliente'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('tipo_cliente') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <input type="hidden" id="codigo_verificacion" name="codigo_verificacion">
-                <div class="form-group col-lg-2 col-xs-12">
-                    <label class="required">Estado</label>
-                    <input type="text" id="activo" name="activo" class="form-control {{ $errors->has('activo') ? ' is-invalid' : '' }}" value="{{old('activo', 'INACTIVO')}}" maxlength="8" readonly>
-                    @if ($errors->has('activo'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('activo') }}</strong>
-                        </span>
-                    @endif
-                </div>
+            
+            
+            
             </div>
-            <div class="row">
-                <div class="form-group col-lg-6 col-xs-12">
-                    <label class="required" id="lblNombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')?old('nombre'):$cliente->nombre}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('nombre'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('nombre') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="form-group col-lg-6 col-xs-12">
-                    <label class="required">Dirección completa</label>
-                    <input type="text" id="direccion" name="direccion" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion')?old('direccion'):$cliente->direccion}}" maxlength="191" onkeyup="return mayus(this)" required>
-                    @if ($errors->has('direccion'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('direccion') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label class="required">Departamento</label>
-                    <select id="departamento" name="departamento" class="select2_form form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%">
-                        <option></option>
-                        @foreach(departamentos() as $departamento)
-                            <option value="{{ $departamento->id }}" {{ old('departamento') ? (old('departamento') == $departamento->id ? "selected" : "") : ($cliente->departamento_id == $departamento->id ? "selected" : "")}} >{{ $departamento->nombre }}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('departamento'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('departamento') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label class="required">Provincia</label>
-                    <select id="provincia" name="provincia" class="select2_form form-control {{ $errors->has('provincia') ? ' is-invalid' : '' }}" style="width: 100%">
-                        <option></option>
-                        @foreach(provincias() as $provincia)
-                            <option value="{{ $provincia->id }}" {{ old('provincia') ? (old('provincia') == $provincia->id ? "selected" : "") : ($cliente->provincia_id == $provincia->id ? "selected" : "")}} >{{ $provincia->nombre }}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('provincia'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('provincia') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label class="required">Distrito</label>
-                    <select id="distrito" name="distrito" class="select2_form form-control {{ $errors->has('distrito') ? ' is-invalid' : '' }}" style="width: 100%">
-                        <option></option>
-                        @foreach(distritos() as $distrito)
-                            <option value="{{ $distrito->id }}" {{ old('distrito') ? (old('distrito') == $distrito->id ? "selected" : "") : ($cliente->distrito_id == $distrito->id ? "selected" : "")}} >{{ $distrito->nombre }}</option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('distrito'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('distrito') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label class="required">Teléfono móvil</label>
-                    <input type="text" id="telefono_movil" name="telefono_movil" class="form-control {{ $errors->has('telefono_movil') ? ' is-invalid' : '' }}" value="{{old('telefono_movil') ? old('telefono_movil') : $cliente->telefono_movil}}" onkeypress="return isNumber(event)" maxlength="9" required>
-                    @if ($errors->has('telefono_movil'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('telefono_movil') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Teléfono fijo</label>
-                    <input type="text" id="telefono_fijo" name="telefono_fijo" class="form-control {{ $errors->has('telefono_fijo') ? ' is-invalid' : '' }}" value="{{old('telefono_fijo') ? old('telefono_fijo') : $cliente->telefono_fijo}}" onkeypress="return isNumber(event)" maxlength="10">
-                    @if ($errors->has('telefono_fijo'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('telefono_fijo') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label class="required">Correo electrónico</label>
-                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control {{ $errors->has('correo_electronico') ? ' is-invalid' : '' }}" value="{{old('correo_electronico') ? old('correo_electronico') : $cliente->correo_electronico}}" maxlength="100" onkeyup="return mayus(this)"required>
-                    @if ($errors->has('correo_electronico'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('correo_electronico') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
+
             <div class="row">
                 <div class="m-t-md col-lg-8">
                     <i class="fa fa-exclamation-circle leyenda-required"></i> <small class="leyenda-required">Los campos marcados con asterisco (*) son obligatorios.</small>
                 </div>
             </div>
+
         </fieldset>
 
         <h1>Datos Del Negocio</h1>
@@ -181,95 +240,6 @@
                 </div>
             </div>
 
-            <h3>CONTACTO COMERCIAL - Tienda 1</h3>
-            <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Nombres y apellidos</label>
-                    <input type="text" id="nombre1" name="nombre1" class="form-control {{ $errors->has('nombre1') ? ' is-invalid' : '' }}" value="{{old('nombre1') ? old('nombre1') : $cliente->nombre1}}" maxlength="191" onkeyup="return mayus(this)" required>
-                        @if ($errors->has('nombre1'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('nombre1') }}</strong>
-                            </span>
-                        @endif
-                </div>
-                <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento1">
-                    <label class="">Fecha de Nacimiento</label>
-                    <div class="input-group date">
-                        <span class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </span>
-                        <input type="text" id="fecha_nacimiento1" name="fecha_nacimiento1" class="form-control {{ $errors->has('fecha_nacimiento1') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento1') ? old('fecha_nacimiento1', getFechaFormato($cliente->fecha_nacimiento1, 'd/m/Y')) : getFechaFormato($cliente->fecha_nacimiento1, 'd/m/Y') }}" autocomplete="off" readonly required >
-                    </div>
-                </div>
-                <div class="form-group col-lg-3 col-xs-12">
-                    <label class="">Correo electrónico</label>
-                    <input type="email" id="correo_electronico1" name="correo_electronico1" class="form-control {{ $errors->has('correo_electronico1') ? ' is-invalid' : '' }}" value="{{old('correo_electronico1') ? old('correo_electronico1') : $cliente->correo_electronico1}}" maxlength="100" onkeyup="return mayus(this)" required>
-                </div>
-                <div class="form-group col-lg-2 col-xs-12">
-                    <label class="">Celular</label>
-                    <input type="text" id="celular1" name="celular1" class="form-control {{ $errors->has('celular1') ? ' is-invalid' : '' }}" value="{{old('celular1') ? old('celular1') : $cliente->celular1}}" onkeypress="return isNumber(event)" maxlength="9" required>
-                </div>
-            </div>
-
-            <h3>CONTACTO COMERCIAL - Tienda 2</h3>
-            <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Nombres y apellidos</label>
-                    <input type="text" id="nombre2" name="nombre2" class="form-control {{ $errors->has('nombre2') ? ' is-invalid' : '' }}" value="{{old('nombre2') ? old('nombre2') : $cliente->nombre2}}" maxlength="191" onkeyup="return mayus(this)" required>
-                        @if ($errors->has('nombre2'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('nombre2') }}</strong>
-                            </span>
-                        @endif
-                </div>
-                <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento2">
-                    <label class="">Fecha de Nacimiento</label>
-                    <div class="input-group date">
-                        <span class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </span>
-                        <input type="text" id="fecha_nacimiento2" name="fecha_nacimiento2" class="form-control {{ $errors->has('fecha_nacimiento2') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento2') ? old('fecha_nacimiento2', getFechaFormato($cliente->fecha_nacimiento2, 'd/m/Y')) : getFechaFormato($cliente->fecha_nacimiento2, 'd/m/Y') }}" autocomplete="off" readonly required >
-                    </div>
-                </div>
-                <div class="form-group col-lg-3 col-xs-12">
-                    <label class="">Correo electrónico</label>
-                    <input type="email" id="correo_electronico2" name="correo_electronico2" class="form-control {{ $errors->has('correo_electronico2') ? ' is-invalid' : '' }}" value="{{old('correo_electronico2') ? old('correo_electronico2') : $cliente->correo_electronico2}}" maxlength="100" onkeyup="return mayus(this)" required>
-                </div>
-                <div class="form-group col-lg-2 col-xs-12">
-                    <label class="">Celular</label>
-                    <input type="text" id="celular2" name="celular2" class="form-control {{ $errors->has('celular2') ? ' is-invalid' : '' }}" value="{{old('celular2') ? old('celular2') : $cliente->celular2}}" onkeypress="return isNumber(event)" maxlength="9" required>
-                </div>
-            </div>
-
-            <h3>CONTACTO COMERCIAL - Tienda 3</h3>
-            <div class="row">
-                <div class="form-group col-lg-4 col-xs-12">
-                    <label>Nombres y apellidos</label>
-                    <input type="text" id="nombre3" name="nombre3" class="form-control {{ $errors->has('nombre3') ? ' is-invalid' : '' }}" value="{{old('nombre3') ? old('nombre3') : $cliente->nombre3}}" maxlength="191" onkeyup="return mayus(this)" required>
-                        @if ($errors->has('nombre3'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('nombre3') }}</strong>
-                            </span>
-                        @endif
-                </div>
-                <div class="form-group col-lg-3 col-xs-12" id="fecha_nacimiento3">
-                    <label class="">Fecha de Nacimiento</label>
-                    <div class="input-group date">
-                        <span class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </span>
-                        <input type="text" id="fecha_nacimiento3" name="fecha_nacimiento3" class="form-control {{ $errors->has('fecha_nacimiento3') ? ' is-invalid' : '' }}" value="{{old('fecha_nacimiento3') ? old('fecha_nacimiento3', getFechaFormato($cliente->fecha_nacimiento3, 'd/m/Y')) : getFechaFormato($cliente->fecha_nacimiento3, 'd/m/Y') }}" autocomplete="off" readonly required >
-                    </div>
-                </div>
-                <div class="form-group col-lg-3 col-xs-12">
-                    <label class="">Correo electrónico</label>
-                    <input type="email" id="correo_electronico3" name="correo_electronico3" class="form-control {{ $errors->has('correo_electronico3') ? ' is-invalid' : '' }}" value="{{old('correo_electronico3') ? old('correo_electronico3') : $cliente->correo_electronico3}}" maxlength="100" onkeyup="return mayus(this)" required>
-                </div>
-                <div class="form-group col-lg-2 col-xs-12">
-                    <label class="">Celular</label>
-                    <input type="text" id="celular3" name="celular3" class="form-control {{ $errors->has('celular3') ? ' is-invalid' : '' }}" value="{{old('celular3') ? old('celular3') : $cliente->celular3}}" onkeypress="return isNumber(event)" maxlength="9" required>
-                </div>
-            </div>
 
             <div class="row">
                 <div class="m-t-md col-lg-8">
@@ -431,33 +401,6 @@
             });
 
             $('#fecha_aniversario .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-                language: 'es',
-                format: "dd/mm/yyyy"
-            });
-
-            $('#fecha_nacimiento1 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-                language: 'es',
-                format: "dd/mm/yyyy"
-            });
-
-            $('#fecha_nacimiento2 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-                language: 'es',
-                format: "dd/mm/yyyy"
-            });
-
-            $('#fecha_nacimiento3 .input-group.date').datepicker({
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,

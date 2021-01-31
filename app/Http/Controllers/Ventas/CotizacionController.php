@@ -262,7 +262,7 @@ class CotizacionController extends Controller
 
         
         Session::flash('success','Cotización modificada.');
-        return redirect()->route('ventas.cotizacion.index')->with('guardar', 'success');
+        return redirect()->route('ventas.cotizacion.index')->with('modificar', 'success');
     }
 
     public function show($id)

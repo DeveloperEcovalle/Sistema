@@ -1,21 +1,24 @@
 @extends('layout') @section('content')
-@section('mantenimiento-active', 'active')
-@section('empresas-active', 'active')
+@section('ventas-active', 'active')
+@section('clientes-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Mantenimiento de Empresas</b></h2>
+       <h2  style="text-transform:uppercase"><b>Tiendas del cliente: {{$cliente->nombre}} </b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{route('ventas.cliente.index')}}">Clientes</a>
+            </li>
             <li class="breadcrumb-item active">
-                <strong>Empresas</strong>
+                <strong>Tiendas</strong>
             </li>
 
         </ol>
     </div>
     <div class="col-lg-2 col-md-2">
-        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('mantenimiento.empresas.create')}}">
+        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('clientes.tienda.create', $cliente->id)}}">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
@@ -32,13 +35,13 @@
             <div class="ibox-content">
 
                 <div class="table-responsive">
-                    <table class="table dataTables-empresas table-striped table-bordered table-hover"  style="text-transform:uppercase">
+                    <table class="table datatables-tiendas table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
                             <th class="text-center"></th>
-                            <th class="text-center">RUC</th>
-                            <th class="text-center">RAZON SOCIAL</th>
-                            <th class="text-center">RAZON SOCIAL ABREVIADA</th>
+                            <th class="text-center">NOMBRE</th>
+                            <th class="text-center">TIPO</th>
+                            <th class="text-center">NEGOCIO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
@@ -70,9 +73,8 @@
 <script>
 
     $(document).ready(function() {
-        $('buttons-html5').removeClass('.btn-default');
-        $('#table_empresas_wrapper').removeClass('');
-        $('.dataTables-empresas').DataTable({
+
+        $('.datatables-tiendas').DataTable({
             "dom": '<"html5buttons"B>lTfgitp',
             "buttons": [
    
@@ -104,35 +106,31 @@
             "bAutoWidth": false,
             "serverSide":true,
             "processing":true,
-            "ajax": '{{ route("getBusiness")}}',
+            "ajax": '{{ route("clientes.tienda.shop", $cliente->id )}}',
             "columns": [
                 //Empresa
-                {data: 'id', className:"text-center", visible:false, name:'empresas.razon_social'},
-                {data: 'ruc', className:"text-center", name:'empresas.ruc'},
-                {data: 'razon_social', name:'empresas.razon_social'},
-                {data: 'razon_social_abreviada', name:'empresas.razon_social_abreviada'},
+                {data: 'id', className:"text-center", visible:false, name:'cliente_tiendas.id'},
+                {data: 'nombre', name:'cliente_tiendas.nombre'},
+                {data: 'tipo_tienda', className:"text-center", name:'cliente_tiendas.tipo_tienda'},
+                {data: 'tipo_negocio', name:'cliente_tiendas.tipo_negocio',className:"text-center"},
+
                 {
                     data: null,
                     className:"text-center",
                     name:'empresas.razon_social',
                     render: function (data) {
                         //Ruta Detalle
-                        var url_detalle = '{{ route("mantenimiento.empresas.show", ":id")}}';
+                        var url_detalle = '{{ route("clientes.tienda.show", ":id")}}';
                         url_detalle = url_detalle.replace(':id',data.id);
 
                         //Ruta Modificar
-                        var url_edit = '{{ route("mantenimiento.empresas.edit", ":id")}}';
+                        var url_edit = '{{ route("clientes.tienda.edit", ":id")}}';
                         url_edit = url_edit.replace(':id',data.id);
 
 
-
-                        if (data.id != 1) {
-                            return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-warning btn-sm modificarDetalle' href='"+url_edit+"' title='Modificar'><i class='fa fa-edit'></i></a>"
-                            +"<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
-                            
-                        }else{
-                            return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-warning btn-sm modificarDetalle' href='"+url_edit+"' title='Modificar'><i class='fa fa-edit'></i></a>"
-                        }
+                        return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-warning btn-sm modificarDetalle' href='"+url_edit+"' title='Modificar'><i class='fa fa-edit'></i></a>"
+                        +"<a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
+                        
 
                         
 
@@ -143,7 +141,7 @@
             "language": {
                         "url": "{{asset('Spanish.json')}}"
             },
-            "order": [],
+            "order": [[ 0, "desc" ]],
 
         });
 
@@ -173,7 +171,7 @@
             }).then((result) => {
             if (result.isConfirmed) {
                 //Ruta Eliminar
-                var url_eliminar = '{{ route("mantenimiento.empresas.destroy", ":id")}}';
+                var url_eliminar = '{{ route("clientes.tienda.destroy", ":id")}}';
                 url_eliminar = url_eliminar.replace(':id',id);
                 $(location).attr('href',url_eliminar);
 

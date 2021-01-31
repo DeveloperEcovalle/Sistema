@@ -5,13 +5,13 @@
 @section('subfamilia-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>LISTADO DE SUB FAMILIAS</b></h2>
+       <h2  style="text-transform:uppercase"><b>LISTADO DE SUB CATEGORIAS DEL PRODUCTO TERMINADO </b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Sub Familias</strong>
+                <strong>Sub Categorias</strong>
             </li>
 
         </ol>
@@ -40,7 +40,7 @@
                             <th class="text-center"></th>
                             <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
-                            <th class="text-center">FAMILIA</th>
+                            <th class="text-center">CATEGORIA</th>
                             <th class="text-center">ESTADO</th>
                             <th class="text-center">CREADO</th>
                             <th class="text-center">ACTUALIZADO</th>

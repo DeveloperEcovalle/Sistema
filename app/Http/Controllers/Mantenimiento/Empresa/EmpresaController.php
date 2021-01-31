@@ -22,13 +22,12 @@ class EmpresaController extends Controller
     public function index()
     {
         return view('mantenimiento.empresas.index');
-
     }
 
     public function getBusiness(){
         return datatables()->query(
             DB::table('empresas')
-            ->select('empresas.*')->where('empresas.estado','ACTIVO')
+            ->select('empresas.*')->where('empresas.estado','ACTIVO')->orderBy('empresas.id', 'desc')
         )->toJson();
     }
 
@@ -114,12 +113,11 @@ class EmpresaController extends Controller
         
         $empresa->dni_representante = $request->get('dni_representante');
         $empresa->nombre_representante = $request->get('nombre_representante');
+        $empresa->estado_dni_representante = $request->get('estado_dni_representante');
 
         $empresa->num_partida = $request->get('num_partida');
         $empresa->num_asiento = $request->get('num_asiento');
-        if ($request->get('estado') == "ACTIVO") {
-            $empresa->activo = "1";
-        };
+        $empresa->estado_ruc = $request->get('estado');
         $empresa->save();
 
         //Llenado de Bancos
@@ -252,12 +250,12 @@ class EmpresaController extends Controller
 
         $empresa->dni_representante = $request->get('dni_representante');
         $empresa->nombre_representante = $request->get('nombre_representante');
+        $empresa->estado_dni_representante = $request->get('estado_dni_representante');
 
         $empresa->num_partida = $request->get('num_partida');
         $empresa->num_asiento = $request->get('num_asiento');
-        if ($request->get('estado') == "ACTIVO") {
-            $empresa->activo = "1";
-        };
+        $empresa->estado_ruc = $request->get('estado');
+
         $empresa->update();
 
         $entidadesJSON = $request->get('entidades_tabla');

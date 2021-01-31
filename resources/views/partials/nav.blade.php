@@ -92,8 +92,8 @@
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('almacen-active')"><a href="{{route('almacenes.almacen.index')}}">Almacen</a></li>
-            <li class="@yield('familia-active')"><a href="{{route('almacenes.familias.index')}}">Familia</a></li>
-            <li class="@yield('subfamilia-active')"><a href="{{route('almacenes.subfamilia.index')}}">Sub Familia</a></li>
+            <li class="@yield('familia-active')"><a href="{{route('almacenes.familias.index')}}">Categoria PT</a></li>
+            <li class="@yield('subfamilia-active')"><a href="{{route('almacenes.subfamilia.index')}}">Sub Categorias PT</a></li>
             <li class="@yield('productos-active')"><a href="{{ route('almacenes.producto.index') }}">Producto Terminado</a></li>
             <li><a href="search_results.html">Transferencias</a></li>
             <li>
@@ -158,10 +158,6 @@
             <li class="@yield('vendedores-active')"><a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a></li>
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             <li class="@yield('talonarios-active')"><a href="{{ route('mantenimiento.talonario.index') }}">Talonarios</a></li>
-            <li><a href="lockscreen.html">Metodos de Pago</a></li>
-            <li><a href="lockscreen.html">Tipos de Pago</a></li>
-            <li><a href="lockscreen.html">Origen de Documentos</a></li>
-            <li><a href="lockscreen.html">Tipos de Documentos</a></li>
             <li class="@yield('tablas-active')"><a href="{{route('mantenimiento.tabla.general.index')}}">Tablas Generales</a></li>
 
         </ul>

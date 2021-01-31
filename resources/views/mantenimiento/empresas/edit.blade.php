@@ -66,15 +66,18 @@
 
                                                             <div class="col-md-6">
                                                                 <label class="required">Ruc: </label>
-                                                                <input type="text"
-                                                                    class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"
-                                                                    name="ruc" id="ruc" maxlength="11" value="{{old('ruc', $empresa->ruc)}}">
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"  name="ruc" id="ruc" maxlength="11" value="{{old('ruc',$empresa->ruc)}}" required> 
+                                                                    <span class="input-group-append"><a style="color:white" onclick="consultarRuc()" class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
+                                                                    @if ($errors->has('ruc'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('ruc') }}</strong>
+                                                                    </span>
+                                                                    @endif
 
-                                                                @if ($errors->has('ruc'))
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $errors->first('ruc') }}</strong>
-                                                                </span>
-                                                                @endif
+                                                                    <div class="invalid-feedback"><b><span id="error-ruc"></span></b></div>
+                                                                </div>
+
 
                                                             </div>
 
@@ -83,9 +86,9 @@
                                                                 <label>Estado: </label>
 
                                                                 <input type="text" id="estado"
-                                                                    class="form-control {{ $errors->has('estado') ? ' is-invalid' : '' }}"
-                                                                    name="estado" value="{{ $empresa->activo == 1 ? 'ACTIVO' : 'INACTIVO'}}"
-                                                                    onkeyup="return mayus(this)" disabled>
+                                                                    class="form-control text-center {{ $errors->has('estado') ? ' is-invalid' : '' }}"
+                                                                    name="estado" value="{{ old('estado',$empresa->estado_ruc)}}"
+                                                                   disabled>
                                                                 @if ($errors->has('estado'))
                                                                 <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $errors->first('estado') }}</strong>
@@ -112,6 +115,7 @@
                                                                 <strong>{{ $errors->first('razon_social') }}</strong>
                                                             </span>
                                                             @endif
+                                                            <div class="invalid-feedback"><b><span id="error-razon_social"></span></b></div>
                                                         </div>
 
                                                         <div class="form-group">
@@ -141,6 +145,7 @@
                                                                     <strong>{{ $errors->first('direccion_fiscal') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-direccion_fiscal"></span></b></div>
                                                             </div>
 
                                                         </div>
@@ -158,6 +163,7 @@
                                                                     <strong>{{ $errors->first('direccion_llegada') }}</strong>
                                                                 </span>
                                                                 @endif
+                                                                <div class="invalid-feedback"><b><span id="error-direccion_llegada"></span></b></div>
                                                             </div>
 
                                                         </div>
@@ -258,34 +264,53 @@
                                                                 <div class="form-group row">
                                                                     <div class="col-md-6">
                                                                         <label class="required">Dni:</label>
-                                                                        <input type="text" name="dni_representante"
-                                                                            class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"
-                                                                            id="dni_representante"
-                                                                            value="{{old('dni_representante', $empresa->dni_representante)}}"
-                                                                            maxlength="8"  onkeyup="return mayus(this)">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"  name="dni_representante" id="dni_representante" maxlength="8" value="{{old('dni_representante',$empresa->dni_representante)}}" required> 
+                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
 
-                                                                        @if ($errors->has('dni_representante'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('dni_representante') }}</strong>
-                                                                        </span>
-                                                                        @endif
+                                                                            @if ($errors->has('dni_representante'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('dni_representante') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                            <div class="invalid-feedback"><b><span id="error-dni_representante"></span></b></div>
+                                                                        </div>
+
                                                                     </div>
 
                                                                     <div class="col-md-6">
-                                                                        <label class="required">Nombre Completo:</label>
+                                                                        <label class="">Estado:</label>
                                                                         <input type="text"
-                                                                            class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
-                                                                            name="nombre_representante" id="nombre_representante"
-                                                                            onkeyup="return mayus(this)"
-                                                                            value="{{old('nombre_representante',$empresa->nombre_representante)}}">
+                                                                            class="form-control text-center {{ $errors->has('estado_dni_representante') ? ' is-invalid' : '' }}"
+                                                                            name="estado_dni_representante" id="estado_dni_representante"
+                                                                            onkeyup="return mayus(this)" value="{{old('estado_dni_representante',$empresa->estado_dni_representante)}}"
+                                                                            disabled>
 
-                                                                        @if ($errors->has('nombre_representante'))
+                                                                        @if ($errors->has('estado_dni_representante'))
                                                                         <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('nombre_representante') }}</strong>
+                                                                            <strong>{{ $errors->first('estado_dni_representante') }}</strong>
                                                                         </span>
                                                                         @endif
                                                                     </div>
 
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                    <label class="required">Nombre Completo:</label>
+                                                                    <input type="text"
+                                                                        class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
+                                                                        name="nombre_representante" id="nombre_representante"
+                                                                        onkeyup="return mayus(this)" value="{{old('nombre_representante',$empresa->nombre_representante)}}"
+                                                                        required>
+
+                                                                    @if ($errors->has('nombre_representante'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('nombre_representante') }}</strong>
+                                                                    </span>
+                                                                    @endif
+                                                                    <div class="invalid-feedback"><b><span id="error-nombre_representante"></span></b></div>
 
                                                                 </div>
 
@@ -316,6 +341,8 @@
                                                                             <strong>{{ $errors->first('num_asiento') }}</strong>
                                                                         </span>
                                                                         @endif
+                                                                        
+                                                                        <div class="invalid-feedback"><b><span id="error-num_asiento"></span></b></div>
 
                                                                     </div>
 
@@ -331,6 +358,8 @@
                                                                             <strong>{{ $errors->first('num_partida') }}</strong>
                                                                         </span>
                                                                         @endif
+                                                                        
+                                                                        <div class="invalid-feedback"><b><span id="error-num_partida"></span></b></div>
 
 
                                                                     </div>
@@ -549,12 +578,14 @@ $('#enviar_empresa_editar').submit(function(e) {
                 }).then((result) => {
                     
                     if (result.isConfirmed) {
-                        if ($('#estado').val() == "ACTIVO") {
+                        if ($('#estado').val() == "ACTIVO"  || $('#estado').val() == "SIN VERIFICAR" ) {
                             $("#estado").prop('disabled', false)
+                            $("#estado_dni_representante").prop('disabled', false)
                             cargarEntidades()
                             this.submit();
                         } else {
                             $("#estado").prop('disabled', true)
+                            $("#estado_dni_representante").prop('disabled', true)
                             toastr.error('Ingrese una empresa activa', 'Error');
                         }
                     } else if (
@@ -565,12 +596,14 @@ $('#enviar_empresa_editar').submit(function(e) {
                     }
                 })
             }else{
-                if ($('#estado').val() == "ACTIVO") {
+                if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR") {
                     $("#estado").prop('disabled', false)
+                    $("#estado_dni_representante").prop('disabled', false)
                     cargarEntidades()
                     this.submit();
                 } else {
                     $("#estado").prop('disabled', true)
+                    $("#estado_dni_representante").prop('disabled', true)
                     toastr.error('Ingrese una empresa activa', 'Error');
                 }
             }
@@ -591,61 +624,45 @@ $('#enviar_empresa_editar').submit(function(e) {
 })
 
 
-// Consulta Ruc
-$("#ruc").keypress(function() {
-    if (event.which == 13) {
-        event.preventDefault();
-        var ruc = $("#ruc").val()
-        evaluarRuc(ruc);
-    }
-})
 $("#ruc").keyup(function() {
     if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('INACTIVO');
+        $('#estado').val('SIN VERIFICAR');
     }
 })
 
-function evaluarRuc(ruc) {
-    if (ruc.length == 11) {
-
-        Swal.fire({
-            title: 'Consultar',
-            text: "¿Desea consultar Ruc a Sunat?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: (login) => {
-                var url = '{{ route("getApiruc", ":ruc")}}';
-                url = url.replace(':ruc', ruc);
-
-                return fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(response.statusText)
-                        }
-                        return response.json()
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        Swal.showValidationMessage(
-                            `Ruc Inválido`
-                        )
-                    })
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            camposRuc(result)
-            consultaExitosa()
-        })
-    } else {
-        toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
+$("#razon_social").keyup(function() {
+    if ($('#estado').val('ACTIVO')) {
+        $('#estado').val('SIN VERIFICAR');
     }
+})
+
+$("#razon_social_abreviada").keyup(function() {
+    if ($('#estado').val('ACTIVO')) {
+        $('#estado').val('SIN VERIFICAR');
+    }
+})
+
+$("#direccion_fiscal").keyup(function() {
+    if ($('#estado').val('ACTIVO')) {
+        $('#estado').val('SIN VERIFICAR');
+    }
+})
 
 
-}
+
+
+$("#dni_representante").keyup(function() {
+    if ($('#estado_dni_representante').val('ACTIVO')) {
+        $('#estado_dni_representante').val('SIN VERIFICAR');
+    }
+})
+
+$("#nombre_representante").keyup(function() {
+    if ($('#estado_dni_representante').val('ACTIVO')) {
+        $('#estado_dni_representante').val('SIN VERIFICAR');
+    }
+})
+
 
 function camposRuc(objeto) {
     var razonsocial = objeto.value.razonSocial;
@@ -668,8 +685,10 @@ function camposRuc(objeto) {
     if (estado == "ACTIVO") {
         $('#estado').val(estado)
     } else {
+        $('#estado').val('INACTIVO')
         toastr.error('Empresa no se encuentra "Activa"', 'Error');
     }
+
 
     if (direccion != '-' && direccion != "NULL") {
         $('#direccion_fiscal').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
@@ -685,7 +704,8 @@ $("#dni_representante").keypress(function() {
     }
 })
 // Consulta Dni
-function evaluarDni(dni) {
+function consultarDni(dni) {
+    var dni = $('#dni_representante').val()
     if (dni.length == 8) {
 
         Swal.fire({
@@ -710,6 +730,7 @@ function evaluarDni(dni) {
                     })
                     .catch(error => {
                         console.log(error)
+                        $('#dni_representante').val('SIN VERIFICAR')
                         Swal.showValidationMessage(
                             `Dni Inválido`
                         )
@@ -748,6 +769,7 @@ function camposDni(objeto) {
     }
 
     $('#nombre_representante').val(nombre_completo.join(' '))
+    $('#estado_dni_representante').val('ACTIVO')
 
 }
 
@@ -839,6 +861,140 @@ function entidadFinanciera() {
         existe = false
     }
     return existe
+}
+
+$('.tabs-container .nav-tabs #bancos_link').click(function() {
+    limpiarErrores()
+    var enviar = true;
+
+    if ($('#ruc').val() == '') {
+        enviar = false
+        $('#ruc').addClass("is-invalid")
+        toastr.error("Ingrese Ruc de la empresa.", 'Error');
+        $('#error-ruc').text("El campo Ruc es obligatorio.")
+    }
+
+    if ($('#razon_social').val() == '') {
+        enviar = false
+        $('#razon_social').addClass("is-invalid")
+        toastr.error("Ingrese Razón Social de la empresa.", 'Error');
+        $('#error-razon_social').text("El campo Razón Social es obligatorio.")
+    }
+
+    if ($('#direccion_fiscal').val() == '') {
+        enviar = false
+        $('#direccion_fiscal').addClass("is-invalid")
+        toastr.error("Ingrese la Dirección Fiscal de la Empresa.", 'Error');
+        $('#error-direccion_fiscal').text("El campo Dirección Fiscal es obligatorio.")
+    }
+
+    
+    if ($('#direccion_llegada').val() == '') {
+        enviar = false
+        $('#direccion_llegada').addClass("is-invalid")
+        toastr.error("Ingrese la Dirección de Llegada de la Empresa.", 'Error');
+        $('#error-direccion_llegada').text("El campo Dirección de Llegada es obligatorio.")
+    }
+
+    if ($('#dni_representante').val() == '') {
+        enviar = false
+        $('#dni_representante').addClass("is-invalid")
+        toastr.error("Ingrese el Dni del Representante de la Empresa.", 'Error');
+        $('#error-dni_representante').text("El campo Dni es obligatorio.")
+    }
+
+    if ($('#nombre_representante').val() == '') {
+        enviar = false
+        $('#nombre_representante').addClass("is-invalid")
+        toastr.error("Ingrese el Nombre Completo del Representante de la Empresa.", 'Error');
+        $('#error-nombre_representante').text("El campo Nombre Completo es obligatorio.")
+    }
+
+    if ($('#num_asiento').val() == '') {
+        enviar = false
+        $('#num_asiento').addClass("is-invalid")
+        toastr.error("Ingrese el N° de Asiento de la Empresa.", 'Error');
+        $('#error-num_asiento').text("El campo N° de Asiento es obligatorio.")
+    }
+
+    if ($('#num_partida').val() == '') {
+        enviar = false
+        $('#num_partida').addClass("is-invalid")
+        toastr.error("Ingrese el N° de Partida de la Empresa.", 'Error');
+        $('#error-num_partida').text("El campo N° de Partida es obligatorio.")
+    }
+
+    return enviar
+
+})
+
+
+function limpiarErrores() {
+    $('#ruc').removeClass("is-invalid")
+    $('#error-ruc').text("")
+
+    $('#razon_social').removeClass("is-invalid")
+    $('#error-razon_social').text("")
+
+    $('#direccion_fiscal').removeClass("is-invalid")
+    $('#error-direccion_fiscal').text("")
+
+    $('#direccion_llegada').removeClass("is-invalid")
+    $('#error-direccion_llegada').text("")
+
+    $('#dni_representante').removeClass("is-invalid")
+    $('#error-dni_representante').text("")
+
+    $('#nombre_representante').removeClass("is-invalid")
+    $('#error-nombre_representante').text("")
+
+    $('#num_asiento').removeClass("is-invalid")
+    $('#error-num_asiento').text("")
+
+    $('#num_partida').removeClass("is-invalid")
+    $('#error-num_partida').text("")
+}
+
+function consultarRuc() {
+    var ruc = $('#ruc').val()
+
+    if (ruc.length == 11) {
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Ruc a Sunat?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApiruc", ":ruc")}}';
+                url = url.replace(':ruc', ruc);
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        Swal.showValidationMessage(
+                            `Ruc Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            // $('#ruc').removeClass('is-invalid')
+            camposRuc(result)
+            consultaExitosa()
+        })
+
+    } else {
+        toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
+    }
 }
 
 </script>

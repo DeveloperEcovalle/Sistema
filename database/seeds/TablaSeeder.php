@@ -136,5 +136,17 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'TIPOS DE VENTA';
         $tabla->sigla = 'TIPO DE VENTA';
         $tabla->save();
+
+        //22
+        $tabla = new General();
+        $tabla->descripcion = 'TIPOS DE TIENDA';
+        $tabla->sigla = 'TIPO DE TIENDA';
+        $tabla->save();
+
+        //23
+        $tabla = new General();
+        $tabla->descripcion = 'TIPOS DE NEGOCIO';
+        $tabla->sigla = 'TIPO DE NEGOCIO';
+        $tabla->save();
     }
 }

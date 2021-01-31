@@ -244,6 +244,22 @@ if (!function_exists('tipos_maq_eq')) {
     }
 }
 
+// Tipo: tienda
+if (!function_exists('tipos_tienda')) {
+    function tipos_tienda()
+    {
+        return General::find(22)->detalles;
+    }
+}
+
+// Tipo: tienda
+if (!function_exists('tipos_negocio')) {
+    function tipos_negocio()
+    {
+        return General::find(23)->detalles;
+    }
+}
+
 // Monto a Pagar Orden de compra
 if (!function_exists('calcularMonto')) {
     function calcularMonto($id)

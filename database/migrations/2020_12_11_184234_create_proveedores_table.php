@@ -37,7 +37,7 @@ class CreateProveedoresTable extends Migration
             $table->bigInteger('ruc_transporte')->nullable();
             $table->string('transporte')->nullable();
             $table->mediumText('direccion_transporte')->nullable();
-            $table->boolean('activo_transporte');
+            $table->string('estado_transporte')->default('INACTIVO');
 
             $table->mediumText('direccion_almacen')->nullable();
 
@@ -46,7 +46,7 @@ class CreateProveedoresTable extends Migration
             $table->string('telefono_calidad')->nullable();
             $table->string('correo_calidad')->nullable();
 
-            $table->boolean('activo');
+            $table->string('estado_documento')->default('INACTIVO');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

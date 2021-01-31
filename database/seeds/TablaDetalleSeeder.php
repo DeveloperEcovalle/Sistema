@@ -558,6 +558,54 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
+
+        // TIPO DE TIENDA
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "FISICA";
+        $detalle->simbolo = 'FISICA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 22;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "VIRTUAL";
+        $detalle->simbolo = 'VIRTUAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 22;
+        $detalle->save();
+
+        // TIPO DE NEGOCIO
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MARKET";
+        $detalle->simbolo = 'MARKET';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 23;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CASA ORGANICA";
+        $detalle->simbolo = 'CASA ORGANICA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 23;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BIOTIENDA";
+        $detalle->simbolo = 'BIOTIENDA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 23;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TIENDA NATURISTA";
+        $detalle->simbolo = 'T. NATURAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 23;
+        $detalle->save();
+
+
         
     }
 }
