@@ -25,6 +25,7 @@ class Persona extends Model
         'correo_electronico',
         'telefono_movil',
         'telefono_fijo',
+        'estado_documento',
         'estado'
     ];
 
@@ -55,7 +56,11 @@ class Persona extends Model
 
     public function getEstadoCivil(): string
     {
-        return estados_civiles()->where('simbolo', $this->estado_civil)->first()->descripcion;
+        if(estados_civiles()->where('simbolo', $this->estado_civil)->first()){
+            return estados_civiles()->where('simbolo', $this->estado_civil)->first()->descripcion;
+        }else{
+            return '';
+        }
     }
 
     public function getDepartamento(): string
