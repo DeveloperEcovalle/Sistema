@@ -46,9 +46,9 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                
 
-                                    <div class="col-lg-6 col-xs-12" id="prototipo">
+                                    <div class="form-group" id="prototipo">
                                         <label class="required">Producto : </label>
                                         <select
                                             class="select2_form form-control {{ $errors->has('prototipo_id') ? ' is-invalid' : '' }}"
@@ -61,7 +61,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-lg-6 col-xs-12">
+                                    <div class="col-lg-6 col-xs-12" id="fecha">
                                         <label>Fecha de Emisión</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon">
@@ -70,7 +70,7 @@
                                             <input type="text" id="fecha" name="fecha"
                                                 class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
-                                                autocomplete="off">
+                                                autocomplete="off" readonly required>
                                             @if ($errors->has('fecha'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('fecha') }}</strong>
@@ -79,7 +79,7 @@
                                         </div>
                                     </div>
 
-                                </div>
+                               
    
                             </div>
 
@@ -346,11 +346,11 @@ function validarFecha() {
     var enviar = false
     var articulos = registrosArticulos()
 
-    if ($('#fecha').val() == '') {
-        toastr.error('Ingrese Fecha de Emisión de la Guia.', 'Error');
-        $("#fecha").focus();
-        enviar = true;
-    }
+    // if ($('#fecha').val() == '') {
+    //     toastr.error('Ingrese Fecha de Emisión de la Guia.', 'Error');
+    //     $("#fecha").focus();
+    //     enviar = true;
+    // }
 
     if (articulos == 0) {
         toastr.error('Ingrese al menos 1  Artículo.', 'Error');
@@ -504,10 +504,8 @@ $(document).on('click', '#borrar_articulo', function(event) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            var table = $('.dataTables-orden-detalle').DataTable();
+            var table = $('.dataTables-guia-detalle').DataTable();
             table.row($(this).parents('tr')).remove().draw();
-            sumaTotal()
-            // calcularIgv($('#igv').val())
 
         } else if (
             /* Read more about handling dismissals below */

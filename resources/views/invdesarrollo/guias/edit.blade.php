@@ -42,41 +42,40 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
 
-                                    <div class="col-lg-6 col-xs-12" id="prototipo">
-                                        <label class="required">Productos : </label>
-                                        <select
-                                            class="select2_form form-control {{ $errors->has('prototipo_id') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('prototipo_id',$guia->prototipo_id)}}"
-                                            name="prototipo_id" id="prototipo_id" required>
-                                            <option></option>
-                                            @foreach ($prototipos as $prototipo)
-                                                <option value="{{$prototipo->id}}" @if(old('prototipo_id',$guia->prototipo_id)==$prototipo->id)
-                                                         {{'selected'}} @endif >{{$prototipo->producto}}</option>
-                                            @endforeach
-                                        </select>
 
-                                    </div>
-                                    <div class="col-lg-6 col-xs-12" id="fecha">
-                                        <label>Fecha de Emisión</label>
-                                        <div class="input-group date">
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </span>
-                                            <input type="text" id="fecha" name="fecha"
-                                                class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}"
-                                                value="{{old('fecha',getFechaFormato($guia->fecha, 'd/m/Y'))}}"
-                                                autocomplete="off" readonly required>
-                                            @if ($errors->has('fecha'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('fecha') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
+                                <div class="form-group" id="prototipo">
+                                    <label class="required">Productos : </label>
+                                    <select
+                                        class="select2_form form-control {{ $errors->has('prototipo_id') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('prototipo_id',$guia->prototipo_id)}}"
+                                        name="prototipo_id" id="prototipo_id" required>
+                                        <option></option>
+                                        @foreach ($prototipos as $prototipo)
+                                            <option value="{{$prototipo->id}}" @if(old('prototipo_id',$guia->prototipo_id)==$prototipo->id)
+                                                     {{'selected'}} @endif >{{$prototipo->producto}}</option>
+                                        @endforeach
+                                    </select>
 
                                 </div>
+                                <div class="col-lg-6 col-xs-12" id="fecha">
+                                    <label>fecha de Emisión</label>
+                                    <div class="input-group date">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" id="fecha" name="fecha"
+                                            class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}"
+                                            value="{{old('fecha',getFechaFormato($guia->fecha, 'd/m/Y'))}}"
+                                            autocomplete="off" readonly required>
+                                        @if ($errors->has('fecha'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('fecha') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="col-sm-6">
@@ -170,25 +169,25 @@
 
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <label class="col-form-label required">Cantidad Solicitada</label>
+                                                <label class="col-form-label">Cantidad Solicitada</label>
                                                 <input type="text" id="cantidad_solicitada" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad_solicitada"></span></b>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label class="col-form-label required">Cantidad Entregada</label>
+                                                <label class="col-form-label">Cantidad Entregada</label>
                                                 <input type="text" id="cantidad_entregada" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad_entregada"></span></b>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label class="col-form-label required">Cantidad Devuelta</label>
+                                                <label class="col-form-label">Cantidad Devuelta</label>
                                                 <input type="text" id="cantidad_devuelta" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-cantidad_devuelta"></span></b>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label class="col-form-label required">Observacion</label>
+                                                <label class="col-form-label">Observacion</label>
                                                 <input type="text" id="observacion2" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-observacion2"></span></b>
                                                 </div>

@@ -11,7 +11,7 @@
                 <small class="font-bold">Crear nuevo Maquinarias_equipos.</small>
             </div>
             <div class="modal-body">
-                <form role="form" action="{{route('produccion.maquinaria_equipo.store')}}" method="POST" id="crear_maquinaria_equipo" enctype="multipart/form-data">  
+                <form role="form" action="{{route('almacenes.maquinaria_equipo.store')}}" method="POST" id="crear_maquinaria_equipo" enctype="multipart/form-data">  
                     {{ csrf_field() }} {{method_field('POST')}}
 
                     <div class="form-group">

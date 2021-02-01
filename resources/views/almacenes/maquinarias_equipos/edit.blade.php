@@ -11,7 +11,7 @@
                 <small class="font-bold">Modificar Maquinarias_equipos</small>
             </div>
             <div class="modal-body">
-                <form role="form" action="{{route('produccion.maquinaria_equipo.update')}}" method="POST" enctype="multipart/form-data" id="editar_maquinaria_equipo">
+                <form role="form" action="{{route('almacenes.maquinaria_equipo.update')}}" method="POST" enctype="multipart/form-data" id="editar_maquinaria_equipo">
                     {{ csrf_field() }} {{method_field('PUT')}}
 
                    <input type="hidden" name="id" id="id_editar" value="{{old('id')}}">
@@ -23,6 +23,7 @@
                                 <option value="{{ $tipo_maq_eq->simbolo }}" {{ (old('tipo') == $tipo_maq_eq->simbolo ? "selected" : "") }}>{{ $tipo_maq_eq->descripcion }}</option>
                             @endforeach
                         </select>
+                        
                     </div>
                    
                    <div class="form-group">
