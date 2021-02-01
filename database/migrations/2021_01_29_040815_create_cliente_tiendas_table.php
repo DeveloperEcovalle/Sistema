@@ -31,8 +31,8 @@ class CreateClienteTiendasTable extends Migration
             $table->string('celular')->nullable();
 
             // $table->string('dias');
-            // $table->string('hora_inicio');
-            // $table->string('hora_fin');
+            $table->string('hora_inicio')->nullable();
+            $table->string('hora_fin')->nullable();
             
             
 
@@ -59,6 +59,27 @@ class CreateClienteTiendasTable extends Migration
             $table->string('contacto_vendedor_correo')->nullable();
             $table->string('contacto_vendedor_celular')->nullable();
             $table->string('contacto_vendedor_telefono')->nullable();
+
+
+            $table->string('condicion_reparto')->nullable();
+
+            $table->string('nombre_transporte_oficina')->nullable();
+            $table->string('direccion_transporte_oficina')->nullable();
+            $table->string('responsable_pago_flete')->nullable();
+            $table->string('responsable_pago')->nullable();
+
+            $table->string('dni_responsable_recoger')->nullable();
+            $table->string('estado_responsable_recoger')->nullable();
+            $table->string('nombre_responsable_recoger')->nullable();
+            $table->string('telefono_responsable_recoger')->nullable();
+            $table->string('observacion_envio')->nullable();
+
+            $table->string('nombre_transporte_domicilio')->nullable();
+            $table->string('direccion_domicilio')->nullable();
+            $table->string('nombre_contacto_recoger')->nullable();
+            $table->string('telefono_contacto_recoger')->nullable();
+            $table->string('observacion_domicilio')->nullable();
+
 
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
 

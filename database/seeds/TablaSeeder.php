@@ -148,5 +148,11 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'TIPOS DE NEGOCIO';
         $tabla->sigla = 'TIPO DE NEGOCIO';
         $tabla->save();
+
+        //24
+        $tabla = new General();
+        $tabla->descripcion = 'RESPONSABLE DE PAGO';
+        $tabla->sigla = 'RESPONSABLE DE PAGO';
+        $tabla->save();
     }
 }

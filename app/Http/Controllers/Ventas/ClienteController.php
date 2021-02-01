@@ -95,7 +95,22 @@ class ClienteController extends Controller
         $cliente->correo_electronico = $request->get('correo_electronico');
         $cliente->telefono_movil = $request->get('telefono_movil');
         $cliente->telefono_fijo = $request->get('telefono_fijo');
-        $cliente->activo = ($request->get('activo') == 'ACTIVO') ? 1: 0;
+        $cliente->activo = $request->get('activo');
+        
+        $cliente->facebook = $request->get('facebook');
+        $cliente->instagram = $request->get('instagram');
+        $cliente->web = $request->get('web');
+
+        $cliente->hora_inicio = $request->get('hora_inicio');
+        $cliente->hora_termino = $request->get('hora_termino');
+
+
+        $cliente->nombre_propietario = $request->get('nombre_propietario');
+        $cliente->direccion_propietario = $request->get('direccion_propietario');
+        $cliente->fecha_nacimiento_prop  = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_prop'))->format('Y-m-d');
+        $cliente->celular_propietario   = $request->get('celular_propietario');
+        $cliente->correo_propietario  = $request->get('correo_propietario');
+
         $cliente->save();
 
         Session::flash('success','Cliente creado.');
@@ -172,17 +187,21 @@ class ClienteController extends Controller
         if($request->get('fecha_aniversario')!="-"){
             $cliente->fecha_aniversario = Carbon::createFromFormat('d/m/Y', $request->get('fecha_aniversario'))->format('Y-m-d');
         }
+        $cliente->activo = $request->get('activo');
         $cliente->observaciones = $request->get('observaciones');
+        $cliente->facebook = $request->get('facebook');
+        $cliente->instagram = $request->get('instagram');
+        $cliente->web = $request->get('web');
 
-        $cliente->condicion_reparto = $request->get('condicion_reparto');
-        $cliente->direccion_entrega = $request->get('direccion_entrega');
-        $cliente->empresa_envio = $request->get('empresa_envio');
-        $cliente->pago_flete_envio = $request->get('pago_flete_envio');
-        $cliente->persona_recoge = $request->get('persona_recoge');
-        $cliente->dni_persona_recoge = $request->get('dni_persona_recoge');
-        $cliente->telefono_dato_envio = $request->get('telefono_dato_envio');
-        $cliente->dato_envio_observacion = $request->get('dato_envio_observacion');
-        $cliente->activo = ($request->get('activo') == 'ACTIVO') ? 1: 0;
+        $cliente->hora_inicio = $request->get('hora_inicio');
+        $cliente->hora_termino = $request->get('hora_termino');
+
+
+        $cliente->nombre_propietario = $request->get('nombre_propietario');
+        $cliente->direccion_propietario = $request->get('direccion_propietario');
+        $cliente->fecha_nacimiento_prop  = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_prop'))->format('Y-m-d');
+        $cliente->celular_propietario   = $request->get('celular_propietario');
+        $cliente->correo_propietario  = $request->get('correo_propietario');
         $cliente->update();
 
         Session::flash('success','Cliente modificado.');

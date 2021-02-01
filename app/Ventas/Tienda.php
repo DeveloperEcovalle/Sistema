@@ -22,6 +22,9 @@ class Tienda extends Model
         'telefono',
         'celular',
 
+        'hora_inicio',
+        'hora_fin',
+
         'contacto_admin_nombre',
         'contacto_admin_cargo',
         'contacto_admin_fecha_nacimiento',
@@ -42,8 +45,43 @@ class Tienda extends Model
         'contacto_vendedor_correo',
         'contacto_vendedor_celular',
         'contacto_vendedor_telefono',
-        
-        'estado'
+        'estado',
+
+        'condicion_reparto',
+
+        'nombre_transporte_oficina',
+        'direccion_transporte_oficina',
+        'responsable_pago_flete',
+        'responsable_pago',
+
+        'dni_responsable_recoger',
+        'estado_responsable_recoger',
+        'nombre_responsable_recoger',
+        'telefono_responsable_recoger',
+        'observacion_envio',
+
+        'nombre_transporte_domicilio',
+        'direccion_domicilio',
+        'nombre_contacto_recoger',
+        'telefono_contacto_recoger',
+        'observacion_domicilio'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ];
 
     public function cliente()

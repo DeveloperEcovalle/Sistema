@@ -49,10 +49,13 @@
                                 <div class="tabs-container">
                                     <ul class="nav nav-tabs">
                                         <li title="Datos de la Tienda">
-                                            <a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-shopping-cart"></i> Tienda</a>
+                                            <a class="nav-link active" data-toggle="tab" href="#tab-1" id="tiendas" ><i class="fa fa-shopping-cart"></i> Tienda</a>
+                                        </li>
+                                        <li title="Datos de Envio">
+                                            <a class="nav-link" data-toggle="tab"href="#tab-2" id="envios" > <i class="fa fa-send"></i> Envio</a>
                                         </li>
                                         <li title="Datos de los Contactos">
-                                            <a class="nav-link" data-toggle="tab"href="#tab-2" id="contactos"> <i class="fa fa-user"></i> Contactos</a>
+                                            <a class="nav-link" data-toggle="tab"href="#tab-3" id="contactos"> <i class="fa fa-user"></i> Contactos</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
@@ -163,11 +166,6 @@
                                                                 @endif
                                                             </div>
 
-
-
-                                                        </div>
-                                                        <div class="col-md-6">
-
                                                             <div class="form-group row">
                                                                 <div class="col-md-6">
                                                                     <label>Teléfono:</label>
@@ -195,6 +193,43 @@
                                                                 </div>
 
                                                             </div>
+
+
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                        <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <p>Horario de Atención:</p>
+                                                                </div>
+                                                            </div>
+
+                                                            
+                                                            <div class="form-group row">
+                                                                <div class="col-md-6">
+                                                                    <label>Horario Inicio:</label>
+                                                                    <input type="time" name="hora_inicio" class="form-control" value="{{old('hora_inicio',$tienda->hora_inicio)}}" max="24:00:00" min="00:00:00" step="1">
+                                                                    @if ($errors->has('horario_inicio'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('horario_inicio') }}</strong>
+                                                                    </span>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>Horario Termino:</label>                                             
+                                                                    <input type="time" name="hora_termino" class="form-control" value="{{old('hora_termino',$tienda->hora_fin)}}" max="24:00:00" min="00:00:00" step="1">
+                                                                    @if ($errors->has('horario_termino'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('horario_termino') }}</strong>
+                                                                    </span>
+                                                                    @endif
+                                                                </div>
+
+                                                                
+
+                                                            </div>
+
+                                                    
                                                             
                                                             <hr>
 
@@ -275,6 +310,338 @@
                                             
                                             </div>
                                             <div id="tab-2" class="tab-pane">
+                                                <div class="panel-body">
+                                         
+                                                    <div class="form-group row">
+                                                        <div class="col-md-6 b-r">
+                                                            <div class="form-group">
+                                                                
+                                                                <h4><b>Datos de Envio</b></h4>
+                                                                <p>Modificar datos de envio:</p>
+                                                                
+                                                            </div>
+
+                                                            <div class="form-group">
+
+                                                                <label class="required">Condicion de Reparto</label>
+                                                                <select id="condicion_reparto" name="condicion_reparto" value="{{old('condicion_reparto',$tienda->condicion_reparto)}}" class="select2_form form-control {{ $errors->has('condicion_reparto') ? ' is-invalid' : '' }}">
+                                                                    <option></option>
+                                                                    @foreach(condicion_reparto() as $condicion_reparto)
+                                                                        <option value="{{ $condicion_reparto->id }}" @if(old('condicion_reparto',$tienda->condicion_reparto) == $condicion_reparto->id) {{'selected'}} @endif>{{ $condicion_reparto->descripcion }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @if ($errors->has('condicion_reparto'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('condicion_reparto') }}</strong>
+                                                                    </span>
+                                                                @endif
+                                                                <div class="invalid-feedback"><b><span id="error-condicion_reparto"></span></b></div>
+
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <p class="text-center">
+                                                                    <a href=""><i class="fa fa-sign-in big-icon"></i></a>
+                                                                </p>
+
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <div class="col-md-6">
+
+                                                            <div id="reparto_oficina">
+
+                                                                <div class="form-group">
+                                                                    
+                                                                    <h4><b>Datos según la condición de Reparto "Oficina"</b></h4>
+                                                                    <p>Registrar Transporte :</p>
+                                                                    
+                                                                </div>
+
+                                                                
+
+                                                                <div class="form-group">
+                                                                    <label class="required">Nombre </label>
+
+                                                                    <input type="text" class="form-control {{ $errors->has('nombre_transporte_oficina') ? ' is-invalid' : '' }}"
+                                                                    name="nombre_transporte_oficina" value="{{ old('nombre_transporte_oficina',$tienda->nombre_transporte_oficina)}}" id="nombre_transporte_oficina"
+                                                                    onkeyup="return mayus(this)" disabled>
+
+                                                                    @if ($errors->has('nombre_transporte_oficina'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('nombre_transporte_oficina') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-nombre_transporte_oficina"></span></b></div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                                                                                                                                    
+                                                                    <label class="required">Dirección </label>
+
+                                                                    <input type="text" class="form-control {{ $errors->has('direccion_transporte_oficina') ? ' is-invalid' : '' }}"
+                                                                        name="direccion_transporte_oficina" value="{{ old('direccion_transporte_oficina',$tienda->direccion_transporte_oficina)}}" id="direccion_transporte_oficina"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                        @if ($errors->has('direccion_transporte_oficina'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('direccion_transporte_oficina') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-direccion_transporte_oficina"></span></b></div>
+                                                                    
+                                                                
+                                                                
+                                                                </div>
+
+
+
+                                                                
+                                                                
+
+                                                                <div class="form-group ">
+
+
+                                                                    <label class="required">Nombre del Responsable (Pago de Flete)</label>
+
+                                                                    <input type="text" class="form-control {{ $errors->has('responsable_pago_flete') ? ' is-invalid' : '' }}"
+                                                                    name="responsable_pago_flete" value="{{ old('responsable_pago_flete',$tienda->responsable_pago_flete)}}" id="responsable_pago_flete"
+                                                                    onkeyup="return mayus(this)" disabled>
+
+                                                                        @if ($errors->has('responsable_pago_flete'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('responsable_pago_flete') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-responsable_pago_flete"></span></b></div>
+
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <p>Registrar Responsable de recoger el envio:</p>
+                                                                </div>
+
+                                                                <div class="form-group row">
+
+                                                                    <div class="col-md-8">
+                                                                        <label class="required">Dni</label>
+
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control {{ $errors->has('dni_responsable_recoger') ? ' is-invalid' : '' }}" name="dni_responsable_recoger" min="8" value="{{ old('dni_responsable_recoger',$tienda->dni_responsable_recoger)}}" id="dni_responsable_recoger" onkeyup="return mayus(this)" disabled> 
+                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+
+                                                                            @if ($errors->has('dni_responsable_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('dni_responsable_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                            <div class="invalid-feedback"><b><span id="error-dni_responsable_recoger"></span></b></div>
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <label class="">Estado</label>
+
+                                                                        <input type="text" class="form-control  text-center {{ $errors->has('estado_responsable_recoger') ? ' is-invalid' : '' }}"
+                                                                        name="estado_responsable_recoger" value="{{ old('estado_responsable_recoger',$tienda->estado_responsable_recoger)}}" id="estado_responsable_recoger"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                            @if ($errors->has('estado_responsable_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('estado_responsable_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-estado_responsable_recoger"></span></b></div>
+                                                                    </div>
+
+
+
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-8">
+                                                                        
+                                                                        <label class="required">Nombre</label>
+
+                                                                        <input type="text" class="form-control {{ $errors->has('nombre_responsable_recoger') ? ' is-invalid' : '' }}"
+                                                                        name="nombre_responsable_recoger" value="{{ old('nombre_responsable_recoger',$tienda->nombre_responsable_recoger)}}" id="nombre_responsable_recoger"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                            @if ($errors->has('nombre_responsable_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('nombre_responsable_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-nombre_responsable_recoger"></span></b></div>
+
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="">Telefono</label>
+
+                                                                        <input type="text" class="form-control {{ $errors->has('telefono_responsable_recoger') ? ' is-invalid' : '' }}"
+                                                                        name="telefono_responsable_recoger" value="{{ old('telefono_responsable_recoger',$tienda->telefono_responsable_recoger)}}" id="telefono_responsable_recoger"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                            @if ($errors->has('telefono_responsable_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('telefono_responsable_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-telefono_responsable_recoger"></span></b></div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Observación:</label>
+                                                                    <textarea type="text" placeholder=""
+                                                                        class="form-control {{ $errors->has('observacion_envio') ? ' is-invalid' : '' }}"
+                                                                        name="observacion_envio" id="observacion_envio"  onkeyup="return mayus(this)"
+                                                                        value="{{old('observacion_envio',$tienda->observacion_envio)}}" disabled>{{old('observacion_envio',$tienda->observacion_envio)}}</textarea>
+                                                                    @if ($errors->has('observacion_envio'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('observacion_envio') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div id="reparto_domicilio" style="display:none;">
+
+                                                                <div class="form-group">
+                                                                    
+                                                                    <h4><b>Datos según la condición de Reparto "Domicilio"</b></h4>
+                                                                    <p>Registrar Transporte :</p>
+                                                                    
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                   
+                                                                    <label class="required">Nombre </label>
+
+                                                                    <input type="text" class="form-control {{ $errors->has('nombre_transporte_domicilio') ? ' is-invalid' : '' }}"
+                                                                    name="nombre_transporte_domicilio" value="{{ old('nombre_transporte_domicilio',$tienda->nombre_transporte_domicilio)}}" id="nombre_transporte_domicilio"
+                                                                    onkeyup="return mayus(this)" disabled>
+
+                                                                    @if ($errors->has('nombre_transporte_domicilio'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('nombre_transporte_domicilio') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-nombre_transporte_domicilio"></span></b></div>
+                                                                
+                                                                </div>
+
+                                                                  
+
+                                                                <div class="form-group">
+
+                                                                                                                                                                                    
+                                                                    <label class="required">Dirección del domicilio </label>
+
+                                                                    <input type="text" class="form-control {{ $errors->has('direccion_domicilio') ? ' is-invalid' : '' }}"
+                                                                        name="direccion_domicilio" value="{{ old('direccion_domicilio',$tienda->direccion_domicilio)}}" id="direccion_domicilio"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                        @if ($errors->has('direccion_domicilio'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('direccion_domicilio') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                    <div class="invalid-feedback"><b><span id="error-direccion_domicilio"></span></b></div>
+                                                                    
+
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <p>Registrar Contacto de recoger el envio:</p>
+                                                                </div>
+
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-8">
+                                                                        
+                                                                        <label class="required">Nombre</label>
+
+                                                                        <input type="text" class="form-control {{ $errors->has('nombre_contacto_recoger') ? ' is-invalid' : '' }}"
+                                                                        name="nombre_contacto_recoger" value="{{ old('nombre_contacto_recoger',$tienda->nombre_contacto_recoger)}}" id="nombre_contacto_recoger"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                            @if ($errors->has('nombre_contacto_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('nombre_contacto_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-nombre_contacto_recoger"></span></b></div>
+
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="">Telefono</label>
+
+                                                                        <input type="text" class="form-control {{ $errors->has('telefono_contacto_recoger') ? ' is-invalid' : '' }}"
+                                                                        name="telefono_contacto_recoger" value="{{ old('telefono_contacto_recoger',$tienda->nombre_contacto_recoger)}}" id="telefono_contacto_recoger"
+                                                                        onkeyup="return mayus(this)" disabled>
+
+                                                                            @if ($errors->has('telefono_contacto_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('telefono_contacto_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-telefono_contacto_recoger"></span></b></div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Observación:</label>
+                                                                    <textarea type="text" placeholder=""
+                                                                        class="form-control {{ $errors->has('observacion_domicilio') ? ' is-invalid' : '' }}"
+                                                                        name="observacion_domicilio" id="observacion_domicilio"  onkeyup="return mayus(this)"
+                                                                        value="{{old('observacion_domicilio',$tienda->observacion_domicilio)}}" disabled>{{old('observacion_domicilio',$tienda->observacion_domicilio)}}</textarea>
+                                                                    @if ($errors->has('observacion_domicilio'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('observacion_domicilio') }}</strong>
+                                                                    </span>
+                                                                    @endif
+
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div id="tab-3" class="tab-pane">
                                                 <div class="panel-body">
                                                 
 
@@ -824,6 +1191,77 @@ $('#celular_vendedor').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
+function validarCampos() {
+  
+  var campos = true
+  if ($('#tipo_tienda').val() == '') {
+      campos = false  
+      $('#tiendas').click() 
+  }
+  if ($('#tipo_negocio').val() == ''){
+      campos = false
+      $('#tiendas').click()
+  }
+
+  if ($('#nombre').val() == ''){
+      campos = false
+      $('#tiendas').click()
+  }
+
+  if ($('#direccion').val() == ''){
+      campos = false
+      $('#tiendas').click()
+  } 
+
+  if ($("#condicion_reparto").val() == '68') {
+
+    if ($('#nombre_transporte_oficina').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+    if ($('#direccion_transporte_oficina').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+    if ($('#responsable_pago_flete').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+    if ($('#dni_responsable_recoger').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+    if ($('#nombre_responsable_recoger').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+  }else{
+
+    if ($('#nombre_transporte_domicilio').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+    if ($('#direccion_domicilio').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+    if ($('#nombre_contacto_recoger').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
+
+  }
+
+
+  return campos
+}
 
 $('#enviar_tienda').submit(function(e) {
     e.preventDefault();
@@ -845,8 +1283,14 @@ $('#enviar_tienda').submit(function(e) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-
-                this.submit();
+            var campos = validarCampos()
+                if (campos == true) {
+                    $('#estado_responsable_recoger').prop('disabled',false)
+                    this.submit();
+                }else{
+                    toastr.error('Hay campos obligatorios sin ingresar','Error');
+                }
+                
 
 
 
@@ -864,22 +1308,10 @@ $('#enviar_tienda').submit(function(e) {
 })
 
 
-// Consulta Ruc
-$("#ruc").keypress(function() {
-    if (event.which == 13) {
-        event.preventDefault();
-        var ruc = $("#ruc").val()
-        evaluarRuc(ruc);
-    }
-})
-$("#ruc").keyup(function() {
-    if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('INACTIVO');
-    }
-})
 
 
-$('.tabs-container .nav-tabs #contactos').click(function() {
+
+$('.tabs-container .nav-tabs #envios').click(function() {
     limpiarErrores()
     var enviar = true;
 
@@ -916,6 +1348,115 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
 
 })
 
+$('.tabs-container .nav-tabs #contactos').click(function() {
+    limpiarErrores()
+    var enviar = true;
+
+
+    if ($('#tipo_tienda').val() == '') {
+        enviar = false
+        $('#tipo_tienda').addClass("is-invalid")
+        toastr.error("Seleccione un tipo de tienda antes de ingresar un contacto.", 'Error');
+        $('#error-tipo').text("El campo Tipo es obligatorio.")
+    }
+
+    if ($('#tipo_negocio').val() == '') {
+        enviar = false
+        $('#tipo_negocio').addClass("is-invalid")
+        toastr.error("Seleccione un tipo de negocio antes de ingresar un contacto.", 'Error');
+        $('#error-negocio').text("El campo Negocio es obligatorio.")
+    }
+
+    if ($('#nombre').val() == '') {
+        enviar = false
+        $('#nombre').addClass("is-invalid")
+        toastr.error("Ingrese el nombre de la tienda antes de ingresar un contacto.", 'Error');
+        $('#error-nombre').text("El campo Nombre es obligatorio.")
+    }
+    
+    if ($('#direccion').val() == '') {
+        enviar = false
+        $('#direccion').addClass("is-invalid")
+        toastr.error("Ingrese la dirección de la tienda antes de ingresar un contacto.", 'Error');
+        $('#error-direccion').text("El campo Dirección es obligatorio.")
+    }
+
+
+    switch($("#condicion_reparto").val()) {
+    case "68":
+        if ($('#nombre_transporte_oficina').val() == '') {
+            enviar = false
+            $('#nombre_transporte_oficina').addClass("is-invalid")
+            toastr.error("Ingrese el nombre del Transporte.", 'Error');
+            $('#error-nombre_transporte_oficina').text("El campo Nombre es obligatorio.")
+        }
+
+        if ($('#direccion_transporte_oficina').val() == '') {
+            enviar = false
+            $('#direccion_transporte_oficina').addClass("is-invalid")
+            toastr.error("Ingrese la dirección del Transporte.", 'Error');
+            $('#error-direccion_transporte_oficina').text("El campo Dirección es obligatorio.")
+        }
+
+        if ($('#responsable_pago_flete').val() == '') {
+            enviar = false
+            $('#responsable_pago_flete').addClass("is-invalid")
+            toastr.error("Ingrese el Nombre del Responsable (Pago de Flete).", 'Error');
+            $('#error-responsable_pago_flete').text("El campo Nombre del Responsable es obligatorio.")
+        }
+
+        if ($('#dni_responsable_recoger').val() == '') {
+            enviar = false
+            $('#dni_responsable_recoger').addClass("is-invalid")
+            toastr.error("Ingrese el Dni.", 'Error');
+            $('#error-dni_responsable_recoger').text("El campo Dni es obligatorio.")
+        }
+
+        if ($('#nombre_responsable_recoger').val() == '') {
+            enviar = false
+            $('#nombre_responsable_recoger').addClass("is-invalid")
+            toastr.error("Ingrese el Nombre.", 'Error');
+            $('#error-nombre_responsable_recoger').text("El campo Nombre es obligatorio.")
+        }
+
+        break;
+    case "69":
+        if ($('#nombre_transporte_domicilio').val() == '') {
+            enviar = false
+            $('#nombre_transporte_domicilio').addClass("is-invalid")
+            toastr.error("Ingrese el Nombre.", 'Error');
+            $('#error-nombre_transporte_domicilio').text("El campo Nombre del Transporte es obligatorio.")
+        }
+
+        if ($('#direccion_domicilio').val() == '') {
+            enviar = false
+            $('#direccion_domicilio').addClass("is-invalid")
+            toastr.error("Ingrese la dirección del domicilio.", 'Error');
+            $('#error-direccion_domicilio').text("El campo Nombre del Transporte es obligatorio.")
+        }
+
+        if ($('#nombre_contacto_recoger').val() == '') {
+            enviar = false
+            $('#nombre_contacto_recoger').addClass("is-invalid")
+            toastr.error("Ingrese el nombre del contacto.", 'Error');
+            $('#error-nombre_contacto_recoger').text("El campo Nombrees obligatorio.")
+        }
+
+        break;
+    default:    
+        if ($('#condicion_reparto').val() == '') {
+            enviar = false
+            $('#condicion_reparto').addClass("is-invalid")
+            toastr.error("Ingrese la condición de Reparto.", 'Error');
+            $('#error-condicion_reparto').text("El campo Condición Reparto es obligatorio.")
+        }
+    }
+
+    return enviar
+
+})
+
+
 
 function limpiarErrores() {
     $('#tipo_tienda').removeClass("is-invalid")
@@ -929,7 +1470,247 @@ function limpiarErrores() {
 
     $('#direccion').removeClass("is-invalid")
     $('#error-direccion').text("")
+
+    //CONDICION DE ENVIO
+
+    $('#nombre_transporte_oficina').removeClass("is-invalid")
+    $('#error-nombre_transporte_oficina').text("")
+
+    $('#direccion_transporte_oficina').removeClass("is-invalid")
+    $('#error-direccion_transporte_oficina').text("")
+
+    $('#responsable_pago_flete').removeClass("is-invalid")
+    $('#error-responsable_pago_flete').text("")
+
+    $('#dni_responsable_recoger').removeClass("is-invalid")
+    $('#error-dni_responsable_recoger').text("")
+
+    $('#nombre_responsable_recoger').removeClass("is-invalid")
+    $('#error-nombre_responsable_recoger').text("")
+
+
+    $('#nombre_transporte_domicilio').removeClass("is-invalid")
+    $('#error-nombre_transporte_domicilio').text("")
+
+    $('#direccion_domicilio').removeClass("is-invalid")
+    $('#error-direccion_domicilio').text("")
+
+    $('#nombre_contacto_recoger').removeClass("is-invalid")
+    $('#error-nombre_contacto_recoger').text("")
+
+    $('#condicion_reparto').removeClass("is-invalid")
+    $('#error-condicion_reparto').text("")
+
+
+    // $('#estado_responsable_recoger').val('SIN VERIFICAR')
+
+} 
+
+//ENVIOS TAB
+
+$(document).ready(function() {
+
+   
+    switch("{{old('condicion_reparto',$tienda->condicion_reparto)}}") {
+    case "68":
+            $('#reparto_domicilio').css("display","none")
+            $('#reparto_oficina').css("display","")
+
+            $('#nombre_transporte_oficina').prop('disabled', false)
+            $('#direccion_transporte_oficina').prop('disabled', false)
+            $('#responsable_pago_flete').prop('disabled', false)
+
+            $('#dni_responsable_recoger').prop('disabled', false)
+            $('#nombre_responsable_recoger').prop('disabled', false)
+            $('#responsable_pago_flete').prop('disabled', false)
+            $('#telefono_responsable_recoger').prop('disabled', false)
+            $('#observacion_envio').prop('disabled', false)
+        break;
+    case "69":
+            $('#reparto_domicilio').css("display","")
+            $('#reparto_oficina').css("display","none")
+
+            $('#nombre_transporte_domicilio').prop('disabled', false)
+            $('#direccion_domicilio').prop('disabled', false)
+            $('#nombre_contacto_recoger').prop('disabled', false)
+            $('#telefono_contacto_recoger').prop('disabled', false)
+            $('#observacion_domicilio').prop('disabled', false)
+        break;
+    default:
+            $('#nombre_transporte_oficina').prop('disabled', true)
+            $('#direccion_transporte_oficina').prop('disabled', true) 
+            $('#responsable_pago_flete').prop('disabled', true)
+
+            $('#dni_responsable_recoger').prop('disabled', true)
+            $('#nombre_responsable_recoger').prop('disabled', true)
+            $('#responsable_pago_flete').prop('disabled', true)
+            $('#telefono_responsable_recoger').prop('disabled', true)
+            $('#observacion_envio').prop('disabled', true)
+
+            $('#nombre_transporte_domicilio').prop('disabled', true)
+            $('#direccion_domicilio').prop('disabled', true)
+            $('#nombre_contacto_recoger').prop('disabled', true)
+            $('#telefono_contacto_recoger').prop('disabled', true)
+            $('#observacion_domicilio').prop('disabled', true)
+    }
+})
+
+function limpiarDomicilio(){
+
+    $('#nombre_transporte_domicilio').val('')
+    $('#direccion_domicilio').val('')
+    $('#nombre_contacto_recoger').val('')
+    $('#telefono_contacto_recoger').val('')
+    $('#observacion_domicilio').val('')
 }
+
+
+
+
+function limpiarOficina(){
+        $('#nombre_transporte_oficina').val('')
+        $('#direccion_transporte_oficina').val('')
+        $('#responsable_pago_flete').val('')
+
+        $('#dni_responsable_recoger').val('')
+        $('#nombre_responsable_recoger').val('')
+        $('#responsable_pago_flete').val('')
+        $('#telefono_responsable_recoger').val('')
+        $('#observacion_envio').val('')
+}
+
+$("#dni_responsable_recoger").keyup(function() {
+    if ($('#estado_responsable_recoger').val('ACTIVO')) {
+        $('#estado_responsable_recoger').val('SIN VERIFICAR')
+    }
+})
+
+$("#nombre_responsable_recoger").keyup(function() {
+    if ($('#estado_responsable_recoger').val('ACTIVO')) {
+        $('#estado_responsable_recoger').val('SIN VERIFICAR')
+    }
+})
+
+// Consulta Dni
+function consultarDni() {
+    var dni = $('#dni_responsable_recoger').val()
+    if (dni.length == 8) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Dni a Reniec?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApidni", ":dni")}}';
+                url = url.replace(':dni', dni);
+
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_responsable_recoger').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Dni Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            camposDni(result)
+        
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
+    }
+}
+
+function camposDni(objeto) {
+
+    var nombres = objeto.value.nombres;
+    var apellidopa = objeto.value.apellidoPaterno;
+    var apellidoma = objeto.value.apellidoMaterno;
+
+    var nombre_completo = []
+
+    if (nombres != "-" && nombres != null) {
+        nombre_completo.push(nombres)
+    }
+
+    if (apellidopa != "-" && apellidopa != null) {
+        nombre_completo.push(apellidopa)
+    }
+
+    if (apellidoma != "-" && apellidoma != null) {
+        nombre_completo.push(apellidoma)
+    }
+
+    $('#nombre_responsable_recoger').val(nombre_completo.join(' '))
+    $('#estado_responsable_recoger').val('ACTIVO')
+
+}
+
+$("#condicion_reparto").on('change',function(e){
+    limpiarErrores()
+    $('#estado_responsable_recoger').val('SIN VERIFICAR')
+    switch($(this).val()) {
+    case "68":
+            $('#reparto_domicilio').css("display","none")
+            $('#reparto_oficina').css("display","")
+
+            $('#nombre_transporte_oficina').prop('disabled', false)
+            $('#direccion_transporte_oficina').prop('disabled', false)
+            $('#responsable_pago_flete').prop('disabled', false)
+
+            $('#dni_responsable_recoger').prop('disabled', false)
+            $('#nombre_responsable_recoger').prop('disabled', false)
+            $('#responsable_pago_flete').prop('disabled', false)
+            $('#telefono_responsable_recoger').prop('disabled', false)
+            $('#observacion_envio').prop('disabled', false)
+            limpiarDomicilio()
+        break;
+    case "69":
+            $('#reparto_domicilio').css("display","")
+            $('#reparto_oficina').css("display","none")
+
+            $('#nombre_transporte_domicilio').prop('disabled', false)
+            $('#direccion_domicilio').prop('disabled', false)
+            $('#nombre_contacto_recoger').prop('disabled', false)
+            $('#telefono_contacto_recoger').prop('disabled', false)
+            $('#observacion_domicilio').prop('disabled', false)
+            limpiarOficina()        
+        break;
+    default:
+            $('#nombre_transporte_oficina').prop('disabled', true)
+            $('#direccion_transporte_oficina').prop('disabled', true)
+            $('#responsable_pago_flete').prop('disabled', true)
+
+            $('#dni_responsable_recoger').prop('disabled', true)
+            $('#nombre_responsable_recoger').prop('disabled', true)
+            $('#responsable_pago_flete').prop('disabled', true)
+            $('#telefono_responsable_recoger').prop('disabled', true)
+            $('#observacion_envio').prop('disabled', true)
+
+            $('#nombre_transporte_domicilio').prop('disabled', true)
+            $('#direccion_domicilio').prop('disabled', true)
+            $('#nombre_contacto_recoger').prop('disabled', true)
+            $('#telefono_contacto_recoger').prop('disabled', true)
+            $('#observacion_domicilio').prop('disabled', true)
+            limpiarOficina()
+            limpiarDomicilio()
+    }
+
+})
 
 
 </script>
