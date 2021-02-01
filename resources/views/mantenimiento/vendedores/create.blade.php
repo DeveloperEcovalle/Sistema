@@ -616,6 +616,8 @@
                             toastr.error('El DNI debe de contar con 8 dígitos','Error');
                             $('#documento').focus();
                         }
+                    }else{
+                        toastr.error('La consulta Reniec solo aplica para Tipo Documento DNI','Error');
                     }
                 }
             });

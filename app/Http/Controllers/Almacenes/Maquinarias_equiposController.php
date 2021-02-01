@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Produccion;
+namespace App\Http\Controllers\Almacenes;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Produccion\Maquinaria_equipo;
+use App\Almacenes\Maquinaria_equipo;
 
 use DataTables;
 use Carbon\Carbon;
@@ -17,7 +17,7 @@ class Maquinarias_equiposController extends Controller
 {
     public function index()
     {
-        return view('produccion.maquinarias_equipos.index');
+        return view('almacenes.maquinarias_equipos.index');
     }
     public function getMaquinaria_equipo(){
         return datatables()->query(
@@ -76,7 +76,7 @@ class Maquinarias_equiposController extends Controller
         $maquinarias_equipos->save();
 
         Session::flash('success','Maquinaria-Equipo creado.');
-        return redirect()->route('produccion.maquinaria_equipo.index')->with('guardar', 'success');
+        return redirect()->route('almacenes.maquinaria_equipo.index')->with('guardar', 'success');
     }
 
     public function update(Request $request){
@@ -127,7 +127,7 @@ class Maquinarias_equiposController extends Controller
         $maquinarias_equipos->update();
 
         Session::flash('success','Maquinaria-Equipo modificado.');
-        return redirect()->route('produccion.maquinaria_equipo.index')->with('modificar', 'success');
+        return redirect()->route('almacenes.maquinaria_equipo.index')->with('modificar', 'success');
     }
 
     
@@ -141,7 +141,7 @@ class Maquinarias_equiposController extends Controller
         $maquinarias_equipos->update();
 
         Session::flash('success','Maquinaria-Equipo eliminado.');
-        return redirect()->route('produccion.maquinaria_equipo.index')->with('eliminar', 'success');
+        return redirect()->route('almacenes.maquinaria_equipo.index')->with('eliminar', 'success');
 
     }
 }

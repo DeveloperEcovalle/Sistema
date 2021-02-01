@@ -74,7 +74,6 @@
             <li><a href="register.html">Ordenes</a></li>
             <li><a href="404.html">Programación O/P</a></li>
             <li><a href="500.html">Consultas</a></li>
-            <li class="@yield('maquinaria_equipo-active')"><a href="{{route('produccion.maquinaria_equipo.index')}}">Maquinarias-Equipos</a></li>
             <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Produccion</a></li>
         </ul>
     </li>
@@ -108,7 +107,7 @@
 
                 </ul>
             </li>
-
+            <li class="@yield('maquinaria_equipo-active')"><a href="{{route('almacenes.maquinaria_equipo.index')}}">Maquinarias-Equipos</a></li>
 
         </ul>
     </li>

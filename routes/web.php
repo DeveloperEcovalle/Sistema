@@ -406,12 +406,12 @@ Route::prefix('invdesarrollo/guias')->group(function() {
 });
 
 // Maquinaria_equipos
-Route::prefix('produccion/maquinarias_equipos')->group(function() {
-    Route::get('index', 'Produccion\Maquinarias_equiposController@index')->name('produccion.maquinaria_equipo.index');
-    Route::get('getPrototipo','Produccion\Maquinarias_equiposController@getMaquinaria_equipo')->name('getMaquinaria_equipo');
-    Route::get('destroy/{id}', 'Produccion\Maquinarias_equiposController@destroy')->name('produccion.maquinaria_equipo.destroy');
-    Route::post('store', 'Produccion\Maquinarias_equiposController@store')->name('produccion.maquinaria_equipo.store');
-    Route::put('update', 'Produccion\Maquinarias_equiposController@update')->name('produccion.maquinaria_equipo.update');
+Route::prefix('almacenes/maquinarias_equipos')->group(function() {
+    Route::get('index', 'Almacenes\Maquinarias_equiposController@index')->name('almacenes.maquinaria_equipo.index');
+    Route::get('getPrototipo','Almacenes\Maquinarias_equiposController@getMaquinaria_equipo')->name('getMaquinaria_equipo');
+    Route::get('destroy/{id}', 'Almacenes\Maquinarias_equiposController@destroy')->name('almacenes.maquinaria_equipo.destroy');
+    Route::post('store', 'Almacenes\Maquinarias_equiposController@store')->name('almacenes.maquinaria_equipo.store');
+    Route::put('update', 'Almacenes\Maquinarias_equiposController@update')->name('almacenes.maquinaria_equipo.update');
 });
 
 // Linea de Produccionlinea_produccion

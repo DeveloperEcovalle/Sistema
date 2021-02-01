@@ -1,7 +1,7 @@
 @extends('layout') @section('content')
-@include('produccion.maquinarias_equipos.create')
-@include('produccion.maquinarias_equipos.edit')
-@section('produccion-active', 'active')
+@include('almacenes.maquinarias_equipos.create')
+@include('almacenes.maquinarias_equipos.edit')
+@section('almacenes-active', 'active')
 @section('maquinaria_equipo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
@@ -198,7 +198,7 @@
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                var url_eliminar = '{{ route("produccion.maquinaria_equipo.destroy", ":id")}}'; //Ruta Eliminar
+                var url_eliminar = '{{ route("almacenes.maquinaria_equipo.destroy", ":id")}}'; //Ruta Eliminar
                 url_eliminar = url_eliminar.replace(':id',id);
                 $(location).attr('href',url_eliminar);
             }else if (result.dismiss === Swal.DismissReason.cancel) {
