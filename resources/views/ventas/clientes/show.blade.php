@@ -38,7 +38,7 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li><a class="nav-link active" data-toggle="tab" href="#tab-personales"> DATOS DEL CLIENTE  </a></li>
                             <li><a class="nav-link" data-toggle="tab" href="#tab-contacto"> DATOS DEL NEGOCIO   </a></li>
-                            <li><a class="nav-link" data-toggle="tab" href="#tab-laborales"> DATOS DE ENVIO </a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-laborales"> DATOS DEL PROPIETARIO </a></li>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" id="tab-personales" class="tab-pane active">
@@ -127,108 +127,142 @@
                                             <p>{{ $cliente->observaciones }}</p>
                                         </div>
                                     </div>
-                                    <h4><b><i class="fa fa-caret-right"></i> CONTACTO COMERCIAL - TIENDA 1</b></h4><br>
+
                                     <div class="row">
-                                        <div class="form-group col-lg-4 col-xs-12">
-                                            <label><strong>NOMBRES Y APELLIDOS</strong></label>
-                                            <p>{{ $cliente->nombre1 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-3 col-xs-12">
-                                            <label><strong>FECHA DE NACIMIENTO</strong></label>
-                                            <p>{{ $cliente->fecha_nacimiento1 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-3 col-xs-12">
-                                            <label><strong>CORREO ELECTRONICO</strong></label>
-                                            <p>{{ $cliente->correo_electronico1 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-2 col-xs-12">
-                                            <label><strong>CELULAR</strong></label>
-                                            <p>{{ $cliente->celular1 }}</p>
-                                        </div>
+
+                                            <div class="col-md-6 b-r">
+                                            <h4><b><i class="fa fa-caret-right"></i> REDES SOCIALES</b></h4><br>
+
+                                                <div class="form-group">
+                                                    <label><strong>FACEBOOK: </strong></label>
+                                                    @if($cliente->facebook != "")
+                                                        <p>{{$cliente->facebook}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><strong>INSTAGRAM: </strong></label>
+                                                    @if($cliente->instagram != "")
+                                                        <p>{{$cliente->instagram}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><strong>WEB: </strong></label>
+                                                    @if($cliente->web != "")
+                                                        <p>{{$cliente->web}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col-md-6">
+                                            <h4><b><i class="fa fa-caret-right"></i> HORARIOS DE ATENCION</b></h4><br>
+
+                                            <div class="row" style="text-transform:uppercase;">
+                                                <div class="col-md-6">
+                                                    <label><strong>Hora de Inicio: </strong></label> 
+                                                    @if($cliente->hora_inicio != "")
+                                                        <p>{{$cliente->hora_inicio}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label><strong>Hora de Termino: </strong></label> 
+                                                    @if($cliente->hora_termino != "")
+                                                        <p>{{$cliente->hora_termino}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            
+                                            </div>
                                     </div>
-                                    <h4><b><i class="fa fa-caret-right"></i> CONTACTO COMERCIAL - TIENDA 2</b></h4><br>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4 col-xs-12">
-                                            <label><strong>NOMBRES Y APELLIDOS</strong></label>
-                                            <p>{{ $cliente->nombre2 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-3 col-xs-12">
-                                            <label><strong>FECHA DE NACIMIENTO</strong></label>
-                                            <p>{{ $cliente->fecha_nacimiento2 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-3 col-xs-12">
-                                            <label><strong>CORREO ELECTRONICO</strong></label>
-                                            <p>{{ $cliente->correo_electronico2 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-2 col-xs-12">
-                                            <label><strong>CELULAR</strong></label>
-                                            <p>{{ $cliente->celular2 }}</p>
-                                        </div>
-                                    </div>
-                                    <h4><b><i class="fa fa-caret-right"></i> CONTACTO COMERCIAL - TIENDA 3</b></h4><br>
-                                    <div class="row">
-                                        <div class="form-group col-lg-4 col-xs-12">
-                                            <label><strong>NOMBRES Y APELLIDOS</strong></label>
-                                            <p>{{ $cliente->nombre3 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-3 col-xs-12">
-                                            <label><strong>FECHA DE NACIMIENTO</strong></label>
-                                            <p>{{ $cliente->fecha_nacimiento3 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-3 col-xs-12">
-                                            <label><strong>CORREO ELECTRONICO</strong></label>
-                                            <p>{{ $cliente->correo_electronico3 }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-2 col-xs-12">
-                                            <label><strong>CELULAR</strong></label>
-                                            <p>{{ $cliente->celular3 }}</p>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div role="tabpanel" id="tab-laborales" class="tab-pane">
                                 <div class="panel-body">
-                                    <h4><b><i class="fa fa-caret-right"></i> DATOS DE ENVIO</b></h4><br>
-                                    <div class="row">
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>CONDICION DE REPARTO</strong></label>
-                                            @php
-                                            foreach (condicion_reparto() as $condicion_reparto) {
-                                                if ($cliente->condicion_reparto == $condicion_reparto->id) {
-                                                    echo ("<p>".$condicion_reparto->descripcion."</p>");
-                                                }
-                                            }
-                                            @endphp
+                                    <h4><b><i class="fa fa-caret-right"></i> DATOS DEL PROPIETARIO </b></h4><br>
+
+                                    <div class="form-group row" style="text-transform:uppercase;">
+                                        
+                                        <div class="col-md-6 b-r">
+
+                                                <div class="form-group">
+                                                    <label><strong>NOMBRE: </strong></label>
+                                                    @if($cliente->nombre_propietario != "")
+                                                        <p>{{$cliente->nombre_propietario}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label><strong>DIRECCION: </strong></label>
+                                                    @if($cliente->direccion_propietario != "")
+                                                        <p>{{$cliente->direccion_propietario}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+                                                
+                                                <div class="form-group">
+                                                    <label><strong>CORREO: </strong></label>
+                                                    @if($cliente->correo_propietario != "")
+                                                        <p>{{$cliente->correo_propietario}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+
+
+
                                         </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>DIRECCION DE ENTREGA DEL BIEN</strong></label>
-                                            <p>{{ $cliente->direccion_entrega }}</p>
+
+                                        <div class="col-md-6">
+
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    <label><strong>FECHA DE NACIMIENTO: </strong></label> 
+                                                    @if($cliente->fecha_nacimiento_prop != "")
+                                                        <p>{{ Carbon\Carbon::parse($cliente->fecha_nacimiento_prop)->format('d/m/y') }}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label><strong>CELULAR: </strong></label> 
+                                                    @if($cliente->celular != "")
+                                                        <p>{{$cliente->celular}}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                    @endif
+                                                </div>
+
+
+
+                                            </div>
+
                                         </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>NOMBRE DE LA EMPRESA DE TRANSPORTE PARA EL ENVIO:</strong></label>
-                                            <p>{{ $cliente->empresa_envio }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>RESPONSABLE DEL PAGO DEL FLETE DE ENVIO:</strong></label>
-                                            <p>{{ $cliente->pago_flete_envio }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>NOMBRE DE LA PERSONA QUIEN RECOGE PAQUETE / SI ES ENVIO OFICINA:</strong></label>
-                                            <p>{{ $cliente->persona_recoge }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>NRO DNI DE LA PERSONA QUIEN RECOGE:</strong></label>
-                                            <p>{{ $cliente->dni_persona_recoge }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>TELEFONO</strong></label>
-                                            <p>{{ $cliente->telefono_dato_envio }}</p>
-                                        </div>
-                                        <div class="form-group col-lg-5 col-xs-12">
-                                            <label><strong>OBSERVACION</strong></label>
-                                            <p>{{ $cliente->dato_envio_observacion }}</p>
-                                        </div>
+
+
+
                                     </div>
+ 
                                 </div>
                             </div>
                         </div>

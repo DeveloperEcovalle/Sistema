@@ -605,6 +605,21 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 23;
         $detalle->save();
 
+        // Responsable de Pago
+        $detalle = new Detalle();
+        $detalle->descripcion = "CANCELA SOCIO";
+        $detalle->simbolo = 'CANCELA SOCIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 24;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CANCELA ECOVALLE";
+        $detalle->simbolo = 'CANCELA ECOVALLE';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 24;
+        $detalle->save();
+
 
         
     }

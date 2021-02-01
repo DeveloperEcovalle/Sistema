@@ -93,6 +93,167 @@
                             </div>
 
                             <hr>
+
+                            <div class="form-group">
+                                <p  style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Informacion del Envio:</strong></p>
+                            </div>
+
+                            
+                                @if($tienda->condicion_reparto == 68)
+                                <p>CONDICION DE REPARTO : OFICINA</p>
+                                <div class="row">
+                                    <div class="col-md-6 b-r">
+
+                                        <div class="form-group">
+                                            <label><strong>Nombre del Transporte: </strong></label>
+                                            @if($tienda->nombre_transporte_oficina != "")
+                                                <p>{{$tienda->nombre_transporte_oficina}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Dirección del Transporte: </strong></label>
+
+                                            @if($tienda->direccion_transporte_oficina != "")
+                                                <p>{{$tienda->direccion_transporte_oficina}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Nombre del Responsable (Pago de Flete): </strong></label>
+                                        
+                                            @if($tienda->responsable_pago_flete != "")
+                                                <p>{{$tienda->direccion_transporte_oficina}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label><strong>Dni del responsable de recoger envio: </strong></label>
+                                            @if($tienda->dni_responsable_recoger != "")
+                                                <p>{{$tienda->dni_responsable_recoger}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Nombre del responsable de recoger envio: </strong></label>
+
+                                            @if($tienda->nombre_responsable_recoger != "")
+                                                <p>{{$tienda->nombre_responsable_recoger}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Telefono del responsable: </strong></label>
+
+                                            @if($tienda->telefono_responsable_recoger != "")
+                                                <p>{{$tienda->telefono_responsable_recoger}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label><strong>Observación del envio: </strong></label>
+                                        
+                                        @if($tienda->observacion_envio != "")
+                                            <p>{{$tienda->observacion_envio}}</p>
+                                        @else
+                                            <p>-</p>
+                                        @endif
+                                    </div>
+
+                                </div>
+
+                                @else
+                                <p>CONDICION DE REPARTO : DOMICILIO</p>
+                                <div class="row">
+                                   
+                                    <div class="col-md-6 b-r">
+
+                                        <div class="form-group">
+                                            <label><strong>Nombre del Transporte: </strong></label>
+                                            @if($tienda->nombre_transporte_domicilio != "")
+                                                <p>{{$tienda->nombre_transporte_domicilio}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Dirección del Domicilio: </strong></label>
+
+                                            @if($tienda->direccion_domicilio != "")
+                                                <p>{{$tienda->direccion_domicilio}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label><strong>Nombre del Contacto (recoger envio): </strong></label>
+                                        
+                                            @if($tienda->nombre_contacto_recoger != "")
+                                                <p>{{$tienda->nombre_contacto_recoger}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><strong>Telefono del Contacto (recoger envio): </strong></label>
+                                            @if($tienda->telefono_contacto_recoger != "")
+                                                <p>{{$tienda->telefono_contacto_recoger}}</p>
+                                            @else
+                                                <p>-</p>
+                                            @endif
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <label><strong>Observación del envio: </strong></label>
+                                    
+                                    @if($tienda->observacion_domicilio != "")
+                                        <p>{{$tienda->observacion_domicilio}}</p>
+                                    @else
+                                        <p>-</p>
+                                    @endif
+                                </div>
+
+                                
+                                
+                                @endif
+                           
+
+
+
+                            <hr>
                             <div class="form-group">
                                 <p  style="text-transform:uppercase"><strong> Informacion de los contactos:</strong></p>
                             </div>

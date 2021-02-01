@@ -98,6 +98,33 @@ class TiendaController extends Controller
         $tienda->contacto_vendedor_correo = $request->get('correo_vendedor');
         $tienda->contacto_vendedor_telefono = $request->get('telefono_vendedor');
         $tienda->contacto_vendedor_celular = $request->get('celular_vendedor');
+
+
+        $tienda->hora_inicio = $request->get('hora_inicio');
+        $tienda->hora_fin = $request->get('hora_termino');
+
+
+        $tienda->condicion_reparto = $request->get('condicion_reparto');
+
+        
+        $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
+        $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');
+        $tienda->responsable_pago_flete = $request->get('responsable_pago_flete');
+        $tienda->responsable_pago = $request->get('responsable_pago');
+
+        $tienda->dni_responsable_recoger = $request->get('dni_responsable_recoger');
+        $tienda->estado_responsable_recoger = $request->get('estado_responsable_recoger');
+        $tienda->nombre_responsable_recoger = $request->get('nombre_responsable_recoger');
+        $tienda->telefono_responsable_recoger = $request->get('telefono_responsable_recoger');
+        $tienda->observacion_envio = $request->get('observacion_envio');
+
+        $tienda->nombre_transporte_domicilio = $request->get('nombre_transporte_domicilio');
+        $tienda->direccion_domicilio = $request->get('direccion_domicilio');
+        $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
+        $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
+        $tienda->observacion_domicilio = $request->get('observacion_domicilio');
+
+
         $tienda->save();
 
         Session::flash('success','Tienda creada.');
@@ -182,7 +209,33 @@ class TiendaController extends Controller
         $tienda->contacto_vendedor_correo = $request->get('correo_vendedor');
         $tienda->contacto_vendedor_telefono = $request->get('telefono_vendedor');
         $tienda->contacto_vendedor_celular = $request->get('celular_vendedor');
-        $tienda->save();
+
+        
+        $tienda->hora_inicio = $request->get('hora_inicio');
+        $tienda->hora_fin = $request->get('hora_termino');
+
+
+        $tienda->condicion_reparto = $request->get('condicion_reparto');
+
+        
+        $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
+        $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');
+        $tienda->responsable_pago_flete = $request->get('responsable_pago_flete');
+        $tienda->responsable_pago = $request->get('responsable_pago');
+
+        $tienda->dni_responsable_recoger = $request->get('dni_responsable_recoger');
+        $tienda->estado_responsable_recoger = $request->get('estado_responsable_recoger');
+        $tienda->nombre_responsable_recoger = $request->get('nombre_responsable_recoger');
+        $tienda->telefono_responsable_recoger = $request->get('telefono_responsable_recoger');
+        $tienda->observacion_envio = $request->get('observacion_envio');
+
+        $tienda->nombre_transporte_domicilio = $request->get('nombre_transporte_domicilio');
+        $tienda->direccion_domicilio = $request->get('direccion_domicilio');
+        $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
+        $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
+        $tienda->observacion_domicilio = $request->get('observacion_domicilio');
+
+        $tienda->update();
 
         Session::flash('success','Tienda modificada.');
         return redirect()->route('clientes.tienda.index',$tienda->cliente_id)->with('modificar', 'success');

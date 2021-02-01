@@ -41,29 +41,23 @@ class CreateClientesTable extends Migration
             $table->string('direccion_negocio');
             $table->date('fecha_aniversario')->nullable();
             $table->text('observaciones')->nullable();
-            $table->mediumText('nombre1')->nullable();
-            $table->date('fecha_nacimiento1')->nullable();
-            $table->string('correo_electronico1')->nullable();
-            $table->string('celular1')->nullable();
-            $table->mediumText('nombre2')->nullable();
-            $table->date('fecha_nacimiento2')->nullable();
-            $table->string('correo_electronico2')->nullable();
-            $table->string('celular2')->nullable();
-            $table->mediumText('nombre3')->nullable();
-            $table->date('fecha_nacimiento3')->nullable();
-            $table->string('correo_electronico3')->nullable();
-            $table->string('celular3')->nullable();
-            $table->string('condicion_reparto')->nullable();
-            $table->string('direccion_entrega')->nullable();
-            $table->string('empresa_envio')->nullable();
-            $table->string('pago_flete_envio')->nullable();
-            $table->string('persona_recoge')->nullable();
-            $table->string('dni_persona_recoge')->nullable();
-            $table->string('telefono_dato_envio')->nullable();
-            $table->mediumText('dato_envio_observacion')->nullable();
+
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('web')->nullable();
+
+            $table->string('hora_inicio')->nullable();
+            $table->string('hora_termino')->nullable();
+
+            $table->string('nombre_propietario')->nullable();
+            $table->string('direccion_propietario')->nullable();
+            $table->date('fecha_nacimiento_prop')->nullable();
+            $table->string('celular_propietario')->nullable();
+            $table->string('correo_propietario')->nullable();
 
 
-            $table->boolean('activo');
+
+            $table->string('activo')->nullable();
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

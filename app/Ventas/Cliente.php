@@ -22,33 +22,29 @@ class Cliente extends Model
         'telefono_movil',
         'telefono_fijo',
         'moneda_credito',
-        'limite_credito',
-        'nombre_contacto',
-        'telefono_contacto',
+
+
 
         'direccion_negocio',
         'fecha_aniversario',
         'observaciones',
-        'nombre1',
-        'fecha_nacimiento1',
-        'correo_electronico1',
-        'celular1',
-        'nombre2',
-        'fecha_nacimiento2',
-        'correo_electronico2',
-        'celular2',
-        'nombre3',
-        'fecha_nacimiento3',
-        'correo_electronico3',
-        'celular3',
-        'condicion_reparto',
-        'direccion_entrega',
-        'empresa_envio',
-        'pago_flete_envio',
-        'persona_recoge',
-        'dni_persona_recoge',
-        'telefono_dato_envio',
-        'dato_envio_observacion',
+        
+        'facebook',
+        'instagram',
+        'web',
+
+        'hora_inicio',
+        'hora_termino',
+
+        'nombre_propietario',
+        'direccion_propietario',
+        'fecha_nacimiento_prop',
+        'celular_propietario',
+        'correo_propietario',
+
+
+
+       
         'activo',
         'estado'
     ];
