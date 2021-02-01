@@ -458,7 +458,7 @@
 
             $("#tipo_documento").on('change', setLongitudDocumento);
 
-            $("#documento").on('change', consultarDocumento);
+            // $("#documento").on('change', consultarDocumento);
 
             $("#departamento").on("change", function (e) {
                 var departamento_id = this.value;
@@ -629,6 +629,8 @@
                             toastr.error('El DNI debe de contar con 8 dígitos','Error');
                             $('#documento').focus();
                         }
+                    }else{
+                        toastr.error('La consulta Reniec solo aplica para Tipo Documento DNI','Error');
                     }
                 }
             });
