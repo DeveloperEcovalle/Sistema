@@ -34,6 +34,7 @@ class CreatePersonasTable extends Migration
             $table->string('correo_electronico')->nullable();
             $table->string('telefono_movil', 50)->nullable();
             $table->string('telefono_fijo', 50)->nullable();
+            $table->string('estado_documento')->default('INACTIVO');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

@@ -48,7 +48,6 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        //dd($data);
         DB::transaction(function () use ($request) {
 
             $persona = new Persona();
@@ -68,6 +67,7 @@ class EmpleadoController extends Controller
             $persona->correo_electronico = $request->get('correo_electronico');
             $persona->telefono_movil = $request->get('telefono_movil');
             $persona->telefono_fijo = $request->get('telefono_fijo');
+            $persona->estado_documento = $request->get('estado_documento');
             $persona->save();
 
             $empleado = new Empleado();
@@ -144,6 +144,7 @@ class EmpleadoController extends Controller
             $persona->correo_electronico = $request->get('correo_electronico');
             $persona->telefono_movil = $request->get('telefono_movil');
             $persona->telefono_fijo = $request->get('telefono_fijo');
+            $persona->estado_documento = $request->get('estado_documento');
             $persona->update();
 
             $empleado->persona_id = $persona->id;

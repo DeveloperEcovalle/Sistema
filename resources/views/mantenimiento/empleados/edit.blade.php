@@ -39,11 +39,34 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group col-lg-4 col-xs-12">
+                <div class="form-group col-lg-4 col-xs-12" id="documento_requerido">
                     <label class="required">Nro. Documento</label>
-                    <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento', $empleado->persona->documento)}}" maxlength="8" onkeypress="return isNumber(event)" required>
+                    <div class="input-group">
+                        <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento', $empleado->persona->documento)}}" maxlength="8" onkeypress="return isNumber(event)" required onchange="cambiaDocumento();">
+                        <span class="input-group-append"><a style="color:white" onclick="consultarDocumento()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+                        @if ($errors->has('documento'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('documento') }}</strong>
+                            </span>
+                            @endif
+                        <div class="invalid-feedback"><b><span id="error-documento"></span></b></div>
+                    </div>
                 </div>
+                
                 <input type="hidden" id="codigo_verificacion" name="codigo_verificacion">
+
+                <div class="form-group col-lg-4 col-xs-12">
+                    <label class="">Estado: </label>
+                    <input type="text" id="estado_documento"
+                        class="form-control text-center {{ $errors->has('estado_documento') ? ' is-invalid' : '' }}"
+                        name="estado_documento" value="{{$empleado->persona->estado_documento}}"
+                        onkeyup="return mayus(this)" disabled>
+                    @if ($errors->has('estado_documento'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('estado_documento') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-4 col-xs-12">
@@ -413,7 +436,7 @@
 
             $("#tipo_documento").on('change', setLongitudDocumento);
 
-            $("#documento").on('change', consultarDocumento);
+            //$("#documento").on('change', consultarDocumento);
 
             $("#departamento").on("change", function (e) {
                 var departamento_id = this.value;
@@ -611,6 +634,7 @@
                             return response.json()
                         })
                         .catch(error => {
+                            $('#estado_documento').val('SIN VERIFICAR')
                             Swal.showValidationMessage(
                                 `Ruc erróneo: ${error}`
                             )
@@ -647,6 +671,7 @@
             if (codigo_verificacion !== '-' && codigo_verificacion !== "NULL" ) {
                 $('#codigo_verificacion').val(codigo_verificacion);
             }
+            $('#estado_documento').val('ACTIVO')
         }
 
         function clearDatosPersona() {
@@ -703,7 +728,7 @@
             onFinished: function (event, currentIndex)
             {
                 var form = $(this);
-
+                $("#estado_documento").prop('disabled', false);
                 // Submit form input
                 form.submit();
             }
@@ -867,6 +892,8 @@
                 $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
             }
         });
-
+        function cambiaDocumento(){
+            $('#estado_documento').val('SIN VERIFICAR')
+        }
     </script>
 @endpush
