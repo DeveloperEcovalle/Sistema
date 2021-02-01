@@ -42,9 +42,29 @@
 
 
                                 <div class="col-lg-6 col-xs-12">
-                                    <label><strong>PRESENTACIÓN</strong></label>
-                                    <p>{{ $producto->presentacion }}</p>
+                                    <label><strong>CÓDIGO DE BARRA</strong></label>
+                                    @if($producto->codigo_barra)
+                                        <p>{{$producto->codigo_barra}}</p>
+                                    @else
+                                        <p>-</p>
+                                    @endif
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label><strong>PRESENTACION: </strong></label>
+                                    <p class="text-navy">{{$producto->presentacion}}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label><strong>MONEDA: </strong></label> 
+                                    @foreach(tipos_moneda() as $tipo)
+                                        @if ($tipo->id == $producto->moneda)
+                                            <p>{{ $tipo->descripcion }}</p>
+                                        @endif
+                                    @endforeach
+                                </div>
+                                
                             </div>
 
                             <div class="form-group">

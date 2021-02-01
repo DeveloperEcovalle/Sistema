@@ -8,6 +8,7 @@ function isNroCuenta(e) {
 }
 
 function mayus(e) {
+    // alert(e.value)
     e.value = e.value.toUpperCase();
 }
 

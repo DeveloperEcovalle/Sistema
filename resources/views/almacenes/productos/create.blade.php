@@ -41,6 +41,33 @@
                                         @endif
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
+                                        <label class="">Código de Barra</label>
+                                        <input type="text" id="codigo_barra" class="form-control {{ $errors->has('codigo_barra') ? ' is-invalid' : '' }}" name="codigo_barra" value="{{ old('codigo_barra')}}"   onkeyup="return mayus(this)">
+                                        @if ($errors->has('codigo_barra'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('codigo_barra') }}</strong>
+                                            </span>
+                                        @endif 
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Moneda</label>
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" required>
+                                            <option></option>
+                                            @foreach(tipos_moneda() as $tipo)
+                                                <option value="{{ $tipo->id }}" {{ (old('moneda') == $tipo->id ? "selected" : "") }} >{{ $tipo->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('moneda'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('moneda') }}</strong>
+                                            </span>
+                                        @endif
+
+                                    </div>
+                                    <div class="col-lg-6 col-xs-12">
                                         <label class="required">Presentación</label>
                                         <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
                                             <option></option>
@@ -56,6 +83,8 @@
                                     </div>
                                 </div>
 
+
+
                                 <div class="form-group">
  
                                     <label class="required">Nombre</label>
@@ -70,7 +99,7 @@
 
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Familia</label>
+                                        <label class="required">Categoria</label>
                                         <select id="familia" name="familia" class="select2_form form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}">
                                             <option></option>
                                             @foreach($familias as $familia)
@@ -84,7 +113,7 @@
                                         @endif
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Sub Familia</label>
+                                        <label class="required">Sub Categoria</label>
                                         <select id="sub_familia" name="sub_familia" class="select2_form form-control {{ $errors->has('sub_familia') ? ' is-invalid' : '' }}" disabled required >
                                             <option></option>
                                         </select>
@@ -688,26 +717,7 @@
 
             // DataTables
             $('.dataTables-clientes').DataTable({
-                "dom": '<"html5buttons"B>lTfgitp',
-                "buttons": [{
-                        extend: 'excelHtml5',
-                        text: '<i class="fa fa-file-excel-o"></i> Excel',
-                        titleAttr: 'Excel',
-                        title: 'Detalle de Orden de Compra'
-                    },
-                    {
-                        titleAttr: 'Imprimir',
-                        extend: 'print',
-                        text: '<i class="fa fa-print"></i> Imprimir',
-                        customize: function(win) {
-                            $(win.document.body).addClass('white-bg');
-                            $(win.document.body).css('font-size', '10px');
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        }
-                    }
-                ],
+                "dom": 'lTfgitp',
                 "bPaginate": true,
                 "bLengthChange": true,
                 "bFilter": true,

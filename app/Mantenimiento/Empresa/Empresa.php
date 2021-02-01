@@ -28,6 +28,10 @@ class Empresa extends Model
         'estado_ruc',
         'estado_dni_representante',
         'estado',
+
+        'web',
+        'facebook',
+        'instagram',
     ];
 
     public function cotizaciones()

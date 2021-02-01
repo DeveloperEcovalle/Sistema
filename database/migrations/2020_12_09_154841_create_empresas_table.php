@@ -27,6 +27,10 @@ class CreateEmpresasTable extends Migration
             $table->string('celular')->nullable();
             $table->string('correo')->nullable();
 
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('web')->nullable();
+
             $table->mediumText('direccion_llegada');
 
             $table->string('dni_representante');

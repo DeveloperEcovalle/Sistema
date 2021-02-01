@@ -264,24 +264,6 @@
 
                                                         </div>
 
-                                                        <div class="form-group">
-
-                                                            <label>Web:</label>
-                                                            <input type="text" placeholder=""
-                                                                class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" name="web"
-                                                                id="web"  onkeyup="return mayus(this)" value="{{old('web')}}">
-                                                            @if ($errors->has('web'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('web') }}</strong>
-                                                            </span>
-                                                            @endif
-
-
-                                                        </div>
-
-
-
-
 
                                                     </div>
 
@@ -304,6 +286,7 @@
                                                                                 href="#tab-3" id="transporte_link"> <i class="fa fa-bus"></i> Transporte</a></li>
                                                                         <li title="Datos de Almacen"><a class="nav-link" data-toggle="tab"
                                                                                 href="#tab-4"> <i class="fa fa-building"></i> Almacen</a></li>
+                                                                        
                                                                     </ul>
                                                                     <div class="tab-content">
                                                                         <div id="tab-1" class="tab-pane active">
@@ -553,6 +536,80 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+
+                                                                <div class="form-group">
+                                                                    <h4><b>Redes Sociales</b></h4>
+                                                                    <p>Registrar redes sociales del proveedor:</p>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                        
+                                                                        <label class="">Facebook:</label>
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-facebook"></i>
+                                                                                </span>
+                                                                                <input type="text" id="facebook" name="facebook"
+                                                                                    class="form-control {{ $errors->has('facebook') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('facebook')}}">
+
+                                                                                    @if ($errors->has('facebook'))
+                                                                                    <span class="invalid-feedback" role="alert">
+                                                                                        <strong>{{ $errors->first('facebook') }}</strong>
+                                                                                    </span>
+                                                                                    @endif
+                                                                            </div>
+
+                                                                    
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                
+                                                                        <label class="">Instagram:</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-instagram"></i>
+                                                                            </span>
+                                                                            <input type="text" id="instagram" name="instagram"
+                                                                                class="form-control {{ $errors->has('instagram') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('instagram')}}">
+
+                                                                                @if ($errors->has('instagram'))
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $errors->first('instagram') }}</strong>
+                                                                                </span>
+                                                                                @endif
+                                                                        </div>
+                                                                    
+                                                                </div>
+
+                                                                <div class="form-group">
+
+                                                                        <label class="">Web:</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-globe"></i>
+                                                                            </span>
+                                                                            <input type="text" id="web" name="web"
+                                                                                class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('web')}}">
+
+                                                                                @if ($errors->has('web'))
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $errors->first('web') }}</strong>
+                                                                                </span>
+                                                                                @endif
+                                                                        </div>
+                                                                    
+                                                                </div>
+
+
+                                                            </div>
+
+
+
                                                         </div>
 
 

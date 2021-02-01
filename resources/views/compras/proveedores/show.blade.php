@@ -75,15 +75,6 @@
                                 <p>{{$proveedor->direccion}}</p>
                             </div>
 
-
-
-
-
-
-                        </div>
-
-                        <div class="col-md-6">
-
                             <div class="form-group">
                                 <label><strong>Zona: </strong></label>
                                 <p>{{$proveedor->zona}}</p>
@@ -93,6 +84,17 @@
                                 <label><strong>Correo: </strong></label>
                                 <p>{{$proveedor->correo}}</p>
                             </div>
+
+
+
+
+
+
+                        </div>
+
+                        <div class="col-md-6">
+
+
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -111,6 +113,33 @@
                                     <p>-</p>
                                     @endif
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label><strong>WEB: </strong></label>
+                                @if($proveedor->web != "")
+                                <p>{{$proveedor->web}}</p>
+                                @else
+                                <p>-</p>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label><strong>FACEBOOK: </strong></label>
+                                @if($proveedor->facebook != "")
+                                <p>{{$proveedor->facebook}}</p>
+                                @else
+                                <p>-</p>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label><strong>Instagram: </strong></label>
+                                @if($proveedor->instagram != "")
+                                <p>{{$proveedor->instagram}}</p>
+                                @else
+                                <p>-</p>
+                                @endif
                             </div>
 
                         </div>

@@ -27,6 +27,8 @@ class CreateProveedoresTable extends Migration
             $table->string('telefono');
             $table->string('celular')->nullable();
             $table->string('web')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
             $table->string('zona')->nullable();
 
             $table->string('contacto')->nullable();

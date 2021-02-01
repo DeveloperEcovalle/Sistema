@@ -19,7 +19,9 @@ class Producto extends Model
         'precio_venta_minimo',
         'precio_venta_maximo',
         'igv',
-        'estado'
+        'estado',
+        'codigo_barra',
+        'moneda',
     ];
     protected $casts = [
         'igv' => 'boolean'

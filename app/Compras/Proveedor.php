@@ -30,6 +30,9 @@ class Proveedor extends Model
         'direccion_transporte',
         'direccion_almacen',
         'estado_transporte',
+
+        'facebook',
+        'instagram',
         
         'calidad',
         'celular_calidad',

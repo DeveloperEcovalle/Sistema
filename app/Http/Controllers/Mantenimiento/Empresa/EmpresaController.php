@@ -67,6 +67,9 @@ class EmpresaController extends Controller
             'telefono' => 'nullable|numeric',
             'celular' => 'nullable|numeric',
             'correo' => 'nullable',
+            'web' => 'nullable',
+            'facebook' => 'nullable',
+            'instagram' => 'nullable',
 
         ];
         
@@ -118,6 +121,9 @@ class EmpresaController extends Controller
         $empresa->num_partida = $request->get('num_partida');
         $empresa->num_asiento = $request->get('num_asiento');
         $empresa->estado_ruc = $request->get('estado');
+        $empresa->web = $request->get('web');
+        $empresa->facebook = $request->get('facebook');
+        $empresa->instagram = $request->get('instagram');
         $empresa->save();
 
         //Llenado de Bancos
@@ -202,6 +208,9 @@ class EmpresaController extends Controller
             'num_partida' => 'required',
             'telefono' => 'nullable|numeric',
             'celular' => 'nullable|numeric',
+            'web' => 'nullable',
+            'facebook' => 'nullable',
+            'instagram' => 'nullable',
 
         ];
         
@@ -255,6 +264,9 @@ class EmpresaController extends Controller
         $empresa->num_partida = $request->get('num_partida');
         $empresa->num_asiento = $request->get('num_asiento');
         $empresa->estado_ruc = $request->get('estado');
+        $empresa->web = $request->get('web');
+        $empresa->facebook = $request->get('facebook');
+        $empresa->instagram = $request->get('instagram');
 
         $empresa->update();
 

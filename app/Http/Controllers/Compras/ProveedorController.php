@@ -123,6 +123,8 @@ class ProveedorController extends Controller
             'telefono' => 'required|numeric',
             'celular' => 'nullable|numeric',
             'web' => 'nullable',
+            'facebook' => 'nullable',
+            'instagram' => 'nullable',
             'correo' => 'required|email',
 
             'contacto' => 'nullable',
@@ -189,6 +191,9 @@ class ProveedorController extends Controller
         $proveedor->correo = $request->get('correo');
 
         $proveedor->web = $request->get('web');
+        $proveedor->facebook = $request->get('facebook');
+        $proveedor->instagram = $request->get('instagram');
+
         $proveedor->zona = $request->get('zona');
         $proveedor->telefono = $request->get('telefono');
         $proveedor->celular = $request->get('celular');
@@ -344,6 +349,9 @@ class ProveedorController extends Controller
             'telefono' => 'required|numeric',
             'celular' => 'nullable|numeric',
             'web' => 'nullable',
+            'facebook' => 'nullable',
+            'instagram' => 'nullable',
+            
             'correo' => 'required|email',
 
             'contacto' => 'nullable',
@@ -404,6 +412,9 @@ class ProveedorController extends Controller
         $proveedor->correo = $request->get('correo');
 
         $proveedor->web = $request->get('web');
+        $proveedor->facebook = $request->get('facebook');
+        $proveedor->instagram = $request->get('instagram');
+
         $proveedor->zona = $request->get('zona');
         $proveedor->telefono = $request->get('telefono');
         $proveedor->celular = $request->get('celular');

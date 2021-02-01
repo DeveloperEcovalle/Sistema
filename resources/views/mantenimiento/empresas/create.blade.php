@@ -252,6 +252,80 @@
 
                                                             <hr>
 
+                                                            <div class="form-group">
+                                                                <h4><b>Redes Sociales</b></h4>
+                                                                <p>Registrar redes sociales del proveedor:</p>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                    
+                                                                    <label class="">Facebook:</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-facebook"></i>
+                                                                            </span>
+                                                                            <input type="text" id="facebook" name="facebook"
+                                                                                class="form-control {{ $errors->has('facebook') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('facebook')}}">
+
+                                                                                @if ($errors->has('facebook'))
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $errors->first('facebook') }}</strong>
+                                                                                </span>
+                                                                                @endif
+                                                                        </div>
+
+                                                                
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                            
+                                                                    <label class="">Instagram:</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-instagram"></i>
+                                                                        </span>
+                                                                        <input type="text" id="instagram" name="instagram"
+                                                                            class="form-control {{ $errors->has('instagram') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('instagram')}}">
+
+                                                                            @if ($errors->has('instagram'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('instagram') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                    </div>
+                                                                
+                                                            </div>
+
+                                                            <div class="form-group">
+
+                                                                    <label class="">Web:</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-globe"></i>
+                                                                        </span>
+                                                                        <input type="text" id="web" name="web"
+                                                                            class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('web')}}">
+
+                                                                            @if ($errors->has('web'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('web') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                    </div>
+                                                                
+                                                            </div>
+
+
+
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <hr>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 b-r">
                                                             <div class="form-group row">
                                                                 <div class="col-sm-12">
                                                                     <h4><b>Datos del Representante</b></h4>
@@ -320,8 +394,10 @@
 
                                                                 </div>
                                                             </div>
+                                                        
+                                                        </div>
 
-                                                            <hr>
+                                                        <div class="col-md-6">
 
                                                             <div class="form-group row">
                                                                 <div class="col-sm-12">
@@ -372,9 +448,13 @@
 
                                                                 </div>
                                                             </div>
-
+                                                        
                                                         </div>
+                                                    
                                                     </div>
+
+
+
                                                 </div>
                                             
                                             </div>

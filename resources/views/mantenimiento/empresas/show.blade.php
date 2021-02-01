@@ -56,6 +56,16 @@
                                         @endif
                                        
                                     </div>
+
+                                    <div class="form-group">
+                                        <label><strong>Dirección Fiscal: </strong></label>
+                                        <p >{{$empresa->direccion_fiscal}}</p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><strong>Dirección de Llegada: </strong></label>
+                                        <p >{{$empresa->direccion_llegada}}</p>
+                                    </div>
                         
                                 </div>
 
@@ -80,14 +90,36 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label><strong>Dirección Fiscal: </strong></label>
-                                        <p >{{$empresa->direccion_fiscal}}</p>
+                                        <label><strong>FACEBOOK: </strong></label> 
+                                        @if($empresa->facebook != "")
+                                            <p>{{$empresa->facebook}}</p>
+                                        @else
+                                            <p>-</p>
+                                        @endif
+                                       
                                     </div>
 
                                     <div class="form-group">
-                                        <label><strong>Dirección de Llegada: </strong></label>
-                                        <p >{{$empresa->direccion_llegada}}</p>
+                                        <label><strong>INSTAGRAM: </strong></label> 
+                                        @if($empresa->instagram != "")
+                                            <p>{{$empresa->instagram}}</p>
+                                        @else
+                                            <p>-</p>
+                                        @endif
+                                       
                                     </div>
+
+                                    <div class="form-group">
+                                        <label><strong>WEB: </strong></label> 
+                                        @if($empresa->web != "")
+                                            <p>{{$empresa->web}}</p>
+                                        @else
+                                            <p>-</p>
+                                        @endif
+                                       
+                                    </div>
+
+
 
                                 </div>
 

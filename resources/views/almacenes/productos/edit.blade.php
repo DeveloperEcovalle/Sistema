@@ -41,6 +41,35 @@
                                         @endif
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
+                                    <label class="">Código de Barra</label>
+                                        <input type="text" id="codigo_barra" class="form-control {{ $errors->has('codigo_barra') ? ' is-invalid' : '' }}" name="codigo_barra" value="{{ old('codigo_barra',$producto->codigo_barra)}}"   onkeyup="return mayus(this)">
+                                        @if ($errors->has('codigo_barra'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('codigo_barra') }}</strong>
+                                            </span>
+                                        @endif 
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Moneda</label>
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" required>
+                                            <option></option>
+                                            @foreach(tipos_moneda() as $tipo)
+                                                <option value="{{ $tipo->id }}" {{ (old('moneda', $producto->moneda ) == $tipo->id ? "selected" : "") }} >{{ $tipo->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('moneda'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('moneda') }}</strong>
+                                            </span>
+                                        @endif
+
+                                    </div>
+                                    <div class="col-lg-6 col-xs-12">
                                         <label class="required">Presentación</label>
                                         <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
                                             <option></option>
@@ -73,8 +102,8 @@
 
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Familia</label>
-                                        <select id="familia" name="familia" class="select2_form form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}">
+                                        <label class="required">Categoria</label>
+                                        <select id="familia" name="familia" value="{{old('familia', $producto->familia_id)}}"class="select2_form form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}">
                                             <option></option>
                                             @foreach($familias as $familia)
                                                 <option value="{{ $familia->id }}" {{ (old('familia', $producto->familia_id) == $familia->id ? "selected" : "") }} >{{ $familia->familia }}</option>
@@ -87,7 +116,7 @@
                                         @endif
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Sub Familia</label>
+                                        <label class="required">Sub Categoria</label>
                                         <select id="sub_familia" name="sub_familia" class="select2_form form-control {{ $errors->has('sub_familia') ? ' is-invalid' : '' }}">
                                             <option></option>
                                         </select>
@@ -452,9 +481,10 @@
 
             //OBTENER DATA DE EDITAR
             var id = "{{$producto->familia_id}}"
-            $.get('/almacenes/subfamilias/getBySubFamilia/'+ id, function (data) {
+           
+            $.get('/almacenes/subcategoria/pt/getBySubFamilia/'+ id, function (data) {
 
-            
+                
                 if(data.length > 0){
                     
                     var select = '<option value="" selected disabled >SELECCIONAR</option>'

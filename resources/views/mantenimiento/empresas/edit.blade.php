@@ -256,122 +256,194 @@
 
                                                         <hr>
 
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <h4><b>Datos del Representante</b></h4>
-                                                                <p>Modificar datos del representante:</p>
+                                                        <div class="form-group">
+                                                            <h4><b>Redes Sociales</b></h4>
+                                                            <p>Modificar redes sociales del proveedor:</p>
+                                                        </div>
 
-                                                                <div class="form-group row">
-                                                                    <div class="col-md-6">
-                                                                        <label class="required">Dni:</label>
-                                                                        <div class="input-group">
-                                                                            <input type="text" class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"  name="dni_representante" id="dni_representante" maxlength="8" value="{{old('dni_representante',$empresa->dni_representante)}}" required> 
-                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+                                                        <div class="form-group">
+                                                                
+                                                                <label class="">Facebook:</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-facebook"></i>
+                                                                        </span>
+                                                                        <input type="text" id="facebook" name="facebook"
+                                                                            class="form-control {{ $errors->has('facebook') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('facebook',$empresa->facebook)}}">
 
-                                                                            @if ($errors->has('dni_representante'))
+                                                                            @if ($errors->has('facebook'))
                                                                             <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $errors->first('dni_representante') }}</strong>
+                                                                                <strong>{{ $errors->first('facebook') }}</strong>
                                                                             </span>
                                                                             @endif
-                                                                            <div class="invalid-feedback"><b><span id="error-dni_representante"></span></b></div>
-                                                                        </div>
-
                                                                     </div>
 
-                                                                    <div class="col-md-6">
-                                                                        <label class="">Estado:</label>
-                                                                        <input type="text"
-                                                                            class="form-control text-center {{ $errors->has('estado_dni_representante') ? ' is-invalid' : '' }}"
-                                                                            name="estado_dni_representante" id="estado_dni_representante"
-                                                                            onkeyup="return mayus(this)" value="{{old('estado_dni_representante',$empresa->estado_dni_representante)}}"
-                                                                            disabled>
+                                                            
+                                                        </div>
 
-                                                                        @if ($errors->has('estado_dni_representante'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('estado_dni_representante') }}</strong>
-                                                                        </span>
-                                                                        @endif
-                                                                    </div>
+                                                        <div class="form-group">
 
-
-                                                                </div>
-
-                                                                <div class="form-group">
-
-                                                                    <label class="required">Nombre Completo:</label>
-                                                                    <input type="text"
-                                                                        class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
-                                                                        name="nombre_representante" id="nombre_representante"
-                                                                        onkeyup="return mayus(this)" value="{{old('nombre_representante',$empresa->nombre_representante)}}"
-                                                                        required>
-
-                                                                    @if ($errors->has('nombre_representante'))
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $errors->first('nombre_representante') }}</strong>
+                                                                <label class="">Instagram:</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="fa fa-instagram"></i>
                                                                     </span>
-                                                                    @endif
-                                                                    <div class="invalid-feedback"><b><span id="error-nombre_representante"></span></b></div>
+                                                                    <input type="text" id="instagram" name="instagram"
+                                                                        class="form-control {{ $errors->has('instagram') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('instagram',$empresa->instagram)}}">
 
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-                                                        <hr>
-
-                                                        <div class="row">
-
-                                                            <div class="col-sm-12">
-
-                                                                <h4><b>Datos del R.R.P.P</b></h4>
-                                                                <p>Modificar datos del R.R.P.P:</p>
-
-                                                                <div class="form-group row">
-
-                                                                    <div class="col-md-6">
-                                                                        <label class="required">N° de Asiento:</label>
-
-                                                                        <input type="text"
-                                                                            class="form-control {{ $errors->has('num_asiento') ? ' is-invalid' : '' }}"
-                                                                            name="num_asiento" id="num_asiento"  onkeyup="return mayus(this)"
-                                                                            value="{{old('num_asiento', $empresa->num_asiento)}}">
-
-                                                                        @if ($errors->has('num_asiento'))
+                                                                        @if ($errors->has('instagram'))
                                                                         <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('num_asiento') }}</strong>
+                                                                            <strong>{{ $errors->first('instagram') }}</strong>
                                                                         </span>
                                                                         @endif
-                                                                        
-                                                                        <div class="invalid-feedback"><b><span id="error-num_asiento"></span></b></div>
+                                                                </div>
+                                                            
+                                                        </div>
 
-                                                                    </div>
+                                                        <div class="form-group">
 
-                                                                    <div class="col-md-6">
+                                                                <label class="">Web:</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="fa fa-globe"></i>
+                                                                    </span>
+                                                                    <input type="text" id="web" name="web"
+                                                                        class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('web',$empresa->web)}}">
 
-                                                                        <label class="required">N° de Partida:</label>
-                                                                        <input type="text"
-                                                                            class="form-control {{ $errors->has('num_partida') ? ' is-invalid' : '' }}"
-                                                                            name="num_partida" id="num_partida"  onkeyup="return mayus(this)"
-                                                                            value="{{old('num_partida', $empresa->num_partida)}}">
-                                                                        @if ($errors->has('num_partida'))
+                                                                        @if ($errors->has('web'))
                                                                         <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('num_partida') }}</strong>
+                                                                            <strong>{{ $errors->first('web') }}</strong>
                                                                         </span>
                                                                         @endif
-                                                                        
-                                                                        <div class="invalid-feedback"><b><span id="error-num_partida"></span></b></div>
-
-
-                                                                    </div>
-
-
                                                                 </div>
-
-                                                            </div>
+                                                            
                                                         </div>
+
+
+
 
                                                     </div>
 
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                
+
+                                                    <div class="col-md-6 b-r">
+                                                        <div class="col-sm-12">
+                                                            <h4><b>Datos del Representante</b></h4>
+                                                            <p>Modificar datos del representante:</p>
+
+                                                            <div class="form-group row">
+                                                                <div class="col-md-6">
+                                                                    <label class="required">Dni:</label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control {{ $errors->has('dni_representante') ? ' is-invalid' : '' }}"  name="dni_representante" id="dni_representante" maxlength="8" value="{{old('dni_representante',$empresa->dni_representante)}}" required> 
+                                                                        <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+
+                                                                        @if ($errors->has('dni_representante'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('dni_representante') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                        <div class="invalid-feedback"><b><span id="error-dni_representante"></span></b></div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <label class="">Estado:</label>
+                                                                    <input type="text"
+                                                                        class="form-control text-center {{ $errors->has('estado_dni_representante') ? ' is-invalid' : '' }}"
+                                                                        name="estado_dni_representante" id="estado_dni_representante"
+                                                                        onkeyup="return mayus(this)" value="{{old('estado_dni_representante',$empresa->estado_dni_representante)}}"
+                                                                        disabled>
+
+                                                                    @if ($errors->has('estado_dni_representante'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('estado_dni_representante') }}</strong>
+                                                                    </span>
+                                                                    @endif
+                                                                </div>
+
+
+                                                            </div>
+
+                                                            <div class="form-group">
+
+                                                                <label class="required">Nombre Completo:</label>
+                                                                <input type="text"
+                                                                    class="form-control {{ $errors->has('nombre_representante') ? ' is-invalid' : '' }}"
+                                                                    name="nombre_representante" id="nombre_representante"
+                                                                    onkeyup="return mayus(this)" value="{{old('nombre_representante',$empresa->nombre_representante)}}"
+                                                                    required>
+
+                                                                @if ($errors->has('nombre_representante'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $errors->first('nombre_representante') }}</strong>
+                                                                </span>
+                                                                @endif
+                                                                <div class="invalid-feedback"><b><span id="error-nombre_representante"></span></b></div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-6">
+
+                                                        <div class="col-sm-12">
+
+                                                            <h4><b>Datos del R.R.P.P</b></h4>
+                                                            <p>Modificar datos del R.R.P.P:</p>
+
+                                                            <div class="form-group row">
+
+                                                                <div class="col-md-6">
+                                                                    <label class="required">N° de Asiento:</label>
+
+                                                                    <input type="text"
+                                                                        class="form-control {{ $errors->has('num_asiento') ? ' is-invalid' : '' }}"
+                                                                        name="num_asiento" id="num_asiento"  onkeyup="return mayus(this)"
+                                                                        value="{{old('num_asiento', $empresa->num_asiento)}}">
+
+                                                                    @if ($errors->has('num_asiento'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('num_asiento') }}</strong>
+                                                                    </span>
+                                                                    @endif
+                                                                    
+                                                                    <div class="invalid-feedback"><b><span id="error-num_asiento"></span></b></div>
+
+                                                                </div>
+
+                                                                <div class="col-md-6">
+
+                                                                    <label class="required">N° de Partida:</label>
+                                                                    <input type="text"
+                                                                        class="form-control {{ $errors->has('num_partida') ? ' is-invalid' : '' }}"
+                                                                        name="num_partida" id="num_partida"  onkeyup="return mayus(this)"
+                                                                        value="{{old('num_partida', $empresa->num_partida)}}">
+                                                                    @if ($errors->has('num_partida'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('num_partida') }}</strong>
+                                                                    </span>
+                                                                    @endif
+                                                                    
+                                                                    <div class="invalid-feedback"><b><span id="error-num_partida"></span></b></div>
+
+
+                                                                </div>
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                
                                                 </div>
 
                                             </div>

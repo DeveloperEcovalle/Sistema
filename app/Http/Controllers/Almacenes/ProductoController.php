@@ -57,7 +57,11 @@ class ProductoController extends Controller
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
             })],
+            'codigo_barra' => ['nullable',Rule::unique('articulos','codigo_barra')->where(function ($query) {
+                $query->whereIn('estado',["ACTIVO"]);
+            })],
             'nombre' => 'required',
+            'moneda' => 'required',
             'familia' => 'required',
             'sub_familia' => 'required',
             'presentacion' => 'required',
@@ -71,11 +75,13 @@ class ProductoController extends Controller
 
         $message = [
             'codigo.required' => 'El campo Código es obligatorio',
+            'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
+            'moneda.required' => 'El campo Moneda es obligatorio',
             'codigo.unique' => 'El campo Código debe ser único',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
             'nombre.required' => 'El campo Nombre es obligatorio',
-            'familia.required' => 'El campo Familia es obligatorio',
-            'sub_familia.required' => 'El campo Sub Familia es obligatorio',
+            'familia.required' => 'El campo Categoria es obligatorio',
+            'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
             'presentacion.required' => 'El campo Presentación completa es obligatorio',
             'stock.required' => 'El campo Stock es obligatorio',
             'stock.numeric' => 'El campo Stock debe ser numérico',
@@ -97,6 +103,8 @@ class ProductoController extends Controller
 
             $producto = new Producto();
             $producto->codigo = $request->get('codigo');
+            $producto->codigo_barra = $request->get('codigo_barra');
+            $producto->moneda = $request->get('moneda');
             $producto->nombre = $request->get('nombre');
             $producto->familia_id = $request->get('familia');
             $producto->sub_familia_id = $request->get('sub_familia');
@@ -170,6 +178,10 @@ class ProductoController extends Controller
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
             })->ignore($id)],
+            'codigo_barra' => ['nullable',Rule::unique('articulos','codigo_barra')->where(function ($query) {
+                $query->whereIn('estado',["ACTIVO"]);
+            })],
+            'nombre' => 'required',
             'nombre' => 'required',
             'familia' => 'required',
             'sub_familia' => 'required',
@@ -187,8 +199,8 @@ class ProductoController extends Controller
             'codigo.unique' => 'El campo Código debe ser único',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
             'nombre.required' => 'El campo Nombre es obligatorio',
-            'familia.required' => 'El campo Familia es obligatorio',
-            'sub_familia.required' => 'El campo Sub Familia es obligatorio',
+            'familia.required' => 'El campo Categoria es obligatorio',
+            'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
             'presentacion.required' => 'El campo Presentación completa es obligatorio',
             'stock.required' => 'El campo Stock es obligatorio',
             'stock.numeric' => 'El campo Stock debe ser numérico',
@@ -200,6 +212,8 @@ class ProductoController extends Controller
             'precio_venta_máximo.numeric' => 'El campo Precio de venta máximo debe ser numérico',
             'igv.required' => 'El campo IGV es obligatorio',
             'igv.boolean' => 'El campo IGV debe ser SI o NO',
+            'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
+            'moneda.required' => 'El campo Moneda es obligatorio',
             // 'detalles.required' => 'Debe exitir al menos un detalle del producto',
             // 'detalles.string' => 'El formato de texto de los detalles es incorrecto',
         ];
@@ -217,6 +231,8 @@ class ProductoController extends Controller
         $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
         $producto->precio_venta_maximo = $request->get('precio_venta_maximo');
         $producto->igv = $request->get('igv');
+        $producto->codigo_barra = $request->get('codigo_barra');
+        $producto->moneda = $request->get('moneda');
         $producto->update();
 
         // Actualizamos o creamos los detalles según el valor 'id'
