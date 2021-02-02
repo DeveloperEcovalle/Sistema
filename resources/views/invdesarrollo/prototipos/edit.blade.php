@@ -61,12 +61,12 @@
                     </div>
 
                    <div class="form-group">
-                        <label>Linea Caja Texto Registrar:</label> 
-                        <input type="text" class="form-control {{ $errors->has('linea_caja_texto_registrar') ? ' is-invalid' : '' }}" name="linea_caja_texto_registrar" id="linea_caja_texto_registrar_editar" value="{{old('linea_caja_texto_registrar')}}" onkeyup="return mayus(this)">
+                        <label>Registro:</label> 
+                        <input type="text" class="form-control {{ $errors->has('registro') ? ' is-invalid' : '' }}" name="registro" id="registro_editar" value="{{old('registro')}}" onkeyup="return mayus(this)">
                         
-                        @if ($errors->has('linea_caja_texto_registrar'))
+                        @if ($errors->has('registro'))
                         <span class="invalid-feedback" role="alert">
-                            <strong id="error-linea_caja_texto_registrar">{{ $errors->first('linea_caja_texto_registrar') }}</strong>
+                            <strong id="error-registro">{{ $errors->first('registro') }}</strong>
                         </span>
                         @endif
                     </div>

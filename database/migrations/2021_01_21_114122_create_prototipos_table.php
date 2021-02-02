@@ -19,7 +19,7 @@ class CreatePrototiposTable extends Migration
             $table->date('fecha_registro')->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
-            $table->string('linea_caja_texto_registrar')->nullable();
+            $table->string('registro')->nullable();
             $table->string('ruta_imagen')->nullable();
             $table->string('imagen')->nullable();
             $table->string('ruta_archivo_word')->nullable();

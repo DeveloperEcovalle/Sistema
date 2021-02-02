@@ -39,7 +39,7 @@ class PrototipoController extends Controller
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
-            'linea_caja_texto_registrar'=>'',
+            'registro'=>'',
             'imagen'=>'',
             'archivo_word'=>'',
           
@@ -50,7 +50,7 @@ class PrototipoController extends Controller
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
-            'linea_caja_texto_registrar'=>'',
+            'registro'=>'',
             'imagen'=>'',
             'archivo_word'=>'',
         ];
@@ -62,7 +62,7 @@ class PrototipoController extends Controller
         $prototipos->fecha_registro = $request->get('fecha_registro');
         $prototipos->fecha_inicio = $request->get('fecha_inicio');
         $prototipos->fecha_fin = $request->get('fecha_fin');
-        $prototipos->linea_caja_texto_registrar = $request->get('linea_caja_texto_registrar');
+        $prototipos->registro = $request->get('registro');
         //$prototipos->imagen = $request->get('imagen');
         //$prototipos->archivo_word = $request->get('archivo_word');
 
@@ -92,7 +92,7 @@ class PrototipoController extends Controller
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
-            'linea_caja_texto_registrar'=>'',
+            'registro'=>'',
             'imagen'=>'image|mimetypes:image/jpeg,image/png,image/jpg|max:40000',
             'archivo_word'=>'',
             
@@ -103,7 +103,7 @@ class PrototipoController extends Controller
             'fecha_registro'=>'',
             'fecha_inicio'=>'',
             'fecha_fin'=>'',
-            'linea_caja_texto_registrar'=>'',
+            'registro'=>'',
             'imagen'=>'',
             'archivo_word'=>'',
             
@@ -115,7 +115,7 @@ class PrototipoController extends Controller
         $prototipos->fecha_registro = $request->get('fecha_registro');
         $prototipos->fecha_inicio = $request->get('fecha_inicio');
         $prototipos->fecha_fin = $request->get('fecha_fin');
-        $prototipos->linea_caja_texto_registrar = $request->get('linea_caja_texto_registrar');
+        $prototipos->registro = $request->get('registro');
         //$prototipos->imagen = $request->get('imagen');
         //$prototipos->archivo_word = $request->get('archivo_word');
         

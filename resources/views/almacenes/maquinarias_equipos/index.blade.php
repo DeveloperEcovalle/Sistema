@@ -37,8 +37,6 @@
                     <table class="table dataTables-maquinarias_equipos table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
-                            
-							<th class="text-center">Id</th>
 							<th class="text-center">Tipo</th>
 							<th class="text-center">Nombre</th>
 							<th class="text-center">Serie</th>
@@ -122,7 +120,7 @@
                 //Tabla General
                 //{data: 'id', className:"text-center", "visible":false, name:'maquinarias_equipos.id'},
                 
-				{data: 'id', className:"text-center", name:'maquinarias_equipos.id'},
+				//{data: 'id', className:"text-center", name:'maquinarias_equipos.id'},
 				{data: 'tipo', className:"text-center", name:'maquinarias_equipos.tipo'},
 				{data: 'nombre', className:"text-center", name:'maquinarias_equipos.nombre'},
 				{data: 'serie', className:"text-center", name:'maquinarias_equipos.serie'},

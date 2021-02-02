@@ -37,13 +37,11 @@
                     <table class="table dataTables-prototipos table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
-                            
-							<th class="text-center">Id</th>
 							<th class="text-center">Producto</th>
 							<th class="text-center">Fecha Registro</th>
 							<th class="text-center">Fecha Inicio</th>
 							<th class="text-center">Fecha Fin</th>
-							<th class="text-center">Linea Caja Texto Registrar</th>
+							<th class="text-center">Registro</th>
 							<th class="text-center">Imagen</th>
 							<th class="text-center">Archivo Word</th>
                             <th class="text-center">Estado</th>
@@ -120,12 +118,12 @@
             "columns": [
                 //Tabla General
                 //{data: 'producto_id', className:"text-center", "visible":false, name:'prototipos.producto_id'},
-				{data: 'id', className:"text-center", name:'prototipos.id'},
+				//{data: 'id', className:"text-center","visible": false, name:'prototipos.id'},
 				{data: 'producto', className:"text-center", name:'prototipos.producto'},
 				{data: 'fecha_registro', className:"text-center", name:'prototipos.fecha_registro'},
 				{data: 'fecha_inicio', className:"text-center", name:'prototipos.fecha_inicio'},
 				{data: 'fecha_fin', className:"text-center", name:'prototipos.fecha_fin'},
-				{data: 'linea_caja_texto_registrar', className:"text-center", name:'prototipos.linea_caja_texto_registrar'},
+				{data: 'registro', className:"text-center", name:'prototipos.registro'},
                 {data: 'imagen', className:"text-center", name:'prototipos.imagen'},
                 // {
                 //     data: null,
@@ -179,7 +177,7 @@
 				$('#fecha_registro_editar').val(value.fecha_registro);
 				$('#fecha_inicio_editar').val(value.fecha_inicio);
 				$('#fecha_fin_editar').val(value.fecha_fin);
-				$('#linea_caja_texto_registrar_editar').val(value.linea_caja_texto_registrar);
+				$('#registro_editar').val(value.registro);
                 console.log(value.ruta_imagen);
                 //document.getElementById("ruta_imagen_editar").src=value.ruta_imagen;
                 //$('#imagen_editar').val(value.imagen);

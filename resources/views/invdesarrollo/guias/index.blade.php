@@ -32,7 +32,7 @@
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Id</th>
+                                    
                                     <th class="text-center">Producto</th>
                                     <th class="text-center">Unidades A Producir</th>
                                     <th class="text-center">Area Responsable1</th>
@@ -100,7 +100,7 @@ $(document).ready(function() {
         "ajax": "{{ route('getGuia')}}",
         "columns": [
             //GUIA INTERNA
-            { data: 'id',className: "text-center"},
+            //{ data: 'id',className: "text-center"},
             { data: 'producto',className: "text-center"},
             { data: 'unidades_a_producir',className: "text-center"},
             { data: 'area_responsable1',className: "text-center"},
