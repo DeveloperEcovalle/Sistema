@@ -12,6 +12,6 @@ class Detalle_linea_produccion extends Model
 
     public function maquinaria_equipo()
 	{
-	    return $this->belongsTo('App\Produccion\Maquinaria_equipo');
+	    return $this->belongsTo('App\Almacenes\Maquinaria_equipo');
 	}
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Produccion\Linea_produccion;
 use App\Produccion\Detalle_linea_produccion;
-use App\Produccion\Maquinaria_equipo;
+use App\Almacenes\Maquinaria_equipo;
 
 use DataTables;
 use Carbon\Carbon;
@@ -64,7 +64,6 @@ class LineaProduccionController extends Controller
         $detalles = Detalle_linea_produccion::where('linea_produccion_id',$id)->get();        
         $linea_produccion = Linea_produccion::findOrFail($id);
         $maquinarias_equipos = Maquinaria_equipo::where('estado','ACTIVO')->get();
-        //dd($linea_produccion);
         return view('produccion.lineas_produccion.edit',[
             'linea_produccion' => $linea_produccion,
             'detalles' => $detalles,

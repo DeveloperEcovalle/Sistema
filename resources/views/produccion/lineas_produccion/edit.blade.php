@@ -286,24 +286,25 @@ $(document).ready(function() {
     // DataTables
     $('.dataTables-linea_produccion-detalle').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
-        "buttons": [{
-                extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
-                titleAttr: 'Excel',
-                title: 'Detalle de linea_produccion Interna'
-            },
-            {
-                titleAttr: 'Imprimir',
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Imprimir',
-                customize: function(win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
+        "buttons": [
+        // {
+        //         extend: 'excelHtml5',
+        //         text: '<i class="fa fa-file-excel-o"></i> Excel',
+        //         titleAttr: 'Excel',
+        //         title: 'Detalle de linea_produccion Interna'
+        //     },
+        //     {
+        //         titleAttr: 'Imprimir',
+        //         extend: 'print',
+        //         text: '<i class="fa fa-print"></i> Imprimir',
+        //         customize: function(win) {
+        //             $(win.document.body).addClass('white-bg');
+        //             $(win.document.body).css('font-size', '10px');
+        //             $(win.document.body).find('table')
+        //                 .addClass('compact')
+        //                 .css('font-size', 'inherit');
+        //         }
+        //     }
         ],
         "bPaginate": true,
         "bLengthChange": true,

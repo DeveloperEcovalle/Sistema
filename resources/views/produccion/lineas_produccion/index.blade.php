@@ -32,7 +32,6 @@
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Id</th>
                                     <th class="text-center">Nombre Linea de Producción</th>
                                     <th class="text-center">Cantidad de Personal</th>
                                     <th class="text-center">Flujo Proceso (imagen)</th>
@@ -98,7 +97,7 @@ $(document).ready(function() {
         "ajax": "{{ route('getLineaProduccion')}}",
         "columns": [
             // LINEA DE PRODUCIÓN
-            { data: 'id',className: "text-center"},
+            //{ data: 'id',className: "text-center"},
             { data: 'nombre_linea',className: "text-center"},
             { data: 'cantidad_personal',className: "text-center"},
             { data: 'nombre_imagen',className: "text-center"},
