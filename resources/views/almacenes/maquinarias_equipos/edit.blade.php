@@ -16,7 +16,7 @@
 
                    <input type="hidden" name="id" id="id_editar" value="{{old('id')}}">
                    <div class="form-group">
-                        <label>Tipo(*):</label>
+                        <label class="required">Tipo :</label>
                         <select id="tipo" name="tipo" class="select2_form form-control {{ $errors->has('tipo') ? ' is-invalid' : '' }}">
                             <option></option>
                             @foreach(tipos_maq_eq() as $tipo_maq_eq)
@@ -27,7 +27,7 @@
                     </div>
                    
                    <div class="form-group">
-                        <label>Nombre(*):</label> 
+                        <label class="required">Nombre :</label> 
                         <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" id="nombre_editar" value="{{old('nombre')}}" onkeyup="return mayus(this)"> 
                         
                         @if ($errors->has('nombre'))
