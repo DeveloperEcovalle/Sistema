@@ -7,8 +7,8 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Maquinarias_equipos</h4>
-                <small class="font-bold">Crear nuevo Maquinarias_equipos.</small>
+                <h4 class="modal-title">Maquinarias & Equipos</h4>
+                <small class="font-bold">Crear nuevo reg de Maquinaria - Equipo.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('almacenes.maquinaria_equipo.store')}}" method="POST" id="crear_maquinaria_equipo" enctype="multipart/form-data">  
