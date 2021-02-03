@@ -37,7 +37,7 @@
                     <table class="table dataTables-registro_sanitario table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
-
+                            
                             <th class="text-center">Producto</th>
 							<th class="text-center">Fecha Inicio</th>
 							<th class="text-center">Fecha Fin</th>
@@ -118,7 +118,7 @@
                 //Tabla General
                 //{data: 'id', className:"text-center", "visible":false, name:'registro_sanitario.descripcion'},
                 
-				//{data: 'id', className:"text-center","visible":false, name:'registro_sanitario.id'},
+				{data: 'id', className:"text-center", "visible":false, name:'registro_sanitario.id'},
                 {data: 'nombre', className:"text-center", name:'registro_sanitario.nombre'},
 				{data: 'fecha_inicio', className:"text-center", name:'registro_sanitario.fecha_inicio'},
 				{data: 'fecha_fin', className:"text-center", name:'registro_sanitario.fecha_fin'},
