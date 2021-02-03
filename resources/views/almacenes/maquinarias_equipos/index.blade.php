@@ -11,7 +11,7 @@
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Maquinarias_equipos</strong>
+                <strong>Maquinarias & Equipos</strong>
             </li>
 
         </ol>
