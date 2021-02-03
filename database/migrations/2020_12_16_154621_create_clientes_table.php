@@ -57,7 +57,7 @@ class CreateClientesTable extends Migration
 
 
 
-            $table->string('activo')->nullable();
+            $table->string('activo')->default('SIN VERIFICAR');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

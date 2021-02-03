@@ -31,7 +31,7 @@
 
                             <div class="input-group">
                                 <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')?old('documento'):$cliente->documento}}" maxlength="8" onkeypress="return isNumber(event)" required>
-                                <span class="input-group-append"><a style="color:white"@if($cliente) onclick="consultarDocumento2()" @else onclick="consultarDocumento()"@endif class="btn btn-primary"><i class="fa fa-search"></i> <span id="entidad">Entidad</span></a></span>
+                                <span class="input-group-append"><a style="color:white"@if($cliente->estado != '') onclick="consultarDocumento2()" @else onclick="consultarDocumento()"@endif class="btn btn-primary"><i class="fa fa-search"></i> <span id="entidad">Entidad</span></a></span>
                                 @if ($errors->has('documento'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('documento') }}</strong>
@@ -488,7 +488,7 @@
         var distrito_api = '';
 
         $(document).ready(function() {
-            if (!$cliente) {
+            if ($("#activo").val() == ''){ 
                 $("#activo").val("SIN VERIFICAR");
             }
 
@@ -909,13 +909,7 @@
 
         function cambiarTipoDocumento() {
             var tipo_documento = $("#tipo_documento").val();
-           
-            // alert(tipo_documento)
-            // if ( (tipo_documento !== "" || tipo_documento.length) && tipo_documento === 'RUC')
-            //     $("#section_datos_contacto").show();
-            // else
-            //     $("#section_datos_contacto").hide();
-
+            
             setLongitudDocumento();
         }
 
@@ -1070,7 +1064,6 @@
             }
         }
 
-
         function consultar() {
             var tipo = $('#tipo_documento').val()
             switch(tipo) {
@@ -1100,6 +1093,20 @@
             }
             
         }
+
+        $("#documento").keyup(function() {
+            $('#activo').val('SIN VERIFICAR');
+        })
+
+        $("#nombre").keyup(function() {
+            $('#activo').val('SIN VERIFICAR');
+        })
+
+        $("#tipo_documento").on('change',function(e){
+            $('#activo').val('SIN VERIFICAR')
+        })
+
+
 
     </script>
 @endpush
