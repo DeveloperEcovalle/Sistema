@@ -28,12 +28,24 @@
 
                         <div class="col-lg-6 col-xs-12">
                             <label class="required">Nro. Documento</label>
-                            <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')?old('documento'):$cliente->documento}}" maxlength="8" onkeypress="return isNumber(event)" required>
-                            @if ($errors->has('documento'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('documento') }}</strong>
-                                </span>
-                            @endif
+
+                            <div class="input-group">
+                                <input type="text" id="documento" name="documento" class="form-control {{ $errors->has('documento') ? ' is-invalid' : '' }}" value="{{old('documento')?old('documento'):$cliente->documento}}" maxlength="8" onkeypress="return isNumber(event)" required>
+                                <span class="input-group-append"><a style="color:white"@if($cliente) onclick="consultarDocumento2()" @else onclick="consultarDocumento()"@endif class="btn btn-primary"><i class="fa fa-search"></i> <span id="entidad">Entidad</span></a></span>
+                                @if ($errors->has('documento'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('documento') }}</strong>
+                                    </span>
+                                @endif
+
+
+                                <!-- <div class="invalid-feedback"><b><span id="error-ruc"></span></b></div> -->
+                            </div>
+                            
+                            
+                           
+
+
                         </div>
                     
                     </div>
@@ -59,7 +71,7 @@
 
                         <div class="col-lg-6 col-xs-12">
                             <label class="">Estado</label>
-                            <input type="text" id="activo" name="activo" class="form-control text-center {{ $errors->has('activo') ? ' is-invalid' : '' }}" value="{{old('activo', $cliente->activo)}}" maxlength="8" readonly>
+                            <input type="text" id="activo" name="activo" class="form-control text-center {{ $errors->has('activo') ? ' is-invalid' : '' }}" value="{{old('activo')?old('activo'):$cliente->activo}}" readonly>
                             @if ($errors->has('activo'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('activo') }}</strong>
@@ -218,7 +230,7 @@
             <div class="row">
                 <div class="col-md-6 b-r">
                     <div class="form-group">
-                        <label class="">Direccion de Negocio (Direccion de Llegada)</label>
+                        <label class="required">Direccion de Negocio (Direccion de Llegada)</label>
                         <input type="text" id="direccion_negocio" name="direccion_negocio" class="form-control {{ $errors->has('direccion_negocio') ? ' is-invalid' : '' }}" value="{{old('direccion_negocio') ? old('direccion_negocio') : $cliente->direccion_negocio}}" maxlength="191" onkeyup="return mayus(this)" required>
                             @if ($errors->has('direccion_negocio'))
                                 <span class="invalid-feedback" role="alert">
@@ -234,7 +246,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                <input type="text" id="fecha_aniversario" name="fecha_aniversario" class="form-control {{ $errors->has('fecha_aniversario') ? ' is-invalid' : '' }}" value="{{old('fecha_aniversario') ? old('fecha_aniversario', getFechaFormato($cliente->fecha_aniversario, 'd/m/Y')) : getFechaFormato($cliente->fecha_aniversario, 'd/m/Y') }}" readonly >
+                                <input type="text" id="fecha_aniversario" name="fecha_aniversario" class="form-control {{ $errors->has('fecha_aniversario') ? ' is-invalid' : '' }}" value="{{old('fecha_aniversario','') ? old('fecha_aniversario', getFechaFormato($cliente->fecha_aniversario, 'd/m/Y')) : getFechaFormato($cliente->fecha_aniversario, 'd/m/Y') }}" readonly >
                             </div>
                         </div>
                         
@@ -416,7 +428,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="required">Correo electrónico</label>
+                        <label class="">Correo electrónico</label>
                         <input type="email" id="correo_propietario" name="correo_propietario" class="form-control {{ $errors->has('correo_propietario') ? ' is-invalid' : '' }}" value="{{old('correo_propietario') ? old('correo_propietario') : $cliente->correo_propietario}}" onkeyup="return mayus(this)">
                         @if ($errors->has('correo_propietario'))
                             <span class="invalid-feedback" role="alert">
@@ -476,8 +488,10 @@
         var distrito_api = '';
 
         $(document).ready(function() {
+            if (!$cliente) {
+                $("#activo").val("SIN VERIFICAR");
+            }
 
-            $("#activo").val("SIN VERIFICAR");
 
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -491,9 +505,11 @@
                 width: '100%',
             });
 
+            
+
             $("#tipo_documento").on("change", cambiarTipoDocumento);
 
-            $("#documento").on('change', consultarDocumento);
+            // $("#documento").on('change', consultarDocumento);
 
             $("#departamento").on("change", cargarProvincias);
 
@@ -512,7 +528,8 @@
                 forceParse: false,
                 autoclose: true,
                 language: 'es',
-                format: "dd/mm/yyyy"
+                format: "dd/mm/yyyy",
+   
             });
 
             $('#fecha_nacimiento_propietario .input-group.date').datepicker({
@@ -521,7 +538,8 @@
                 forceParse: false,
                 autoclose: true,
                 language: 'es',
-                format: "dd/mm/yyyy"
+                format: "dd/mm/yyyy",
+    
             });
 
             
@@ -529,42 +547,65 @@
         });
 
         function setLongitudDocumento() {
+            
             var tipo_documento = $('#tipo_documento').val();
             if (tipo_documento !== undefined && tipo_documento !== null && tipo_documento !== "" && tipo_documento.length > 0) {
-                clearDatosPersona(true);
+                
+                @if(!$cliente)
+                    clearDatosPersona(true);
+                @endif
+
                 switch (tipo_documento) {
                     case 'DNI':
+                        $('#entidad').text('Reniec')
                         $("#documento").attr('maxlength', 8);
-                        $("#activo").val("SIN VERIFICAR");
+                        @if(!$cliente)
+                            $("#activo").val("SIN VERIFICAR");
+                        @endif
                         break;
 
                     case 'RUC':
+                        $('#entidad').text('Sunat')
                         $("#documento").attr('maxlength', 11);
-                        $("#activo").val("SIN VERIFICAR");
+                        @if(!$cliente)
+                            $("#activo").val("SIN VERIFICAR");
+                        @endif
                         break;
 
                     case 'CARNET EXT.':
                         $("#documento").attr('maxlength', 20);
-                        $("#activo").val("ACTIVO");
+                        $("#activo").val("SIN VERIFICAR");
+                        @if(!$cliente)
+                            $("#activo").val("SIN VERIFICAR");
+                        @endif
                         break;
 
                     case 'PASAPORTE':
                         $("#documento").attr('maxlength', 20);
-                        $("#activo").val("ACTIVO");
+                        $("#activo").val("SIN VERIFICAR");
+                        @if(!$cliente)
+                            $("#activo").val("SIN VERIFICAR");
+                        @endif
                         break;
 
                     case 'P. NAC.':
                         $("#documento").attr('maxlength', 25);
-                        $("#activo").val("ACTIVO");
+                        @if(!$cliente)
+                            $("#activo").val("SIN VERIFICAR");
+                        @endif
                         break;
                 }
             }
         }
 
         function consultarDocumento() {
+          
             var tipo_documento = $('#tipo_documento').val();
             var documento = $('#documento').val();
 
+            // alert(tipo_documento)
+
+            // alert(documento)
             // Consultamos nuestra BBDD
             $.ajax({
                 dataType : 'json',
@@ -686,13 +727,7 @@
             $('#correo_electronico').val("");
             $('#telefono_movil').val("");
             $('#telefono_fijo').val("");
-            if ($("#section_datos_contacto").is(":visible")) {
-                $('#nombre_contacto').val("");
-                $('#telefono_contacto').val("");
-                $('#correo_electronico_contacto').val("");
-            }
-            $('#moneda_credito').val("");
-            $('#limite_credito').val("");
+
             departamento_api = ''; provincia_api = ''; distrito_api = '';
         }
 
@@ -756,6 +791,7 @@
                     //return validarDatosContacto();
 
                 case 2:
+                   
                     return validarDatosContacto();
                     //return validarDatosLaborales();
 
@@ -791,7 +827,16 @@
             }
 
             switch (tipo_documento) {
+                case 'RUC':
+                   
+                    if (documento.length !== 11) {
+                        toastr.error('El RUC debe de contar con 11 dígitos','Error');
+                        return false;
+                    }
+                    break;
+
                 case 'DNI':
+                   
                     if (documento.length !== 8) {
                         toastr.error('El DNI debe de contar con 8 dígitos','Error');
                         return false;
@@ -799,6 +844,8 @@
                     break;
 
                 case 'CARNET EXT.':
+                    toastr.error('El tipo de documento no tiene entidad para consultar','Error');
+                   
                     if (documento.length !== 20) {
                         toastr.error('El CARNET DE EXTRANJERIA debe de contar con 20 dígitos','Error');
                         return false;
@@ -806,6 +853,8 @@
                     break;
 
                 case 'PASAPORTE':
+                    $('#entidad').text('Entidad')
+                    toastr.error('El tipo de documento no tiene entidad para consultar','Error');
                     if (documento.length !== 20) {
                         toastr.error('El PASAPORTE debe de contar con 20 dígitos','Error');
                         return false;
@@ -813,20 +862,27 @@
                     break;
 
                 case 'P. NAC.':
+                    $('#entidad').text('Entidad')
+                    toastr.error('El tipo de documento no tiene entidad para consultar','Error');
                     if (documento.length !== 25) {
                         toastr.error('La PARTIDAD DE NACIMIENTO debe de contar con 25 dígitos','Error');
                         return false;
                     }
                     break;
+
+                default:
+                    $('#entidad').text('Entidad')
+                    toastr.error('El tipo de documento no tiene entidad para consultar','Error');
+                
             }
 
             return true;
         }
 
         function validarDatosContacto() {
-            var fecha_aniversario = $("#fecha_aniversario").find("input").val();
-
-            if ( fecha_aniversario.length === 0 ) {
+            var direccion_negocio = $("#direccion_negocio").val();
+            
+            if ( direccion_negocio =='' ) {
                 toastr.error('Complete la información de los campos obligatorios (*)','Error');
                 return false;
             }
@@ -834,41 +890,12 @@
         }
 
         function validarDatosLaborales() {
+           
             debugger;
-            var area = $("#area").val();
-            var profesion = $("#profesion").val();
-            var cargo = $("#cargo").val();
-            var sueldo = $("#sueldo").val();
-            var sueldo_bruto = $("#sueldo_bruto").val();
-            var sueldo_neto = $("#sueldo_neto").val();
-            var moneda_sueldo = $("#moneda_sueldo").val();
-            var tipo_banco = $("#tipo_banco").val();
-            var numero_cuenta = $("#numero_cuenta").val();
 
-            var fecha_inicio_actividad = $("#fecha_inicio_actividad").find("input").val();
-            var fecha_fin_actividad = $("#fecha_fin_actividad").find("input").val();
-            var fecha_inicio_planilla = $("#fecha_inicio_planilla").find("input").val();
-            var fecha_fin_planilla = $("#fecha_fin_planilla").find("input").val();
-            $('.datepicker-days').removeAttr("style").hide();
-
-            if ((area === null || area.length === 0) || (profesion === null || profesion.length === 0) || (cargo === null || cargo.length === 0)
-                || sueldo.length === 0 || sueldo_bruto.length === 0 || sueldo_neto.length === 0 || (moneda_sueldo === null || moneda_sueldo.length === 0)
-                || fecha_inicio_actividad.length === 0) {
-                toastr.error('Complete la información de los campos obligatorios (*)','Error');
+            if (!emailIsValid($('#correo_propietario').val())) {
                 return false;
             }
-            /*if (fecha_inicio_actividad.length > 0 && fecha_fin_actividad.length > 0) {
-                if (fechaInicioActividad > fechaFinActividad) {
-                    toastr.error('La fecha de inicio de actividad no debe ser mayor a la fecha fin de actividad','Error');
-                    return false;
-                }
-            }
-            if (fecha_inicio_planilla.length > 0 && fecha_fin_planilla.length > 0) {
-                if (fechaInicioPlanilla > fechaFinPlanilla) {
-                    toastr.error('La fecha de inicio de planilla no debe ser mayor a la fecha fin de planilla','Error');
-                    return false;
-                }
-            }*/
 
             return true;
         }
@@ -882,10 +909,12 @@
 
         function cambiarTipoDocumento() {
             var tipo_documento = $("#tipo_documento").val();
-            if ( (tipo_documento !== "" || tipo_documento.length) && tipo_documento === 'RUC')
-                $("#section_datos_contacto").show();
-            else
-                $("#section_datos_contacto").hide();
+           
+            // alert(tipo_documento)
+            // if ( (tipo_documento !== "" || tipo_documento.length) && tipo_documento === 'RUC')
+            //     $("#section_datos_contacto").show();
+            // else
+            //     $("#section_datos_contacto").hide();
 
             setLongitudDocumento();
         }
@@ -1039,6 +1068,37 @@
                     }
                 });
             }
+        }
+
+
+        function consultar() {
+            var tipo = $('#tipo_documento').val()
+            switch(tipo) {
+            case 'DNI':
+                // $('#entidad').text('Reniec')
+                // consultarDocumento()
+                break;
+            case 'CARNET EXT.':
+                toastr.error('El tipo de documento no tiene entidad para consultar','Error');
+                $('#entidad').text('Entidad')
+                break;
+            case 'RUC':
+                // $('#entidad').text('Sunat')
+                // consultarDocumento()
+               break;
+            case 'P. NAC.':
+                $('#entidad').text('Entidad')
+                toastr.error('El tipo de documento no tiene entidad para consultar','Error');
+                break;
+            case 'PASAPORTE':
+                $('#entidad').text('Entidad')
+                toastr.error('El tipo de documento no tiene entidad para consultar','Error');
+                break;
+            // default:
+            //     $('#entidad').text('Entidad')
+            //     toastr.error('El tipo de documento no tiene entidad para consultar','Error');
+            }
+            
         }
 
     </script>

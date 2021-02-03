@@ -41,13 +41,9 @@
                 width: '100%',
             });
 
-            @if ($cliente->tipo_documento !== 'RUC')
-                $("#section_datos_contacto").hide();
-            @endif
-
             $("#tipo_documento").on("change", cambiarTipoDocumento);
 
-            $("#documento").on('change', consultarDocumento);
+            // $("#documento").on('change', consultarDocumento);
 
             $("#departamento").on("change", cargarProvincias);
 
@@ -60,11 +56,17 @@
                 }
             });
 
+            cambiarTipoDocumento()
+       
+
         });
 
-        function consultarDocumento() {
+        function consultarDocumento2() {
+            
             var tipo_documento = $('#tipo_documento').val();
             var documento = $('#documento').val();
+
+            
 
             // Consultamos nuestra BBDD
             $.ajax({
@@ -78,14 +80,33 @@
                     'id': '{{ $cliente->id }}'
                 }
             }).done(function (result){
+
                 if (result.existe) {
                     if (!result.igual_persona) {
                         toastr.error('El '+ tipo_documento +' ingresado ya se encuentra registrado para un cliente','Error');
                         clearDatosPersona(true);
+                    }else{
+                        if (tipo_documento === "DNI") {
+                            if (documento.length === 8) {
+                                
+                                consultarAPI(tipo_documento, documento);
+                            } else {
+                                toastr.error('El DNI debe de contar con 8 dígitos','Error');
+                                clearDatosPersona(false);
+                            }
+                        } else if (tipo_documento === "RUC") {
+                            if (documento.length === 11) {
+                                consultarAPI(tipo_documento, documento);
+                            } else {
+                                toastr.error('El RUC debe de contar con 11 dígitos','Error');
+                                clearDatosPersona(false);
+                            }
+                        }
                     }
                 } else {
                     if (tipo_documento === "DNI") {
                         if (documento.length === 8) {
+                            
                             consultarAPI(tipo_documento, documento);
                         } else {
                             toastr.error('El DNI debe de contar con 8 dígitos','Error');
@@ -101,7 +122,10 @@
                     }
                 }
             });
+
+
         }
+
 
     </script>
 @endpush
