@@ -401,29 +401,57 @@
                                                                 
                                                                 </div>
 
+                                                                <div class="form-group">
+                                                            
+                                                                    <p>Modificar Responsable (Pago de flete) :</p>
+                                                                    
+                                                                </div>
 
 
-                                                                
-                                                                
-
-                                                                <div class="form-group ">
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-7">
 
 
-                                                                    <label class="required">Nombre del Responsable (Pago de Flete)</label>
+                                                                        <label class="required">Nombre</label>
 
-                                                                    <input type="text" class="form-control {{ $errors->has('responsable_pago_flete') ? ' is-invalid' : '' }}"
-                                                                    name="responsable_pago_flete" value="{{ old('responsable_pago_flete',$tienda->responsable_pago_flete)}}" id="responsable_pago_flete"
-                                                                    onkeyup="return mayus(this)" disabled>
+                                                                        <input type="text" class="form-control {{ $errors->has('responsable_pago_flete') ? ' is-invalid' : '' }}"
+                                                                        name="responsable_pago_flete" value="{{ old('responsable_pago_flete',$tienda->responsable_pago_flete)}}" id="responsable_pago_flete"
+                                                                        onkeyup="return mayus(this)" disabled>
 
-                                                                        @if ($errors->has('responsable_pago_flete'))
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $errors->first('responsable_pago_flete') }}</strong>
-                                                                        </span>
+                                                                            @if ($errors->has('responsable_pago_flete'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('responsable_pago_flete') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-responsable_pago_flete"></span></b></div>
+
+                                                                    </div>
+
+                                                                    <div class="col-md-5">
+                                                                        <label class="required">Modo</label>
+                                                                        <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago',$tienda->responsable_pago)}}"required>
+                                                                            <option></option>
+                                                                            @foreach(modo_responsables() as $responsable)
+                                                                                <option value="{{ $responsable->id }}" {{ (old('responsable_pago',$tienda->responsable_pago) == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @if ($errors->has('responsable_pago'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('responsable_pago') }}</strong>
+                                                                            </span>
                                                                         @endif
 
-                                                                    <div class="invalid-feedback"><b><span id="error-responsable_pago_flete"></span></b></div>
+                                                                        <div class="invalid-feedback"><b><span id="error-responsable_pago"></span></b></div>  
+                                                                    </div>
+
+
 
                                                                 </div>
+
+
+
+
 
                                                                 <div class="form-group">
                                                                     <p>Registrar Responsable de recoger el envio:</p>
@@ -431,7 +459,7 @@
 
                                                                 <div class="form-group row">
 
-                                                                    <div class="col-md-8">
+                                                                    <div class="col-md-7">
                                                                         <label class="required">Dni</label>
 
                                                                         <div class="input-group">
@@ -449,7 +477,7 @@
 
                                                                     </div>
 
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-5">
                                                                         <label class="">Estado</label>
 
                                                                         <input type="text" class="form-control  text-center {{ $errors->has('estado_responsable_recoger') ? ' is-invalid' : '' }}"
@@ -470,7 +498,7 @@
                                                                 </div>
 
                                                                 <div class="form-group row">
-                                                                    <div class="col-md-8">
+                                                                    <div class="col-md-7">
                                                                         
                                                                         <label class="required">Nombre</label>
 
@@ -487,7 +515,7 @@
                                                                         <div class="invalid-feedback"><b><span id="error-nombre_responsable_recoger"></span></b></div>
 
                                                                     </div>
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-5">
                                                                         <label class="">Telefono</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('telefono_responsable_recoger') ? ' is-invalid' : '' }}"
@@ -1419,6 +1447,13 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
             $('#error-nombre_responsable_recoger').text("El campo Nombre es obligatorio.")
         }
 
+        if ($('#responsable_pago').val() == '') {
+            enviar = false
+            $('#responsable_pago').addClass("is-invalid")
+            toastr.error("Ingrese el Nombre.", 'Error');
+            $('#error-responsable_pago').text("El campo Modo es obligatorio.")
+        }
+
         break;
     case "69":
         if ($('#nombre_transporte_domicilio').val() == '') {
@@ -1488,6 +1523,8 @@ function limpiarErrores() {
     $('#nombre_responsable_recoger').removeClass("is-invalid")
     $('#error-nombre_responsable_recoger').text("")
 
+    $('#nombre_responsable_pago').removeClass("is-invalid")
+    $('#error-responsable_pago').text("")
 
     $('#nombre_transporte_domicilio').removeClass("is-invalid")
     $('#error-nombre_transporte_domicilio').text("")
@@ -1519,10 +1556,12 @@ $(document).ready(function() {
             $('#nombre_transporte_oficina').prop('disabled', false)
             $('#direccion_transporte_oficina').prop('disabled', false)
             $('#responsable_pago_flete').prop('disabled', false)
+            $('#responsable_pago').prop('disabled', false)
+            // $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
 
             $('#dni_responsable_recoger').prop('disabled', false)
             $('#nombre_responsable_recoger').prop('disabled', false)
-            $('#responsable_pago_flete').prop('disabled', false)
+            
             $('#telefono_responsable_recoger').prop('disabled', false)
             $('#observacion_envio').prop('disabled', false)
         break;
@@ -1540,6 +1579,9 @@ $(document).ready(function() {
             $('#nombre_transporte_oficina').prop('disabled', true)
             $('#direccion_transporte_oficina').prop('disabled', true) 
             $('#responsable_pago_flete').prop('disabled', true)
+            $('#responsable_pago').prop('disabled', true)
+            $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
+            
 
             $('#dni_responsable_recoger').prop('disabled', true)
             $('#nombre_responsable_recoger').prop('disabled', true)
@@ -1574,7 +1616,9 @@ function limpiarOficina(){
 
         $('#dni_responsable_recoger').val('')
         $('#nombre_responsable_recoger').val('')
-        $('#responsable_pago_flete').val('')
+        $('#responsable_pago').val('')
+        $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
+
         $('#telefono_responsable_recoger').val('')
         $('#observacion_envio').val('')
 }
@@ -1675,6 +1719,7 @@ $("#condicion_reparto").on('change',function(e){
             $('#dni_responsable_recoger').prop('disabled', false)
             $('#nombre_responsable_recoger').prop('disabled', false)
             $('#responsable_pago_flete').prop('disabled', false)
+            $('#responsable_pago').prop('disabled', false)
             $('#telefono_responsable_recoger').prop('disabled', false)
             $('#observacion_envio').prop('disabled', false)
             limpiarDomicilio()
@@ -1698,6 +1743,7 @@ $("#condicion_reparto").on('change',function(e){
             $('#dni_responsable_recoger').prop('disabled', true)
             $('#nombre_responsable_recoger').prop('disabled', true)
             $('#responsable_pago_flete').prop('disabled', true)
+            $('#responsable_pago').prop('disabled', true)
             $('#telefono_responsable_recoger').prop('disabled', true)
             $('#observacion_envio').prop('disabled', true)
 

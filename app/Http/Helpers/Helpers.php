@@ -260,6 +260,14 @@ if (!function_exists('tipos_negocio')) {
     }
 }
 
+// Modo: Responsable
+if (!function_exists('modo_responsables')) {
+    function modo_responsables()
+    {
+        return General::find(24)->detalles;
+    }
+}
+
 // Monto a Pagar Orden de compra
 if (!function_exists('calcularMonto')) {
     function calcularMonto($id)

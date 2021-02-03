@@ -128,7 +128,7 @@
                 "language": {
                     "url": "{{asset('Spanish.json')}}"
                 },
-                "order": [[ 0, "desc" ]],
+                "order": [],
             });
 
             // Eventos

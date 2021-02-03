@@ -21,7 +21,7 @@ class ClienteController extends Controller
 
     public function getTable()
     {
-        $clientes = Cliente::where('estado','ACTIVO')->get();
+        $clientes = Cliente::where('estado','ACTIVO')->orderBy('clientes.id', 'desc')->get();
         $coleccion = collect([]);
         foreach($clientes as $cliente) {
             $coleccion->push([
@@ -43,6 +43,7 @@ class ClienteController extends Controller
 
     public function store(Request $request)
     {
+        // dd( $request->get('fecha_nacimiento_prop'));
         $data = $request->all();
 
         $rules = [
@@ -107,7 +108,13 @@ class ClienteController extends Controller
 
         $cliente->nombre_propietario = $request->get('nombre_propietario');
         $cliente->direccion_propietario = $request->get('direccion_propietario');
-        $cliente->fecha_nacimiento_prop  = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_prop'))->format('Y-m-d');
+
+        if ( $request->get('fecha_nacimiento_prop') != "-") {
+            $cliente->fecha_nacimiento_prop  = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_prop'))->format('Y-m-d');
+        }else{
+            $cliente->fecha_nacimiento_prop  = NULL;
+        }
+
         $cliente->celular_propietario   = $request->get('celular_propietario');
         $cliente->correo_propietario  = $request->get('correo_propietario');
 
@@ -120,6 +127,7 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $cliente = Cliente::findOrFail($id);
+        
         $put = True;
         $action = route('ventas.cliente.update', $id);
 
@@ -132,6 +140,7 @@ class ClienteController extends Controller
 
     public function update(Request $request, $id)
     {
+       
         $data = $request->all();
 
         $rules = [
@@ -199,7 +208,16 @@ class ClienteController extends Controller
 
         $cliente->nombre_propietario = $request->get('nombre_propietario');
         $cliente->direccion_propietario = $request->get('direccion_propietario');
-        $cliente->fecha_nacimiento_prop  = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_prop'))->format('Y-m-d');
+
+
+
+        if ( $request->get('fecha_nacimiento_prop') != "-") {
+            $cliente->fecha_nacimiento_prop  = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_prop'))->format('Y-m-d');
+        }else{
+            $cliente->fecha_nacimiento_prop  = NULL;
+        }
+
+        
         $cliente->celular_propietario   = $request->get('celular_propietario');
         $cliente->correo_propietario  = $request->get('correo_propietario');
         $cliente->update();
