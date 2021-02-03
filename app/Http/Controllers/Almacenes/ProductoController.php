@@ -57,7 +57,7 @@ class ProductoController extends Controller
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
             })],
-            'codigo_barra' => ['nullable',Rule::unique('articulos','codigo_barra')->where(function ($query) {
+            'codigo_barra' => ['nullable',Rule::unique('productos','codigo_barra')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
             })],
             'nombre' => 'required',
@@ -178,7 +178,7 @@ class ProductoController extends Controller
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
             })->ignore($id)],
-            'codigo_barra' => ['nullable',Rule::unique('articulos','codigo_barra')->where(function ($query) {
+            'codigo_barra' => ['nullable',Rule::unique('productos','codigo_barra')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
             })],
             'nombre' => 'required',

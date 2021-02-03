@@ -100,9 +100,18 @@
                                     </select>
                                 </div>
 
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p>Modificar Proveedor:</p>
+                                    </div>
+                                </div>
+
 
                                 <div class="form-group">
-                                    <label class="required">Proveedor: </label>
+                                    <label class="required">Ruc / Dni: </label>
+                                 
                                     <select
                                         class="select2_form form-control {{ $errors->has('proveedor_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('proveedor_id',$documento->proveedor_id)}}"
@@ -112,13 +121,37 @@
                                         @if($proveedor->ruc)
                                         <option value="{{$proveedor->id}}" @if(old('proveedor_id',$documento->proveedor_id)
                                             == $proveedor->id ) {{'selected'}} @endif
-                                            >{{$proveedor->ruc.' - '.$proveedor->descripcion}}</option>
+                                            >{{$proveedor->ruc}}</option>
                                         @else
                                         @if($proveedor->dni)
                                         <option value="{{$proveedor->id}}" @if(old('proveedor_id',$documento->proveedor_id)
                                             == $proveedor->id ) {{'selected'}} @endif
-                                            >{{$proveedor->dni.' - '.$proveedor->descripcion}}</option>
+                                            >{{$proveedor->dni}}</option>
                                         @endif
+                                        @endif
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="required">Razon Social: </label>
+                                    <select
+                                        class="select2_form form-control {{ $errors->has('proveedor_razon') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('proveedor_razon')}}"
+                                        name="proveedor_razon" id="proveedor_razon" required>
+                                        <option></option>
+                                        @foreach ($proveedores as $proveedor)
+                                            @if($proveedor->ruc)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id',$documento->proveedor_id)==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->descripcion}}
+                                            </option>
+                                            @else
+                                            @if($proveedor->dni)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id',$documento->proveedor_id)==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->descripcion}}
+                                            </option>
+                                            @endif
                                         @endif
                                         @endforeach
                                     </select>
@@ -768,26 +801,7 @@ $(document).ready(function() {
 
     // DataTables
     $('.dataTables-orden-detalle').DataTable({
-        "dom": '<"html5buttons"B>lTfgitp',
-        "buttons": [{
-                extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
-                titleAttr: 'Excel',
-                title: 'Detalle de Orden de Compra'
-            },
-            {
-                titleAttr: 'Imprimir',
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Imprimir',
-                customize: function(win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ],
+        "dom": 'lTfgitp',
         "bPaginate": true,
         "bLengthChange": true,
         "bFilter": true,
@@ -1217,6 +1231,21 @@ function conIgv(subtotal) {
     }
 
 }
+
+$(document).on("change", "#proveedor_razon", function () {
+   id = $(this).val();
+   if($("#proveedor_id").val() != id){
+      $("#proveedor_id").select2('val',id);
+   }
+});
+
+$(document).on("change", "#proveedor_id", function () {
+   id = $(this).val();
+   if($("#proveedor_razon").val() != id){
+       $("#proveedor_razon").select2('val',id);
+   }
+
+ });
 </script>
 
 
