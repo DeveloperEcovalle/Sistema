@@ -7,7 +7,7 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Maquinarias_equipos</h4>
+                <h4 class="modal-title">Maquinarias & Equipos</h4>
                 <small class="font-bold">Modificar Maquinarias_equipos</small>
             </div>
             <div class="modal-body">

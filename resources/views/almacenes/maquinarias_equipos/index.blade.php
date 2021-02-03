@@ -5,7 +5,7 @@
 @section('maquinaria_equipo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Maquinarias_equipos</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Maquinarias & Equipos</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
