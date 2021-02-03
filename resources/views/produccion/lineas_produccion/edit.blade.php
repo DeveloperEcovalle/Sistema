@@ -105,7 +105,7 @@
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <label class="required">Maquinaria Equipo</label>
+                                                <label>Maquinaria Equipo</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="maquinaria_equipo_id"
                                                     id="maquinaria_equipo_id" ">
