@@ -26,7 +26,7 @@ class RegistroSanitarioController extends Controller
             ->join('productos','productos.id','=','registro_sanitario.producto_id')
             ->select('registro_sanitario.*', 
             DB::raw('DATE_FORMAT(registro_sanitario.created_at, "%d/%m/%Y") as creado'),
-            DB::raw('DATE_FORMAT(registro_sanitario.updated_at, "%d/%m/%Y") as actualizado'),'productos.nombre'
+            DB::raw('DATE_FORMAT(registro_sanitario.updated_at, "%d/%m/%Y") as actualizado'),'productos.nombre as nombre'
             )->where('registro_sanitario.estado','ACTIVO')
         )->toJson();
     }
