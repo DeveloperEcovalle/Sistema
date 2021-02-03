@@ -90,7 +90,7 @@
                                         @endif
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="required">Area Responsable 1 :</label>
+                                        <label>Area Responsable 1 :</label>
                                         <input type="text" id="area_responsable1" name="area_responsable1" class="form-control {{ $errors->has('area_responsable1') ? ' is-invalid' : '' }}" value="{{old('area_responsable1',$guia->area_responsable1)}}" >
                                         @if ($errors->has('area_responsable1'))
                                         <span class="invalid-feedback" role="alert">
@@ -99,7 +99,7 @@
                                         @endif
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="required">Area Responsable 2 :</label>
+                                        <label>Area Responsable 2 :</label>
                                         <input type="text" id="area_responsable2" name="area_responsable2" class="form-control {{ $errors->has('area_responsable2') ? ' is-invalid' : '' }}" value="{{old('area_responsable2',$guia->area_responsable2)}}" >
                                         @if ($errors->has('area_responsable2'))
                                         <span class="invalid-feedback" role="alert">

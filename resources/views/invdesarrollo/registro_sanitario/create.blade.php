@@ -87,3 +87,15 @@
         </div>
     </div>
 </div>
+<link href="{{ asset('Inspinia/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+@push('scripts')
+<script src="{{ asset('Inspinia/js/plugins/select2/select2.full.min.js') }}"></script>
+<script>
+//Select2
+$(".select2_form").select2({
+    placeholder: "SELECCIONAR",
+    allowClear: true,
+    width: '100%',
+});
+</script>
+@endpush

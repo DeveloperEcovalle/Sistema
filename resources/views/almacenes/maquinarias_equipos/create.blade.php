@@ -7,15 +7,15 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">Maquinarias_equipos</h4>
-                <small class="font-bold">Crear nuevo Maquinarias_equipos.</small>
+                <h4 class="modal-title">Maquinarias & Equipos</h4>
+                <small class="font-bold">Crear nuevo reg de Maquinaria - Equipo.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('almacenes.maquinaria_equipo.store')}}" method="POST" id="crear_maquinaria_equipo" enctype="multipart/form-data">  
                     {{ csrf_field() }} {{method_field('POST')}}
 
                     <div class="form-group">
-                        <label>Tipo(*):</label>
+                        <label class="required">Tipo :</label>
                         <select id="tipo" name="tipo" class="select2_form form-control {{ $errors->has('tipo') ? ' is-invalid' : '' }}">
                             <option></option>
                             @foreach(tipos_maq_eq() as $tipo_maq_eq)
@@ -24,7 +24,7 @@
                         </select>
                     </div>
                    <div class="form-group">
-                        <label>Nombre(*):</label> 
+                        <label class="required">Nombre :</label> 
                         <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" id="nombre" value="{{old('nombre')}}" onkeyup="return mayus(this)"> 
 
                         @if ($errors->has('nombre'))

@@ -7,8 +7,8 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
-                <h4 class="modal-title">registro_sanitario</h4>
-                <small class="font-bold">Modificar registro_sanitario.</small>
+                <h4 class="modal-title">Registro Sanitario</h4>
+                <small class="font-bold">Modificar Registro Sanitario.</small>
             </div>
             <div class="modal-body">
                 <form role="form" action="{{route('invdesarrollo.registro_sanitario.update')}}" method="POST" enctype="multipart/form-data" id="editar_registro_sanitario">
