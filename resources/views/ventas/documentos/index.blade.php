@@ -199,14 +199,12 @@ $(document).ready(function() {
                     var url_detalle = '{{ route("ventas.documento.show", ":id")}}';
                     url_detalle = url_detalle.replace(':id', data.id);
 
-                    //Ruta Modificar
-                    var url_editar = '{{ route("ventas.documento.edit", ":id")}}';
-                    url_editar = url_editar.replace(':id', data.id);
+
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
-
-                        "<li><a class='dropdown-item' href='" + url_editar +
-                        "' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                        
+                        "<li><a class='dropdown-item' onclick='modificar("+data.cotizacion_venta+","+data.id +")' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                        
                         "<li><a class='dropdown-item' href='" + url_detalle +
                         "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
@@ -246,7 +244,7 @@ function eliminar(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             //Ruta Eliminar
-            var url_eliminar = '{{ route("compras.documento.destroy", ":id")}}';
+            var url_eliminar = '{{ route("ventas.documento.destroy", ":id")}}';
             url_eliminar = url_eliminar.replace(':id', id);
             $(location).attr('href', url_eliminar);
 
@@ -337,7 +335,7 @@ function pagar(orden,id,tipo) {
 
                 if (tipo  == null || tipo == 0  ) {
                     
-                    var url = '{{ route("compras.documentos.pago.index", ":id")}}';
+                    var url = '{{ route("ventas.documentos.pago.index", ":id")}}';
                     url = url.replace(':id', id);
                     $(location).attr('href', url);
 
@@ -381,6 +379,39 @@ function pagar(orden,id,tipo) {
 
     }
 
+}
+
+function modificar(cotizacion,id) {
+    if (cotizacion) {
+        toastr.error('El documento de venta fue generado por una cotización (Opción "Editar" en cotizaciones).', 'Error');
+    }else{
+        Swal.fire({
+            title: 'Opción Modificar',
+            text: "¿Seguro que desea modificar registro?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                //Ruta Modificar
+                var url_editar = '{{ route("ventas.documento.edit", ":id")}}';
+                url_editar = url_editar.replace(':id', id);
+                $(location).attr('href', url_editar);
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                )
+            }
+        })
+    }
 }
 
 

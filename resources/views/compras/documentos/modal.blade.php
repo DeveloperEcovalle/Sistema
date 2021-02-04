@@ -49,14 +49,14 @@
 
                         <div class="col-md-6">
                             <label class="required">Cantidad</label>
-                            <input type="text" id="cantidad_editar" class="form-control">
+                            <input type="text" id="cantidad_editar" class="form-control" @if (!empty($orden)) {{'disabled'}} @endif>
                             <div class="invalid-feedback"><b><span id="error-cantidad_editar"></span></b></div>
                         </div>
 
 
                         <div class="col-md-6">
                             <label class="required" for="amount">Precio</label>
-                            <input type="text" id="precio_editar" class="form-control">
+                            <input type="text" id="precio_editar" class="form-control" @if (!empty($orden)) {{'disabled'}} @endif>
                             <div class="invalid-feedback"><b><span id="error-precio_editar"></span></b></div>
                         </div>
 

@@ -323,7 +323,7 @@ Route::prefix('ventas/cotizaciones')->group(function() {
     Route::get('reporte/{id}','Ventas\CotizacionController@report')->name('ventas.cotizacion.reporte');
     Route::get('email/{id}','Ventas\CotizacionController@email')->name('ventas.cotizacion.email');
     Route::get('documento/{id}','Ventas\CotizacionController@document')->name('ventas.cotizacion.documento');
-    
+    Route::get('nuevodocumento/{id}','Ventas\CotizacionController@newdocument')->name('ventas.cotizacion.nuevodocumento');
 });
 
 // Documentos - cotizaciones
@@ -341,9 +341,9 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente');
 
     //Pagos
-    // Route::get('pagos/index/{id}', 'Compras\Documentos\PagoController@index')->name('compras.documentos.pago.index');
+    Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
     // Route::get('getPay/{id}','Compras\Documentos\PagoController@getPayDocument')->name('getPay.documentos');
-    // Route::get('pagos/create/{id}', 'Compras\Documentos\PagoController@create')->name('compras.documentos.pago.create');
+    Route::get('pagos/create/{id}', 'Ventas\Documentos\PagoController@create')->name('ventas.documentos.pago.create');
     // Route::post('pagos/store/', 'Compras\Documentos\PagoController@store')->name('compras.documentos.pago.store');
     // Route::get('pagos/destroy/{id}', 'Compras\Documentos\PagoController@destroy')->name('compras.documentos.pago.destroy');
     // Route::get('pagos/show/{id}', 'Compras\Documentos\PagoController@show')->name('compras.documentos.pago.show');

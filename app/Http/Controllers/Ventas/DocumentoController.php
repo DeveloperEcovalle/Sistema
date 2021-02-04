@@ -170,7 +170,7 @@ class DocumentoController extends Controller
         $detalles = '';
         if($request->get('cotizacion')){
             $cotizacion =  Cotizacion::findOrFail( $request->get('cotizacion') );
-            $detalles = CotizacionDetalles::where('cotizacion_id', $request->get('cotizacion'))->get(); 
+            $detalles = CotizacionDetalle::where('cotizacion_id', $request->get('cotizacion'))->get(); 
         }
 
         $empresas = Empresa::where('estado', 'ACTIVO')->get();
@@ -184,21 +184,19 @@ class DocumentoController extends Controller
                 'empresas' => $empresas,
                 'clientes' => $clientes,
                 'productos' => $productos, 
-                // 'modos' => $modos,
-                // 'monedas' => $monedas,
+
                 'fecha_hoy' => $fecha_hoy,
             ]);
 
         }else{
-
+            
+            
             return view('ventas.documentos.create',[
-                'orden' => $orden,
+                'cotizacion' => $cotizacion,
                 'empresas' => $empresas,
-                'proveedores' => $proveedores,
-                'articulos' => $articulos, 
-                'modos' => $modos,
-                'monedas' => $monedas,
-                'fecha_hoy' => $fecha_hoy,
+                'clientes' => $clientes,
+                'productos' => $productos,  
+                // 'fecha_hoy' => $fecha_hoy,
                 'detalles' => $detalles
             ]);
         }
@@ -210,7 +208,7 @@ class DocumentoController extends Controller
 
     public function store(Request $request){
     
-        
+     
         $data = $request->all();
         $rules = [
             'fecha_documento'=> 'required',
@@ -248,6 +246,7 @@ class DocumentoController extends Controller
         $documento->total_igv = $request->get('monto_total_igv');
         $documento->total = $request->get('monto_total');
         $documento->igv = $request->get('igv');
+        $documento->moneda = 4;
 
         if ($request->get('igv_check') == "on") {
             $documento->igv_check = "1";
@@ -334,6 +333,7 @@ class DocumentoController extends Controller
         $documento->sub_total = $request->get('monto_sub_total');
         $documento->total_igv = $request->get('monto_total_igv');
         $documento->total = $request->get('monto_total');
+        $documento->moneda = 4;
 
         if ($request->get('igv_check') == "on") {
             $documento->igv_check = "1";

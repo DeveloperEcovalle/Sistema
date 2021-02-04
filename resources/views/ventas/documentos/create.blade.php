@@ -53,7 +53,7 @@
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_documento">
                                         <label class="required">Fecha de Documento</label>
-                                        <div class="input-group date">
+                                        <div class="input-group  @if (empty($cotizacion)) {{'date'}} @endif">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
@@ -61,7 +61,7 @@
                                             <input type="text" id="fecha_documento_campo" name="fecha_documento"
                                                 class="form-control {{ $errors->has('fecha_documento') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_documento',getFechaFormato($cotizacion->fecha_documento, 'd/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" required readonly disabled >
                                             @else
                                             <input type="text" id="fecha_documento_campo" name="fecha_documento"
                                                 class="form-control {{ $errors->has('fecha_documento') ? ' is-invalid' : '' }}"
@@ -79,7 +79,7 @@
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_entrega">
                                         <label class="required">Fecha de Atención</label>
-                                        <div class="input-group date">
+                                        <div class="input-group  @if (empty($cotizacion)) {{'date'}} @endif"">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
@@ -88,7 +88,7 @@
                                             <input type="text" id="fecha_atencion_campo" name="fecha_atencion_campo"
                                                 class="form-control {{ $errors->has('fecha_atencion') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_atencion',getFechaFormato( $cotizacion->fecha_atencion ,'d/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" readonly disabled>
                                             @else
 
                                             <input type="text" id="fecha_atencion_campo" name="fecha_atencion_campo"
@@ -133,18 +133,38 @@
                                     </div>
 
                                     <div class="col-md-6 col-xs-12">
+                                        <label >Moneda:</label>
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" disabled >
+                                            <option selected>SOLES</option>
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+
+                                    <div class="col-md-6 col-xs-12">
                                         <label id="igv_requerido">IGV (%):</label>
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-addon">
-                                                    <input type="checkbox" id="igv_check" name="igv_check">
-                                                </span>
-                                            </div>
+                                            @if (!empty($cotizacion))
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="igv_check" name="igv_check" disabled>
+                                                    </span>
+                                                </div>
+                                            @else
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="igv_check" name="igv_check">
+                                                    </span>
+                                                </div>
+                                            @endif
                                             @if (!empty($cotizacion))
                                             <input type="text" value="{{old('igv',$cotizacion->igv)}}"
                                                 class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
-                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)"
-                                                required>
+                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)" readonly>
                                             @else
                                             <input type="text" value="{{old('igv')}}"
                                                 class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
@@ -176,11 +196,11 @@
                                         @if (!empty($cotizacion))
                                             <select
                                             class="select2_form form-control {{ $errors->has('empresa_id') ? ' is-invalid' : '' }}"
-                                            style="text-transform: uppercase; width:100%" value="{{old('empresa_id',$orden->empresa_id)}}"
-                                            name="empresa_id" id="empresa_id" required>
+                                            style="text-transform: uppercase; width:100%" value="{{old('empresa_id',$cotizacion->empresa_id)}}"
+                                            name="empresa_id" id="empresa_id" disabled>
                                             <option></option>
                                             @foreach ($empresas as $empresa)
-                                            <option value="{{$empresa->id}}" @if(old('empresa_id',$orden->empresa_id)==$empresa->id )
+                                            <option value="{{$empresa->id}}" @if(old('empresa_id',$cotizacion->empresa_id)==$empresa->id )
                                                 {{'selected'}} @endif >{{$empresa->razon_social}}</option>
                                             @endforeach
                                         </select>
@@ -209,11 +229,11 @@
                                         <select
                                         class="select2_form form-control {{ $errors->has('cliente_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('cliente_id', $cotizacion->cliente_id)}}"
-                                        name="cliente_id" id="cliente_id" required>
+                                        name="cliente_id" id="cliente_id" onchange="obtenerTipo(this)" disabled >
                                         <option></option>
                                             @foreach ($clientes as $cliente)
                                                
-                                                    <option value="{{$cliente->id}}" @if(old('cliente_id')==$cliente->id )
+                                                    <option value="{{$cliente->id}}" @if(old('cliente_id',$cotizacion->cliente_id)==$cliente->id )
                                                         {{'selected'}} @endif >{{$cliente->tipo_documento.': '.$cliente->documento.' - '.$cliente->nombre}}
                                                     </option>
 
@@ -247,7 +267,7 @@
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
                                         name="observacion" id="observacion"  onkeyup="return mayus(this)"
-                                        value="{{old('observacion',$cotizacion->observacion)}}">{{old('observacion',$cotizacion->observacion)}}</textarea>
+                                        value="{{old('observacion',$cotizacion->observacion)}}" disabled >{{old('observacion',$cotizacion->observacion)}}</textarea>
                                     @else
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
@@ -288,11 +308,11 @@
                                     </div>
                                     <div class="panel-body">
 
-
+                                    @if (empty($cotizacion))
                                         <div class="row">
 
-                                            <div class="col-md-6">
-                                                <label class="required">Producto:</label>
+                                            <div class="col-lg-6 col-xs-12">
+                                                <label class="col-form-label required">Producto:</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="producto"
                                                     id="producto" onchange="obtenerMonto(this)" disabled>
@@ -337,9 +357,9 @@
 
 
                                         </div>
-
-
                                         <hr>
+                                    @endif
+
 
                                         <div class="table-responsive">
                                             <table
@@ -401,17 +421,12 @@
                             </div>
 
                             <div class="col-md-6 text-right">
-                                @if (!empty($cotizacion))
-                                <a href="{{route('compras.orden.index')}}" id="btn_cancelar"
+
+                                <a href="{{route('ventas.documento.index')}}" id="btn_cancelar"
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
-                                @else
-                                <a href="{{route('compras.documento.index')}}" id="btn_cancelar"
-                                    class="btn btn-w-m btn-default">
-                                    <i class="fa fa-arrow-left"></i> Regresar
-                                </a>
-                                @endif
+                                
                                 <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
                                     <i class="fa fa-save"></i> Grabar
                                 </button>
@@ -616,10 +631,23 @@
                         searchable: false,
                         "targets": [1],
                         data: null,
-                        defaultContent: "<div class='btn-group'>" +
-                        "<a class='btn btn-sm btn-warning btn-edit' style='color:white'>"+ "<i class='fa fa-pencil'></i>"+"</a>" +
-                        "<a class='btn btn-sm btn-danger btn-delete' style='color:white'>"+"<i class='fa fa-trash'></i>"+"</a>"+ 
-                        "</div>"
+
+                        render: function(data, type, row) {
+                            @if (!empty($cotizacion))
+                                return "-";
+                            @else
+                                return  "<div class='btn-group'>" +
+                                        "<a class='btn btn-sm btn-warning btn-edit' style='color:white'>"+ "<i class='fa fa-pencil'></i>"+"</a>" +
+                                        "<a class='btn btn-sm btn-danger btn-delete' style='color:white'>"+"<i class='fa fa-trash'></i>"+"</a>"+ 
+                                        "</div>";
+                            @endif
+
+
+                            
+                        }
+
+                 
+
                     },
                     {
                         "targets": [2],
@@ -652,6 +680,36 @@
                 },
                 "order": [[ 0, "desc" ]],
             });
+
+            @if (!empty($cotizacion))
+
+            @if ($cotizacion->igv_check == '1') 
+
+                $('#igv').prop('disabled', false)
+                $("#igv_check").prop('checked',true)
+
+                $('#igv_requerido').addClass("required")
+                $('#igv').prop('required', true)
+                var igv = ($('#igv').val()) + ' %'
+                $('#igv_int').text(igv)
+                sumaTotal()
+            @else
+                if ($("#igv_check").prop('checked')) {
+                    $('#igv').attr('disabled', false)
+                    $('#igv_requerido').addClass("required")
+                } else {
+                    $('#igv').attr('disabled', true)
+                    $('#igv_requerido').removeClass("required")
+                }
+            @endif
+
+            @if ($detalles) 
+                obtenerTabla()
+                sumaTotal()
+            @endif
+
+            @endif
+
 
             //Controlar Error
             $.fn.DataTable.ext.errMode = 'throw';
@@ -959,6 +1017,15 @@
                         $('#monto_sub_total').val($('#subtotal').text())
                         $('#monto_total_igv').val($('#igv_monto').text())
                         $('#monto_total').val($('#total').text())
+
+                        document.getElementById("igv_check").disabled = false;
+                        document.getElementById("moneda").disabled = false;
+                        document.getElementById("observacion").disabled = false;
+                        document.getElementById("fecha_documento_campo").disabled = false;
+                        document.getElementById("fecha_atencion_campo").disabled = false;
+                        document.getElementById("empresa_id").disabled = false;
+                        document.getElementById("cliente_id").disabled = false;
+
                         this.submit();
                         
                     } else if (
@@ -975,6 +1042,24 @@
             }
 
         })
+
+
+        function obtenerTabla() {
+        var t = $('.dataTables-detalle-documento').DataTable();
+            @if (!empty($cotizacion))
+                @foreach($detalles as $detalle)
+                    t.row.add([
+                        "{{$detalle->producto->id}}",
+                        '',
+                        "{{$detalle->cantidad}}",
+                        "{{$detalle->producto->presentacion}}",
+                        "{{$detalle->producto->nombre}}",
+                        "{{$detalle->precio}}",
+                        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2)
+                    ]).draw(false);
+                @endforeach
+            @endif
+        }
 
 
 

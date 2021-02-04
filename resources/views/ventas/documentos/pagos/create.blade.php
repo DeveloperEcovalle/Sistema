@@ -1,21 +1,21 @@
 @extends('layout') @section('content')
 
-@section('compras-active', 'active')
-@section('documento-active', 'active')
+@section('ventas-active', 'active')
+@section('documentos-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVO PAGO DEL DOCUMENTO DE COMPRA #{{$documento->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVO PAGO DEL DOCUMENTO DE VENTA #{{$documento->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documento.index')}}">Documentos de Compra</a>
+                <a href="{{route('ventas.documento.index')}}">Documentos de Venta</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documentos.pago.index',$documento->id)}}">Pagos</a>
+                <a href="{{route('ventas.documentos.pago.index',$documento->id)}}">Pagos</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Registrar</strong>
@@ -38,8 +38,8 @@
                         <form action="{{route('compras.documentos.pago.store')}}" id="enviar_pago" method="POST" enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class="form-group">
-                                <h4><b>Documento de Compra #{{$documento->id}}</b></h4>
-                                <p>Datos del Documento de compra:</p>
+                                <h4><b>Documento de Venta #{{$documento->id}}</b></h4>
+                                <p>Datos del Documento de Venta:</p>
                                 <input type="hidden" name="id_documento" value="{{$documento->id}}">
                             </div> 
                             <div class="row">
@@ -61,11 +61,11 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label><strong>Moneda: </strong></label>
-                                            <p>{{ $documento->moneda }}</p>
+                                            <p>SOLES</p>
                                         </div>
                                         <div class="col-md-6">
                                             <label><strong>Monto: </strong></label>
-                                            <p>{{simbolo_monedas($documento->moneda).' '.$monto}}</p>
+                                            <p>{{'S/. '.$monto}}</p>
                                         </div>
 
 
@@ -82,8 +82,8 @@
                                         <p>{{$documento->empresa->razon_social}}</p>
                                     </div>
                                     <div class="form-group">
-                                        <label><strong>Proveedor: </strong></label>
-                                        <p>{{$documento->proveedor->descripcion}}</p>
+                                        <label><strong>Cliente: </strong></label>
+                                        <p>{{$documento->cliente->nombre}}</p>
                                     </div>
                                 </div>
                             
@@ -108,13 +108,7 @@
                                                     <div class="form-group row">
                                                         <div class="col-md-12 text-left">
                                                             <h4 class="">Monto del Documento</h4>
-                                                            <p class="text-navy"><b>
-                                                                @foreach ($monedas as $moneda)
-                                                                    @if ($moneda->descripcion == $documento->moneda)
-                                                                        {{$moneda->simbolo}}
-                                                                    @endif
-                                                                @endforeach
-                                                            {{$monto}}</b></p>
+                                                            <p class="text-navy"><b>{{'S/. '.$monto}}</b></p>
                                                         </div>
                                                         
 
@@ -291,7 +285,7 @@
 
 </div>
 
-@include('compras.documentos.pagos.modal')
+@include('ventas.documentos.pagos.modal')
 @stop
 @push('styles')
 <link href="{{ asset('Inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}"
@@ -599,12 +593,7 @@ function sumaTotal() {
 
 //Obtener el simbolo para el pago
 function simboloMoneda(moneda) {
-    var simbolo = ''
-    @foreach($monedas as $moneda)
-        if("{{$moneda->descripcion}}" == moneda){
-            simbolo = "{{$moneda->simbolo}}"
-        }
-    @endforeach
+    var simbolo = 'S/. '
     return simbolo
 }
 

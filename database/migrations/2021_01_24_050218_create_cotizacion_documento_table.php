@@ -32,6 +32,7 @@ class CreateCotizacionDocumentoTable extends Migration
             
             $table->string('igv_check',2)->nullable();
             $table->char('igv',3)->nullable();
+            $table->string('moneda');
 
             $table->BigInteger('cotizacion_venta')->nullable();
             $table->unsignedInteger('user_id');

@@ -262,7 +262,7 @@ function modificar(orden,id) {
     }else{
         Swal.fire({
             title: 'Opción Modificar',
-            text: "¿Seguro que desea guardar cambios?",
+            text: "¿Seguro que desea modificar registro?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: "#1ab394",
@@ -291,7 +291,6 @@ function modificar(orden,id) {
 }
 
 function pagar(orden,id,tipo) {
-    // var tipo = this.tipo;
 
     if (orden) {
         toastr.error('El tipo de pago de este documento de compra fue realizada (transferencia).', 'Error');

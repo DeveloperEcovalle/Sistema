@@ -1,17 +1,17 @@
 @extends('layout') @section('content')
 
-@section('compras-active', 'active')
-@section('documento-active', 'active')
+@section('ventas-active', 'active')
+@section('documentos-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Pagos del documento de pago #{{$documento->id}} para el proveedor "{{$documento->proveedor->descripcion}} por medio de caja chica"</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos del documento de venta #{{$documento->id}} por el cliente "{{$documento->cliente->nombre}}"</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documento.index')}}">Documentos de Compra</a>
+                <a href="{{route('ventas.documento.index')}}">Documentos de Venta</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Pagos</strong>
@@ -21,36 +21,14 @@
     
     @if($documento->estado != "PAGADA")
     <div class="col-lg-2 col-md-2" id="boton_agregar_pago">
-        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('compras.documentos.pago.create',$documento->id)}}">
+        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('ventas.documentos.pago.create',$documento->id)}}">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
     @endif
 
 
-    <div class="col-md-12 m-t">
-            <div class="alert alert-success">
-                <b>INFORMACION DE PAGOS </b>
-                <ul class="margin-bottom-none padding-left-lg">
-                        <div class="form-group row">
 
-                            <div class="col-md-6">                           
-                                <li>Deuda total del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
-                                @if($documento->estado == "PAGADA")
-                                <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
-                                @endif
-                            </div>
-
-                            
-                        </div>
-
-
-                </ul>
-            </div>
-        </div>
-  
 
 
 
@@ -70,7 +48,7 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                        <table class="table dataTables-orden table-striped table-bordered table-hover"
+                        <table class="table dataTables-pago table-striped table-bordered table-hover"
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
@@ -111,7 +89,7 @@ $(document).ready(function() {
     var url = '{{ route("getPay.documentos", ":id")}}';
     url = url.replace(':id',id);
     // DataTables
-    $('.dataTables-orden').DataTable({
+    $('.dataTables-pago').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
         "buttons": [{
                 extend: 'excelHtml5',

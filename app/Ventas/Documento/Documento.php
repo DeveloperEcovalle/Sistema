@@ -21,7 +21,8 @@ class Documento extends Model
         'estado',
         'igv',
         'igv_check',
-        'tipo_venta'
+        'tipo_venta',
+        'cotizacion_venta'
     ];
 
     public function empresa()
