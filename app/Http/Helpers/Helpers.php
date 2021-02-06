@@ -12,7 +12,6 @@ use App\Compras\Detalle;
 use App\Compras\Orden;
 use App\Compras\Documento\Documento;
 
-
 // TABLAS-DETALLES
 
 if (!function_exists('tipos_moneda')) {
@@ -368,12 +367,73 @@ if (!function_exists('calcularMontosAcuentaDocumentos')) {
 
 }
 
+
+// Calcular Montos Acuentas
+if (!function_exists('calcularMontosAcuentaVentas')) {
+    function calcularMontosAcuentaVentas($id)
+    {
+        
+        $montos = DB::table('cotizacion_documento_pago_detalle_cajas')
+                ->join('cotizacion_documento_pagos','cotizacion_documento_pagos.id','=','cotizacion_documento_pago_detalle_cajas.pago_id')
+                ->join('cotizacion_documento','cotizacion_documento.id','=','cotizacion_documento_pagos.documento_id')
+                ->join('cotizacion_documento_pago_cajas','cotizacion_documento_pago_cajas.id','=','cotizacion_documento_pago_detalle_cajas.caja_id')
+                ->join('pos_caja_chica','pos_caja_chica.id','=','cotizacion_documento_pago_cajas.caja_id')
+
+                ->select('cotizacion_documento.id as id_documento', 'cotizacion_documento_pago_detalle_cajas.id','cotizacion_documento_pago_cajas.monto as caja_monto','cotizacion_documento_pagos.tipo_pago', 'cotizacion_documento_pago_detalle_cajas.created_at' )        
+                ->where('cotizacion_documento.id','=',$id)
+                //ANULAR
+                ->where('cotizacion_documento_pago_cajas.estado','!=','ANULADO')
+                ->sum('cotizacion_documento_pago_cajas.monto');
+
+        return $montos;
+    }
+
+}
+
+
+// Monto a Pagar Documento de venta
+if (!function_exists('calcularMontosAcuentaDocumentosVentas')) {
+    function calcularMontosAcuentaDocumentosVentas($id)
+    {
+        
+        // $suma_detalle_pago = DB::table('documento_pago_detalle')
+        // ->join('compra_documento_pagos','compra_documento_pagos.id','=','documento_pago_detalle.pago_id')
+        // ->join('compra_documento_pago_detalle','compra_documento_pago_detalle.id','=','documento_pago_detalle.detalle_id')
+        // ->join('compra_documentos','compra_documentos.id','=','compra_documento_pagos.documento_id')
+        // ->select('compra_documento_pagos.*','compra_documentos.*')        
+        // ->where('compra_documentos.id','=',$id)
+        // ->where('compra_documento_pagos.estado','ACTIVO')
+        // ->sum('compra_documento_pago_detalle.monto');
+
+
+        $suma_detalle_pago = DB::table('cotizacion_documento_pago_detalles')
+        ->join('cotizacion_documento_pagos','cotizacion_documento_pagos.id','=','cotizacion_documento_pago_detalles.pago_id')
+
+        // ->join('compra_documento_pago_detalle','compra_documento_pago_detalle.id','=','documento_pago_detalle.detalle_id')
+        
+        ->join('cotizacion_documento','cotizacion_documento.id','=','cotizacion_documento_pagos.documento_id')
+
+        ->select('compra_documento_pagos.*','compra_documentos.*')        
+        ->where('cotizacion_documento.id','=',$id)
+        ->where('cotizacion_documento_pago_detalles.estado','ACTIVO')
+        ->sum('cotizacion_documento_pago_detalles.monto');
+
+        return $suma_detalle_pago;
+    }
+
+}
+
+
+
+
+
+
+
 // Calcular monto restante caja chica
 if (!function_exists('calcularMontoRestanteCaja')) {
     function calcularMontoRestanteCaja($id)
     {
-
-
+        
         $restante= DB::table('compra_documento_pago_detalle')
         ->join('documento_pago_detalle','documento_pago_detalle.detalle_id','=','compra_documento_pago_detalle.id')
         ->join('compra_documento_pagos','compra_documento_pagos.id','=','documento_pago_detalle.pago_id')
@@ -381,6 +441,41 @@ if (!function_exists('calcularMontoRestanteCaja')) {
         ->where('compra_documento_pagos.estado','!=','ANULADO')
         ->where('compra_documento_pago_detalle.caja_id',$id)
         ->sum('compra_documento_pago_detalle.monto');
+
+
+        return $restante;
+    }
+
+}
+
+// Calcular monto restante caja chica
+if (!function_exists('calcularSumaMontosPagosVentas')) {
+    function calcularSumaMontosPagosVentas($id)
+    {
+        
+        $restante= DB::table('cotizacion_documento_pago_cajas')
+        ->select('cotizacion_documento_pago_cajas.*')        
+        ->where('cotizacion_documento_pago_cajas.estado','!=','ANULADO')
+        ->where('cotizacion_documento_pago_cajas.caja_id',$id)
+        ->sum('cotizacion_documento_pago_cajas.monto');
+
+
+        return $restante;
+    }
+
+}
+
+
+// Calcular monto restante caja chica
+if (!function_exists('calcularMontosAcuentaVentasTransferencia')) {
+    function calcularMontosAcuentaVentasTransferencia($id)
+    {
+        
+        $restante= DB::table('cotizacion_documento_pago_transferencias')
+        ->select('cotizacion_documento_pago_transferencias.*')        
+        ->where('cotizacion_documento_pago_transferencias.estado','!=','ANULADO')
+        ->where('cotizacion_documento_pago_transferencias.documento_id',$id)
+        ->sum('cotizacion_documento_pago_transferencias.monto');
 
 
         return $restante;

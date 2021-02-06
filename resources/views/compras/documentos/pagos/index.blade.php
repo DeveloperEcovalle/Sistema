@@ -29,28 +29,28 @@
 
 
     <div class="col-md-12 m-t">
-            <div class="alert alert-success">
-                <b>INFORMACION DE PAGOS </b>
-                <ul class="margin-bottom-none padding-left-lg">
-                        <div class="form-group row">
+        <div class="alert alert-success">
+            <b>INFORMACION DE PAGOS </b>
+            <ul class="margin-bottom-none padding-left-lg">
+                    <div class="form-group row">
 
-                            <div class="col-md-6">                           
-                                <li>Deuda total del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
-                                @if($documento->estado == "PAGADA")
-                                <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
-                                @endif
-                            </div>
-
-                            
+                        <div class="col-md-6">                           
+                            <li>Deuda total del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
+                            <li>Monto a cuenta del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
+                            <li>Saldo del Documento de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                            @if($documento->estado == "PAGADA")
+                            <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
+                            @endif
                         </div>
 
+                        
+                    </div>
 
-                </ul>
-            </div>
+
+            </ul>
         </div>
-  
+    </div> 
+
 
 
 

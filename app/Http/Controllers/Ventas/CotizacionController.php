@@ -119,19 +119,6 @@ class CotizacionController extends Controller
             ]);
         }
         
-
-            // foreach (json_decode($request->get('detalles')) as $detalle) {
-            //     $cotizacion_detalle = new CotizacionDetalle();
-            //     $cotizacion_detalle->cotizacion_id = $cotizacion->id;
-            //     $cotizacion_detalle->producto_id = $detalle->producto_id;
-            //     $cotizacion_detalle->cantidad = $detalle->cantidad;
-            //     $cotizacion_detalle->precio = $detalle->precio;
-            //     $cotizacion_detalle->importe = $detalle->cantidad * $detalle->precio;
-            //     $cotizacion_detalle->save();
-            // }
-
-  
-
         Session::flash('success','Cotización creada.');
         return redirect()->route('ventas.cotizacion.index')->with('guardar', 'success');
     }
@@ -143,33 +130,6 @@ class CotizacionController extends Controller
         $clientes = Cliente::where('estado', 'ACTIVO')->get();
         $fecha_hoy = Carbon::now()->toDateString();
         $productos = Producto::where('estado', 'ACTIVO')->get();
-
-        // $detalles = [];
-        // foreach ($cotizacion->detalles->where('estado', 'ACTIVO') as $detalle) {
-        //     $data = [
-        //         'id' => (string)$detalle->id,
-        //         'producto_id' => (string)$detalle->producto_id,
-        //         'producto' => $detalle->producto->codigo.'-'.$detalle->producto->nombre,
-        //         'presentacion' => $detalle->producto->presentacion,
-        //         'cantidad' => (int)$detalle->cantidad,
-        //         'precio' => (float)$detalle->precio,
-        //         'importe' => $detalle->importe
-        //     ];
-        //     array_push($detalles, $data);
-        // }
-
-        // $detalles =  collect([]);
-        // foreach ($cotizacion->detalles->where('estado', 'ACTIVO') as $detalle) {
-        //     $detalles->push([
-        //         'id' => (string)$detalle->id,
-        //         'producto_id' => (string)$detalle->producto_id,
-        //         'producto' => $detalle->producto->codigo.'-'.$detalle->producto->nombre,
-        //         'cantidad' => (int)$detalle->cantidad,
-        //         'precio' => (float)$detalle->precio,
-        //         'importe' => $detalle->importe
-        //     ]);
-        //     // array_push($detalles, $data);
-        // }
 
         $detalles = CotizacionDetalle::where('cotizacion_id',$id)->where('estado', 'ACTIVO')->get(); 
         
@@ -262,9 +222,23 @@ class CotizacionController extends Controller
                 
             }
 
+        //ELIMINAR DOCUMENTO DE ORDEN DE COMPRA SI EXISTE
+        $documento = Documento::where('cotizacion_venta',$id)->where('estado','!=','ANULADO')->first();
+        if ($documento) {
+            $documento->estado = 'ANULADO';
+            $documento->update();
+
+            Session::flash('success','Cotización modificada y documento eliminado.');
+            return redirect()->route('ventas.cotizacion.index')->with('modificar', 'success');
+
+        }else{
+            Session::flash('success','Cotización modificada.');
+            return redirect()->route('ventas.cotizacion.index')->with('modificar', 'success');
+
+        }
+
         
-        Session::flash('success','Cotización modificada.');
-        return redirect()->route('ventas.cotizacion.index')->with('modificar', 'success');
+
     }
 
     public function show($id)
@@ -309,51 +283,6 @@ class CotizacionController extends Controller
         $igv = '';
         $tipo_moneda = '';
         $detalles = $cotizacion->detalles->where('estado', 'ACTIVO');
-        // $detalles = CotizacionDetalle::where('cotizacion_id',$id)->get();
-
-        // $detalles =  collect([]);
-        // foreach ($cotizacion->detalles->where('estado', 'ACTIVO') as $detalle) {
-        //     $detalles->push([
-        //         'id' => (string)$detalle->id,
-        //         'producto_id' => (string)$detalle->producto_id,
-        //         'producto' => $detalle->producto->codigo.'-'.$detalle->producto->nombre,
-        //         'cantidad' => (int)$detalle->cantidad,
-        //         'precio' => (float)$detalle->precio,
-        //         'importe' => $detalle->importe
-        //     ]);
-        //     // array_push($detalles, $data);
-        // }
-
-
-
-        // $subtotal = 0; 
-        // $igv = '';
-        // $tipo_moneda = '';
-        // foreach($detalles as $detalle){
-        //     $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
-        // }
-        // foreach(tipos_moneda() as $moneda){
-        //     if ($moneda->descripcion == $orden->moneda) {
-        //         $tipo_moneda= $moneda->simbolo;
-        //     }
-        // }
-
-
-        // if (!$orden->igv) {
-        //     $igv = $subtotal * 0.18;
-        //     $total = $subtotal + $igv;
-        //     $decimal_subtotal = number_format($subtotal, 2, '.', '');
-        //     $decimal_total = number_format($total, 2, '.', '');
-        //     $decimal_igv = number_format($igv, 2, '.', ''); 
-        // }else{
-        //     $calcularIgv = $orden->igv/100;
-        //     $base = $subtotal / (1 + $calcularIgv);
-        //     $nuevo_igv = $subtotal - $base;
-        //     $decimal_subtotal = number_format($base, 2, '.', '');
-        //     $decimal_total = number_format($subtotal, 2, '.', '');
-        //     $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
-        // }
-
 
 
         // $presentaciones = presentaciones();  
@@ -375,19 +304,6 @@ class CotizacionController extends Controller
             $mail->attachdata($pdf->output(), 'COTIZACION CO-0'.$cotizacion->id.'.pdf');
         });
 
-
-        // //Registrar en correos enviados
-        // $correo = new Enviado();
-        // $correo->orden_id = $orden->id;
-        // $correo->enviado = '1';
-        // $correo->usuario = Auth::user()->usuario;
-        // $correo->save();
-
-        // //Añadir check
-        // $orden->enviado = '1';
-        // $orden->update();
-
-
         Session::flash('success','Cotización enviado al correo '.$cotizacion->cliente->correo_electronico);
         return redirect()->route('ventas.cotizacion.show', $cotizacion->id)->with('enviar', 'success');
     }
@@ -401,51 +317,6 @@ class CotizacionController extends Controller
         $igv = '';
         $tipo_moneda = '';
         $detalles = $cotizacion->detalles->where('estado', 'ACTIVO');
-        // $subtotal = 0; 
-        // foreach($detalles as $detalle){
-        //     $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
-        // }
-        
-        // $detalles = collect([]);
-        // foreach ($cotizacion->detalles->where('estado', 'ACTIVO') as $detalle) {
-        //     $detalles->push([
-        //         'id' => (string)$detalle->id,
-        //         'producto_id' => (string)$detalle->producto_id,
-        //         'producto' => $detalle->producto->codigo.'-'.$detalle->producto->nombre,
-        //         'cantidad' => (int)$detalle->cantidad,
-        //         'precio' => (float)$detalle->precio,
-        //         'importe' => $detalle->importe
-        //     ]);
-           
-        // }
-        
-
-
-        // foreach($detalles as $detalle){
-        //     $subtotal = ($detalle->cantidad * $detalle->precio) + $subtotal;
-        // }
-        // foreach(tipos_moneda() as $moneda){
-        //     if ($moneda->descripcion == $orden->moneda) {
-        //         $tipo_moneda= $moneda->simbolo;
-        //     }
-        // }
-
-        // if (!$orden->igv) {
-        //     $igv = $subtotal * 0.18;
-        //     $total = $subtotal + $igv;
-        //     $decimal_subtotal = number_format($subtotal, 2, '.', '');
-        //     $decimal_total = number_format($total, 2, '.', '');
-        //     $decimal_igv = number_format($igv, 2, '.', ''); 
-        // }else{
-        //     $calcularIgv = $orden->igv/100;
-        //     $base = $subtotal / (1 + $calcularIgv);
-        //     $nuevo_igv = $subtotal - $base;
-        //     $decimal_subtotal = number_format($base, 2, '.', '');
-        //     $decimal_total = number_format($subtotal, 2, '.', '');
-        //     $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
-        // }
-
-
 
         // $presentaciones = presentaciones();  
         $paper_size = array(0,0,360,360);

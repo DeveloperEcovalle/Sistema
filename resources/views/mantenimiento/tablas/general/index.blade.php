@@ -108,9 +108,12 @@
                 {
                     data: null,
                     className:"text-center",
-                    render: function (data) {
+                    render: function (data) 
+                        {
                         var url = '{{ route("mantenimiento.tabla.detalle.index", ":id")}}';
                         url = url.replace(':id',data.id);
+                        
+                        
                         return "<div class='btn-group'><button onclick='obtenerData("+data.id+")' class='btn btn-warning btn-sm' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-info btn-sm' href='"+url+"' title='Examinar'><i class='fa fa-eye'></i></a></div>"
                     }
                 }

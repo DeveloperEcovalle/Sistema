@@ -1,18 +1,19 @@
 @extends('layout') @section('content')
-@section('compras-active', 'active')
-@section('documento-active', 'active')
+
+@section('ventas-active', 'active')
+@section('documentos-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-12">
-       <h2  style="text-transform:uppercase"><b>Detalle del pago del documento de compra # {{$pago->detalle->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Detalle del pago del documento de venta # {{$pago->pago->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documento.index')}}">Documentos de Compra</a>
+                <a href="{{route('ventas.documento.index')}}">Documentos de Venta</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documentos.pago.index', $pago->pago->documento->id)}}">Pagos</a>
+                <a href="{{route('ventas.documentos.pago.index', $pago->pago->documento_id)}}">Pagos</a>
                 
             </li>
             <li class="breadcrumb-item active">
@@ -29,7 +30,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="">
-                                       <h2  style="text-transform:uppercase">Pago del documento de compra # {{$pago->detalle->id}}</h2>
+                                       <h2  style="text-transform:uppercase">Pago del documento de venta # {{$pago->pago->id}}</h2>
                                     </div>
                                     <p style="text-transform:uppercase"><strong><i class="fa fa-caret-right"></i> Información general del pago:</strong></p>
 
@@ -63,31 +64,20 @@
                                        
                                     </div>
 
+
                                 </div>
 
                             </div>
 
                             <div class="row"  style="text-transform:uppercase">
 
-                                <div class="col-md-6 b-r">
-
-                                    <div class="form-group row">
-                                        <div class="col-md-6">
-                                            <label><strong>MONEDA: </strong></label>
-                                            <p>{{$pago->pago->documento->moneda}}</p>
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
 
                                 <div class="col-md-6">
 
                                     <div class="form-group">
                                             <label><strong>MONTO: </strong></label> 
-                                            @if($pago->detalle->monto != "")
-                                                <p>{{$tipo_moneda.' '.$pago->detalle->monto}}</p>
+                                            @if($pago->pago->total != "")
+                                                <p>{{'S/. '.$pago->pago->total}}</p>
                                             @else
                                                 <p>-</p>
                                             @endif
@@ -105,15 +95,7 @@
 
                                     <div class="col-md-6 b-r">
                                         <label><strong>EMPLEADO: </strong></label>
-                                        <p>{{$pago->detalle->caja->empleado->persona->apellido_paterno.' '.$pago->detalle->caja->empleado->persona->apellido_materno.' '.$pago->detalle->caja->empleado->persona->nombres}}</p>
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <label><strong>ESTADO: </strong></label>
-                                        <p>{{$pago->detalle->caja->estado}}</p>
-
-
+                                        <p>{{$pago->caja->caja->empleado->persona->apellido_paterno.' '.$pago->caja->caja->empleado->persona->apellido_materno.' '.$pago->caja->caja->empleado->persona->nombres}}</p>
                                     </div>
 
                             </div>

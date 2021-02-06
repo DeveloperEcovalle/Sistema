@@ -21,7 +21,6 @@ use App\Compras\Documento\Pago\Pago;
 use App\Compras\Documento\Pago\Transferencia;
 
 use App\Compras\Pago as Pago_Compras;
-
 use App\Compras\Detalle as Detalle_Orden;
 
 

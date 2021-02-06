@@ -16,7 +16,6 @@ class Documento extends Model
         'sub_total',
         'total_igv',
         'total',
-        'total_exento',
         'user_id',
         'estado',
         'igv',

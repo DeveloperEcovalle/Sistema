@@ -210,7 +210,7 @@ $(document).ready(function() {
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
                         ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
-                        "<li><a class='dropdown-item' onclick='pagar(" +data.orden_compra+","+data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
+                        "<li><a class='dropdown-item' onclick='pagar(" +data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
                         
                     "</ul></div>"
                 }
@@ -261,125 +261,121 @@ function eliminar(id) {
     })
 }
 
-function pagar(orden,id,tipo) {
-    // var tipo = this.tipo;
-    console.log(tipo)
+function pagar(id,tipo) {
+  
+    alert(tipo);
 
-    if (orden) {
-        toastr.error('El tipo de pago de este documento de compra fue realizada (transferencia).', 'Error');
-    }else{
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
 
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
-
-        Swal.fire({
-            title: 'Opción Formas de Pago',
-            text: "Elija la forma de pago",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Transferencia',
-            cancelButtonText: "Otros",
-        }).then((result) => {
-            if (result.isConfirmed) {
+    Swal.fire({
+        title: 'Opción Formas de Pago',
+        text: "Elija la forma de pago",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Transferencia',
+        cancelButtonText: "Otros",
+    }).then((result) => {
+        if (result.isConfirmed) {
 
 
-                if (tipo == null || tipo == 1  ) {
-                    
-                    var url = '{{ route("compras.documentos.transferencia.pago.index", ":id")}}';
-                    url = url.replace(':id', id);
-                    $(location).attr('href', url);
+            if (tipo == null || tipo == 1  ) {
+                
+                var url = '{{ route("ventas.documentos.transferencia.pago.index", ":id")}}';
+                url = url.replace(':id', id);
+                $(location).attr('href', url);
 
-                }else{
-                    Swal.fire({
-                            customClass: {
-                                container: 'my-swal'
-                            },
-                            title: 'Error',
-                            text: "Existe un tipo de pago, desea anular y crear un tipo de pago nuevo",
-                            icon: 'error',
-                            showCancelButton: true,
-                            confirmButtonColor: "#1ab394",
-                            confirmButtonText: 'Si, Confirmar',
-                            cancelButtonText: "No, Cancelar",
-                            }).then((result) => {
-                            if (result.isConfirmed) {
-                                var url = '{{ route("compras.documento.tipo_pago.existente", ":id")}}';
-                                url = url.replace(':id', id);
-                                $(location).attr('href', url);
-                                }else if (
-                                /* Read more about handling dismissals below */
-                                result.dismiss === Swal.DismissReason.cancel
-                            ) {
-                                swalWithBootstrapButtons.fire(
-                                'Cancelado',
-                                'La Solicitud se ha cancelado.',
-                                'error'
-                                )
-                            }
-                    })
+            }else{
+                Swal.fire({
+                        customClass: {
+                            container: 'my-swal'
+                        },
+                        title: 'Error',
+                        text: "Existe un tipo de pago, desea anular y crear un tipo de pago nuevo",
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonColor: "#1ab394",
+                        confirmButtonText: 'Si, Confirmar',
+                        cancelButtonText: "No, Cancelar",
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            var url = '{{ route("ventas.documento.tipo_pago.existente", ":id")}}';
+                            url = url.replace(':id', id);
+                            $(location).attr('href', url);
+                            }else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            swalWithBootstrapButtons.fire(
+                            'Cancelado',
+                            'La Solicitud se ha cancelado.',
+                            'error'
+                            )
+                        }
+                })
 
-                }
-            
-            
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-
-
-                if (tipo  == null || tipo == 0  ) {
-                    
-                    var url = '{{ route("ventas.documentos.pago.index", ":id")}}';
-                    url = url.replace(':id', id);
-                    $(location).attr('href', url);
-
-                }else{
-                    
-                    Swal.fire({
-                            customClass: {
-                                container: 'my-swal'
-                            },
-                            title: 'Error',
-                            text: "Existe un tipo de pago, desea anular y crear un tipo de pago nuevo",
-                            icon: 'error',
-                            showCancelButton: true,
-                            confirmButtonColor: "#1ab394",
-                            confirmButtonText: 'Si, Confirmar',
-                            cancelButtonText: "No, Cancelar",
-                            }).then((result) => {
-                            if (result.isConfirmed) {
-                                var url = '{{ route("compras.documento.tipo_pago.existente", ":id")}}';
-                                url = url.replace(':id', id);
-                                $(location).attr('href', url);
-                                }else if (
-                                /* Read more about handling dismissals below */
-                                result.dismiss === Swal.DismissReason.cancel
-                            ) {
-                                swalWithBootstrapButtons.fire(
-                                'Cancelado',
-                                'La Solicitud se ha cancelado.',
-                                'error'
-                                )
-                            }
-                    })
-
-
-
-                }
-            
             }
-        })
+        
+        
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
 
 
-    }
+            if (tipo  == null || tipo == 0  ) {
+                
+                var url = '{{ route("ventas.documentos.pago.index", ":id")}}';
+                url = url.replace(':id', id);
+                $(location).attr('href', url);
+
+            }else{
+                
+                Swal.fire({
+                        customClass: {
+                            container: 'my-swal'
+                        },
+                        title: 'Error',
+                        text: "Existe un tipo de pago, desea anular y crear un tipo de pago nuevo",
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonColor: "#1ab394",
+                        confirmButtonText: 'Si, Confirmar',
+                        cancelButtonText: "No, Cancelar",
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            var url = '{{ route("ventas.documento.tipo_pago.existente", ":id")}}';
+                            url = url.replace(':id', id);
+                            $(location).attr('href', url);
+                            }else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            swalWithBootstrapButtons.fire(
+                            'Cancelado',
+                            'La Solicitud se ha cancelado.',
+                            'error'
+                            )
+                        }
+                })
+
+
+
+            }
+        
+        }
+    })
+
 
 }
+
+
 
 function modificar(cotizacion,id) {
     if (cotizacion) {

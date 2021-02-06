@@ -28,11 +28,29 @@
     @endif
 
 
+    
+    <div class="col-md-12 m-t">
+        <div class="alert alert-success">
+            <b>INFORMACION DE PAGOS </b>
+            <ul class="margin-bottom-none padding-left-lg">
+                    <div class="form-group row">
+
+                        <div class="col-md-6">                           
+                            <li>Deuda total del Documento de venta en <span style="text-transform:lowercase"><b>SOLES</b></span>: <b>{{'S/. '.$monto}}</b>.</li>
+                            <li>Monto a cuenta del Documento de venta en <span style="text-transform:lowercase"><b>SOLES</b></span>: <b>{{'S/. '.$acuenta}}</b>.</li>
+                            <li>Saldo del Documento de venta en <span style="text-transform:lowercase"><b>SOLES</b></span>: <b>{{'S/. '.$saldo}}</b>.</li>
+                            @if($documento->estado == "PAGADA")
+                            <li id="informacion-cancelada"><b>Documento de venta #{{$documento->id}} CANCELADA.</b> </li> 
+                            @endif
+                        </div>
+
+                        
+                    </div>
 
 
-
-
-
+            </ul>
+        </div>
+    </div>
 
 
     
@@ -53,10 +71,14 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th class="text-center">FECHA Y HORA</th>
+
+                                    <th class="text-center">FECHA DEL REGISTRO</th>
+                                    <th class="text-center">EMPLEADO DE CAJA</th>
+
                                     <th class="text-center">TIPO</th>
-                                    <th class="text-center">MONEDA</th>
                                     <th class="text-center">MONTO</th>
+                                    
+                               
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -86,7 +108,7 @@
 $(document).ready(function() {
     //Ruta Detalle
     var id = $('#id_documento').val()
-    var url = '{{ route("getPay.documentos", ":id")}}';
+    var url = '{{ route("ventas.getPay.documentos", ":id")}}';
     url = url.replace(':id',id);
     // DataTables
     $('.dataTables-pago').DataTable({
@@ -127,14 +149,15 @@ $(document).ready(function() {
 
             {
                 data: 'pago_fecha',
-                className: "text-center",
-            },
-            {
-                data: 'tipo',
                 className: "text-center"
             },
             {
-                data: 'moneda',
+                data: 'empleado_caja',
+                className: "text-left"
+            },
+
+            {
+                data: 'tipo',
                 className: "text-center"
             },
 
@@ -148,7 +171,7 @@ $(document).ready(function() {
                     className:"text-center",
                     render: function (data) {
                         //Ruta Detalle
-                        var url_detalle = "{{ route('compras.documentos.pago.show', ':id') }}".replace(':id', data.id);
+                        var url_detalle = "{{ route('ventas.documentos.pago.show', ':id') }}".replace(':id', data.id);
 
                         return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
@@ -176,7 +199,7 @@ $.fn.DataTable.ext.errMode = 'throw';
 function eliminar(id) {
     Swal.fire({
         title: 'Opción Eliminar',
-        text: "¿Seguro que desea guardar cambios?",
+        text: "¿Seguro que desea eliminar registro?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",
@@ -185,7 +208,7 @@ function eliminar(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             //Ruta Eliminar
-            var url = '{{ route("compras.documentos.pago.destroy", ":id") }}'.replace(':id', id);
+            var url = '{{ route("ventas.documentos.pago.destroy", ":id") }}'.replace(':id', id);
             $(location).attr('href', url);
 
         } else if (

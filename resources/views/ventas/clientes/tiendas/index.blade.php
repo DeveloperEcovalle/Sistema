@@ -39,7 +39,7 @@
                     <thead>
                         <tr>
                             <th class="text-center"></th>
-                            <th class="text-center">NOMBRE</th>
+                            <th class="text-center">NOMBRE DE NEGOCIO</th>
                             <th class="text-center">TIPO</th>
                             <th class="text-center">NEGOCIO</th>
                             <th class="text-center">ACCIONES</th>

@@ -1,17 +1,17 @@
 @extends('layout') @section('content')
 
-@section('compras-active', 'active')
+@section('ventas-active', 'active')
 @section('documento-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Pagos de la Orden #{{$documento->id}} para el proveedor "{{$documento->proveedor->descripcion}} por medio de transferencia"</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos del documento de venta #{{$documento->id}} por el cliente "{{$documento->cliente->nombre}} " por medio de transferencia</b></h2>
        <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('compras.documento.index')}}">Documentos de Compra</a>
+                <a href="{{route('ventas.documento.index')}}">Documentos de Venta</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Pagos</strong>
@@ -21,7 +21,7 @@
     
     @if($documento->estado != "PAGADA")
     <div class="col-lg-2 col-md-2" id="boton_agregar_pago">
-        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('compras.documentos.transferencia.pago.create',$documento->id)}}">
+        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('ventas.documentos.transferencia.pago.create',$documento->id)}}">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
@@ -34,32 +34,17 @@
                 <b>INFORMACION DE PAGOS </b>
                 <ul class="margin-bottom-none padding-left-lg">
                         <div class="form-group row">
-                            @if($documento->moneda != "SOLES")
+
                             <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
+                                <li>Deuda total del documento de venta en <span style="text-transform:lowercase"><b>SOLES</b></span>: <b>{{'S/ . '.$monto}}</b>.</li>
+                                <li>Monto a cuenta del documento de venta en <span style="text-transform:lowercase"><b>SOLES</b></span>: <b>{{'S/.  '.$acuenta}}</b>.</li>
+                                <li>Saldo del documento de venta en <span style="text-transform:lowercase"><b>SOLES</b></span>: <b>{{'S/.  '.$saldo}}</b>.</li>
                                 @if($documento->estado == "PAGADA")
-                                <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
+                                <li id="informacion-cancelada"><b>Documento de venta #{{$documento->id}} CANCELADA.</b> </li> 
                                 @endif
                             </div>
+
                             
-                            <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>soles</b></span>: <b>S/. {{$total_soles}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>soles</b></span>: <b>S/. {{$acuenta_soles}}</b>.</li>
-                            </div>
-                            @else
-
-                            <div class="col-md-6">                           
-                                <li>Deuda total de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$monto}}</b>.</li>
-                                <li>Monto a cuenta de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$acuenta}}</b>.</li>
-                                <li>Saldo de la orden de compra en <span style="text-transform:lowercase"><b>{{$documento->moneda}}</b></span>: <b>{{$moneda.' '.$saldo}}</b>.</li>
-                                @if($documento->estado == "PAGADA")
-                                <li id="informacion-cancelada"><b>Documento de compra #{{$documento->id}} CANCELADA.</b> </li> 
-                                @endif
-                            </div>
-
-                            @endif
                         </div>
 
 
@@ -90,10 +75,8 @@
                                     <th></th>
                                     <th class="text-center">FECHA PAGO</th>
                                     <th class="text-center">ENTIDAD</th>
-                                    <th class="text-center">CUENTA EMPRESA</th>
-                                    <th class="text-center">CUENTA PROVEEDOR</th>
+                                    <th class="text-center">MONEDA</th>
                                     <th class="text-center">MONTO</th>
-                                    <th class="text-center">MONTO (S/.)</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -123,7 +106,7 @@
 $(document).ready(function() {
     //Ruta Detalle
     var id = $('#id_documento').val()
-    var url = '{{ route("compras.documentos.transferencia.getPay", ":id")}}';
+    var url = '{{ route("ventas.documentos.transferencia.getPay", ":id")}}';
     url = url.replace(':id',id);
     // DataTables
     $('.dataTables-documento').DataTable({
@@ -170,11 +153,7 @@ $(document).ready(function() {
                 className: "text-center"
             },
             {
-                data: 'cuenta_empresa',
-                className: "text-center"
-            },
-            {
-                data: 'cuenta_proveedor',
+                data: 'moneda',
                 className: "text-center"
             },
             {
@@ -182,15 +161,11 @@ $(document).ready(function() {
                 className: "text-center"
             },
             {
-                data: 'monto_soles',
-                className: "text-center"
-            },
-            {
                     data: null,
                     className:"text-center",
                     render: function (data) {
                         //Ruta Detalle
-                        var url_detalle = "{{ route('compras.documentos.transferencia.pago.show', [ 'pago' =>'id', 'documento'=>  $documento->id ]) }}".replace('id', data.id);
+                        var url_detalle = "{{ route('ventas.documentos.transferencia.pago.show', [ 'pago' =>'id', 'documento'=>  $documento->id ]) }}".replace('id', data.id);
 
                         return "<div class='btn-group'><a class='btn btn-success btn-sm' href='"+url_detalle+"' title='Detalle'><i class='fa fa-eye'></i></a><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                     }
@@ -218,7 +193,7 @@ $.fn.DataTable.ext.errMode = 'throw';
 function eliminar(id) {
     Swal.fire({
         title: 'Opción Eliminar',
-        text: "¿Seguro que desea guardar cambios?",
+        text: "¿Seguro que desea eliminar el registro?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",
@@ -227,7 +202,7 @@ function eliminar(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             //Ruta Eliminar
-            var url = "{{ route('compras.documentos.transferencia.pago.destroy', [ 'pago' =>'id', 'documento'=>  $documento->id ]) }}".replace('id', id);
+            var url = "{{ route('ventas.documentos.transferencia.pago.destroy', [ 'pago' =>'id', 'documento'=>  $documento->id ]) }}".replace('id', id);
             $(location).attr('href', url);
 
         } else if (

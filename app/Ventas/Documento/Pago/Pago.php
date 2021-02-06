@@ -12,6 +12,7 @@ class Pago extends Model
     protected $fillable = [
             'documento_id',
             'total',
+            'observacion',
             'tipo_pago',
             'estado'
         ];
