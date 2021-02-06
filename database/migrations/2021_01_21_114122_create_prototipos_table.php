@@ -14,7 +14,7 @@ class CreatePrototiposTable extends Migration
     public function up()
     {
         Schema::create('prototipos', function (Blueprint $table) {
-            $table->id();
+            $table->Increments('id');
             $table->string('producto');
             $table->date('fecha_registro')->nullable();
             $table->date('fecha_inicio')->nullable();
