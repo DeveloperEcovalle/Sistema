@@ -705,7 +705,6 @@ function cargarArticulos() {
         articulos.push(fila);
 
     });
-    console.log(articulos);
     $('#articulos_tabla').val(JSON.stringify(articulos));
 }
 

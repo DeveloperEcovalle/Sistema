@@ -635,6 +635,7 @@ function agregarTabla($detalle) {
         $detalle.cantidad_devuelta,
         $detalle.observacion,
     ]).draw(false);
+    console.log('Paso0')
     cargarArticulos()
 }
 
@@ -696,6 +697,7 @@ function cargarArticulos() {
         };
         articulos.push(fila);
     });
+    console.log('Paso1');
     console.log(articulos);
     $('#articulos_tabla').val(JSON.stringify(articulos));
 }

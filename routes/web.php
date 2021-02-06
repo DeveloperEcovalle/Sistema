@@ -382,13 +382,19 @@ Route::prefix('invdesarrollo/registro_sanitario')->group(function() {
     Route::put('update', 'InvDesarrollo\RegistroSanitarioController@update')->name('invdesarrollo.registro_sanitario.update');
 });
 
+
 //Prototipos
 Route::prefix('invdesarrollo/prototipos')->group(function() {
     Route::get('index', 'InvDesarrollo\PrototipoController@index')->name('invdesarrollo.prototipo.index');
     Route::get('getPrototipo','InvDesarrollo\PrototipoController@getPrototipo')->name('getPrototipo');
-    Route::get('destroy/{id}', 'InvDesarrollo\PrototipoController@destroy')->name('invdesarrollo.prototipo.destroy');
+    Route::get('create','InvDesarrollo\PrototipoController@create')->name('invdesarrollo.prototipo.create');
     Route::post('store', 'InvDesarrollo\PrototipoController@store')->name('invdesarrollo.prototipo.store');
-    Route::put('update', 'InvDesarrollo\PrototipoController@update')->name('invdesarrollo.prototipo.update');
+    Route::get('edit/{id}','InvDesarrollo\PrototipoController@edit')->name('invdesarrollo.prototipo.edit');
+    Route::get('show/{id}','InvDesarrollo\PrototipoController@show')->name('invdesarrollo.prototipo.show');
+    Route::put('update/{id}', 'InvDesarrollo\PrototipoController@update')->name('invdesarrollo.prototipo.update');
+    Route::get('destroy/{id}', 'InvDesarrollo\PrototipoController@destroy')->name('invdesarrollo.prototipo.destroy');
+    Route::get('reporte/{id}','InvDesarrollo\PrototipoController@report')->name('invdesarrollo.prototipo.reporte');
+    Route::get('email/{id}','InvDesarrollo\PrototipoController@email')->name('invdesarrollo.prototipo.email');
 });
 
 // Guia Interna

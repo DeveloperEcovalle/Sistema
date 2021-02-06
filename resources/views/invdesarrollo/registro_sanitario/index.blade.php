@@ -37,7 +37,7 @@
                     <table class="table dataTables-registro_sanitario table-striped table-bordered table-hover"  style="text-transform:uppercase">
                     <thead>
                         <tr>
-                            
+                            <th></th>
                             <th class="text-center">Producto</th>
 							<th class="text-center">Fecha Inicio</th>
 							<th class="text-center">Fecha Fin</th>
