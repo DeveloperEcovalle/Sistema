@@ -621,26 +621,7 @@ $(document).ready(function() {
 
     // DataTables
     $('.dataTables-detalle-documento').DataTable({
-        "dom": '<"html5buttons"B>lTfgitp',
-        "buttons": [{
-                extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
-                titleAttr: 'Excel',
-                title: 'Detalle de Orden de Compra'
-            },
-            {
-                titleAttr: 'Imprimir',
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Imprimir',
-                customize: function(win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ],
+        "dom": 'lTfgitp',
         "bPaginate": true,
         "bLengthChange": true,
         "bFilter": true,

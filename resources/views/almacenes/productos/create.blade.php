@@ -223,7 +223,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="required">Monto</label>
-                                                <input type="text" id="monto" name="monto" class="form-control">
+                                                <input type="text" id="monto" name="monto" class="form-control" pattern="^[0-9]+(.[0-9]+)?$">
                                                 <div class="invalid-feedback"><b><span id="error-monto"></span></b></div>
                                             </div>
 

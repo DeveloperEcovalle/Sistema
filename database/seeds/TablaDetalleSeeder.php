@@ -539,21 +539,21 @@ class TablaDetalleSeeder extends Seeder
         //TIPO DE DOCUMENTO (VENTA)
 
         $detalle = new Detalle();
-        $detalle->descripcion = "FACTURA ELECTRÓNICA";
+        $detalle->descripcion = "FACTURA";
         $detalle->simbolo = 'FAC-ELEC';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "NOTA DE VENTA ELECTRÓNICA";
+        $detalle->descripcion = "NOTA DE VENTA";
         $detalle->simbolo = 'NV-ELEC';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "BOLETA ELECTRÓNICA";
+        $detalle->descripcion = "BOLETA";
         $detalle->simbolo = 'BOL-ELEC';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;

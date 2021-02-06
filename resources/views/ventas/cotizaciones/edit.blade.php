@@ -65,11 +65,8 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Moneda</label>
-                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}">
-                                            <option></option>
-                                            @foreach(tipos_moneda() as $moneda)
-                                                <option value="{{ $moneda->simbolo }}" {{ (old('moneda', $cotizacion->moneda) == $moneda->simbolo ? "selected" : "") }}>{{ $moneda->descripcion }}</option>
-                                            @endforeach
+                                        <select id="moneda" name="moneda" disabled class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}">
+                                            <option selected>SOLES</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
@@ -440,25 +437,7 @@
 
             //DATATABLE - COTIZACION
             table = $('.dataTables-detalle-cotizacion').DataTable({
-                "dom": '<"html5buttons"B>lTfgitp',
-                "buttons": [{
-                    extend: 'excelHtml5',
-                    text: '<i class="fa fa-file-excel-o"></i> Excel',
-                    titleAttr: 'Excel',
-                    title: 'Detalle de la Cotización'
-                },
-                {
-                    titleAttr: 'Imprimir',
-                    extend: 'print',
-                    text: '<i class="fa fa-print"></i> Imprimir',
-                    customize: function (win) {
-                        $(win.document.body).addClass('white-bg');
-                        $(win.document.body).css('font-size', '10px');
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    }
-                }],
+                "dom": 'lTfgitp',
                 "bPaginate": true,
                 "bLengthChange": true,
                 "responsive": true,

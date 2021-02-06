@@ -18,6 +18,7 @@ use Session;
 use Illuminate\Support\Facades\Validator;
 use PDF;
 use Illuminate\Support\Facades\Mail;
+use App\Ventas\Documento\Documento;
 
 class CotizacionController extends Controller
 {
@@ -85,6 +86,7 @@ class CotizacionController extends Controller
         $cotizacion = new Cotizacion();
         $cotizacion->empresa_id = $request->get('empresa');
         $cotizacion->cliente_id = $request->get('cliente');
+        $cotizacion->moneda = 4;
         $cotizacion->fecha_documento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_documento'))->format('Y-m-d');
         $cotizacion->fecha_atencion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_atencion_campo'))->format('Y-m-d');
 
@@ -461,6 +463,33 @@ class CotizacionController extends Controller
         
 
 
+
+    }
+
+    public function document($id){
+        
+        $documento = Documento::where('cotizacion_venta',$id)->where('estado','!=','ANULADO')->first();
+        if ($documento) {
+         
+            return view('ventas.cotizaciones.index',[
+                'id' => $id
+            ]);
+        }else{
+            //REDIRECCIONAR AL DOCUMENTO DE VENTA
+            return redirect()->route('ventas.documento.create',['cotizacion'=>$id]);
+        }
+        
+    }
+
+
+    public function newDocument($id){
+        $documento_old =  Documento::where('cotizacion_venta',$id)->where('estado','!=','ANULADO')->first();
+        //ANULADO ANTERIO DOCUMENTO
+        $documento = Documento::findOrFail($documento_old->id);
+        $documento->estado = 'ANULADO';
+        $documento->update();
+        //REDIRECCIONAR AL DOCUMENTO DE VENTA
+        return redirect()->route('ventas.documento.create',['cotizacion'=>$id]);
 
     }
 

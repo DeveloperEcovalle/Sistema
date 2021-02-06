@@ -376,6 +376,7 @@ function documento(id) {
 
 
 @if(!empty($id))
+   
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',

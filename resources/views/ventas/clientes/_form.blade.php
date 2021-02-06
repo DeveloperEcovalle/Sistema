@@ -81,14 +81,25 @@
                     
                     </div>
 
-                    <div class="form-group">
-                        <label class="" id="">Código</label>
-                        <input type="text" id="codigo" name="codigo" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{old('codigo')?old('codigo'):$cliente->codigo}}" maxlength="191" onkeyup="return mayus(this)">
-                        @if ($errors->has('codigo'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('codigo') }}</strong>
-                            </span>
-                        @endif
+                    <div class="form-group row">
+                        <div class="col-md-6 col-xs-12">
+                            <label class="" id="">Código de Cliente</label>
+                            <input type="text" id="codigo" name="codigo" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{old('codigo')?old('codigo'):$cliente->codigo}}" maxlength="191" onkeyup="return mayus(this)">
+                            @if ($errors->has('codigo'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('codigo') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+                            <label class="" id="">Nombre Comercial</label>
+                            <input type="text" id="nombre_comercial" name="nombre_comercial" class="form-control {{ $errors->has('nombre_comercial') ? ' is-invalid' : '' }}" value="{{old('nombre_comercial')?old('nombre_comercial'):$cliente->nombre_comercial}}" maxlength="191" onkeyup="return mayus(this)">
+                            @if ($errors->has('nombre_comercial'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('nombre_comercial') }}</strong>
+                                </span>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -102,20 +113,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="" id="">Nombre Comercial</label>
-                        <input type="text" id="nombre_comercial" name="nombre_comercial" class="form-control {{ $errors->has('nombre_comercial') ? ' is-invalid' : '' }}" value="{{old('nombre_comercial')?old('nombre_comercial'):$cliente->nombre_comercial}}" maxlength="191" onkeyup="return mayus(this)">
-                        @if ($errors->has('nombre_comercial'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('nombre_comercial') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                
-                </div>
-
-                <div class="col-md-6">
-
-                    <div class="form-group">
                         <label class="required">Dirección Fiscal</label>
                         <input type="text" id="direccion" name="direccion" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion')?old('direccion'):$cliente->direccion}}" maxlength="191" onkeyup="return mayus(this)" required>
                         @if ($errors->has('direccion'))
@@ -124,6 +121,12 @@
                             </span>
                         @endif
                     </div>
+                
+                </div>
+
+                <div class="col-md-6">
+
+
 
                     <div class="form-group row">
                         <div class="col-lg-6 col-xs-12">

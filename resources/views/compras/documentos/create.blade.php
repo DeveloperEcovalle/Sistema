@@ -53,7 +53,7 @@
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_documento">
                                         <label class="required">Fecha de Emisión</label>
-                                        <div class="input-group date">
+                                        <div class="input-group  @if (empty($orden)) {{'date'}} @endif">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
@@ -61,12 +61,12 @@
                                             <input type="text" id="fecha_documento_campo" name="fecha_emision"
                                                 class="form-control {{ $errors->has('fecha_emision') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_emision',getFechaFormato($orden->fecha_emision, 'd/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" required readonly disabled>
                                             @else
                                             <input type="text" id="fecha_documento_campo" name="fecha_emision"
                                                 class="form-control {{ $errors->has('fecha_emision') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_emision',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" required readonly >
                                             @endif
 
                                             @if ($errors->has('fecha_emision'))
@@ -79,8 +79,8 @@
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_entrega">
                                         <label class="required">Fecha de Entrega</label>
-                                        <div class="input-group date">
-                                            <span class="input-group-addon">
+                                        <div class="input-group @if (empty($orden)) {{'date'}} @endif">
+                                            <span class="input-group-addon" >
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                             
@@ -88,7 +88,7 @@
                                             <input type="text" id="fecha_entrega_campo" name="fecha_entrega"
                                                 class="form-control {{ $errors->has('fecha_entrega') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_entrega',getFechaFormato( $orden->fecha_entrega ,'d/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" readonly disabled>
                                             @else
 
                                             <input type="text" id="fecha_entrega_campo" name="fecha_entrega"
@@ -138,44 +138,55 @@
                                     
                                 </div>
 
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p>Registrar Proveedor:</p>
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
-                                    <label class="required">Proveedor: </label>
+                                    <label class="required">Ruc / Dni: </label>
 
                                         @if (!empty($orden))
                                         <select
                                         class="select2_form form-control {{ $errors->has('proveedor_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('proveedor_id', $orden->proveedor_id)}}"
-                                        name="proveedor_id" id="proveedor_id" required>
+                                        name="proveedor_id" id="proveedor_id" required disabled>
                                         <option></option>
                                             @foreach ($proveedores as $proveedor)
                                             @if($proveedor->ruc)
                                             <option value="{{$proveedor->id}}" @if(old('proveedor_id',$orden->proveedor_id)==$proveedor->id )
-                                                {{'selected'}} @endif >{{$proveedor->ruc.' - '.$proveedor->descripcion}}
+                                                {{'selected'}} @endif >{{$proveedor->ruc}}
                                             </option>
                                             @else
                                             @if($proveedor->dni)
                                             <option value="{{$proveedor->id}}" @if(old('proveedor_id',$orden->proveedor_id)==$proveedor->id )
-                                                {{'selected'}} @endif >{{$proveedor->dni.' - '.$proveedor->descripcion}}
+                                                {{'selected'}} @endif >{{$proveedor->dni}}
                                             </option>
                                             @endif
                                             @endif
                                             @endforeach
                                             </select>
+
+
                                         @else
                                             <select
                                             class="select2_form form-control {{ $errors->has('proveedor_id') ? ' is-invalid' : '' }}"
                                             style="text-transform: uppercase; width:100%" value="{{old('proveedor_id')}}"
-                                            name="proveedor_id" id="proveedor_id" required>
+                                            name="proveedor_id" id="proveedor_id" required >
                                             <option></option>
                                             @foreach ($proveedores as $proveedor)
                                             @if($proveedor->ruc)
                                             <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
-                                                {{'selected'}} @endif >{{$proveedor->ruc.' - '.$proveedor->descripcion}}
+                                                {{'selected'}} @endif >{{$proveedor->ruc}}
                                             </option>
                                             @else
                                             @if($proveedor->dni)
                                             <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
-                                                {{'selected'}} @endif >{{$proveedor->dni.' - '.$proveedor->descripcion}}
+                                                {{'selected'}} @endif >{{$proveedor->dni}}
                                             </option>
                                             @endif
                                             @endif
@@ -183,9 +194,56 @@
                                             </select>
                                         @endif
 
+                        
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="required">Razon Social: </label>
+                                    @if (!empty($orden))
+                                    <select
+                                        class="select2_form form-control {{ $errors->has('proveedor_razon') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('proveedor_razon')}}"
+                                        name="proveedor_razon" id="proveedor_razon" required disabled>
+                                        <option></option>
+                                        @foreach ($proveedores as $proveedor)
+                                            @if($proveedor->ruc)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id',$orden->proveedor_id)==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->descripcion}}
+                                            </option>
+                                            @else
+                                            @if($proveedor->dni)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id',$orden->proveedor_id)==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->descripcion}}
+                                            </option>
+                                            @endif
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                    @else
+                                    <select
+                                        class="select2_form form-control {{ $errors->has('proveedor_razon') ? ' is-invalid' : '' }}"
+                                        style="text-transform: uppercase; width:100%" value="{{old('proveedor_razon')}}"
+                                        name="proveedor_razon" id="proveedor_razon" required >
+                                        <option></option>
+                                        @foreach ($proveedores as $proveedor)
+                                            @if($proveedor->ruc)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->descripcion}}
+                                            </option>
+                                            @else
+                                            @if($proveedor->dni)
+                                            <option value="{{$proveedor->id}}" @if(old('proveedor_id')==$proveedor->id )
+                                                {{'selected'}} @endif >{{$proveedor->descripcion}}
+                                            </option>
+                                            @endif
+                                        @endif
+                                        @endforeach
+                                    </select>
 
 
-                                    
+                                    @endif
+                                
+                                
                                 </div>
 
 
@@ -246,7 +304,7 @@
                                         <select
                                         class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('moneda',$orden->moneda)}}"
-                                        name="moneda" id="moneda" required>
+                                        name="moneda" id="moneda" disabled>
                                             <option></option>
                                             
                                             @foreach ($monedas as $moneda)
@@ -348,16 +406,23 @@
                                     <div class="col-md-6">
                                         <label id="igv_requerido">IGV (%):</label>
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-addon">
-                                                    <input type="checkbox" id="igv_check" name="igv_check">
-                                                </span>
-                                            </div>
+                                            @if (!empty($orden))
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="igv_check" name="igv_check" disabled>
+                                                    </span>
+                                                </div>
+                                            @else
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="igv_check" name="igv_check">
+                                                    </span>
+                                                </div>
+                                            @endif
                                             @if (!empty($orden))
                                             <input type="text" value="{{old('igv',$orden->igv)}}"
                                                 class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
-                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)"
-                                                required>
+                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)" readonly>
                                             @else
                                             <input type="text" value="{{old('igv')}}"
                                                 class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
@@ -384,12 +449,12 @@
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
                                         name="observacion" id="observacion"  onkeyup="return mayus(this)"
-                                        value="{{old('observacion',$orden->observacion)}}">{{old('observacion',$orden->observacion)}}</textarea>
+                                        value="{{old('observacion',$orden->observacion)}}" @if ($orden) {{'disabled'}} @endif >{{old('observacion',$orden->observacion)}}</textarea>
                                     @else
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
                                         name="observacion" id="observacion"  onkeyup="return mayus(this)"
-                                        value="{{old('observacion')}}">{{old('observacion')}}</textarea>
+                                        value="{{old('observacion')}}" >{{old('observacion')}}</textarea>
                                     @endif
 
                                     @if ($errors->has('observacion'))
@@ -419,74 +484,76 @@
                                     </div>
                                     <div class="panel-body">
 
+                                        @if (empty($orden))
+                                            <div class="row">
 
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <label class="required">Producto:</label>
-                                                <select class="select2_form form-control"
-                                                    style="text-transform: uppercase; width:100%" name="articulo_id"
-                                                    id="articulo_id" onchange="cargarPresentacion(this)">
-                                                    <option></option>
-                                                    @foreach ($articulos as $articulo)
-                                                    <option value="{{$articulo->id}}">{{$articulo->descripcion}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="invalid-feedback"><b><span id="error-articulo"></span></b>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <div class="col-md-6">
-                                                        <label class="">Presentación:</label>
-                                                        <input type="text" id="presentacion" name="presentacion" class="form-control" disabled>
-                                                        <div class="invalid-feedback"><b><span id="error-presentacion"></span></b></div>
-                                                    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="required">Costo Flete:</label>
-                                                        <input type="text" id="costo_flete" name="costo_flete" class="form-control">
-                                                        <div class="invalid-feedback"><b><span id="error-costo-flete"></span></b></div>
+                                                <div class="col-md-6">
+                                                    <label class="required">Producto:</label>
+                                                    <select class="select2_form form-control"
+                                                        style="text-transform: uppercase; width:100%" name="articulo_id"
+                                                        id="articulo_id" onchange="cargarPresentacion(this)">
+                                                        <option></option>
+                                                        @foreach ($articulos as $articulo)
+                                                        <option value="{{$articulo->id}}">{{$articulo->descripcion}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="invalid-feedback"><b><span id="error-articulo"></span></b>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <div class="col-md-6">
+                                                            <label class="">Presentación:</label>
+                                                            <input type="text" id="presentacion" name="presentacion" class="form-control" disabled>
+                                                            <div class="invalid-feedback"><b><span id="error-presentacion"></span></b></div>
+                                                        
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="required">Costo Flete:</label>
+                                                            <input type="text" id="costo_flete" name="costo_flete" class="form-control">
+                                                            <div class="invalid-feedback"><b><span id="error-costo-flete"></span></b></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
 
                                             </div>
 
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label class="col-form-label required" for="amount">Precio:</label>
-                                                    <input type="text" id="precio" class="form-control">
-                                                    <div class="invalid-feedback"><b><span id="error-precio"></span></b>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label required" for="amount">Precio:</label>
+                                                        <input type="text" id="precio" class="form-control">
+                                                        <div class="invalid-feedback"><b><span id="error-precio"></span></b>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-3">
+                                                <div class="col-sm-3">
 
-                                                <label class="col-form-label required">Cantidad:</label>
-                                                <input type="text" id="cantidad" class="form-control">
-                                                <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
+                                                    <label class="col-form-label required">Cantidad:</label>
+                                                    <input type="text" id="cantidad" class="form-control">
+                                                    <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
+                                                    </div>
+
+
                                                 </div>
+                                                <div class="col-sm-6">
 
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="amount">&nbsp;</label>
+                                                        <a class="btn btn-block btn-warning enviar_articulo"
+                                                            style='color:white;'> <i class="fa fa-plus"></i> AGREGAR</a>
+                                                    </div>
 
-                                            </div>
-                                            <div class="col-sm-6">
-
-                                                <div class="form-group">
-                                                    <label class="col-form-label" for="amount">&nbsp;</label>
-                                                    <a class="btn btn-block btn-warning enviar_articulo"
-                                                        style='color:white;'> <i class="fa fa-plus"></i> AGREGAR</a>
                                                 </div>
-
                                             </div>
-                                        </div>
+                                            <hr>
+                                        @endif
 
 
-                                        <hr>
+                                       
 
                                         <div class="table-responsive">
                                             <table
@@ -812,6 +879,14 @@ $('#enviar_documento').submit(function(e) {
                     if (validar == true) {
                         cargarArticulos()
                         document.getElementById("modo_compra").disabled = false;
+                        document.getElementById("igv_check").disabled = false;
+                        document.getElementById("moneda").disabled = false;
+                        document.getElementById("observacion").disabled = false;
+                        document.getElementById("proveedor_razon").disabled = false;
+                        document.getElementById("proveedor_id").disabled = false;
+                        document.getElementById("fecha_documento_campo").disabled = false;
+                        document.getElementById("fecha_entrega_campo").disabled = false;
+
                         this.submit();    
                     }
 
@@ -875,26 +950,7 @@ $(document).ready(function() {
 
     // DataTables
     $('.dataTables-orden-detalle').DataTable({
-        "dom": '<"html5buttons"B>lTfgitp',
-        "buttons": [{
-                extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> Excel',
-                titleAttr: 'Excel',
-                title: 'Detalle de Orden de Compra'
-            },
-            {
-                titleAttr: 'Imprimir',
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Imprimir',
-                customize: function(win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ],
+        "dom": 'lTfgitp',
         "bPaginate": true,
         "bLengthChange": true,
         "bFilter": true,
@@ -914,10 +970,19 @@ $(document).ready(function() {
                 "targets": [1],
                 className: "text-center",
                 render: function(data, type, row) {
-                    return "<div class='btn-group'>" +
+                    @if (!empty($orden))
+                        return "<div class='btn-group'>" +
+                        "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_articulo' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
+                        "</div>";
+                    @else
+                        return "<div class='btn-group'>" +
                         "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_articulo' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
                         "<a class='btn btn-danger btn-sm' id='borrar_articulo' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
                         "</div>";
+                    @endif
+
+
+                    
                 }
             },
 
@@ -1335,6 +1400,21 @@ function obtenerTabla() {
         @endforeach
     @endif
 }
+
+$(document).on("change", "#proveedor_razon", function () {
+   id = $(this).val();
+   if($("#proveedor_id").val() != id){
+      $("#proveedor_id").select2('val',id);
+   }
+});
+
+$(document).on("change", "#proveedor_id", function () {
+   id = $(this).val();
+   if($("#proveedor_razon").val() != id){
+       $("#proveedor_razon").select2('val',id);
+   }
+
+ });
 
 
 

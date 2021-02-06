@@ -189,7 +189,7 @@ class DocumentoController extends Controller
     }
 
     public function store(Request $request){
- 
+        
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
@@ -404,7 +404,6 @@ class DocumentoController extends Controller
         Session::flash('success','Documento de Compra modificada.');
         return redirect()->route('compras.documento.index')->with('modificar', 'success');
     }
-
 
     public function destroy($id)
     {

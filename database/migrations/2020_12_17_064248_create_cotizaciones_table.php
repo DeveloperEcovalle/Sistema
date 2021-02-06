@@ -29,6 +29,8 @@ class CreateCotizacionesTable extends Migration
             $table->string('igv_check',2)->nullable();
             $table->char('igv',3)->nullable();
 
+            $table->string('moneda');
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('estado',['VIGENTE','ATENDIDA', 'ANULADO', 'VENCIDA'])->default('VIGENTE');
             $table->timestamps();

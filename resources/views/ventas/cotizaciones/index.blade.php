@@ -212,8 +212,8 @@
 
         function documento(id) {
             Swal.fire({
-                title: 'Opción Documento de compra',
-                text: "¿Seguro que desea crear un documento de compra?",
+                title: 'Opción Documento de venta',
+                text: "¿Seguro que desea crear un documento de venta?",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: "#1ab394",
@@ -238,6 +238,37 @@
                 }
             })
         }
+
+        @if(!empty($id))
+            Swal.fire({
+                title: 'Documento de Venta duplicado',
+                text: "¿Desea anular el documento y crear uno nuevo?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //Ruta Nuevo Documento
+                    var url_nuevo = '{{ route("ventas.cotizacion.nuevodocumento", ":id")}}';
+                    url_nuevo = url_nuevo.replace(':id', "{{$id}}");
+                    $(location).attr('href', url_nuevo);
+
+                        
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'La Solicitud se ha cancelado.',
+                        'error'
+                    )
+                }
+            })
+        @endif
+
 
     </script>
 @endpush
