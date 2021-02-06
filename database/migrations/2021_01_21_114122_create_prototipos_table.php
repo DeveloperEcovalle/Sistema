@@ -24,6 +24,7 @@ class CreatePrototiposTable extends Migration
             $table->string('imagen')->nullable();
             $table->string('ruta_archivo_word')->nullable();
             $table->string('archivo_word')->nullable();
+            $table->BigInteger('usuario_id');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });
