@@ -29,7 +29,12 @@ class ClienteController extends Controller
                 'documento' => $cliente->getDocumento(),
                 'nombre' => $cliente->nombre,
                 'telefono_movil' => $cliente->telefono_movil,
-                'limite_credito' => ($cliente->limite_credito) ? $cliente->moneda_credito.' '.$cliente->limite_credito : 'No tiene'            ]);
+                'departamento' => $cliente->getDepartamento(),
+                'provincia' => $cliente->getProvincia(),
+                'distrito' => $cliente->getDistrito(),
+                'zona' => $cliente->getDepartamentoZona(),
+                // 'limite_credito' => ($cliente->limite_credito) ? $cliente->moneda_credito.' '.$cliente->limite_credito : 'No tiene'            
+                ]);
         }
         return DataTables::of($coleccion)->toJson();
     }

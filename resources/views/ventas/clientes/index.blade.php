@@ -31,10 +31,20 @@
                         <table class="table dataTables-cliente table-striped table-bordered table-hover"  style="text-transform:uppercase">
                             <thead>
                             <tr>
+                                    
+                                <th colspan="3" class="text-center">CLIENTES</th>
+                                <th colspan="4" class="text-center">UBICACIONES</th>
+                                <th colspan="1" class="text-center"></th>
+
+                            </tr>
+                            <tr>
                                 <th class="text-center">DOCUMENTO</th>
                                 <th class="text-center">NOMBRE</th>
                                 <th class="text-center">TELÉFONO MÓVIL</th>
-                                <th class="text-center">LÍMITE CRÉDITO</th>
+                                <th class="text-center">DEPARTAMENTOS</th>
+                                <th class="text-center">PROVINCIAS</th>
+                                <th class="text-center">DISTRITOS</th>
+                                <th class="text-center">ZONAS</th>
                                 <th class="text-center">ACCIONES</th>
                             </tr>
                             </thead>
@@ -72,7 +82,7 @@
                         extend:    'excelHtml5',
                         text:      '<i class="fa fa-file-excel-o"></i> Excel',
                         titleAttr: 'Excel',
-                        title: 'Tablas Generales'
+                        title: 'Clientes'
                     },
                     {
                         titleAttr: 'Imprimir',
@@ -98,7 +108,10 @@
                     {data: 'documento', className:"text-center"},
                     {data: 'nombre', className:"text-left"},
                     {data: 'telefono_movil', className:"text-center"},
-                    {data: 'limite_credito', className:"text-center"},
+                    {data: 'departamento', className:"text-center"},
+                    {data: 'provincia', className:"text-center"},
+                    {data: 'distrito', className:"text-center"},
+                    {data: 'zona', className:"text-center"},
                     {
                         data: null,
                         className:"text-center",
