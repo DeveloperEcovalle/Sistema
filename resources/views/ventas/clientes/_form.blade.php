@@ -131,7 +131,7 @@
                     <div class="form-group row">
                         <div class="col-lg-6 col-xs-12">
                             <label class="required">Departamento</label>
-                            <select id="departamento" name="departamento" class="select2_form form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%">
+                            <select id="departamento" name="departamento" class="select2_form form-control {{ $errors->has('departamento') ? ' is-invalid' : '' }}" style="width: 100%" onchange="zonaDepartamento(this)">
                                 <option></option>
                                 @foreach(departamentos() as $departamento)
                                     <option value="{{ $departamento->id }}" {{ old('departamento') ? (old('departamento') == $departamento->id ? "selected" : "") : ($cliente->departamento_id == $departamento->id ? "selected" : "")}} >{{ $departamento->nombre }}</option>
@@ -175,6 +175,18 @@
                                 </span>
                             @endif
                         </div>
+
+                        <div class="col-lg-6 col-xs-12">
+                            <label class="required">Zona</label>
+                            <input type="text" id="zona" name="zona" class=" text-center form-control {{ $errors->has('zona') ? ' is-invalid' : '' }}" value="{{old('zona') ? old('zona') : $cliente->zona}}" readonly>
+                            @if ($errors->has('zona'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('zona') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+
                     </div>
 
                     <div class="form-group row">
@@ -994,6 +1006,17 @@
                     }
                 });
             }
+        }
+
+        function zonaDepartamento(depar) {
+            // alert(depar.value)
+            @foreach(departamentos() as $departamento)
+                if ("{{$departamento->id}}" == depar.value){
+                    $('#zona').val("{{$departamento->zona}}")
+                }
+            @endforeach
+
+            
         }
 
         function camposRUC(objeto) {

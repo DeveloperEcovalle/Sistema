@@ -27,7 +27,8 @@ class DepartamentoSeeder extends Seeder
         foreach ($data as $obj) {
             Departamento::create(array(
                 'id' => $obj->id,
-                'nombre' => $obj->nombre
+                'nombre' => $obj->nombre,
+                'zona' => $obj->zona,
             ));
         }
     }

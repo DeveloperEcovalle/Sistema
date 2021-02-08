@@ -54,6 +54,7 @@ class ClienteController extends Controller
             'nombre' => 'required',
             'tipo_cliente' => 'required',
             'departamento' => 'required',
+            'zona' => 'required',
             'provincia' => 'required',
             'distrito' => 'required',
             'direccion' => 'required',
@@ -67,6 +68,7 @@ class ClienteController extends Controller
             'documento.unique' => 'El campo Nro. Documento debe ser único',
             'documento.numeric' => 'El campo Nro. Documento debe ser numérico',
             'departamento.required' => 'El campo Departamento es obligatorio',
+            'zona.required' => 'El campo Zona es obligatorio',
             'provincia.required' => 'El campo Provincia es obligatorio',
             'distrito.required' => 'El campo Distrito es obligatorio',
             'direccion.required' => 'El campo Dirección completa es obligatorio',
@@ -87,6 +89,7 @@ class ClienteController extends Controller
         $cliente->tabladetalles_id = $request->input('tipo_cliente');
         $cliente->nombre = $request->get('nombre');
         $cliente->codigo = $request->get('codigo');
+        $cliente->zona = $request->get('zona');
         $cliente->nombre_comercial = $request->get('nombre_comercial');
 
         $cliente->departamento_id = str_pad($request->get('departamento'), 2, "0", STR_PAD_LEFT);
@@ -149,6 +152,7 @@ class ClienteController extends Controller
                 $query->whereIn('estado',["ACTIVO"]);
             })->ignore($id)],
             'nombre' => 'required',
+            'zona' => 'required',
             'departamento' => 'required',
             'provincia' => 'required',
             'distrito' => 'required',
@@ -164,6 +168,7 @@ class ClienteController extends Controller
             'documento.numeric' => 'El campo Nro. Documento debe ser numérico',
             'departamento.required' => 'El campo Departamento es obligatorio',
             'provincia.required' => 'El campo Provincia es obligatorio',
+            'zona.required' => 'El campo Zona es obligatorio',
             'distrito.required' => 'El campo Distrito es obligatorio',
             'direccion.required' => 'El campo Dirección completa es obligatorio',
             'telefono_movil.required' => 'El campo Teléfono móvil es obligatorio',
@@ -181,6 +186,7 @@ class ClienteController extends Controller
         $cliente->nombre = $request->get('nombre');
         
         $cliente->codigo = $request->get('codigo');
+        $cliente->zona = $request->get('zona');
         $cliente->nombre_comercial = $request->get('nombre_comercial');
 
         $cliente->tabladetalles_id = $request->input('tipo_cliente');

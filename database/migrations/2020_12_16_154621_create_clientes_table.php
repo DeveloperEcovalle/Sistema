@@ -29,6 +29,7 @@ class CreateClientesTable extends Migration
             $table->char('distrito_id', 6)->nullable();
             $table->foreign('distrito_id')->references('id')->on('distritos')->onDelete('cascade');
             $table->string('direccion');
+            $table->string('zona');
             $table->string('correo_electronico');
             $table->string('telefono_movil');
             $table->string('telefono_fijo')->nullable();
