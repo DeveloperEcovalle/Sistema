@@ -428,7 +428,7 @@
 
                                                                     <div class="col-md-5">
                                                                         <label class="required">Modo</label>
-                                                                        <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago')}}"required>
+                                                                        <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago')}}">
                                                                             <option></option>
                                                                             @foreach(modo_responsables() as $responsable)
                                                                                 <option value="{{ $responsable->id }}" {{ (old('responsable_pago') == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
@@ -603,7 +603,7 @@
                                                                 <div class="form-group row">
                                                                     <div class="col-md-6">
                                                                         
-                                                                        <label class="required">Nombre</label>
+                                                                        <label class="">Nombre</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('nombre_contacto_recoger') ? ' is-invalid' : '' }}"
                                                                         name="nombre_contacto_recoger" value="{{ old('nombre_contacto_recoger')}}" id="nombre_contacto_recoger"
@@ -1255,6 +1255,11 @@ function validarCampos() {
     if ($('#nombre_responsable_recoger').val() == ''){
       campos = false
       $('#envios').click()
+    }
+
+    if ($('#responsable_pago').val() == ''){
+      campos = false
+      $('#envios').click()
     } 
 
   }else{
@@ -1269,10 +1274,7 @@ function validarCampos() {
       $('#envios').click()
     } 
 
-    if ($('#nombre_contacto_recoger').val() == ''){
-      campos = false
-      $('#envios').click()
-    } 
+
 
   }
 
@@ -1459,13 +1461,6 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
             $('#error-direccion_domicilio').text("El campo Nombre del Transporte es obligatorio.")
         }
 
-        if ($('#nombre_contacto_recoger').val() == '') {
-            enviar = false
-            $('#nombre_contacto_recoger').addClass("is-invalid")
-            toastr.error("Ingrese el nombre del contacto.", 'Error');
-            $('#error-nombre_contacto_recoger').text("El campo Nombrees obligatorio.")
-        }
-
         break;
     default:    
         if ($('#condicion_reparto').val() == '') {
@@ -1523,9 +1518,6 @@ function limpiarErrores() {
 
     $('#direccion_domicilio').removeClass("is-invalid")
     $('#error-direccion_domicilio').text("")
-
-    $('#nombre_contacto_recoger').removeClass("is-invalid")
-    $('#error-nombre_contacto_recoger').text("")
 
     $('#condicion_reparto').removeClass("is-invalid")
     $('#error-condicion_reparto').text("")

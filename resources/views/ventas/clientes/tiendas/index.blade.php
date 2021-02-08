@@ -42,6 +42,7 @@
                             <th class="text-center">NOMBRE DE NEGOCIO</th>
                             <th class="text-center">TIPO</th>
                             <th class="text-center">NEGOCIO</th>
+                            <th class="text-center">ENVIO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
@@ -109,11 +110,11 @@
             "ajax": '{{ route("clientes.tienda.shop", $cliente->id )}}',
             "columns": [
                 //Empresa
-                {data: 'id', className:"text-center", visible:false, name:'cliente_tiendas.id'},
-                {data: 'nombre', name:'cliente_tiendas.nombre'},
-                {data: 'tipo_tienda', className:"text-center", name:'cliente_tiendas.tipo_tienda'},
-                {data: 'tipo_negocio', name:'cliente_tiendas.tipo_negocio',className:"text-center"},
-
+                {data: 'id', className:"text-center", visible:false},
+                {data: 'nombre'},
+                {data: 'tipo_tienda', className:"text-center"},
+                {data: 'tipo_negocio', className:"text-center"},
+                {data: 'envio', className:"text-center"},
                 {
                     data: null,
                     className:"text-center",

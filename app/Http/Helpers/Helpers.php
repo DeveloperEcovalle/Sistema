@@ -396,20 +396,8 @@ if (!function_exists('calcularMontosAcuentaDocumentosVentas')) {
     function calcularMontosAcuentaDocumentosVentas($id)
     {
         
-        // $suma_detalle_pago = DB::table('documento_pago_detalle')
-        // ->join('compra_documento_pagos','compra_documento_pagos.id','=','documento_pago_detalle.pago_id')
-        // ->join('compra_documento_pago_detalle','compra_documento_pago_detalle.id','=','documento_pago_detalle.detalle_id')
-        // ->join('compra_documentos','compra_documentos.id','=','compra_documento_pagos.documento_id')
-        // ->select('compra_documento_pagos.*','compra_documentos.*')        
-        // ->where('compra_documentos.id','=',$id)
-        // ->where('compra_documento_pagos.estado','ACTIVO')
-        // ->sum('compra_documento_pago_detalle.monto');
-
-
         $suma_detalle_pago = DB::table('cotizacion_documento_pago_detalles')
         ->join('cotizacion_documento_pagos','cotizacion_documento_pagos.id','=','cotizacion_documento_pago_detalles.pago_id')
-
-        // ->join('compra_documento_pago_detalle','compra_documento_pago_detalle.id','=','documento_pago_detalle.detalle_id')
         
         ->join('cotizacion_documento','cotizacion_documento.id','=','cotizacion_documento_pagos.documento_id')
 
@@ -422,11 +410,6 @@ if (!function_exists('calcularMontosAcuentaDocumentosVentas')) {
     }
 
 }
-
-
-
-
-
 
 
 // Calcular monto restante caja chica
