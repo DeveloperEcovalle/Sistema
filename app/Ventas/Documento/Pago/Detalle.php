@@ -11,7 +11,7 @@ class Detalle extends Model
     public $timestamps = true;
     protected $fillable = [
             'pago_id',
-            'caja_id',
+            // 'caja_id',
 
             'ruta_archivo',
             'nombre_archivo',
@@ -19,7 +19,7 @@ class Detalle extends Model
             'monto',
             'moneda',
 
-            'fecha_venta',
+            // 'fecha_venta',
             'tipo_pago',
             'observacion',
             'estado'

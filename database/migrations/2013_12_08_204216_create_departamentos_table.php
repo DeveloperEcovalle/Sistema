@@ -16,6 +16,7 @@ class CreateDepartamentosTable extends Migration
         Schema::create('departamentos', function (Blueprint $table) {
             $table->char('id', 2)->primary();
             $table->string('nombre');
+            $table->string('zona');
         });
     }
 

@@ -22,7 +22,7 @@ class CajaController extends Controller
         $cajas = DB::table('pos_caja_chica')
         ->join('empleados','pos_caja_chica.empleado_id','=','empleados.id')
         ->join('personas','empleados.persona_id','=','personas.id')
-        ->select('pos_caja_chica.*','empleados.id as empleado_id','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_materno,\' \',personas.apellido_paterno,\' \',personas.nombres) AS nombre_completo'),DB::raw('DATE_FORMAT(pos_caja_chica.created_at, "%d/%m/%Y %h:%i:%s ") as creado'), DB::raw('DATE_FORMAT(cierre, "%d/%m/%Y %h:%i:%s") as cierre'))
+        ->select('pos_caja_chica.*','empleados.id as empleado_id','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_paterno,\' \',personas.apellido_materno,\' \',personas.nombres) AS nombre_completo'),DB::raw('DATE_FORMAT(pos_caja_chica.created_at, "%d/%m/%Y %h:%i:%s ") as creado'), DB::raw('DATE_FORMAT(cierre, "%d/%m/%Y %h:%i:%s") as cierre'))
         ->where('pos_caja_chica.estado','!=',"ANULADO")
         ->get();
 
@@ -30,15 +30,20 @@ class CajaController extends Controller
        
 
         foreach($cajas as $caja){
+                
                 $tipo_moneda = '';
                 foreach(tipos_moneda() as $moneda){
                     if ($moneda->descripcion == $caja->moneda) {
                         $tipo_moneda= $moneda->simbolo;
                     }
                 }
-
+                
                 $restante = calcularMontoRestanteCaja($caja->id);
+                $ventas = calcularSumaMontosPagosVentas($caja->id);
+             
                 $quedando = $caja->saldo_inicial - $restante;
+                $total_ventas = $quedando+$ventas;
+
                 $coleccion->push([
                     'id' => $caja->id,
                     'empleado_id' => $caja->empleado_id,
@@ -46,7 +51,7 @@ class CajaController extends Controller
                     'nombre_completo' => $caja->nombre_completo,
                     'creado' => $caja->creado,
                     'cierre' => $caja->cierre,
-                    'restante' => number_format($quedando,2,'.',''),
+                    'restante' => number_format($total_ventas,2,'.',''),
                     'saldo_inicial' => $caja->saldo_inicial,
                     'moneda' => $tipo_moneda.' '.$caja->moneda,
                     'estado' => $caja->estado,

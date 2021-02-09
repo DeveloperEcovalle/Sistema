@@ -69,6 +69,11 @@ class Cliente extends Model
         return departamentos()->where('id', $this->departamento_id)->first()->nombre;
     }
 
+    public function getDepartamentoZona(): string
+    {
+        return departamentos()->where('id', $this->departamento_id)->first()->zona;
+    }
+
     public function getProvincia(): string
     {
         return provincias($this->provincia_id)->first()->nombre;

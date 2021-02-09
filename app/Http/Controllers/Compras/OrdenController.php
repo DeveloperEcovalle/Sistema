@@ -350,10 +350,16 @@ class OrdenController extends Controller
         if ($documento) {
             $documento->estado = 'ANULADO';
             $documento->update();
+
+            Session::flash('success','Orden de Compra modificada y documento eliminado.');
+            return redirect()->route('compras.orden.index')->with('modificar', 'success');
+        }else{
+
+            Session::flash('success','Orden de Compra modificada.');
+            return redirect()->route('compras.orden.index')->with('modificar', 'success');
         }
         
-        Session::flash('success','Orden de Compra modificada.');
-        return redirect()->route('compras.orden.index')->with('modificar', 'success');
+
     }
 
 

@@ -1,102 +1,128 @@
 [
     {
         "id" : "01",
-        "nombre" : "AMAZONAS"
+        "nombre" : "AMAZONAS",
+        "zona" : "NORTE"
     },
     {
         "id" : "02",
-        "nombre" : "ANCASH"
+        "nombre" : "ANCASH",
+        "zona" : "CENTRO"
     },
     {
         "id" : "03",
-        "nombre" : "APURIMAC"
+        "nombre" : "APURIMAC",
+        "zona" : "SUR"
     },
     {
         "id" : "04",
-        "nombre" : "AREQUIPA"
+        "nombre" : "AREQUIPA",
+        "zona" : "SUR"
     },
     {
         "id" : "05",
-        "nombre" : "AYACUCHO"
+        "nombre" : "AYACUCHO",
+        "zona" : "SUR"
     },
     {
         "id" : "06",
-        "nombre" : "CAJAMARCA"
+        "nombre" : "CAJAMARCA",
+        "zona" : "NORTE"
     },
     {
         "id" : "07",
-        "nombre" : "CALLAO"
+        "nombre" : "CALLAO",
+        "zona" : "CENTRO"
+
     },
     {
         "id" : "08",
-        "nombre" : "CUSCO"
+        "nombre" : "CUSCO",
+        "zona" : "SUR"
     },
     {
         "id" : "09",
-        "nombre" : "HUANCAVELICA"
+        "nombre" : "HUANCAVELICA",
+        "zona" : "CENTRO"
     },
     {
         "id" : "10",
-        "nombre" : "HUANUCO"
+        "nombre" : "HUANUCO",
+        "zona" : "CENTRO"
     },
     {
         "id" : "11",
-        "nombre" : "ICA"
+        "nombre" : "ICA",
+        "zona" : "CENTRO"
     },
     {
         "id" : "12",
-        "nombre" : "JUNIN"
+        "nombre" : "JUNIN",
+        "zona" : "CENTRO"
     },
     {
         "id" : "13",
-        "nombre" : "LA LIBERTAD"
+        "nombre" : "LA LIBERTAD",
+        "zona" : "NORTE"
     },
     {
         "id" : "14",
-        "nombre" : "LAMBAYEQUE"
+        "nombre" : "LAMBAYEQUE",
+        "zona" : "NORTE"
     },
     {
         "id" : "15",
-        "nombre" : "LIMA"
+        "nombre" : "LIMA",
+        "zona" : "CENTRO"
     },
     {
         "id" : "16",
-        "nombre" : "LORETO"
+        "nombre" : "LORETO",
+        "zona" : "NORTE"
     },
     {
         "id" : "17",
-        "nombre" : "MADRE DE DIOS"
+        "nombre" : "MADRE DE DIOS",
+        "zona" : "SUR"
     },
     {
         "id" : "18",
-        "nombre" : "MOQUEGUA"
+        "nombre" : "MOQUEGUA",
+        "zona" : "SUR"
     },
     {
         "id" : "19",
-        "nombre" : "PASCO"
+        "nombre" : "PASCO",
+        "zona" : "CENTRO"
     },
     {
         "id" : "20",
-        "nombre" : "PIURA"
+        "nombre" : "PIURA",
+        "zona" : "NORTE"
     },
     {
         "id" : "21",
-        "nombre" : "PUNO"
+        "nombre" : "PUNO",
+        "zona" : "SUR"
     },
     {
         "id" : "22",
-        "nombre" : "SAN MARTIN"
+        "nombre" : "SAN MARTIN",
+        "zona" : "NORTE"
     },
     {
         "id" : "23",
-        "nombre" : "TACNA"
+        "nombre" : "TACNA",
+        "zona" : "SUR"
     },
     {
         "id" : "24",
-        "nombre" : "TUMBES"
+        "nombre" : "TUMBES",
+        "zona" : "NORTE"
     },
     {
         "id" : "25",
-        "nombre" : "UCAYALI"
+        "nombre" : "UCAYALI",
+        "zona" : "CENTRO"
     }
 ]

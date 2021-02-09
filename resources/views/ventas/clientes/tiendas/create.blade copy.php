@@ -6,7 +6,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>MODIFICAR TIENDA #{{$tienda->id}} DEL CLIENTE : {{$tienda->cliente->nombre}} </b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVA TIENDA DEL CLIENTE : {{$cliente->nombre}} </b></h2>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -16,11 +16,10 @@
                 <a href="{{route('ventas.cliente.index')}}">Clientes</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('clientes.tienda.index',$tienda->cliente->id)}}">Tiendas</a>
+                <a href="{{route('clientes.tienda.index',$cliente->id)}}">Tiendas</a>
             </li>
-  
             <li class="breadcrumb-item active">
-                <strong>Modificar</strong>
+                <strong>Registrar</strong>
             </li>
 
         </ol>
@@ -39,9 +38,9 @@
 
                 <div class="ibox-content">
 
-                    <form action="{{route('clientes.tienda.update', $tienda->id)}}" method="POST" 
-                        id="enviar_tienda">
-                        @csrf @method('PUT')
+                    <form action="{{route('clientes.tienda.store')}}" method="POST" 
+                        id="enviar_empresa">
+                        {{csrf_field()}}
 
 
                         <div class="row">
@@ -49,20 +48,20 @@
                                 <div class="tabs-container">
                                     <ul class="nav nav-tabs">
                                         <li title="Datos de la Tienda">
-                                            <a class="nav-link active" data-toggle="tab" href="#tab-1" id="tiendas" ><i class="fa fa-shopping-cart"></i> Tienda</a>
+                                            <a class="nav-link active" id="datos_tienda" data-toggle="tab" href="#tab-1" id="tiendas" ><i class="fa fa-shopping-cart"></i> Tienda</a>
                                         </li>
                                         <li title="Datos de Envio">
                                             <a class="nav-link" data-toggle="tab"href="#tab-2" id="envios" > <i class="fa fa-send"></i> Envio</a>
                                         </li>
                                         <li title="Datos de los Contactos">
-                                            <a class="nav-link" data-toggle="tab"href="#tab-3" id="contactos"> <i class="fa fa-user"></i> Contactos</a>
+                                            <a class="nav-link" data-toggle="tab"href="#tab-3" id="contactos" > <i class="fa fa-user"></i> Contactos</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
                                             <div id="tab-1" class="tab-pane active">
                                                 <div class="panel-body">
 
-                                                <input type="hidden" name="cliente_id" value="{{$tienda->cliente_id}}">
+                                                <input type="hidden" name="cliente_id" value="{{$cliente->id}}">
 
 
                                                     <div class="row">
@@ -70,7 +69,7 @@
                                                             <h4><b>Tienda</b></h4>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <p>Modificar datos de la tienda:</p>
+                                                                    <p>Registrar datos de la nueva tienda:</p>
                                                                 </div>
                                                             </div>
 
@@ -78,11 +77,10 @@
                                                                 <div class="col-md-6">
                                                                     <label class="required">Tipo:</label>
 
-                                                                    <select class="select2_form form-control {{ $errors->has('tipo_tienda') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('tipo_tienda', $tienda->tipo_tienda)}}" name="tipo_tienda" id="tipo_tienda" required>
+                                                                    <select class="select2_form form-control {{ $errors->has('tipo_tienda') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('tipo_tienda')}}" name="tipo_tienda" id="tipo_tienda" required>
                                                                         <option></option>
-
-                                                                        @foreach(tipos_tienda() as $tipo)
-                                                                            <option value="{{ $tipo->descripcion }}" {{ (old('tipo_tienda', $tienda->tipo_tienda) == $tipo->descripcion ? "selected" : "") }}>{{ $tipo->descripcion }}</option>
+                                                                        @foreach (tipos_tienda() as $tienda)
+                                                                            <option value="{{$tienda->descripcion}}" @if(old('tipo_tienda') == $tienda->descripcion) {{'selected'}} @endif>{{$tienda->descripcion}}</option>
                                                                         @endforeach
 
                                                                         @if ($errors->has('tipo_tienda'))
@@ -96,11 +94,10 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label class="required">Negocio:</label>
-                                                                        <select class="select2_form form-control {{ $errors->has('tipo_negocio') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('tipo_negocio', $tienda->tipo_negocio)}}" name="tipo_negocio" id="tipo_negocio" required>
+                                                                        <select class="select2_form form-control {{ $errors->has('tipo_negocio') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('tipo_negocio')}}" name="tipo_negocio" id="tipo_negocio" required>
                                                                             <option></option>
-
-                                                                            @foreach(tipos_negocio() as $tipo)
-                                                                                <option value="{{ $tipo->descripcion }}" {{ (old('tipo_negocio', $tienda->tipo_negocio) == $tipo->descripcion ? "selected" : "") }}>{{ $tipo->descripcion }}</option>
+                                                                            @foreach (tipos_negocio() as $negocio)
+                                                                                <option value="{{$negocio->descripcion}}" @if(old('tipo_negocio') == $tienda->descripcion ) {{'selected'}} @endif>{{$negocio->descripcion}}</option>
                                                                             @endforeach
 
                                                                             @if ($errors->has('tipo_negocio'))
@@ -121,7 +118,7 @@
 
                                                                 <input type="text"
                                                                     class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}"
-                                                                    name="nombre" value="{{ old('nombre',$tienda->nombre)}}" id="nombre"
+                                                                    name="nombre" value="{{ old('nombre')}}" id="nombre"
                                                                     onkeyup="return mayus(this)" required>
 
                                                                 @if ($errors->has('nombre'))
@@ -131,14 +128,14 @@
                                                                 @endif
                                                                 <div class="invalid-feedback"><b><span id="error-nombre"></span></b></div>
                                                             </div>
-
+                                                            
 
                                                             <div class="form-group row">
                                                                 <div class="col-md-12">
                                                                     <label class="required">Dirección:</label>
                                                                     <textarea type="text" id="direccion" name="direccion" required
-                                                                        class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion',$tienda->direccion)}}"
-                                                                        onkeyup="return mayus(this)" >{{old('direccion',$tienda->direccion)}}</textarea>
+                                                                        class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{old('direccion')}}"
+                                                                        onkeyup="return mayus(this)" >{{old('direccion')}}</textarea>
                                                                     @if ($errors->has('direccion'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('direccion') }}</strong>
@@ -156,7 +153,7 @@
 
                                                                 <input type="email"
                                                                     class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}"
-                                                                    name="correo" value="{{ old('correo',$tienda->correo)}}" id="correo"
+                                                                    name="correo" value="{{ old('correo')}}" id="correo"
                                                                     onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('correo'))
@@ -172,7 +169,7 @@
                                                                     <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('telefono') ? ' is-invalid' : '' }}"
                                                                         name="telefono" id="telefono"  onkeyup="return mayus(this)"
-                                                                        value="{{old('telefono',$tienda->telefono)}}">
+                                                                        value="{{old('telefono')}}">
                                                                     @if ($errors->has('telefono'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('telefono') }}</strong>
@@ -184,7 +181,7 @@
                                                                     <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('celular') ? ' is-invalid' : '' }}"
                                                                         name="celular" id="celular"  onkeyup="return mayus(this)"
-                                                                        value="{{old('celular',$tienda->celular)}}">
+                                                                        value="{{old('celular')}}">
                                                                     @if ($errors->has('celular'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('celular') }}</strong>
@@ -198,7 +195,10 @@
 
                                                         </div>
                                                         <div class="col-md-6">
-                                                        <div class="row">
+
+
+
+                                                            <div class="row">
                                                                 <div class="col-md-12">
                                                                     <p>Horario de Atención:</p>
                                                                 </div>
@@ -208,7 +208,7 @@
                                                             <div class="form-group row">
                                                                 <div class="col-md-6">
                                                                     <label>Horario Inicio:</label>
-                                                                    <input type="time" name="hora_inicio" class="form-control" value="{{old('hora_inicio',$tienda->hora_inicio)}}" max="24:00:00" min="00:00:00" step="1">
+                                                                    <input type="time" name="hora_inicio" class="form-control" value="00:00:00" max="24:00:00" min="00:00:00" step="1">
                                                                     @if ($errors->has('horario_inicio'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('horario_inicio') }}</strong>
@@ -217,7 +217,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label>Horario Termino:</label>                                             
-                                                                    <input type="time" name="hora_termino" class="form-control" value="{{old('hora_termino',$tienda->hora_fin)}}" max="24:00:00" min="00:00:00" step="1">
+                                                                    <input type="time" name="hora_termino" class="form-control" value="00:00:00" max="24:00:00" min="00:00:00" step="1">
                                                                     @if ($errors->has('horario_termino'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('horario_termino') }}</strong>
@@ -228,8 +228,6 @@
                                                                 
 
                                                             </div>
-
-                                                    
                                                             
                                                             <hr>
 
@@ -246,7 +244,7 @@
                                                                                 <i class="fa fa-facebook"></i>
                                                                             </span>
                                                                             <input type="text" id="facebook" name="facebook"
-                                                                                class="form-control {{ $errors->has('facebook') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('facebook',$tienda->facebook)}}">
+                                                                                class="form-control {{ $errors->has('facebook') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('facebook')}}">
 
                                                                                 @if ($errors->has('facebook'))
                                                                                 <span class="invalid-feedback" role="alert">
@@ -266,7 +264,7 @@
                                                                             <i class="fa fa-instagram"></i>
                                                                         </span>
                                                                         <input type="text" id="instagram" name="instagram"
-                                                                            class="form-control {{ $errors->has('instagram') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('instagram',$tienda->instagram)}}">
+                                                                            class="form-control {{ $errors->has('instagram') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('instagram')}}">
 
                                                                             @if ($errors->has('instagram'))
                                                                             <span class="invalid-feedback" role="alert">
@@ -286,7 +284,7 @@
                                                                             <i class="fa fa-globe"></i>
                                                                         </span>
                                                                         <input type="text" id="web" name="web"
-                                                                            class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('web',$tienda->web)}}">
+                                                                            class="form-control {{ $errors->has('web') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"  value="{{old('web')}}">
 
                                                                             @if ($errors->has('web'))
                                                                             <span class="invalid-feedback" role="alert">
@@ -317,17 +315,17 @@
                                                             <div class="form-group">
                                                                 
                                                                 <h4><b>Datos de Envio</b></h4>
-                                                                <p>Modificar datos de envio:</p>
+                                                                <p>Registrar datos de envio:</p>
                                                                 
                                                             </div>
 
                                                             <div class="form-group">
 
                                                                 <label class="required">Condicion de Reparto</label>
-                                                                <select id="condicion_reparto" name="condicion_reparto" value="{{old('condicion_reparto',$tienda->condicion_reparto)}}" class="select2_form form-control {{ $errors->has('condicion_reparto') ? ' is-invalid' : '' }}">
+                                                                <select id="condicion_reparto" name="condicion_reparto" class="select2_form form-control {{ $errors->has('condicion_reparto') ? ' is-invalid' : '' }}">
                                                                     <option></option>
                                                                     @foreach(condicion_reparto() as $condicion_reparto)
-                                                                        <option value="{{ $condicion_reparto->id }}" @if(old('condicion_reparto',$tienda->condicion_reparto) == $condicion_reparto->id) {{'selected'}} @endif>{{ $condicion_reparto->descripcion }}</option>
+                                                                        <option value="{{ $condicion_reparto->id }}" @if(old('condicion_reparto') == $condicion_reparto->descripcion) {{'selected'}} @endif>{{ $condicion_reparto->descripcion }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 @if ($errors->has('condicion_reparto'))
@@ -361,13 +359,13 @@
                                                                     
                                                                 </div>
 
-                                                                
+                                                               
 
                                                                 <div class="form-group">
                                                                     <label class="required">Nombre </label>
 
                                                                     <input type="text" class="form-control {{ $errors->has('nombre_transporte_oficina') ? ' is-invalid' : '' }}"
-                                                                    name="nombre_transporte_oficina" value="{{ old('nombre_transporte_oficina',$tienda->nombre_transporte_oficina)}}" id="nombre_transporte_oficina"
+                                                                    name="nombre_transporte_oficina" value="{{ old('nombre_transporte_oficina')}}" id="nombre_transporte_oficina"
                                                                     onkeyup="return mayus(this)" disabled>
 
                                                                     @if ($errors->has('nombre_transporte_oficina'))
@@ -386,7 +384,7 @@
                                                                     <label class="required">Dirección </label>
 
                                                                     <input type="text" class="form-control {{ $errors->has('direccion_transporte_oficina') ? ' is-invalid' : '' }}"
-                                                                        name="direccion_transporte_oficina" value="{{ old('direccion_transporte_oficina',$tienda->direccion_transporte_oficina)}}" id="direccion_transporte_oficina"
+                                                                        name="direccion_transporte_oficina" value="{{ old('direccion_transporte_oficina')}}" id="direccion_transporte_oficina"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                         @if ($errors->has('direccion_transporte_oficina'))
@@ -403,19 +401,19 @@
 
                                                                 <div class="form-group">
                                                             
-                                                                    <p>Modificar Responsable (Pago de flete) :</p>
+                                                                    <p>Registrar Responsable (Pago de flete) :</p>
                                                                     
                                                                 </div>
 
 
                                                                 <div class="form-group row">
+
                                                                     <div class="col-md-7">
-
-
+                          
                                                                         <label class="required">Nombre</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('responsable_pago_flete') ? ' is-invalid' : '' }}"
-                                                                        name="responsable_pago_flete" value="{{ old('responsable_pago_flete',$tienda->responsable_pago_flete)}}" id="responsable_pago_flete"
+                                                                        name="responsable_pago_flete" value="{{ old('responsable_pago_flete')}}" id="responsable_pago_flete"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                             @if ($errors->has('responsable_pago_flete'))
@@ -424,16 +422,16 @@
                                                                             </span>
                                                                             @endif
 
-                                                                        <div class="invalid-feedback"><b><span id="error-responsable_pago_flete"></span></b></div>
-
+                                                                        <div class="invalid-feedback"><b><span id="error-responsable_pago_flete"></span></b></div>                                          
+                                                                    
                                                                     </div>
 
                                                                     <div class="col-md-5">
                                                                         <label class="required">Modo</label>
-                                                                        <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago',$tienda->responsable_pago)}}" >
+                                                                        <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago')}}"required>
                                                                             <option></option>
                                                                             @foreach(modo_responsables() as $responsable)
-                                                                                <option value="{{ $responsable->id }}" {{ (old('responsable_pago',$tienda->responsable_pago) == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
+                                                                                <option value="{{ $responsable->id }}" {{ (old('responsable_pago') == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                         @if ($errors->has('responsable_pago'))
@@ -443,18 +441,16 @@
                                                                         @endif
 
                                                                         <div class="invalid-feedback"><b><span id="error-responsable_pago"></span></b></div>  
+                                                                    
+                                                                    
                                                                     </div>
 
 
 
                                                                 </div>
 
-
-
-
-
                                                                 <div class="form-group">
-                                                                    <p>Registrar Responsable de recoger el envio:</p>
+                                                                    <p>Registrar Responsable (Recoger el envio) :</p>
                                                                 </div>
 
                                                                 <div class="form-group row">
@@ -463,7 +459,7 @@
                                                                         <label class="required">Dni</label>
 
                                                                         <div class="input-group">
-                                                                            <input type="text" class="form-control {{ $errors->has('dni_responsable_recoger') ? ' is-invalid' : '' }}" name="dni_responsable_recoger" min="8" value="{{ old('dni_responsable_recoger',$tienda->dni_responsable_recoger)}}" id="dni_responsable_recoger" onkeyup="return mayus(this)" disabled> 
+                                                                            <input type="text" class="form-control {{ $errors->has('dni_responsable_recoger') ? ' is-invalid' : '' }}" name="dni_responsable_recoger" min="8" value="{{ old('dni_responsable_recoger')}}" id="dni_responsable_recoger" onkeyup="return mayus(this)" disabled> 
                                                                             <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
 
                                                                             @if ($errors->has('dni_responsable_recoger'))
@@ -473,15 +469,13 @@
                                                                             @endif
                                                                             <div class="invalid-feedback"><b><span id="error-dni_responsable_recoger"></span></b></div>
                                                                         </div>
-
-
                                                                     </div>
 
                                                                     <div class="col-md-5">
                                                                         <label class="">Estado</label>
 
                                                                         <input type="text" class="form-control  text-center {{ $errors->has('estado_responsable_recoger') ? ' is-invalid' : '' }}"
-                                                                        name="estado_responsable_recoger" value="{{ old('estado_responsable_recoger',$tienda->estado_responsable_recoger)}}" id="estado_responsable_recoger"
+                                                                        name="estado_responsable_recoger" value="{{ old('estado_responsable_recoger','SIN VERIFICAR')}}" id="estado_responsable_recoger"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                             @if ($errors->has('estado_responsable_recoger'))
@@ -503,7 +497,7 @@
                                                                         <label class="required">Nombre</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('nombre_responsable_recoger') ? ' is-invalid' : '' }}"
-                                                                        name="nombre_responsable_recoger" value="{{ old('nombre_responsable_recoger',$tienda->nombre_responsable_recoger)}}" id="nombre_responsable_recoger"
+                                                                        name="nombre_responsable_recoger" value="{{ old('nombre_responsable_recoger')}}" id="nombre_responsable_recoger"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                             @if ($errors->has('nombre_responsable_recoger'))
@@ -519,7 +513,7 @@
                                                                         <label class="">Telefono</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('telefono_responsable_recoger') ? ' is-invalid' : '' }}"
-                                                                        name="telefono_responsable_recoger" value="{{ old('telefono_responsable_recoger',$tienda->telefono_responsable_recoger)}}" id="telefono_responsable_recoger"
+                                                                        name="telefono_responsable_recoger" value="{{ old('telefono_responsable_recoger')}}" id="telefono_responsable_recoger"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                             @if ($errors->has('telefono_responsable_recoger'))
@@ -538,7 +532,7 @@
                                                                     <textarea type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('observacion_envio') ? ' is-invalid' : '' }}"
                                                                         name="observacion_envio" id="observacion_envio"  onkeyup="return mayus(this)"
-                                                                        value="{{old('observacion_envio',$tienda->observacion_envio)}}" disabled>{{old('observacion_envio',$tienda->observacion_envio)}}</textarea>
+                                                                        value="{{old('observacion_envio')}}" disabled>{{old('observacion_envio')}}</textarea>
                                                                     @if ($errors->has('observacion_envio'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('observacion_envio') }}</strong>
@@ -565,7 +559,7 @@
                                                                     <label class="required">Nombre </label>
 
                                                                     <input type="text" class="form-control {{ $errors->has('nombre_transporte_domicilio') ? ' is-invalid' : '' }}"
-                                                                    name="nombre_transporte_domicilio" value="{{ old('nombre_transporte_domicilio',$tienda->nombre_transporte_domicilio)}}" id="nombre_transporte_domicilio"
+                                                                    name="nombre_transporte_domicilio" value="{{ old('nombre_transporte_domicilio')}}" id="nombre_transporte_domicilio"
                                                                     onkeyup="return mayus(this)" disabled>
 
                                                                     @if ($errors->has('nombre_transporte_domicilio'))
@@ -586,7 +580,7 @@
                                                                     <label class="required">Dirección del domicilio </label>
 
                                                                     <input type="text" class="form-control {{ $errors->has('direccion_domicilio') ? ' is-invalid' : '' }}"
-                                                                        name="direccion_domicilio" value="{{ old('direccion_domicilio',$tienda->direccion_domicilio)}}" id="direccion_domicilio"
+                                                                        name="direccion_domicilio" value="{{ old('direccion_domicilio')}}" id="direccion_domicilio"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                         @if ($errors->has('direccion_domicilio'))
@@ -607,12 +601,12 @@
 
 
                                                                 <div class="form-group row">
-                                                                    <div class="col-md-8">
+                                                                    <div class="col-md-6">
                                                                         
                                                                         <label class="">Nombre</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('nombre_contacto_recoger') ? ' is-invalid' : '' }}"
-                                                                        name="nombre_contacto_recoger" value="{{ old('nombre_contacto_recoger',$tienda->nombre_contacto_recoger)}}" id="nombre_contacto_recoger"
+                                                                        name="nombre_contacto_recoger" value="{{ old('nombre_contacto_recoger')}}" id="nombre_contacto_recoger"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                             @if ($errors->has('nombre_contacto_recoger'))
@@ -624,11 +618,11 @@
                                                                         <div class="invalid-feedback"><b><span id="error-nombre_contacto_recoger"></span></b></div>
 
                                                                     </div>
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-6">
                                                                         <label class="">Telefono</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('telefono_contacto_recoger') ? ' is-invalid' : '' }}"
-                                                                        name="telefono_contacto_recoger" value="{{ old('telefono_contacto_recoger',$tienda->nombre_contacto_recoger)}}" id="telefono_contacto_recoger"
+                                                                        name="telefono_contacto_recoger" value="{{ old('telefono_contacto_recoger')}}" id="telefono_contacto_recoger"
                                                                         onkeyup="return mayus(this)" disabled>
 
                                                                             @if ($errors->has('telefono_contacto_recoger'))
@@ -647,7 +641,7 @@
                                                                     <textarea type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('observacion_domicilio') ? ' is-invalid' : '' }}"
                                                                         name="observacion_domicilio" id="observacion_domicilio"  onkeyup="return mayus(this)"
-                                                                        value="{{old('observacion_domicilio',$tienda->observacion_domicilio)}}" disabled>{{old('observacion_domicilio',$tienda->observacion_domicilio)}}</textarea>
+                                                                        value="{{old('observacion_domicilio')}}" disabled>{{old('observacion_domicilio')}}</textarea>
                                                                     @if ($errors->has('observacion_domicilio'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('observacion_domicilio') }}</strong>
@@ -669,12 +663,10 @@
 
                                                 </div>
                                             </div>
+
                                             <div id="tab-3" class="tab-pane">
                                                 <div class="panel-body">
                                                 
-
-
-
                                                     <div class="form-group row">
                                                         <div class="col-md-6 b-r">
                                                             <div class="form-group">
@@ -689,7 +681,7 @@
 
                                                                 <input type="text" id="nombre_administrador" name="nombre_administrador"
                                                                 class="form-control {{ $errors->has('nombre_administrador') ? ' is-invalid' : '' }}"
-                                                                value="{{old('nombre_administrador',$tienda->contacto_admin_nombre)}}" onkeyup="return mayus(this)">
+                                                                value="{{old('nombre_administrador')}}" onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('nombre_administrador'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -710,7 +702,7 @@
                                                                         </span>
                                                                         <input type="text" id="fecha_nacimiento_administrador" name="fecha_nacimiento_administrador"
                                                                             class="form-control {{ $errors->has('fecha_nacimiento_administrador') ? ' is-invalid' : '' }}"
-                                                                            value="{{old('fecha_nacimiento_administrador',getFechaFormato($tienda->contacto_admin_fecha_nacimiento, 'd/m/Y'))}}"
+                                                                            value="{{old('fecha_nacimiento_administrador',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
                                                                             autocomplete="off" readonly>
 
                                                                             @if ($errors->has('fecha_nacimiento_administrador'))
@@ -725,11 +717,10 @@
 
                                                                 <div class="col-lg-6 col-xs-12">
                                                                     <label class="">Cargo</label>
-                                                                    <select class="select2_form form-control {{ $errors->has('cargo_administrador') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('cargo_administrador',$tienda->contacto_admin_correo)}}" name="cargo_administrador" id="cargo_administrador" >
+                                                                    <select class="select2_form form-control {{ $errors->has('cargo_administrador') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('cargo_administrador')}}" name="cargo_administrador" id="cargo_administrador">
                                                                         <option></option>
-
-                                                                        @foreach(cargos() as $cargo)
-                                                                            <option value="{{ $cargo->descripcion }}" {{ (old('cargo_administrador', $tienda->contacto_admin_cargo) == $cargo->descripcion ? "selected" : "") }}>{{ $cargo->descripcion }}</option>
+                                                                        @foreach (cargos() as $cargo)
+                                                                            <option value="{{$cargo->descripcion}}" @if(old('cargo_administrador') ) {{'selected'}} @endif>{{$cargo->descripcion}}</option>
                                                                         @endforeach
 
                                                                         @if ($errors->has('cargo_administrador'))
@@ -756,7 +747,7 @@
 
                                                                 <input type="email" id="correo_administrador" name="correo_administrador"
                                                                 class="form-control {{ $errors->has('correo_administrador') ? ' is-invalid' : '' }}"
-                                                                value="{{old('correo_administrador',$tienda->contacto_admin_correo)}}" onkeyup="return mayus(this)">
+                                                                value="{{old('correo_administrador')}}" onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('correo_administrador'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -772,7 +763,7 @@
                                                                     <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('telefono_administrador') ? ' is-invalid' : '' }}"
                                                                         name="telefono_administrador" id="telefono_administrador"  onkeyup="return mayus(this)"
-                                                                        value="{{old('telefono_administrador',$tienda->contacto_admin_telefono)}}">
+                                                                        value="{{old('telefono_administrador')}}">
                                                                     @if ($errors->has('telefono_administrador'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('telefono_administrador') }}</strong>
@@ -784,7 +775,7 @@
                                                                     <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('celular_administrador') ? ' is-invalid' : '' }}"
                                                                         name="celular_administrador" id="celular_administrador"  onkeyup="return mayus(this)"
-                                                                        value="{{old('celular_administrador',$tienda->contacto_admin_celular)}}">
+                                                                        value="{{old('celular_administrador')}}">
                                                                     @if ($errors->has('celular_administrador'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('celular_administrador') }}</strong>
@@ -815,7 +806,7 @@
 
                                                                 <input type="text" id="nombre_credito" name="nombre_credito"
                                                                 class="form-control {{ $errors->has('nombre_credito') ? ' is-invalid' : '' }}"
-                                                                value="{{old('nombre_credito',$tienda->contacto_credito_nombre)}}" onkeyup="return mayus(this)">
+                                                                value="{{old('nombre_credito')}}" onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('nombre_credito'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -836,7 +827,7 @@
                                                                         </span>
                                                                         <input type="text" id="fecha_nacimiento_credito" name="fecha_nacimiento_credito"
                                                                             class="form-control {{ $errors->has('fecha_nacimiento_credito') ? ' is-invalid' : '' }}"
-                                                                            value="{{old('fecha_nacimiento_credito',getFechaFormato($tienda->contacto_credito_fecha_nacimiento, 'd/m/Y'))}}"
+                                                                            value="{{old('fecha_nacimiento_credito',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
                                                                             autocomplete="off" readonly>
 
                                                                             @if ($errors->has('fecha_nacimiento_credito'))
@@ -851,11 +842,10 @@
 
                                                                 <div class="col-lg-6 col-xs-12">
                                                                     <label class="">Cargo</label>
-                                                                    <select class="select2_form form-control {{ $errors->has('cargo_credito') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('cargo_credito',$tienda->contacto_credito_cargo)}}" name="cargo_credito" id="cargo_credito" >
+                                                                    <select class="select2_form form-control {{ $errors->has('cargo_credito') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('cargo_credito')}}" name="cargo_credito" id="cargo_credito">
                                                                         <option></option>
                                                                         @foreach (cargos() as $cargo)
-                                                                            <option value="{{ $cargo->descripcion }}" {{ (old('cargo_credito', $tienda->contacto_credito_cargo) == $cargo->descripcion ? "selected" : "") }}>{{ $cargo->descripcion }}</option>
-
+                                                                            <option value="{{$cargo->descripcion}}" @if(old('cargo_credito') ) {{'selected'}} @endif>{{$cargo->descripcion}}</option>
                                                                         @endforeach
 
                                                                         @if ($errors->has('cargo_credito'))
@@ -880,7 +870,7 @@
                                                                 <label class="">Correo Electrónico</label>
 
                                                                 <input type="email" id="correo_credito" name="correo_credito"
-                                                                class="form-control {{ $errors->has('correo_credito') ? ' is-invalid' : '' }}" value="{{old('correo_credito',$tienda->contacto_credito_correo)}}" onkeyup="return mayus(this)">
+                                                                class="form-control {{ $errors->has('correo_credito') ? ' is-invalid' : '' }}" value="{{old('correo_credito')}}" onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('correo_credito'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -896,7 +886,7 @@
                                                                     <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('telefono_credito') ? ' is-invalid' : '' }}"
                                                                         name="telefono_credito" id="telefono_credito"  onkeyup="return mayus(this)"
-                                                                        value="{{old('telefono_credito',$tienda->contacto_credito_telefono)}}">
+                                                                        value="{{old('telefono_credito')}}">
                                                                     @if ($errors->has('telefono_credito'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('telefono_credito') }}</strong>
@@ -908,7 +898,7 @@
                                                                         <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('celular_credito') ? ' is-invalid' : '' }}"
                                                                         name="celular_credito" id="celular_credito"  onkeyup="return mayus(this)"
-                                                                        value="{{old('celular_credito',$tienda->contacto_credito_celular)}}">
+                                                                        value="{{old('celular_credito')}}">
                                                                         @if ($errors->has('celular_credito'))
                                                                         <span class="invalid-feedback" role="alert">
                                                                             <strong>{{ $errors->first('celular_credito') }}</strong>
@@ -942,7 +932,7 @@
 
                                                                 <input type="text" id="nombre_vendedor" name="nombre_vendedor"
                                                                 class="form-control {{ $errors->has('nombre_vendedor') ? ' is-invalid' : '' }}"
-                                                                value="{{old('nombre_vendedor',$tienda->contacto_vendedor_nombre)}}" onkeyup="return mayus(this)">
+                                                                value="{{old('nombre_vendedor')}}" onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('nombre_vendedor'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -963,7 +953,7 @@
                                                                         </span>
                                                                         <input type="text" id="fecha_nacimiento_vendedor" name="fecha_nacimiento_vendedor"
                                                                             class="form-control {{ $errors->has('fecha_nacimiento_vendedor') ? ' is-invalid' : '' }}"
-                                                                            value="{{old('fecha_nacimiento_vendedor',getFechaFormato($tienda->contacto_vendedor_fecha_nacimiento, 'd/m/Y'))}}"
+                                                                            value="{{old('fecha_nacimiento_vendedor',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
                                                                             autocomplete="off" readonly>
 
                                                                             @if ($errors->has('fecha_nacimiento_vendedor'))
@@ -978,12 +968,10 @@
 
                                                                 <div class="col-lg-6 col-xs-12">
                                                                     <label class="">Cargo</label>
-                                                                    <select class="select2_form form-control {{ $errors->has('cargo_vendedor') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('cargo_vendedor',$tienda->contacto_vendedor_cargo)}}" name="cargo_vendedor" id="cargo_vendedor">
+                                                                    <select class="select2_form form-control {{ $errors->has('cargo_vendedor') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('cargo_vendedor')}}" name="cargo_vendedor" id="cargo_vendedor">
                                                                         <option></option>
-
-
-                                                                        @foreach(cargos() as $cargo)
-                                                                            <option value="{{ $cargo->descripcion }}" {{ (old('cargo_vendedor', $tienda->contacto_vendedor_cargo) == $cargo->descripcion ? "selected" : "") }}>{{ $cargo->descripcion }}</option>
+                                                                        @foreach (cargos() as $cargo)
+                                                                            <option value="{{$cargo->descripcion}}" @if(old('cargo_vendedor') ) {{'selected'}} @endif>{{$cargo->descripcion}}</option>
                                                                         @endforeach
 
                                                                         @if ($errors->has('cargo_vendedor'))
@@ -1006,7 +994,7 @@
 
                                                                 <input type="email"
                                                                     class="form-control {{ $errors->has('correo_vendedor') ? ' is-invalid' : '' }}"
-                                                                    name="correo_vendedor" value="{{ old('correo_vendedor',$tienda->contacto_vendedor_correo)}}" id="correo"
+                                                                    name="correo_vendedor" value="{{ old('correo_vendedor')}}" id="correo"
                                                                     onkeyup="return mayus(this)">
 
                                                                 @if ($errors->has('correo_vendedor'))
@@ -1022,7 +1010,7 @@
                                                                         <input type="text" placeholder=""
                                                                             class="form-control {{ $errors->has('telefono_vendedor') ? ' is-invalid' : '' }}"
                                                                             name="telefono_vendedor" id="telefono_vendedor"  onkeyup="return mayus(this)"
-                                                                            value="{{old('telefono_vendedor',$tienda->contacto_vendedor_telefono)}}">
+                                                                            value="{{old('telefono_vendedor')}}">
                                                                         @if ($errors->has('telefono_vendedor'))
                                                                         <span class="invalid-feedback" role="alert">
                                                                             <strong>{{ $errors->first('telefono_vendedor') }}</strong>
@@ -1034,7 +1022,7 @@
                                                                         <input type="text" placeholder=""
                                                                         class="form-control {{ $errors->has('celular_vendedor') ? ' is-invalid' : '' }}"
                                                                         name="celular_vendedor" id="celular_vendedor"  onkeyup="return mayus(this)"
-                                                                        value="{{old('celular_vendedor',$tienda->contacto_vendedor_celular)}}">
+                                                                        value="{{old('celular_vendedor')}}">
                                                                         @if ($errors->has('celular_vendedor'))
                                                                         <span class="invalid-feedback" role="alert">
                                                                             <strong>{{ $errors->first('celular_vendedor') }}</strong>
@@ -1055,6 +1043,7 @@
 
                                                 </div>
                                             </div>
+
                                     </div>
                                 
                                 </div>
@@ -1071,7 +1060,7 @@
                             </div>
 
                             <div class="col-md-6 text-right">
-                                <a  href="{{route('clientes.tienda.index',$tienda->cliente->id)}}" id="btn_cancelar"
+                                <a href="{{route('clientes.tienda.index',$cliente->id)}}" id="btn_cancelar"
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
@@ -1268,11 +1257,6 @@ function validarCampos() {
       $('#envios').click()
     } 
 
-    if ($('#responsable_pago').val() == ''){
-      campos = false
-      $('#envios').click()
-    } 
-
   }else{
 
     if ($('#nombre_transporte_domicilio').val() == ''){
@@ -1285,6 +1269,10 @@ function validarCampos() {
       $('#envios').click()
     } 
 
+    if ($('#nombre_contacto_recoger').val() == ''){
+      campos = false
+      $('#envios').click()
+    } 
 
   }
 
@@ -1292,7 +1280,8 @@ function validarCampos() {
   return campos
 }
 
-$('#enviar_tienda').submit(function(e) {
+$('#enviar_empresa').submit(function(e) {
+  
     e.preventDefault();
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -1304,7 +1293,7 @@ $('#enviar_tienda').submit(function(e) {
 
     Swal.fire({
         title: 'Opción Guardar',
-        text: "¿Seguro que desea modificar cambios?",
+        text: "¿Seguro que desea guardar cambios?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",
@@ -1312,12 +1301,13 @@ $('#enviar_tienda').submit(function(e) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            var campos = validarCampos()
+                var campos = validarCampos()
                 if (campos == true) {
                     $('#estado_responsable_recoger').prop('disabled',false)
                     this.submit();
                 }else{
                     toastr.error('Hay campos obligatorios sin ingresar','Error');
+                  
                 }
                 
 
@@ -1335,8 +1325,6 @@ $('#enviar_tienda').submit(function(e) {
         }
     })
 })
-
-
 
 
 
@@ -1471,6 +1459,12 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
             $('#error-direccion_domicilio').text("El campo Nombre del Transporte es obligatorio.")
         }
 
+        if ($('#nombre_contacto_recoger').val() == '') {
+            enviar = false
+            $('#nombre_contacto_recoger').addClass("is-invalid")
+            toastr.error("Ingrese el nombre del contacto.", 'Error');
+            $('#error-nombre_contacto_recoger').text("El campo Nombrees obligatorio.")
+        }
 
         break;
     default:    
@@ -1485,6 +1479,8 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
     return enviar
 
 })
+
+
 
 
 
@@ -1521,6 +1517,7 @@ function limpiarErrores() {
     $('#nombre_responsable_pago').removeClass("is-invalid")
     $('#error-responsable_pago').text("")
 
+
     $('#nombre_transporte_domicilio').removeClass("is-invalid")
     $('#error-nombre_transporte_domicilio').text("")
 
@@ -1534,16 +1531,14 @@ function limpiarErrores() {
     $('#error-condicion_reparto').text("")
 
 
-    // $('#estado_responsable_recoger').val('SIN VERIFICAR')
+    $('#estado_responsable_recoger').val('SIN VERIFICAR')
 
-} 
+}
 
 //ENVIOS TAB
 
 $(document).ready(function() {
-
-   
-    switch("{{old('condicion_reparto',$tienda->condicion_reparto)}}") {
+    switch($('#condicion_reparto').val()) {
     case "68":
             $('#reparto_domicilio').css("display","none")
             $('#reparto_oficina').css("display","")
@@ -1551,14 +1546,14 @@ $(document).ready(function() {
             $('#nombre_transporte_oficina').prop('disabled', false)
             $('#direccion_transporte_oficina').prop('disabled', false)
             $('#responsable_pago_flete').prop('disabled', false)
-            $('#responsable_pago').prop('disabled', false)
-            // $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
 
             $('#dni_responsable_recoger').prop('disabled', false)
             $('#nombre_responsable_recoger').prop('disabled', false)
-            
+            $('#responsable_pago_flete').prop('disabled', false)
             $('#telefono_responsable_recoger').prop('disabled', false)
             $('#observacion_envio').prop('disabled', false)
+            $('#responsable_pago').prop('disabled', false)
+            $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
         break;
     case "69":
             $('#reparto_domicilio').css("display","")
@@ -1572,11 +1567,10 @@ $(document).ready(function() {
         break;
     default:
             $('#nombre_transporte_oficina').prop('disabled', true)
-            $('#direccion_transporte_oficina').prop('disabled', true) 
+            $('#direccion_transporte_oficina').prop('disabled', true)
             $('#responsable_pago_flete').prop('disabled', true)
             $('#responsable_pago').prop('disabled', true)
             $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
-            
 
             $('#dni_responsable_recoger').prop('disabled', true)
             $('#nombre_responsable_recoger').prop('disabled', true)
@@ -1601,9 +1595,6 @@ function limpiarDomicilio(){
     $('#observacion_domicilio').val('')
 }
 
-
-
-
 function limpiarOficina(){
         $('#nombre_transporte_oficina').val('')
         $('#direccion_transporte_oficina').val('')
@@ -1611,9 +1602,10 @@ function limpiarOficina(){
 
         $('#dni_responsable_recoger').val('')
         $('#nombre_responsable_recoger').val('')
-        $('#responsable_pago').val('')
-        $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
+        $('#responsable_pago_flete').val('')
 
+        $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
+        
         $('#telefono_responsable_recoger').val('')
         $('#observacion_envio').val('')
 }
@@ -1628,6 +1620,61 @@ $("#nombre_responsable_recoger").keyup(function() {
     if ($('#estado_responsable_recoger').val('ACTIVO')) {
         $('#estado_responsable_recoger').val('SIN VERIFICAR')
     }
+})
+
+
+$("#condicion_reparto").on('change',function(e){
+    limpiarErrores()
+    $('#estado_responsable_recoger').val('SIN VERIFICAR')
+    switch($(this).val()) {
+    case "68":
+            $('#reparto_domicilio').css("display","none")
+            $('#reparto_oficina').css("display","")
+
+            $('#nombre_transporte_oficina').prop('disabled', false)
+            $('#direccion_transporte_oficina').prop('disabled', false)
+            $('#responsable_pago_flete').prop('disabled', false)
+
+            $('#responsable_pago').prop('disabled', false)
+
+            $('#dni_responsable_recoger').prop('disabled', false)
+            $('#nombre_responsable_recoger').prop('disabled', false)
+            $('#responsable_pago_flete').prop('disabled', false)
+            $('#telefono_responsable_recoger').prop('disabled', false)
+            $('#observacion_envio').prop('disabled', false)
+            limpiarDomicilio()
+        break;
+    case "69":
+            $('#reparto_domicilio').css("display","")
+            $('#reparto_oficina').css("display","none")
+
+            $('#nombre_transporte_domicilio').prop('disabled', false)
+            $('#direccion_domicilio').prop('disabled', false)
+            $('#nombre_contacto_recoger').prop('disabled', false)
+            $('#telefono_contacto_recoger').prop('disabled', false)
+            $('#observacion_domicilio').prop('disabled', false)
+            limpiarOficina()        
+        break;
+    default:
+            $('#nombre_transporte_oficina').prop('disabled', true)
+            $('#direccion_transporte_oficina').prop('disabled', true)
+            $('#responsable_pago_flete').prop('disabled', true)
+
+            $('#dni_responsable_recoger').prop('disabled', true)
+            $('#nombre_responsable_recoger').prop('disabled', true)
+            $('#responsable_pago_flete').prop('disabled', true)
+            $('#telefono_responsable_recoger').prop('disabled', true)
+            $('#observacion_envio').prop('disabled', true)
+
+            $('#nombre_transporte_domicilio').prop('disabled', true)
+            $('#direccion_domicilio').prop('disabled', true)
+            $('#nombre_contacto_recoger').prop('disabled', true)
+            $('#telefono_contacto_recoger').prop('disabled', true)
+            $('#observacion_domicilio').prop('disabled', true)
+            limpiarOficina()
+            limpiarDomicilio()
+    }
+
 })
 
 // Consulta Dni
@@ -1699,59 +1746,11 @@ function camposDni(objeto) {
 
 }
 
-$("#condicion_reparto").on('change',function(e){
-    limpiarErrores()
-    $('#estado_responsable_recoger').val('SIN VERIFICAR')
-    switch($(this).val()) {
-    case "68":
-            $('#reparto_domicilio').css("display","none")
-            $('#reparto_oficina').css("display","")
 
-            $('#nombre_transporte_oficina').prop('disabled', false)
-            $('#direccion_transporte_oficina').prop('disabled', false)
-            $('#responsable_pago_flete').prop('disabled', false)
+ 
 
-            $('#dni_responsable_recoger').prop('disabled', false)
-            $('#nombre_responsable_recoger').prop('disabled', false)
-            $('#responsable_pago_flete').prop('disabled', false)
-            $('#responsable_pago').prop('disabled', false)
-            $('#telefono_responsable_recoger').prop('disabled', false)
-            $('#observacion_envio').prop('disabled', false)
-            limpiarDomicilio()
-        break;
-    case "69":
-            $('#reparto_domicilio').css("display","")
-            $('#reparto_oficina').css("display","none")
 
-            $('#nombre_transporte_domicilio').prop('disabled', false)
-            $('#direccion_domicilio').prop('disabled', false)
-            $('#nombre_contacto_recoger').prop('disabled', false)
-            $('#telefono_contacto_recoger').prop('disabled', false)
-            $('#observacion_domicilio').prop('disabled', false)
-            limpiarOficina()        
-        break;
-    default:
-            $('#nombre_transporte_oficina').prop('disabled', true)
-            $('#direccion_transporte_oficina').prop('disabled', true)
-            $('#responsable_pago_flete').prop('disabled', true)
 
-            $('#dni_responsable_recoger').prop('disabled', true)
-            $('#nombre_responsable_recoger').prop('disabled', true)
-            $('#responsable_pago_flete').prop('disabled', true)
-            $('#responsable_pago').prop('disabled', true)
-            $('#telefono_responsable_recoger').prop('disabled', true)
-            $('#observacion_envio').prop('disabled', true)
-
-            $('#nombre_transporte_domicilio').prop('disabled', true)
-            $('#direccion_domicilio').prop('disabled', true)
-            $('#nombre_contacto_recoger').prop('disabled', true)
-            $('#telefono_contacto_recoger').prop('disabled', true)
-            $('#observacion_domicilio').prop('disabled', true)
-            limpiarOficina()
-            limpiarDomicilio()
-    }
-
-})
 
 
 </script>

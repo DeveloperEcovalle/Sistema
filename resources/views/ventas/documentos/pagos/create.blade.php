@@ -35,7 +35,7 @@
                 <div class="ibox">
 
                     <div class="ibox-content"> 
-                        <form action="{{route('compras.documentos.pago.store')}}" id="enviar_pago" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('ventas.documentos.pago.store')}}" id="enviar_pago" method="POST" enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class="form-group">
                                 <h4><b>Documento de Venta #{{$documento->id}}</b></h4>
@@ -182,7 +182,7 @@
                                                     <div class="col-md-6">
                                                         <label class="required">Caja: </label>
                                                         <select
-                                                            class="select2_form form-control"style="text-transform: uppercase; width:100%" name="caja_id" id="caja_id" onchange="cargarCaja(this)">
+                                                            class="select2_form form-control"style="text-transform: uppercase; width:100%" name="caja_id" id="caja_id">
                                                             <option></option>
                                                             @foreach ($cajas as $caja)
                                                             <option value="{{$caja->id}}" >{{$caja->id.' - '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno.' '.$caja->empleado->persona->nombres}}</option>
@@ -241,6 +241,7 @@
                                                 </div>
                                             </div>
 
+                                            <input type="hidden" name="total" id="monto">
 
 
 
@@ -637,6 +638,7 @@ $('#enviar_pago').submit(function(e) {
                 if (Number(monto_restante) < 0) {
                     toastr.error("El monto pagado supera el monto del doumento de pago", 'Error');
                 }else{
+                    $('#monto').val($('#total').text())
                     this.submit()   
                 }
 
@@ -670,19 +672,19 @@ $('#monto_caja').keyup(function() {
     }
     $(this).val(monto);
 
-    if ( $('#max_input').val() != '') {
-        var max = $('#max_input').val();
-        var min = 0
+    // if ( $('#max_input').val() != '') {
+    //     var max = $('#max_input').val();
+    //     var min = 0
 
-        if(monto > Number(max) || Number(monto) < min ){           
-            toastr.error("El monto Máximo de la caja chica es: "+max, 'Error');
-            $('#monto_caja').val(max);
-        } 
+    //     if(monto > Number(max) || Number(monto) < min ){           
+    //         toastr.error("El monto Máximo de la caja chica es: "+max, 'Error');
+    //         $('#monto_caja').val(max);
+    //     } 
 
-    }else{
-        toastr.error("Debe de seleccionar el empleado creador de la caja chica", 'Error');
-        $(this).val('');
-    }
+    // }else{
+    //     toastr.error("Debe de seleccionar el empleado creador de la caja chica", 'Error');
+    //     $(this).val('');
+    // }
 
 });
 
@@ -713,27 +715,15 @@ function limpiarCampos() {
     
 }
 
-function cargarCaja(caja) {
-    var id = caja.value
-    var monto = ''
-    $.get('/compras/documentos/getBox/document/'+ id, function (data) {
-
-        $('#max_input').val('');
-        $('#monto_caja').val(data)
-        $('#max_input').val(data);
-
-    });
-
-}
-
 function cargarCajaEditar(caja) {
     $.get('/compras/documentos/getBox/document/'+ caja, function (data) {
         $('#max_input_editar').val('');
         $('#max_input_editar').val(data);
 
     });
-
 }
+
+
 
 
 </script>

@@ -342,20 +342,20 @@ Route::prefix('ventas/documentos')->group(function(){
 
     //Pagos
     Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
-    // Route::get('getPay/{id}','Compras\Documentos\PagoController@getPayDocument')->name('getPay.documentos');
+    Route::get('pagos/getPay/{id}','Ventas\Documentos\PagoController@getPayDocument')->name('ventas.getPay.documentos');
     Route::get('pagos/create/{id}', 'Ventas\Documentos\PagoController@create')->name('ventas.documentos.pago.create');
-    // Route::post('pagos/store/', 'Compras\Documentos\PagoController@store')->name('compras.documentos.pago.store');
-    // Route::get('pagos/destroy/{id}', 'Compras\Documentos\PagoController@destroy')->name('compras.documentos.pago.destroy');
-    // Route::get('pagos/show/{id}', 'Compras\Documentos\PagoController@show')->name('compras.documentos.pago.show');
+    Route::post('pagos/store/', 'Ventas\Documentos\PagoController@store')->name('ventas.documentos.pago.store');
+    Route::get('pagos/destroy/{id}', 'Ventas\Documentos\PagoController@destroy')->name('ventas.documentos.pago.destroy');
+    Route::get('pagos/show/{id}', 'Ventas\Documentos\PagoController@show')->name('ventas.documentos.pago.show');
     // Route::get('getBox/document/{id}', 'Compras\Documentos\PagoController@getBox')->name('compras.documentos.pago.getBox');
 
     //Pago Transferencia
-    // Route::get('transferencia/pagos/index/{id}', 'Compras\Documentos\TransferenciaController@index')->name('compras.documentos.transferencia.pago.index');
-    // Route::get('transferencia/getPay/{id}','Compras\Documentos\TransferenciaController@getPay')->name('compras.documentos.transferencia.getPay');
-    // Route::get('transferencia/pagos/create/{id}', 'Compras\Documentos\TransferenciaController@create')->name('compras.documentos.transferencia.pago.create');
-    // Route::post('transferencia/pagos/store/', 'Compras\Documentos\TransferenciaController@store')->name('compras.documentos.transferencia.pago.store');
-    // Route::get('transferencia/pagos/destroy/', 'Compras\Documentos\TransferenciaController@destroy')->name('compras.documentos.transferencia.pago.destroy');
-    // Route::get('transferencia/pagos/show/', 'Compras\Documentos\TransferenciaController@show')->name('compras.documentos.transferencia.pago.show');
+    Route::get('transferencia/pagos/index/{id}', 'Ventas\Documentos\TransferenciaController@index')->name('ventas.documentos.transferencia.pago.index');
+    Route::get('transferencia/getPay/{id}','Ventas\Documentos\TransferenciaController@getPay')->name('ventas.documentos.transferencia.getPay');
+    Route::get('transferencia/pagos/create/{id}', 'Ventas\Documentos\TransferenciaController@create')->name('ventas.documentos.transferencia.pago.create');
+    Route::post('transferencia/pagos/store/', 'Ventas\Documentos\TransferenciaController@store')->name('ventas.documentos.transferencia.pago.store');
+    Route::get('transferencia/pagos/destroy/', 'Ventas\Documentos\TransferenciaController@destroy')->name('ventas.documentos.transferencia.pago.destroy');
+    Route::get('transferencia/pagos/show/', 'Ventas\Documentos\TransferenciaController@show')->name('ventas.documentos.transferencia.pago.show');
 
 
 

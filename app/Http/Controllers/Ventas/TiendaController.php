@@ -17,9 +17,38 @@ class TiendaController extends Controller
 
     public function getShop($id)
     {
-        return datatables()->query(
-            DB::table('cliente_tiendas')
-            ->select('cliente_tiendas.*')->where('cliente_tiendas.estado','ACTIVO')->where('cliente_tiendas.cliente_id',$id))->toJson();
+        // return datatables()->query(
+        //     DB::table('cliente_tiendas')
+        //     ->select('cliente_tiendas.*')->where('cliente_tiendas.estado','ACTIVO')->where('cliente_tiendas.cliente_id',$id))->toJson();
+
+            $tiendas = DB::table('cliente_tiendas')
+                    ->select('cliente_tiendas.*')
+                    ->where('cliente_tiendas.estado','ACTIVO')
+                    ->where('cliente_tiendas.cliente_id',$id)->get();
+
+            // dd($tiendas);
+            $coleccion = collect([]);
+
+            foreach($tiendas as $tienda) {
+
+                foreach (condicion_reparto() as $condicion) {
+                    if ($tienda->condicion_reparto == $condicion->id) {
+                        $coleccion->push([
+                            'id' => $tienda->id,
+                            'nombre' => $tienda->nombre,
+                            'tipo_tienda' => $tienda->tipo_tienda,
+                            'tipo_negocio' => $tienda->tipo_negocio,
+                            'envio' => $condicion->descripcion
+        
+                        ]);
+                    }
+                }
+
+
+
+
+            }
+            return DataTables::of($coleccion)->toJson();
     }
 
 

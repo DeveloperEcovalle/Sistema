@@ -160,17 +160,17 @@ $('#monto_editar').keyup(function() {
     }
     $(this).val(monto);
 
-    if ( $('#max_input_editar').val() != '') {
+    // if ( $('#max_input_editar').val() != '') {
        
 
-        var max = $('#max_input_editar').val();
-        var min = 0
-        if(monto > Number(max) || Number(monto) < min ){           
-            toastr.error("El monto Máximo de la caja chica es: "+max, 'Error');
-            $('#monto_editar').val(max);
-        } 
+    //     var max = $('#max_input_editar').val();
+    //     var min = 0
+    //     if(monto > Number(max) || Number(monto) < min ){           
+    //         toastr.error("El monto Máximo de la caja chica es: "+max, 'Error');
+    //         $('#monto_editar').val(max);
+    //     } 
 
-    }
+    // }
 
 });
 </script>

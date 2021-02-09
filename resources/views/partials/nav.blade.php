@@ -50,7 +50,7 @@
             <li class="@yield('categoria-active')"><a href="{{route('compras.categoria.index')}}">Categorias</a></li>
             <li class="@yield('proveedor-active')"><a href="{{route('compras.proveedor.index')}}">Proveedores</a></li>
             <li class="@yield('orden-compra-active')"><a href="{{route('compras.orden.index')}}">Ordenes</a></li>
-            <li class="@yield('documento-active')"><a href="{{route('compras.documento.index')}}">Documentos</a></li>
+            <li class="@yield('documento-active')"><a href="{{route('compras.documento.index')}}">Doc. Compra</a></li>
         </ul>
     </li>
 
@@ -59,7 +59,7 @@
         <ul class="nav nav-second-level collapse">
             <li class="@yield('clientes-active')"><a href="{{ route('ventas.cliente.index') }}">Clientes</a></li>
             <li class="@yield('cotizaciones-active')"><a href="{{ route('ventas.cotizacion.index') }}">Cotizaciones</a></li>
-            <li class="@yield('documentos-active')"><a href="{{route('ventas.documento.index')}}">Documentos</a></li>
+            <li class="@yield('documentos-active')"><a href="{{route('ventas.documento.index')}}">Doc. Venta</a></li>
 
         </ul>
     </li>
