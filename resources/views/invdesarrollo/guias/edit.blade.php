@@ -44,7 +44,7 @@
 
 
 
-                                <div class="form-group" id="prototipo">
+                                <div class="form-group" id="prototipo_id">
                                     <label class="required">Productos : </label>
                                     <select
                                         class="select2_form form-control {{ $errors->has('prototipo_id') ? ' is-invalid' : '' }}"
@@ -52,7 +52,7 @@
                                         name="prototipo_id" id="prototipo_id" required>
                                         <option></option>
                                         @foreach ($prototipos as $prototipo)
-                                            <option value="{{$prototipo->id}}" @if(old('prototipo_id',$guia->prototipo_id)==$prototipo->id)
+                                            <option value="{{$prototipo->id}}" @if(old('prototipo_id',$guia->prototipo_id) == $prototipo->id)
                                                      {{'selected'}} @endif >{{$prototipo->producto}}</option>
                                         @endforeach
                                     </select>
@@ -364,6 +364,7 @@ $('#enviar_guia').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
+                cargarArticulos();
                 this.submit();
             } else if (
                 /* Read more about handling dismissals below */
