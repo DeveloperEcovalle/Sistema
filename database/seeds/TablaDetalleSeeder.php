@@ -620,6 +620,28 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 24;
         $detalle->save();
 
+        //Linea Comercial
+        $detalle = new Detalle();
+        $detalle->descripcion = "ACEITES VEGETALES";
+        $detalle->simbolo = 'ACEITES VEGETALES';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "ACEITES ESCENCIALES";
+        $detalle->simbolo = 'ACEITES ESCENCIALES';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PASTILLEROS";
+        $detalle->simbolo = 'PASTILLEROS';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
 
         
     }

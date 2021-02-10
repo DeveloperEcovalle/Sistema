@@ -25,6 +25,9 @@ class Tienda extends Model
         'hora_inicio',
         'hora_fin',
 
+        'dni_contacto_admin',
+        'estado_dni_contacto_admin',
+
         'contacto_admin_nombre',
         'contacto_admin_cargo',
         'contacto_admin_fecha_nacimiento',
@@ -32,12 +35,19 @@ class Tienda extends Model
         'contacto_admin_celular',
         'contacto_admin_telefono',
 
+        'dni_contacto_credito',
+        'estado_dni_contacto_credito',
+
         'contacto_credito_nombre',
         'contacto_credito_cargo',
         'contacto_credito_fecha_nacimiento',
         'contacto_credito_correo',
         'contacto_credito_celular',
         'contacto_credito_telefono',
+
+
+        'dni_contacto_vendedor',
+        'estado_dni_contacto_vendedor',
 
         'contacto_vendedor_nombre',
         'contacto_vendedor_cargo',
@@ -60,27 +70,18 @@ class Tienda extends Model
         'telefono_responsable_recoger',
         'observacion_envio',
 
+
+        'ruc_transporte_domicilio',
+        'estado_transporte_domicilio',
+
         'nombre_transporte_domicilio',
         'direccion_domicilio',
+
+        'dni_contacto_recoger',
+        'estado_dni_contacto_recoger',
         'nombre_contacto_recoger',
         'telefono_contacto_recoger',
         'observacion_domicilio'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ];
 

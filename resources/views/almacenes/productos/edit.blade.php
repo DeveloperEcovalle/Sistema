@@ -99,6 +99,24 @@
                                 
                                 </div>
 
+                                <div class="form-group">
+                                    
+                                    <label class="required">Línea Comercial</label>
+                                    <select id="linea_comercial" name="linea_comercial" class="select2_form form-control {{ $errors->has('linea_comercial') ? ' is-invalid' : '' }}" required value="{{old('linea_comercial',$producto->linea_comercial)}}">
+                                        <option></option>
+                                        @foreach(lineas_comerciales() as $linea)
+                                            <option value="{{ $linea->id }}" {{ (old('linea_comercial',$producto->linea_comercial) == $linea->id ? "selected" : "") }} >{{ $linea->descripcion }}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('linea_comercial'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('linea_comercial') }}</strong>
+                                        </span>
+                                    @endif
+
+                                
+                                </div>
+
 
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">

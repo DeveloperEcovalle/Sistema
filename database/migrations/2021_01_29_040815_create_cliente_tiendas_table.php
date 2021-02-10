@@ -37,6 +37,9 @@ class CreateClienteTiendasTable extends Migration
             
 
             //CONTACTO ADMINISTRADOR
+            $table->string('dni_contacto_admin')->nullable();
+            $table->string('estado_dni_contacto_admin')->default('SIN VERIFICAR');
+
             $table->string('contacto_admin_nombre')->nullable();
             $table->string('contacto_admin_cargo')->nullable();
             $table->date('contacto_admin_fecha_nacimiento')->nullable();
@@ -45,6 +48,10 @@ class CreateClienteTiendasTable extends Migration
             $table->string('contacto_admin_telefono')->nullable();
 
             //CONTACTO CREDITO
+
+            $table->string('dni_contacto_credito')->nullable();
+            $table->string('estado_dni_contacto_credito')->default('SIN VERIFICAR');
+
             $table->string('contacto_credito_nombre')->nullable();
             $table->string('contacto_credito_cargo')->nullable();
             $table->date('contacto_credito_fecha_nacimiento')->nullable();
@@ -53,6 +60,9 @@ class CreateClienteTiendasTable extends Migration
             $table->string('contacto_credito_telefono')->nullable();
 
             //CONTACTO VENDEDOR
+            $table->string('dni_contacto_vendedor')->nullable();
+            $table->string('estado_dni_contacto_vendedor')->default('SIN VERIFICAR');
+
             $table->string('contacto_vendedor_nombre')->nullable();
             $table->string('contacto_vendedor_cargo')->nullable();
             $table->date('contacto_vendedor_fecha_nacimiento')->nullable();
@@ -60,6 +70,8 @@ class CreateClienteTiendasTable extends Migration
             $table->string('contacto_vendedor_celular')->nullable();
             $table->string('contacto_vendedor_telefono')->nullable();
 
+
+            ///////////////////////////////////////////////////////////////////
 
             $table->string('condicion_reparto')->nullable();
 
@@ -74,8 +86,14 @@ class CreateClienteTiendasTable extends Migration
             $table->string('telefono_responsable_recoger')->nullable();
             $table->string('observacion_envio')->nullable();
 
+
+            $table->string('ruc_transporte_domicilio')->nullable();
+            $table->string('estado_transporte_domicilio')->default('SIN VERIFICAR');
             $table->string('nombre_transporte_domicilio')->nullable();
             $table->string('direccion_domicilio')->nullable();
+
+            $table->string('dni_contacto_recoger')->nullable();
+            $table->string('estado_dni_contacto_recoger')->default('SIN VERIFICAR');
             $table->string('nombre_contacto_recoger')->nullable();
             $table->string('telefono_contacto_recoger')->nullable();
             $table->string('observacion_domicilio')->nullable();

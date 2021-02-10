@@ -23,6 +23,7 @@ class CreateProductosTable extends Migration
             $table->unsignedInteger('sub_familia_id');
             $table->foreign('sub_familia_id')->references('id')->on('subfamilias')->onDelete('cascade');
             $table->string('presentacion');
+            $table->string('linea_comercial');
             $table->string('codigo_barra')->nullable();
             $table->string('moneda');
             $table->unsignedInteger('stock');

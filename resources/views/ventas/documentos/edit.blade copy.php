@@ -110,10 +110,23 @@
 
 
                                     <div class="col-md-6">
-                                        <label >Moneda:</label>
-                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" disabled >
-                                            <option selected>SOLES</option>
-                                        </select>
+                                        <label id="igv_requerido">IGV (%):</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-addon">
+                                                    <input type="checkbox" id="igv_check" name="igv_check">
+                                                </span>
+                                            </div>
+                                            <input type="text" value="{{old('igv',$documento->igv)}}" maxlength="3"
+                                                class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
+                                                name="igv" id="igv"  onkeyup="return mayus(this)" required>
+                                                @if ($errors->has('igv'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('igv') }}</strong>
+                                                </span>
+                                                @endif
+
+                                        </div>
                                     </div>
 
 
