@@ -433,3 +433,17 @@ Route::prefix('produccion/lineas_produccion')->group(function() {
     Route::get('reporte/{id}','Produccion\LineaProduccionController@report')->name('produccion.linea_produccion.reporte');
     Route::get('email/{id}','Produccion\LineaProduccionController@email')->name('produccion.linea_produccion.email');
 });
+
+// Ingreso de Mercaderias
+Route::prefix('almacenes/ingresos_mercaderia')->group(function() {
+    Route::get('index', 'Almacenes\Ingreso_mercaderiaController@index')->name('almacenes.ingreso_mercaderia.index');
+    Route::get('getIngreso_mercaderia','Almacenes\Ingreso_mercaderiaController@getIngreso_mercaderia')->name('getIngreso_mercaderia');
+    Route::get('create','Almacenes\Ingreso_mercaderiaController@create')->name('almacenes.ingreso_mercaderia.create');
+    Route::post('store', 'Almacenes\Ingreso_mercaderiaController@store')->name('almacenes.ingreso_mercaderia.store');
+    Route::get('edit/{id}','Almacenes\Ingreso_mercaderiaController@edit')->name('almacenes.ingreso_mercaderia.edit');
+    Route::get('show/{id}','Almacenes\Ingreso_mercaderiaController@show')->name('almacenes.ingreso_mercaderia.show');
+    Route::put('update/{id}', 'Almacenes\Ingreso_mercaderiaController@update')->name('almacenes.ingreso_mercaderia.update');
+    Route::get('destroy/{id}', 'Almacenes\Ingreso_mercaderiaController@destroy')->name('almacenes.ingreso_mercaderia.destroy');
+    Route::get('reporte/{id}','Almacenes\Ingreso_mercaderiaController@report')->name('almacenes.ingreso_mercaderia.reporte');
+    Route::get('email/{id}','Almacenes\Ingreso_mercaderiaController@email')->name('almacenes.ingreso_mercaderia.email');
+});

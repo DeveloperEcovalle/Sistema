@@ -1,18 +1,18 @@
 @extends('layout') @section('content')
 
-@section('invdesarrollo-active', 'active')
-@section('prototipo-active', 'active')
+@section('almacenes-active', 'active')
+@section('ingreso_mercaderia-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
 
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>MODIFICAR Prototipos # {{$prototipo->id}}</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR NUEVA Ingresos de Mercaderia</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('invdesarrollo.prototipo.index')}}">Prototipos</a>
+                <a href="{{route('almacenes.ingreso_mercaderia.index')}}">Ingresos de Mercaderia</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Modificar</strong>
@@ -30,118 +30,136 @@
 
                 <div class="ibox-content">
 
-                    <form action="{{route('invdesarrollo.prototipo.update', $prototipo->id)}}" method="POST" id="enviar_prototipo" enctype="multipart/form-data">
+                    <form action="{{route('almacenes.ingreso_mercaderia.update', $ingreso_mercaderia->id)}}" method="POST" id="enviar_ingreso_mercaderia">
                          @csrf @method('PUT')
 
                         <div class="row">
                             <div class="col-sm-6 b-r">
-                                <h4 class=""><b>Prototipos</b></h4>
+                                <h4 class=""><b>Ingresos de Mercaderia</b></h4>
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <p>Modificar datos de la Prototipos:</p>
-                                    </div>
+                                  <div class="col-md-12">
+                                      <p>Modificar datos de Ingresos  de Mercaderia:</p>
+                                  </div>
                                 </div>
-                                  <div class="form-group">
-                                      <label>Producto :</label>
-                                      <input type="text" id="producto" name="producto" class="form-control {{ $errors->has('producto') ? ' is-invalid' : '' }}" value="{{old('producto',$prototipo->producto)}}" >
-                                      @if ($errors->has('producto'))
+                                
+                                <div class="form-group row">
+                                  <div class="col-md-6">
+                                      <label class="required">Factura :</label>
+                                      <input type="text" id="factura" name="factura" class="form-control {{ $errors->has('factura') ? ' is-invalid' : '' }}" value="{{old('factura',$ingreso_mercaderia->factura)}}" >
+                                      @if ($errors->has('factura'))
                                       <span class="invalid-feedback" role="alert">
-                                          <strong>{{ $errors->first('producto') }}</strong>
+                                          <strong>{{ $errors->first('factura') }}</strong>
                                       </span>
                                       @endif
                                   </div>
-
-                                 <div class="form-group" id="fecha_registro">
-                                      <label>Fecha de Registro :</label>
-                                      <div class="input-group date">
-                                          <span class="input-group-addon">
-                                              <i class="fa fa-calendar"></i>
-                                          </span>
-                                          <input type="text" id="fecha_registro" name="fecha_registro"
-                                              class="form-control {{ $errors->has('fecha_registro') ? ' is-invalid' : '' }}"
-                                              value="{{old('fecha_registro',getFechaFormato($prototipo->fecha_registro, 'd/m/Y'))}}"
-                                              autocomplete="off" readonly required>
-                                          @if ($errors->has('fecha_registro'))
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $errors->first('fecha_registro') }}</strong>
-                                          </span>
-                                          @endif
-                                      </div>
-                                  </div>
-
-                                 <div class="form-group" id="fecha_inicio">
-                                      <label>Fecha Inicio:</label> 
-                                      <div class="input-group date">
-                                          <span class="input-group-addon">
-                                              <i class="fa fa-calendar"></i>
-                                          </span>
-                                          <input type="text" id="fecha_inicio" name="fecha_inicio"
-                                              class="form-control {{ $errors->has('fecha_inicio') ? ' is-invalid' : '' }}"
-                                              value="{{old('fecha_inicio',getFechaFormato($prototipo->fecha_inicio, 'd/m/Y'))}}"
-                                              autocomplete="off" readonly required>
-                                          @if ($errors->has('fecha_inicio'))
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $errors->first('fecha_inicio') }}</strong>
-                                          </span>
-                                          @endif
-                                      </div>
-                                  </div>
-
-                                 <div class="form-group" id="fecha_fin">
-                                      <label>Fecha Fin:</label> 
-                                      <div class="input-group date">
-                                          <span class="input-group-addon">
-                                              <i class="fa fa-calendar"></i>
-                                          </span>
-                                          <input type="text" id="fecha_fin" name="fecha_fin"
-                                              class="form-control {{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}"
-                                              value="{{old('fecha_fin',getFechaFormato($prototipo->fecha_fin, 'd/m/Y'))}}"
-                                              autocomplete="off" readonly required>
-                                          @if ($errors->has('fecha_fin'))
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $errors->first('fecha_fin') }}</strong>
-                                          </span>
-                                          @endif
-                                      </div>
+                                    
+                                  <div class="col-sm-6" id="fecha_ingreso">
+                                     <label>Fecha Ingreso :</label>
+                                     <div class="input-group date">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" id="fecha_ingreso" name="fecha_ingreso"
+                                            class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}"
+                                            value="{{old('fecha_ingreso',getFechaFormato($ingreso_mercaderia->fecha_ingreso, 'd/m/Y'))}}"
+                                            autocomplete="off" readonly required>
+                                        @if ($errors->has('fecha_ingreso'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('fecha_ingreso') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                   </div>
                                 </div>
-                                <div class="col-sm-6">
-                                   <div class="form-group">
-                                        <label>Registro:</label> 
-                                        <input type="text" class="form-control {{ $errors->has('registro') ? ' is-invalid' : '' }}" name="registro" id="registro" value="{{old('registro',$prototipo->registro)}}" onkeyup="return mayus(this)">
-
-                                        @if ($errors->has('registro'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong id="error-registro-guardar">{{ $errors->first('registro') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-
-                                   <div class="form-group">
-                                        <label>Imagen:</label> 
-                                        <input type="file" class="form-control {{ $errors->has('imagen') ? ' is-invalid' : '' }}" name="imagen" id="imagen" value="{{old('imagen',$prototipo->imagen)}}" onkeyup="return mayus(this)">
-
-                                        @if ($errors->has('imagen'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('imagen') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-
-                              
-                                     <div class="form-group">
-                                          <label>Archivo Word:</label> 
-                                        <input type="file" class="form-control {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word" value="{{old('ruta_archivo_word',$prototipo->ruta_archivo_word)}}" onkeyup="return mayus(this)">
-
-                                        @if ($errors->has('archivo_word'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong id="error-archivo_word-guardar">{{ $errors->first('archivo_word') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-                                    <input type="hidden" id="articulos_tabla" name="articulos_tabla[]">
+                                <div class="form-group row">    
+                              		<div class="col-sm-8">
+                            				<label>Articulos</label>
+                            				<select name="articulo_id" class="form-control">
+                                      <option value="">Seleccionar Articulos</option>
+                            					@foreach ($articulos as $articulo)
+                                        <option 
+                            							@if ($articulo->id==$ingreso_mercaderia->articulo_id)
+                                                            selected
+                            							@endif
+                            							value="{{$articulo->id}}"> {{$articulo->descripcion}}
+                            						</option>
+                            					@endforeach
+                            				</select>
+                            			</div>
+                                  <div class="col-sm-4">
+                                      <label>Lote :</label>
+                                      <input type="text" id="lote" name="lote" class="form-control {{ $errors->has('lote') ? ' is-invalid' : '' }}" value="{{old('lote',$ingreso_mercaderia->lote)}}" >
+                                      @if ($errors->has('lote'))
+                                      <span class="invalid-feedback" role="alert">
+                                          <strong>{{ $errors->first('lote') }}</strong>
+                                      </span>
+                                      @endif
                                   </div>
                                 </div>
+                            </div> 
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                   <div class="col-sm-6" id="fecha_produccion">   
+                                      <label class="required">Fecha Produccion :</label>
+                                      <div class="input-group date">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" id="fecha_produccion" name="fecha_produccion"
+                                            class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}"
+                                            value="{{old('fecha_produccion',getFechaFormato($ingreso_mercaderia->fecha_produccion, 'd/m/Y'))}}"
+                                            autocomplete="off" readonly required>
+                                        @if ($errors->has('fecha_produccion'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('fecha_produccion') }}</strong>
+                                        </span>
+                                        @endif
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-6" id="fecha_vencimiento">   
+                                      <label class="required">Fecha Vencimiento :</label>
+                                      <div class="input-group date">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" id="fecha_vencimiento" name="fecha_vencimiento"
+                                            class="form-control {{ $errors->has('fecha_vencimiento') ? ' is-invalid' : '' }}"
+                                            value="{{old('fecha_vencimiento',getFechaFormato($ingreso_mercaderia->fecha_vencimiento, 'd/m/Y'))}}"
+                                            autocomplete="off" readonly required>
+                                        @if ($errors->has('fecha_vencimiento'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('fecha_vencimiento') }}</strong>
+                                        </span>
+                                        @endif
+                                      </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <div class="col-sm-8">
+                              				<label>Proveedores</label>
+                              				<select name="proveedor_id" class="form-control">
+                                        <option value="">Seleccionar Proveedores</option>
+                              					 @foreach ($proveedores as $proveedor)
+                                            <option {{ old('proveedor_id',$ingreso_mercaderia->proveedor_id) == $proveedor->id ? 'selected' : '' }} value="{{$proveedor->id}}">{{$proveedor->descripcion}}</option>
+                              						</option>
+                              					@endforeach
+                              				</select>
+                                		</div>
+                                		<div class="col-sm-4">
+                                      <label class="required">Peso Embalaje Dscto :</label>
+                                      <input type="number" id="peso_embalaje_dscto" name="peso_embalaje_dscto" class="form-control {{ $errors->has('peso_embalaje_dscto') ? ' is-invalid' : '' }}" value="{{old('peso_embalaje_dscto',$ingreso_mercaderia->peso_embalaje_dscto)}}" >
+                                      @if ($errors->has('peso_embalaje_dscto'))
+                                      <span class="invalid-feedback" role="alert">
+                                          <strong>{{ $errors->first('peso_embalaje_dscto') }}</strong>
+                                      </span>
+                                      @endif
+                                  </div>
+                                </div>
+                              </div>
+                              <input type="hidden" id="articulos_tabla" name="articulos_tabla[]">
+                        </div>
+
                         <hr>
 
                         <div class="row">
@@ -149,38 +167,37 @@
                             <div class="col-lg-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
-                                        <h4 class=""><b>Detalle de la prototipo interna</b></h4>
+                                        <h4 class=""><b>Detalle de la ingreso_mercaderia interna</b></h4>
                                     </div>
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="required">Nombre Articulo :</label>
-                                                <input type="text" id="nombre_articulo" name="nombre_articulo" class="form-control {{ $errors->has('nombre_articulo') ? ' is-invalid' : '' }}" value="{{old('nombre_articulo')}}" >
-                                                @if ($errors->has('nombre_articulo'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('nombre_articulo') }}</strong>
-                                                </span>
-                                                @endif
+                                            
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Peso Bruto</label>
+                                                <input type="text" id="peso_bruto" class="form-control">
+                                                <div class="invalid-feedback"><b><span id="error-peso_bruto"></span></b>
+                                                </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                <label>Cantidad :</label>
-                                                <input type="number" id="cantidad" name="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad')}}">                                             
-                                                @if ($errors->has('cantidad'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('cantidad') }}</strong>
-                                                </span>
-                                                @endif
+                                            
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Peso Neto</label>
+                                                <input type="text" id="peso_neto" class="form-control">
+                                                <div class="invalid-feedback"><b><span id="error-peso_neto"></span></b>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label>Observación :</label>
-                                                <textarea type="text" id="observacion" name="observacion" class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}" value="{{old('observacion')}}" ></textarea>
-                                                @if ($errors->has('observacion'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('observacion') }}</strong>
-                                                </span>
-                                                @endif
+                                            
+                                            <div class="col-sm-6">
+                                             <label>Observación:</label>
+                                              <textarea type="text" placeholder=""
+                                                  class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
+                                                  name="observacion" id="observacion"  onkeyup="return mayus(this)"
+                                                  value="{{old('observacion')}}">{{old('observacion')}}</textarea>
+                                              @if ($errors->has('observacion'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $errors->first('observacion') }}</strong>
+                                              </span>
+                                              @endif
                                             </div>
-
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="col-form-label" for="amount">&nbsp;</label>
@@ -193,14 +210,14 @@
 
                                         <div class="table-responsive">
                                             <table
-                                                class="table dataTables-prototipo-detalle table-striped table-bordered table-hover"
+                                                class="table dataTables-ingreso_mercaderia-detalle table-striped table-bordered table-hover"
                                                  onkeyup="return mayus(this)">
                                                 <thead>
                                                     <tr>
+                                                        <th></th>
                                                         <th class="text-center">ACCIONES</th>
-                                                        <th class="text-center">Prototipo Id</th>
-                                                        <th class="text-center">Nombre Articulo</th>
-                                                        <th class="text-center">Cantidad</th>
+                                                        <th class="text-center">Peso Bruto</th>
+                                                        <th class="text-center">Peso Neto</th>
                                                         <th class="text-center">Observacion</th>
                                                         
                                                     </tr>
@@ -225,7 +242,7 @@
                             </div>
 
                             <div class="col-md-6 text-right">
-                                <a href="{{route('invdesarrollo.prototipo.index')}}" id="btn_cancelar"
+                                <a href="{{route('almacenes.ingreso_mercaderia.index')}}" id="btn_cancelar"
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
@@ -247,7 +264,7 @@
     </div>
 
 </div>
-@include('invdesarrollo.prototipos.modal')
+@include('almacenes.ingresos_mercaderia.modal')
 @stop
 
 @push('styles')
@@ -289,7 +306,7 @@ $(".select2_form").select2({
     width: '100%',
 });
 
-$('#fecha_registro .input-group.date').datepicker({
+$('#fecha_ingreso .input-group.date').datepicker({
     todayBtn: "linked",
     keyboardNavigation: false,
     forceParse: false,
@@ -298,31 +315,31 @@ $('#fecha_registro .input-group.date').datepicker({
     format: "dd/mm/yyyy",
     //startDate: "today"
 })
-
-$('#fecha_inicio .input-group.date').datepicker({
+$('#fecha_produccion .input-group.date').datepicker({
     todayBtn: "linked",
     keyboardNavigation: false,
     forceParse: false,
     autoclose: true,
     language: 'es',
-    format: "dd/mm/yyyy"
-});
-
-$('#fecha_fin .input-group.date').datepicker({
+    format: "dd/mm/yyyy",
+    //startDate: "today"
+})
+$('#fecha_vencimiento .input-group.date').datepicker({
     todayBtn: "linked",
     keyboardNavigation: false,
     forceParse: false,
     autoclose: true,
     language: 'es',
-    format: "dd/mm/yyyy"
-});
+    format: "dd/mm/yyyy",
+    //startDate: "today"
+})
 function validarFecha() {
     var enviar = false
     var articulos = registrosArticulos()
 
     // No cumple correctamente la validación
     // if ($('#fecha').val() == '') {
-    //     toastr.error('Ingrese Fecha de Emisión de la prototipo.', 'Error');
+    //     toastr.error('Ingrese Fecha de Emisión de la ingreso_mercaderia.', 'Error');
     //     $("#fecha").focus();
     //     enviar = true;
     // }
@@ -334,7 +351,7 @@ function validarFecha() {
     return enviar
 }
 
-$('#enviar_prototipo').submit(function(e) {
+$('#enviar_ingreso_mercaderia').submit(function(e) {
     e.preventDefault();
     var correcto = validarFecha()
 
@@ -357,7 +374,7 @@ $('#enviar_prototipo').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                cargarArticulos();
+                cargarDetalle();
                 this.submit();
             } else if (
                 /* Read more about handling dismissals below */
@@ -377,14 +394,14 @@ $('#enviar_prototipo').submit(function(e) {
 
 $(document).ready(function() {
     // DataTables
-    $('.dataTables-prototipo-detalle').DataTable({
+    $('.dataTables-ingreso_mercaderia-detalle').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
         "buttons": [
         // {
         //         extend: 'excelHtml5',
         //         text: '<i class="fa fa-file-excel-o"></i> Excel',
         //         titleAttr: 'Excel',
-        //         title: 'Detalle de prototipo Interna'
+        //         title: 'Detalle de ingreso_mercaderia Interna'
         //     },
         //     {
         //         titleAttr: 'Imprimir',
@@ -435,6 +452,7 @@ $(document).ready(function() {
                 "targets": [4],
                 className: "text-center",
             },
+
         ],
 
     });
@@ -443,29 +461,32 @@ $(document).ready(function() {
 })
 
 function obtenerTabla() {
-  var t = $('.dataTables-prototipo-detalle').DataTable();
-  @foreach($detalles as $detalle)
+    var t = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
+    @foreach($detalles as $detalle)
+    
     t.row.add([
-        "",
-        "",
-        "{{$detalle->nombre_articulo}}",
-        "{{$detalle->cantidad}}",
+        '','',
+        "{{$detalle->peso_bruto}}",
+        "{{$detalle->peso_neto}}",
         "{{$detalle->observacion}}",
+        
     ]).draw(false);
-  @endforeach
+    @endforeach
 }
 
 //Editar Registro --REVISAR parece que no se usa
 $(document).on('click', '#editar_detalle', function(event) {
-    var table = $('.dataTables-prototipo-detalle').DataTable();
+    var table = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
     var data = table.row($(this).parents('tr')).data();
 
     $('#indice').val(table.row($(this).parents('tr')).index());
-    $('#nombre_articulo_editar').val(data[2]).trigger('change');
-    $('#cantidad_editar').val(data[3]);
+    $('#peso_bruto_editar').val(data[2]);
+    $('#peso_neto_editar').val(data[3]);
     $('#observacion_editar').val(data[4]);
-    $('#modal_editar_prototipo').modal('show');
+
+    $('#modal_editar_ingreso_mercaderia').modal('show');
 })
+
 
 //Borrar registro de articulos
 $(document).on('click', '#borrar_detalle', function(event) {
@@ -488,7 +509,7 @@ $(document).on('click', '#borrar_detalle', function(event) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            var table = $('.dataTables-prototipo-detalle').DataTable();
+            var table = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
             table.row($(this).parents('tr')).remove().draw();
 
         } else if (
@@ -505,26 +526,11 @@ $(document).on('click', '#borrar_detalle', function(event) {
 });
 
 
-
 //Validacion al ingresar tablas
 $(".enviar_detalle").click(function() {
     limpiarErrores()
     var enviar = false;
-    if ($('#articulo_id').val() == '') {
-        toastr.error('Seleccione artículo.', 'Error');
-        enviar = true;
-        $('#articulo_id').addClass("is-invalid")
-        $('#error-articulo').text('El campo Artículo es obligatorio.')
-    } else {
-        var existe = buscarArticulo($('#articulo_id').val())
-        if (existe == true) {
-            toastr.error('Artículo ya se encuentra ingresado.', 'Error');
-            enviar = true;
-        }
-    }
-
-        
-
+       
     if (enviar != true) {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -544,11 +550,10 @@ $(".enviar_detalle").click(function() {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                
+                //var descripcion_articulo = obtenerArticulo($('#articulo_id').val())
                 var detalle = {
-                    prototipo_id: $('#prototipo_id').val(),
-                    nombre_articulo: $('#nombre_articulo').val(),
-                    cantidad: $('#cantidad').val(),
+                    peso_bruto: $('#peso_bruto').val(),
+                    peso_neto: $('#peso_neto').val(),
                     observacion: $('#observacion').val(),
                     
                 }
@@ -570,38 +575,39 @@ $(".enviar_detalle").click(function() {
 })
 
 function limpiarDetalle() {
-
-  $('#nombre_articulo').val('')
-  $('#cantidad').val('')
+  $('#peso_bruto').val('')
+  $('#peso_neto').val('')
   $('#observacion').val('')
+ 
   $('#articulo_id').val($('#articulo_id option:first-child').val()).trigger('change');
 }
 
 function limpiarErrores() {
-  $('#nombre_articulo').removeClass("is-invalid")
-  $('#error-nombre_articulo').text('')
-  $('#cantidad').removeClass("is-invalid")
-  $('#error-cantidad').text('')
+  $('#peso_bruto').removeClass("is-invalid")
+  $('#error-peso_bruto').text('')
+  $('#peso_neto').removeClass("is-invalid")
+  $('#error-peso_neto').text('')
   $('#observacion').removeClass("is-invalid")
   $('#error-observacion').text('')
+ 
 }
 
 function agregarTabla($detalle) {
 
-    var t = $('.dataTables-prototipo-detalle').DataTable();
+    var t = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
     t.row.add([
       '','',
-      $detalle.nombre_articulo,
-      $detalle.cantidad,
+      $detalle.peso_bruto,
+      $detalle.peso_neto,
       $detalle.observacion,
       
     ]).draw(false);
-    cargarArticulos()
+    cargarDetalle();
 }
 
 function buscarArticulo(id) {
     var existe = false;
-    var t = $('.dataTables-prototipo-detalle').DataTable();
+    var t = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
     t.rows().data().each(function(el, index) {
         if (el[0] == id) {
             existe = true
@@ -610,14 +616,14 @@ function buscarArticulo(id) {
     return existe
 }
 
-function cargarArticulos() {
+function cargarDetalle() {
     var articulos = [];
-    var table = $('.dataTables-prototipo-detalle').DataTable();
+    var table = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
     var data = table.rows().data();
     data.each(function(value, index) {
         let fila = {
-            nombre_articulo: value[2],
-            cantidad: value[3],
+            peso_bruto: value[2],
+            peso_neto: value[3],
             observacion: value[4],
         };
         articulos.push(fila);
@@ -627,10 +633,9 @@ function cargarArticulos() {
 }
 
 function registrosArticulos() {
-    var table = $('.dataTables-prototipo-detalle').DataTable();
+    var table = $('.dataTables-ingreso_mercaderia-detalle').DataTable();
     var registros = table.rows().data().length;
     return registros
 }
-
 </script>
 @endpush

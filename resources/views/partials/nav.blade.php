@@ -108,7 +108,7 @@
                 </ul>
             </li>
             <li class="@yield('maquinaria_equipo-active')"><a href="{{route('almacenes.maquinaria_equipo.index')}}">Maquinarias-Equipos</a></li>
-
+            <li class="@yield('ingreso_mercaderia-active')"><a href="{{route('almacenes.ingreso_mercaderia.index')}}">Ingreso de Mercaderia</a></li>
         </ul>
     </li>
 
