@@ -160,5 +160,7 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'LINEA COMERCIAL';
         $tabla->sigla = 'LINEA COMERCIAL';
         $tabla->save();
+
+
     }
 }
