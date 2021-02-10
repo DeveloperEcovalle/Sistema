@@ -27,8 +27,8 @@ class DetalleController extends Controller
                 'id' => $tabla->id,
                 'descripcion' => $tabla->descripcion,
                 'simbolo' => $tabla->simbolo,
-                'fecha_creacion' =>  Carbon::parse($tabla->created_at)->format( 'd/m/Y'),
-                'fecha_actualizacion' =>  Carbon::parse($tabla->updated_at)->format( 'd/m/Y'),
+                'fecha_creacion' =>  Carbon::parse($tabla->created_at)->format( 'd/m/Y - H:i:s'),
+                'fecha_actualizacion' =>   Carbon::parse($tabla->updated_at)->format( 'd/m/Y - H:i:s'),
                 'estado' => $tabla->estado,
             ]);
         }

@@ -25,7 +25,8 @@ class GeneralController extends Controller
                 'id' => $tabla->id,
                 'descripcion' => $tabla->descripcion,
                 'sigla' => $tabla->sigla,
-                'fecha_actualizacion' =>  Carbon::parse($tabla->updated_at)->format( 'd/m/Y'),
+                'fecha_actualizacion' =>  Carbon::parse($tabla->updated_at)->format( 'd/m/Y - H:i:s'),
+                'creado' =>  Carbon::parse($tabla->created_at)->format( 'd/m/Y - H:i:s'),
             ]);
         }
         return DataTables::of($coleccion)->toJson();
