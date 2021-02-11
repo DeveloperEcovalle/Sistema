@@ -34,11 +34,11 @@
                                 <tr>
                                     <th class="text-center">Factura</th>
                                     <th class="text-center">Fecha Ingreso</th>
-                                    <th class="text-center">Articulos</th>
+                                    <th class="text-center">Articulo</th>
                                     <th class="text-center">Lote</th>
                                     <th class="text-center">Fecha Produccion</th>
                                     <th class="text-center">Fecha Vencimiento</th>
-                                    <th class="text-center">Proveedores</th>
+                                    <th class="text-center">Proveedor</th>
                                     <th class="text-center">Peso Embalaje Dscto</th>
                                     <th class="text-center">Estado</th>
                                     <th class="text-center">ACCIONES</th>
