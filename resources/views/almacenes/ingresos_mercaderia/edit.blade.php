@@ -73,9 +73,9 @@
                                 </div>
                                 <div class="form-group row">    
                               		<div class="col-sm-8">
-                            				<label>Articulos</label>
+                            				<label class="required">Articulo</label>
                             				<select name="articulo_id" class="form-control">
-                                      <option value="">Seleccionar Articulos</option>
+                                      <option value="">Seleccionar Articulo</option>
                             					@foreach ($articulos as $articulo)
                                         <option 
                             							@if ($articulo->id==$ingreso_mercaderia->articulo_id)
@@ -137,9 +137,9 @@
                                 
                                 <div class="form-group row">
                                     <div class="col-sm-8">
-                              				<label>Proveedores</label>
+                              				<label class="required">Proveedor</label>
                               				<select name="proveedor_id" class="form-control">
-                                        <option value="">Seleccionar Proveedores</option>
+                                        <option value="">Seleccionar Proveedor</option>
                               					 @foreach ($proveedores as $proveedor)
                                             <option {{ old('proveedor_id',$ingreso_mercaderia->proveedor_id) == $proveedor->id ? 'selected' : '' }} value="{{$proveedor->id}}">{{$proveedor->descripcion}}</option>
                               						</option>

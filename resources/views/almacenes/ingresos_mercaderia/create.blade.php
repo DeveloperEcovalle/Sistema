@@ -76,9 +76,9 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-8">
-                                        <label class="required">Articulos</label>
+                                        <label class="required">Articulo</label>
                                         <select name="articulo_id" id="articulo_id" class="form-control">
-                                            <option value="">Seleccionar Articulos</option>
+                                            <option value="">Seleccionar Articulo</option>
                                             @foreach ($articulos as $articulo)
                                                 <option {{ old('articulo_id') == $articulo->id ? 'selected' : '' }} value="{{$articulo->id}}">{{$articulo->descripcion}}</option>
                                             @endforeach
@@ -138,7 +138,7 @@
                                 
                                 <div class="form-group row">
                                     <div class="col-sm-8">
-                                        <label class="required">Proveedores</label>
+                                        <label class="required">Proveedor</label>
                                         <select name="proveedor_id" id="proveedor_id" class="form-control">
                                             <option value="">Seleccionar Proveedor</option>
                                             @foreach ($proveedores as $proveedor)
