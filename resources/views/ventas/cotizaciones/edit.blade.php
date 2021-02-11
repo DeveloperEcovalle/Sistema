@@ -156,7 +156,7 @@
                                                             <th></th>
                                                             <th class="text-center">ACCIONES</th>
                                                             <th class="text-center">CANTIDAD</th>
-                                                            <th class="text-center">PRESENTACION</th>
+                                                            <th class="text-center">UNIDAD DE MEDIDA</th>
                                                             <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                                             <th class="text-center">PRECIO</th>
                                                             <th class="text-center">TOTAL</th>
@@ -456,6 +456,11 @@
                     {
                         "targets": [6],
                     },
+                    {
+                        "targets": [7],
+                        "visible": false
+                        
+                    },
                 ],
                 'bAutoWidth': false,
                 'aoColumns': [
@@ -545,7 +550,7 @@
                 url : url,
             }).done(function (result){
 
-                $('#presentacion_producto').val(result.presentacion)
+                $('#presentacion_producto').val(result.medida)
                 $('#codigo_nombre_producto').val(result.codigo+' - '+result.nombre)
                 llegarDatos()
                 sumaTotal()
@@ -562,10 +567,12 @@
                 "{{$detalle->producto_id}}",
                 '',
                 "{{$detalle->cantidad}}",
-                "{{$detalle->producto->presentacion}}",
+                "{{$detalle->producto->tabladetalle->simbolo.' - '.$detalle->producto->tabladetalle->descripcion}}",
                 "{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}",
                 "{{$detalle->precio}}",
-                ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2)
+                ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2),
+                "{{$detalle->producto->medida}}",
+
             ]).draw(false);
             @endforeach
         }
@@ -604,6 +611,7 @@
             $('#presentacion_producto_editar').val(data[3]);
             $('#codigo_nombre_producto_editar').val(data[4]);
             $('#cantidad_editar').val(data[2]);
+            $('#medida_editar').val(data[7]);
             $('#modal_editar_detalle').modal('show');
         })
 
@@ -657,16 +665,25 @@
                 $detalle.producto_id,
                 '',
                 $detalle.cantidad,
-                $detalle.presentacion,
+                obtenerMedida($detalle.presentacion),
                 $detalle.producto,
                 $detalle.precio,
                 ($detalle.cantidad * $detalle.precio).toFixed(2),
+                $detalle.presentacion
             ]).draw(false);
 
             cargarProductos()
 
         }
-
+        function obtenerMedida(id) {
+            var medida = ""
+            @foreach(unidad_medida() as $medida)
+                if ("{{$medida->id}}" == id) {
+                    medida = "{{$medida->simbolo.' - '.$medida->descripcion}}"
+                }
+            @endforeach
+            return medida
+        }
 
         function llegarDatos() {
             var detalle = {

@@ -9,6 +9,7 @@
     <title>Ecovalle | Sistema de Producción</title>
 
     <link href="{{asset('Inspinia/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="icon" href="{{asset('img/ecologo.ico')}}" />
     <link href="{{asset('Inspinia/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
 
     <link href="{{asset('Inspinia/css/animate.css')}}" rel="stylesheet">

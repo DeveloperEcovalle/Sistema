@@ -210,7 +210,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">CANTIDAD</th>
-                                <th class="text-center">PRESENTACIÓN</th>
+                                <th class="text-center">UNIDAD DE MEDIDA</th>
                                 <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                 <th class="text-center">PRECIO</th>
                                 <th class="text-center">TOTAL</th>
@@ -221,7 +221,7 @@
                             <tr>
                                 <td class="text-center">{{$detalle->cantidad}}</td>
                                 <td class="text-center">
-                                    {{$detalle->producto->presentacion}}
+                                {{$detalle->producto->tabladetalle->simbolo.' - '.$detalle->producto->tabladetalle->descripcion}}
                                 </td>
                                 <td class="text-left">
                                     <div><strong>{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}</strong></div>

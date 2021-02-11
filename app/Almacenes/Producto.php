@@ -46,4 +46,9 @@ class Producto extends Model
     {
         return $this->codigo.' - '.$this->nombre;
     }
+
+    public function tabladetalle()
+    {
+        return $this->belongsTo('App\Mantenimiento\Tabla\detalle','medida');
+    }
 }

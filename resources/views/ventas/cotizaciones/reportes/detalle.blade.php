@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Ecovalle | Sistema de Producción</title>
-    <link rel="stylesheet" href="{{asset('css/informe.css')}}" />    
+    <link rel="stylesheet" href="{{asset('css/informe.css')}}" />   
+    <link rel="icon" href="{{asset('img/ecologo.ico')}}" /> 
   </head>
   <body>
     <header class="clearfix">
@@ -192,7 +193,7 @@
         <thead>
           <tr>
             <th class="no">CANT.</th>
-            <th class="desc">PRESENTACION</th>
+            <th class="desc">UNIDAD DE MEDIDA</th>
             <th class="unit">DESCRIPCION DEL PRODUCTO</th>
             <th class="qty">PRECIO</th>
             <th class="total">TOTAL</th>
@@ -204,15 +205,11 @@
         <tr>
             <td class="no">{{$detalle->cantidad}}</td>
             <td class="desc">
-                @foreach(presentaciones() as $presentacion)
-                    @if($presentacion->simbolo == $detalle->producto->presentacion)
-                        {{$presentacion->simbolo}}
-                    @endif
-                @endforeach
+                    {{$detalle->producto->tabladetalle->simbolo.' - '.$detalle->producto->tabladetalle->descripcion}}
             </td>
             <td class="unit">{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}</td>
-            <td class="qty">{{$cotizacion->moneda.' '.$detalle->precio}}</td>
-            <td class="total">{{$cotizacion->moneda.' '.$detalle->importe}}</td>
+            <td class="qty">{{'S/. '.$detalle->precio}}</td>
+            <td class="total">{{'S/. '.$detalle->importe}}</td>
         </tr>
   
         @endforeach
@@ -222,7 +219,7 @@
             <tr>
                 <td colspan="3"></td>
                 <td class="sub" colspan="1">SUBTOTAL</td>
-                <td class="sub-monto">{{$cotizacion->moneda.'  '.$cotizacion->sub_total}}</td>
+                <td class="sub-monto">{{'S. '.$cotizacion->sub_total}}</td>
             </tr>
 
             <tr>
@@ -236,12 +233,12 @@
                 
                 
                 </td>
-                <td class="sub-monto">{{$cotizacion->moneda.'  '.$cotizacion->total_igv}}</td>
+                <td class="sub-monto">{{'S/. '.$cotizacion->total_igv}}</td>
             </tr>
           <tr>
                 <td colspan="3"></td>
                 <td class="sub" colspan="1">TOTAL</td>
-                <td class="sub-monto">{{$cotizacion->moneda.'  '.$cotizacion->total}}</td>
+                <td class="sub-monto">{{'S/. '.$cotizacion->total}}</td>
           </tr>
         </tfoot>
 

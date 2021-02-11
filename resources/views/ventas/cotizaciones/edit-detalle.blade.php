@@ -12,6 +12,7 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="id_editar" name="id_editar">
+                <input type="hidden" id="medida_editar" name="medida_editar">
                 <input type="hidden" id="indice" name="indice">
                 <input type="hidden" id="codigo_nombre_producto_editar" name="codigo_nombre_producto_editar">
 
@@ -24,16 +25,16 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="">Unidad de Medida</label>
+                    <input type="text" id="presentacion_producto_editar" name="presentacion_producto_editar" class="form-control" disabled>
+                </div>
                 <div class="form-group row">
-                    <div class="col-lg-4 col-xs-12">
-                        <label class="">Presentación</label>
-                        <input type="text" id="presentacion_producto_editar" name="presentacion_producto_editar" class="form-control" disabled>
-                    </div>
-                    <div class="col-lg-4 col-xs-12">
+                    <div class="col-lg-6 col-xs-12">
                         <label class="required">Cantidad</label>
                         <input type="text" id="cantidad_editar" name="cantidad_editar" class="form-control" maxlength="10" onkeypress="return isNumber(event);" required>
                     </div>
-                    <div class="col-lg-4 col-xs-12">
+                    <div class="col-lg-6 col-xs-12">
                         <label class="required">Precio</label>
                         <input type="text" id="precio_editar" name="precio_editar" class="form-control" maxlength="15" onkeypress="return filterFloat(event, this, true);" required>
                     </div>
@@ -127,7 +128,7 @@ function actualizarTabla(i) {
     var detalle = {
         producto_id: $('#producto_editar').val(),
         producto: $('#codigo_nombre_producto_editar').val(),
-        presentacion: $('#presentacion_producto_editar').val(),
+        presentacion:  $('#medida_editar').val(),
         precio: $('#precio_editar').val(),
         cantidad: $('#cantidad_editar').val(),
     }

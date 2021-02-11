@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Ecovalle | Sistema de Producción</title>
-    <link rel="stylesheet" href="{{asset('css/informe.css')}}" />    
+    <link rel="stylesheet" href="{{asset('css/informe.css')}}" />   
+    <link rel="icon" href="{{asset('img/ecologo.ico')}}" /> 
   </head>
   <body>
     <header class="clearfix">

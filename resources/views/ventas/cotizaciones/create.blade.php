@@ -164,7 +164,7 @@
                                                             <th></th>
                                                             <th class="text-center">ACCIONES</th>
                                                             <th class="text-center">CANTIDAD</th>
-                                                            <th class="text-center">PRESENTACION</th>
+                                                            <th class="text-center">UNIDAD DE MEDIDA</th>
                                                             <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                                             <th class="text-center">PRECIO</th>
                                                             <th class="text-center">TOTAL</th>
@@ -262,6 +262,7 @@
             $('#precio_editar').val(data[5]);
             $('#presentacion_producto_editar').val(data[3]);
             $('#codigo_nombre_producto_editar').val(data[4]);
+            $('#medida_editar').val(data[7]);
             $('#cantidad_editar').val(data[2]);
             $('#modal_editar_detalle').modal('show');
         })
@@ -379,8 +380,8 @@
                 type : 'get',
                 url : url,
             }).done(function (result){
-
-                $('#presentacion_producto').val(result.presentacion)
+                console.log(result)
+                $('#presentacion_producto').val(result.medida)
                 $('#codigo_nombre_producto').val(result.codigo+' - '+result.nombre)
                 llegarDatos()
                 sumaTotal()
@@ -434,6 +435,10 @@
                     },
                     {
                         "targets": [6],
+                    },
+                    {
+                        "targets": [7],
+                        "visible": false,
                     },
                 ],
                 'bAutoWidth': false,
@@ -609,14 +614,25 @@
                 $detalle.producto_id,
                 '',
                 $detalle.cantidad,
-                $detalle.presentacion,
+                obtenerMedida($detalle.presentacion),
                 $detalle.producto,
                 $detalle.precio,
                 ($detalle.cantidad * $detalle.precio).toFixed(2),
+                $detalle.presentacion
             ]).draw(false);
 
             cargarProductos()
 
+        }
+
+        function obtenerMedida(id) {
+            var medida = ""
+            @foreach(unidad_medida() as $medida)
+                if ("{{$medida->id}}" == id) {
+                    medida = "{{$medida->simbolo.' - '.$medida->descripcion}}"
+                }
+            @endforeach
+            return medida
         }
 
 

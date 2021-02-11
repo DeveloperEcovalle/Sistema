@@ -227,7 +227,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">CANTIDAD</th>
-                                <th class="text-center">PRESENTACIÓN</th>
+                                <th class="text-center">UNIDAD DE MEDIDA</th>
                                 <th class="text-center">DESCRIPCION DEL PRODUCTO</th>
                                 <th class="text-center">PRECIO</th>
                                 <th class="text-center">TOTAL</th>
@@ -238,15 +238,15 @@
                             <tr>
                                 <td class="text-center">{{$detalle->cantidad}}</td>
                                 <td class="text-center">
-                                    <div>{{$detalle->producto->presentacion}}</div>
+                                    <div>{{$detalle->producto->tabladetalle->simbolo.' - '.$detalle->producto->tabladetalle->descripcion}}</div>
                                 </td>
                                 <td class="text-left">
                                     <div><strong>{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}</strong></div>
                                 </td>
 
                                 
-                                <td class="text-center">{{$cotizacion->moneda.'  '.$detalle->precio}}</td>
-                                <td class="text-center subtotal">{{$cotizacion->moneda.'  '.number_format($detalle->cantidad * $detalle->precio, 2, '.', '')}}</td>
+                                <td class="text-center">{{'S/. '.$detalle->precio}}</td>
+                                <td class="text-center subtotal">{{'S/. '.number_format($detalle->cantidad * $detalle->precio, 2, '.', '')}}</td>
 
                             </tr>
                             @endforeach
@@ -257,7 +257,7 @@
                             <tr>
                                 <td colspan="3" class="borde-title"></td>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>Sub Total</strong></th>
-                                <th class="text-center"><span id="">{{$cotizacion->moneda.'  '.$cotizacion->sub_total}}</span></th>
+                                <th class="text-center"><span id="">{{'S/. '.$cotizacion->sub_total}}</span></th>
 
                             </tr>
                             <tr>
@@ -268,13 +268,13 @@
                                         @else
                                             18 %
                                         @endif </strong></th>
-                                <th class="text-center"><span id="">{{$cotizacion->moneda.'  '.$cotizacion->total_igv}}</span></th>
+                                <th class="text-center"><span id="">{{'S/. '.$cotizacion->total_igv}}</span></th>
 
                             </tr>
                             <tr>
                                 <td colspan="3" class="borde-title"></td>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>Total </strong></th>
-                                <th class="text-center"><span id="total">{{$cotizacion->moneda.'  '.$cotizacion->total}}</span></th>
+                                <th class="text-center"><span id="total">{{'S/. '.$cotizacion->total}}</span></th>
 
                             </tr>
                         </tfoot>
