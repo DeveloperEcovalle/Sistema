@@ -26,6 +26,12 @@
             }
         }
 
+        @media only screen and (max-width: 992px) {
+            .login{
+                margin-top:90px;
+            }
+        }
+
     
     </style>
 
