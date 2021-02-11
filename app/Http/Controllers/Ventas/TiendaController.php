@@ -72,6 +72,7 @@ class TiendaController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
 
         $data = $request->all();
 
@@ -105,6 +106,10 @@ class TiendaController extends Controller
         $tienda->celular = $request->get('celular');
 
 
+        
+        $tienda->dni_contacto_admin = $request->get('dni_contacto_admin');
+        $tienda->estado_dni_contacto_admin = $request->get('estado_dni_contacto_admin');
+
         $tienda->contacto_admin_nombre = $request->get('nombre_administrador');
         $tienda->contacto_admin_cargo = $request->get('cargo_administrador');
         $tienda->contacto_admin_fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_administrador'))->format('Y-m-d');
@@ -113,6 +118,10 @@ class TiendaController extends Controller
         $tienda->contacto_admin_celular = $request->get('celular_administrador');
 
 
+
+        $tienda->dni_contacto_credito = $request->get('dni_contacto_credito');
+        $tienda->estado_dni_contacto_credito = $request->get('estado_dni_contacto_credito');
+
         $tienda->contacto_credito_nombre = $request->get('nombre_credito');
         $tienda->contacto_credito_cargo = $request->get('cargo_credito');
         $tienda->contacto_credito_fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_credito'))->format('Y-m-d');
@@ -120,6 +129,9 @@ class TiendaController extends Controller
         $tienda->contacto_credito_telefono = $request->get('telefono_credito');
         $tienda->contacto_credito_celular = $request->get('celular_credito');
 
+        
+        $tienda->dni_contacto_vendedor = $request->get('dni_contacto_vendedor');
+        $tienda->estado_dni_contacto_vendedor = $request->get('estado_dni_contacto_vendedor');
 
         $tienda->contacto_vendedor_nombre = $request->get('nombre_vendedor');
         $tienda->contacto_vendedor_cargo = $request->get('cargo_vendedor');
@@ -147,8 +159,17 @@ class TiendaController extends Controller
         $tienda->telefono_responsable_recoger = $request->get('telefono_responsable_recoger');
         $tienda->observacion_envio = $request->get('observacion_envio');
 
+
+        $tienda->ruc_transporte_domicilio = $request->get('ruc_transporte_domicilio');
+        $tienda->estado_transporte_domicilio = $request->get('estado_transporte_domicilio');
+
         $tienda->nombre_transporte_domicilio = $request->get('nombre_transporte_domicilio');
         $tienda->direccion_domicilio = $request->get('direccion_domicilio');
+
+
+        $tienda->dni_contacto_recoger = $request->get('dni_contacto_recoger');
+        $tienda->estado_dni_contacto_recoger = $request->get('estado_dni_contacto_recoger');
+
         $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
         $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
         $tienda->observacion_domicilio = $request->get('observacion_domicilio');
@@ -215,6 +236,8 @@ class TiendaController extends Controller
         $tienda->telefono = $request->get('telefono');
         $tienda->celular = $request->get('celular');
 
+        $tienda->dni_contacto_admin = $request->get('dni_contacto_admin');
+        $tienda->estado_dni_contacto_admin = $request->get('estado_dni_contacto_admin');
 
         $tienda->contacto_admin_nombre = $request->get('nombre_administrador');
         $tienda->contacto_admin_cargo = $request->get('cargo_administrador');
@@ -223,6 +246,9 @@ class TiendaController extends Controller
         $tienda->contacto_admin_telefono = $request->get('telefono_administrador');
         $tienda->contacto_admin_celular = $request->get('celular_administrador');
 
+        
+        $tienda->dni_contacto_credito = $request->get('dni_contacto_credito');
+        $tienda->estado_dni_contacto_credito = $request->get('estado_dni_contacto_credito');
 
         $tienda->contacto_credito_nombre = $request->get('nombre_credito');
         $tienda->contacto_credito_cargo = $request->get('cargo_credito');
@@ -231,7 +257,9 @@ class TiendaController extends Controller
         $tienda->contacto_credito_telefono = $request->get('telefono_credito');
         $tienda->contacto_credito_celular = $request->get('celular_credito');
 
-
+        $tienda->dni_contacto_vendedor = $request->get('dni_contacto_vendedor');
+        $tienda->estado_dni_contacto_vendedor = $request->get('estado_dni_contacto_vendedor');
+        
         $tienda->contacto_vendedor_nombre = $request->get('nombre_vendedor');
         $tienda->contacto_vendedor_cargo = $request->get('cargo_vendedor');
         $tienda->contacto_vendedor_fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_vendedor'))->format('Y-m-d');
@@ -258,8 +286,15 @@ class TiendaController extends Controller
         $tienda->telefono_responsable_recoger = $request->get('telefono_responsable_recoger');
         $tienda->observacion_envio = $request->get('observacion_envio');
 
+        $tienda->ruc_transporte_domicilio = $request->get('ruc_transporte_domicilio');
+        $tienda->estado_transporte_domicilio = $request->get('estado_transporte_domicilio');
+
         $tienda->nombre_transporte_domicilio = $request->get('nombre_transporte_domicilio');
         $tienda->direccion_domicilio = $request->get('direccion_domicilio');
+
+        $tienda->dni_contacto_recoger = $request->get('dni_contacto_recoger');
+        $tienda->estado_dni_contacto_recoger = $request->get('estado_dni_contacto_recoger');
+        
         $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
         $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
         $tienda->observacion_domicilio = $request->get('observacion_domicilio');

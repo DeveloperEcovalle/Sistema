@@ -34,6 +34,7 @@
                             <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">SIGLA</th>
+                            <th class="text-center">CREADO</th>
                             <th class="text-center">ACTUALIZADO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
@@ -104,6 +105,7 @@
                 {data: 'id', className:"text-center" , "visible": false},
                 {data: 'descripcion', className:"text-center"},
                 {data: 'sigla', className:"text-center"},
+                {data: 'creado', className:"text-center"},
                 {data: 'fecha_actualizacion', className:"text-center"},
                 {
                     data: null,
@@ -114,7 +116,9 @@
                         url = url.replace(':id',data.id);
                         
                         
-                        return "<div class='btn-group'><button onclick='obtenerData("+data.id+")' class='btn btn-warning btn-sm' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-info btn-sm' href='"+url+"' title='Examinar'><i class='fa fa-eye'></i></a></div>"
+                        // return "<div class='btn-group'><button onclick='obtenerData("+data.id+")' class='btn btn-warning btn-sm' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-info btn-sm' href='"+url+"' title='Examinar'><i class='fa fa-eye'></i></a></div>"
+                        
+                        return "<div class='btn-group'><a class='btn btn-info btn-sm' href='"+url+"' title='Examinar'><i class='fa fa-eye'></i></a></div>"
                     }
                 }
             ],

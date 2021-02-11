@@ -134,7 +134,7 @@
                             <div class="col-sm-6">
                                     <div class="form-group">
                                         
-                                        <label class="required">Almacenes: </label> 
+                                        <label class="required">Almacén: </label> 
                                     
                                         <select class="select2_form form-control {{ $errors->has('almacen') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('almacen')}}" name="almacen" id="almacen" required>
                                             <option></option>

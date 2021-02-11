@@ -22,6 +22,7 @@ class Producto extends Model
         'estado',
         'codigo_barra',
         'moneda',
+        'linea_comercial',
     ];
     protected $casts = [
         'igv' => 'boolean'

@@ -276,26 +276,26 @@ class TablaDetalleSeeder extends Seeder
         $detalle->save();
 
         //PRESENTACIONES
-        $detalle = new Detalle();
-        $detalle->descripcion = "KILOGRAMO";
-        $detalle->simbolo = 'KG';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
-        $detalle->save();
+        // $detalle = new Detalle();
+        // $detalle->descripcion = "KILOGRAMO";
+        // $detalle->simbolo = 'KG';
+        // $detalle->estado = 'ACTIVO';
+        // $detalle->tabla_id = 10;
+        // $detalle->save();
 
-        $detalle = new Detalle();
-        $detalle->descripcion = "TONELADA";
-        $detalle->simbolo = 'TMB';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
-        $detalle->save();
+        // $detalle = new Detalle();
+        // $detalle->descripcion = "TONELADA";
+        // $detalle->simbolo = 'TMB';
+        // $detalle->estado = 'ACTIVO';
+        // $detalle->tabla_id = 10;
+        // $detalle->save();
 
-        $detalle = new Detalle();
-        $detalle->descripcion = "LITRO";
-        $detalle->simbolo = 'L';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 10;
-        $detalle->save();
+        // $detalle = new Detalle();
+        // $detalle->descripcion = "LITRO";
+        // $detalle->simbolo = 'L';
+        // $detalle->estado = 'ACTIVO';
+        // $detalle->tabla_id = 10;
+        // $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "PAQUETE";
@@ -380,27 +380,57 @@ class TablaDetalleSeeder extends Seeder
 
         // UNIDAD DE MEDIDA
         $detalle = new Detalle();
-        $detalle->descripcion = "KILOGRAMOS";
-        $detalle->simbolo = "KG";
+        $detalle->descripcion = "KILOGRAMO";
+        $detalle->simbolo = "KGM";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 13;
         $detalle->save();
 
 
         $detalle = new Detalle();
-        $detalle->descripcion = "GALON";
-        $detalle->simbolo = "GL";
+        $detalle->descripcion = "US GALON (3,7843 L)";
+        $detalle->simbolo = "GLL";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 13;
         $detalle->save();
 
 
         $detalle = new Detalle();
-        $detalle->descripcion = "BOTEL";
-        $detalle->simbolo = "BOL";
+        $detalle->descripcion = "BOTELLAS";
+        $detalle->simbolo = "BO";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 13;
         $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOBINAS";
+        $detalle->simbolo = "4A";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BALDE";
+        $detalle->simbolo = "BJ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BARRILES";
+        $detalle->simbolo = "BLL";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOLSA";
+        $detalle->simbolo = "BG";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
 
         //MODO DE COMPRA
         $detalle = new Detalle();
@@ -618,6 +648,28 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'CANCELA ECOVALLE';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 24;
+        $detalle->save();
+
+        //Linea Comercial
+        $detalle = new Detalle();
+        $detalle->descripcion = "ACEITES VEGETALES";
+        $detalle->simbolo = 'ACEITES VEGETALES';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "ACEITES ESCENCIALES";
+        $detalle->simbolo = 'ACEITES ESCENCIALES';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PASTILLEROS";
+        $detalle->simbolo = 'PASTILLEROS';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
         $detalle->save();
 
 

@@ -62,6 +62,7 @@ class ProductoController extends Controller
             })],
             'nombre' => 'required',
             'moneda' => 'required',
+            'linea_comercial' => 'required',
             'familia' => 'required',
             'sub_familia' => 'required',
             'presentacion' => 'required',
@@ -77,6 +78,7 @@ class ProductoController extends Controller
             'codigo.required' => 'El campo Código es obligatorio',
             'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
             'moneda.required' => 'El campo Moneda es obligatorio',
+            'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'codigo.unique' => 'El campo Código debe ser único',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
             'nombre.required' => 'El campo Nombre es obligatorio',
@@ -109,6 +111,7 @@ class ProductoController extends Controller
             $producto->familia_id = $request->get('familia');
             $producto->sub_familia_id = $request->get('sub_familia');
             $producto->presentacion = $request->get('presentacion');
+            $producto->linea_comercial = $request->get('linea_comercial');
             $producto->stock = $request->get('stock');
             $producto->stock_minimo = $request->get('stock_minimo');
             $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
@@ -180,10 +183,11 @@ class ProductoController extends Controller
             })->ignore($id)],
             'codigo_barra' => ['nullable',Rule::unique('productos','codigo_barra')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
-            })],
+            })->ignore($id)],
             'nombre' => 'required',
             'nombre' => 'required',
             'familia' => 'required',
+            'linea_comercial' => 'required',
             'sub_familia' => 'required',
             'presentacion' => 'required',
             'stock' => 'required|numeric',
@@ -200,6 +204,7 @@ class ProductoController extends Controller
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
             'nombre.required' => 'El campo Nombre es obligatorio',
             'familia.required' => 'El campo Categoria es obligatorio',
+            'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
             'presentacion.required' => 'El campo Presentación completa es obligatorio',
             'stock.required' => 'El campo Stock es obligatorio',
@@ -227,6 +232,7 @@ class ProductoController extends Controller
         $producto->sub_familia_id = $request->get('sub_familia');
         $producto->presentacion = $request->get('presentacion');
         $producto->stock = $request->get('stock');
+        $producto->linea_comercial = $request->get('linea_comercial');
         $producto->stock_minimo = $request->get('stock_minimo');
         $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
         $producto->precio_venta_maximo = $request->get('precio_venta_maximo');

@@ -142,6 +142,50 @@
 
                                 </div>
 
+                                <div class="form-group row">
+
+
+                                    <div class="col-md-6 col-xs-12">
+                                        <label id="igv_requerido">IGV (%):</label>
+                                        <div class="input-group">
+                                            @if (!empty($cotizacion))
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="igv_check" name="igv_check" disabled>
+                                                    </span>
+                                                </div>
+                                            @else
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="igv_check" name="igv_check">
+                                                    </span>
+                                                </div>
+                                            @endif
+                                            @if (!empty($cotizacion))
+                                            <input type="text" value="{{old('igv',$cotizacion->igv)}}"
+                                                class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
+                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)" readonly>
+                                            @else
+                                            <input type="text" value="{{old('igv')}}"
+                                                class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
+                                                name="igv" id="igv" maxlength="3"  onkeyup="return mayus(this)"
+                                                required>
+                                            @endif
+
+                                            @if ($errors->has('igv'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('igv') }}</strong>
+                                            </span>
+                                            @endif
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                
+
+
                             </div>
 
                             <div class="col-sm-6">
@@ -974,7 +1018,7 @@
                         $('#monto_total_igv').val($('#igv_monto').text())
                         $('#monto_total').val($('#total').text())
 
-                        // document.getElementById("igv_check").disabled = false;
+                        document.getElementById("igv_check").disabled = false;
                         document.getElementById("moneda").disabled = false;
                         document.getElementById("observacion").disabled = false;
                         document.getElementById("fecha_documento_campo").disabled = false;

@@ -1133,8 +1133,6 @@ function consultarRuc() {
     } else {
         toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
     }
-
-
 }
 
 function consultarRuctransporte() {

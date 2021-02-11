@@ -74,6 +74,17 @@
                                
                            </div>
 
+                           <div class="form-group">
+                               
+                               <label> <strong>LINEA COMERCIAL</strong> </label>
+                               @foreach(lineas_comerciales() as $linea)
+                                    @if ($linea->id == $producto->linea_comercial)
+                                        <p>{{ $linea->descripcion }}</p>
+                                    @endif
+                                @endforeach
+                               
+                           </div>
+
 
                             <div class="form-group row">
                                 <div class="col-lg-6 col-xs-12">

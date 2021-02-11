@@ -154,5 +154,13 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'RESPONSABLE DE PAGO';
         $tabla->sigla = 'RESPONSABLE DE PAGO';
         $tabla->save();
+
+        //25
+        $tabla = new General();
+        $tabla->descripcion = 'LINEA COMERCIAL';
+        $tabla->sigla = 'LINEA COMERCIAL';
+        $tabla->save();
+
+
     }
 }

@@ -263,6 +263,29 @@
 
                                     <div class="col-md-6 b-r">
 
+                                    
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label><strong>DNI: </strong></label>
+                                                @if($tienda->dni_contacto_admin != "")
+                                                    <p class="text-navy">{{$tienda->dni_contacto_admin}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label><strong>ESTADO: </strong></label>
+                                                @if($tienda->estado_dni_contacto_admin != "")
+                                                    <p class="">{{$tienda->estado_dni_contacto_admin}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+
+                                        </div>
+
                                         <div class="form-group">
                                             <label><strong>Nombre: </strong></label>
                                             @if($tienda->contacto_admin_nombre != "")
@@ -343,6 +366,28 @@
                             <div class="row"  onkeyup="return mayus(this)">
 
                                     <div class="col-md-6 b-r">
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label><strong>DNI: </strong></label>
+                                                @if($tienda->dni_contacto_credito != "")
+                                                    <p class="text-navy">{{$tienda->dni_contacto_credito}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label><strong>ESTADO: </strong></label>
+                                                @if($tienda->estado_dni_contacto_credito != "")
+                                                    <p class="">{{$tienda->estado_dni_contacto_credito}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+
+                                        </div>
 
                                         <div class="form-group">
                                             <label><strong>Nombre: </strong></label>
@@ -425,6 +470,28 @@
                             <div class="row"  onkeyup="return mayus(this)">
 
                                     <div class="col-md-6 b-r">
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label><strong>DNI: </strong></label>
+                                                @if($tienda->dni_contacto_vendedor != "")
+                                                    <p class="text-navy">{{$tienda->dni_contacto_vendedor}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label><strong>ESTADO: </strong></label>
+                                                @if($tienda->estado_dni_contacto_vendedor != "")
+                                                    <p class="">{{$tienda->estado_dni_contacto_vendedor}}</p>
+                                                @else
+                                                    <p>-</p>
+                                                @endif
+                                            </div>
+
+
+                                        </div>
 
                                         <div class="form-group">
                                             <label><strong>Nombre: </strong></label>

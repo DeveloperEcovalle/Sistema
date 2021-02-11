@@ -69,23 +69,6 @@
                                             <option selected>SOLES</option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-6 col-xs-12">
-                                        <label id="igv_requerido">IGV (%):</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-addon">
-                                                    <input type="checkbox" id="igv_check" name="igv_check">
-                                                </span>
-                                            </div>
-                                            <input type="text" value="{{old('igv')}}" class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"  name="igv" id="igv" maxlength="2" required>
-                                            @if ($errors->has('igv'))
-                                                <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('igv') }}</strong>
-                                            </span>
-                                            @endif
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">

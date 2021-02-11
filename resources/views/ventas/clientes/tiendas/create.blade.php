@@ -400,52 +400,21 @@
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                            
-                                                                    <p>Registrar Responsable (Pago de flete) :</p>
                                                                     
-                                                                </div>
+                                                                    <label class="required">Modo</label>
+                                                                    <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago')}}">
+                                                                        <option></option>
+                                                                        @foreach(modo_responsables() as $responsable)
+                                                                            <option value="{{ $responsable->id }}" {{ (old('responsable_pago') == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @if ($errors->has('responsable_pago'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('responsable_pago') }}</strong>
+                                                                        </span>
+                                                                    @endif
 
-
-                                                                <div class="form-group row">
-
-                                                                    <div class="col-md-7">
-                          
-                                                                        <label class="required">Nombre</label>
-
-                                                                        <input type="text" class="form-control {{ $errors->has('responsable_pago_flete') ? ' is-invalid' : '' }}"
-                                                                        name="responsable_pago_flete" value="{{ old('responsable_pago_flete')}}" id="responsable_pago_flete"
-                                                                        onkeyup="return mayus(this)" disabled>
-
-                                                                            @if ($errors->has('responsable_pago_flete'))
-                                                                            <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $errors->first('responsable_pago_flete') }}</strong>
-                                                                            </span>
-                                                                            @endif
-
-                                                                        <div class="invalid-feedback"><b><span id="error-responsable_pago_flete"></span></b></div>                                          
-                                                                    
-                                                                    </div>
-
-                                                                    <div class="col-md-5">
-                                                                        <label class="required">Modo</label>
-                                                                        <select id="responsable_pago" name="responsable_pago" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}" disabled value="{{old('responsable_pago')}}">
-                                                                            <option></option>
-                                                                            @foreach(modo_responsables() as $responsable)
-                                                                                <option value="{{ $responsable->id }}" {{ (old('responsable_pago') == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        @if ($errors->has('responsable_pago'))
-                                                                            <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $errors->first('responsable_pago') }}</strong>
-                                                                            </span>
-                                                                        @endif
-
-                                                                        <div class="invalid-feedback"><b><span id="error-responsable_pago"></span></b></div>  
-                                                                    
-                                                                    
-                                                                    </div>
-
-
+                                                                    <div class="invalid-feedback"><b><span id="error-responsable_pago"></span></b></div>  
 
                                                                 </div>
 
@@ -459,7 +428,7 @@
                                                                         <label class="required">Dni</label>
 
                                                                         <div class="input-group">
-                                                                            <input type="text" class="form-control {{ $errors->has('dni_responsable_recoger') ? ' is-invalid' : '' }}" name="dni_responsable_recoger" min="8" value="{{ old('dni_responsable_recoger')}}" id="dni_responsable_recoger" onkeyup="return mayus(this)" disabled> 
+                                                                            <input type="text" class="form-control {{ $errors->has('dni_responsable_recoger') ? ' is-invalid' : '' }}" name="dni_responsable_recoger" maxlength="8" value="{{ old('dni_responsable_recoger')}}" id="dni_responsable_recoger" onkeyup="return mayus(this)" disabled> 
                                                                             <span class="input-group-append"><a style="color:white" onclick="consultarDni()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
 
                                                                             @if ($errors->has('dni_responsable_recoger'))
@@ -487,12 +456,10 @@
                                                                         <div class="invalid-feedback"><b><span id="error-estado_responsable_recoger"></span></b></div>
                                                                     </div>
 
-
-
                                                                 </div>
 
-                                                                <div class="form-group row">
-                                                                    <div class="col-md-7">
+                                                                <div class="form-group">
+                                                                
                                                                         
                                                                         <label class="required">Nombre</label>
 
@@ -507,9 +474,9 @@
                                                                             @endif
 
                                                                         <div class="invalid-feedback"><b><span id="error-nombre_responsable_recoger"></span></b></div>
-
-                                                                    </div>
-                                                                    <div class="col-md-5">
+                                                                </div>
+                                                                
+                                                                <div class="form-group">
                                                                         <label class="">Telefono</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('telefono_responsable_recoger') ? ' is-invalid' : '' }}"
@@ -524,7 +491,7 @@
 
                                                                         <div class="invalid-feedback"><b><span id="error-telefono_responsable_recoger"></span></b></div>
                                                                         
-                                                                    </div>
+                                                                    
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -552,6 +519,46 @@
                                                                     <p>Registrar Transporte :</p>
                                                                     
                                                                 </div>
+
+
+                                                                <div class="form-group row">
+
+                                                                    <div class="col-md-7">
+                                                                        <label class="required">Ruc</label>
+
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control {{ $errors->has('ruc_transporte_domicilio') ? ' is-invalid' : '' }}" name="ruc_transporte_domicilio" maxlength="11" value="{{ old('ruc_transporte_domicilio')}}" id="ruc_transporte_domicilio" onkeyup="return mayus(this)" disabled> 
+                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarRuc()" class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
+
+                                                                            @if ($errors->has('ruc_transporte_domicilio'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('ruc_transporte_domicilio') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                            <div class="invalid-feedback"><b><span id="error-ruc_transporte_domicilio"></span></b></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-5">
+                                                                        <label class="">Estado</label>
+
+                                                                        <input type="text" class="form-control  text-center {{ $errors->has('estado_transporte_domicilio') ? ' is-invalid' : '' }}"
+                                                                        name="estado_transporte_domicilio" value="{{ old('estado_transporte_domicilio','SIN VERIFICAR')}}" id="estado_transporte_domicilio"
+                                                                        onkeyup="return mayus(this)" readonly>
+
+                                                                            @if ($errors->has('estado_transporte_domicilio'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('estado_transporte_domicilio') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-estado_transporte_domicilio"></span></b></div>
+                                                                    </div>
+
+                                                                </div>
+
+
+
 
                                                                 <div class="form-group">
 
@@ -599,9 +606,47 @@
                                                                     <p>Registrar Contacto de recoger el envio:</p>
                                                                 </div>
 
-
+                                                                
                                                                 <div class="form-group row">
-                                                                    <div class="col-md-6">
+
+                                                                    <div class="col-md-7">
+                                                                        <label class="">Dni</label>
+
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control {{ $errors->has('dni_contacto_recoger') ? ' is-invalid' : '' }}" name="dni_contacto_recoger" maxlength="8" value="{{ old('dni_contacto_recoger')}}" id="dni_contacto_recoger" onkeyup="return mayus(this)" disabled> 
+                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarReniecContacto()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+
+                                                                            @if ($errors->has('dni_contacto_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('dni_contacto_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                            <div class="invalid-feedback"><b><span id="error-dni_contacto_recoger"></span></b></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-5">
+                                                                        <label class="">Estado</label>
+
+                                                                        <input type="text" class="form-control  text-center {{ $errors->has('estado_dni_contacto_recoger') ? ' is-invalid' : '' }}"
+                                                                        name="estado_dni_contacto_recoger" value="{{ old('estado_dni_contacto_recoger','SIN VERIFICAR')}}" id="estado_dni_contacto_recoger"
+                                                                        onkeyup="return mayus(this)" readonly>
+
+                                                                            @if ($errors->has('estado_dni_contacto_recoger'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('estado_dni_contacto_recoger') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-estado_dni_contacto_recoger"></span></b></div>
+                                                                    </div>
+
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+                                                                   
                                                                         
                                                                         <label class="">Nombre</label>
 
@@ -617,8 +662,12 @@
 
                                                                         <div class="invalid-feedback"><b><span id="error-nombre_contacto_recoger"></span></b></div>
 
-                                                                    </div>
-                                                                    <div class="col-md-6">
+                                                                    
+  
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                
                                                                         <label class="">Telefono</label>
 
                                                                         <input type="text" class="form-control {{ $errors->has('telefono_contacto_recoger') ? ' is-invalid' : '' }}"
@@ -633,7 +682,7 @@
 
                                                                         <div class="invalid-feedback"><b><span id="error-telefono_contacto_recoger"></span></b></div>
                                                                         
-                                                                    </div>
+                                                                    
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -674,6 +723,41 @@
                                                                 <h4><b>Contacto: "Administrador"</b></h4>
                                                                 <p>Registrar datos del contacto Administrador:</p>
                                                                 
+                                                            </div>
+
+
+                                                            <div class="form-group row">
+
+                                                                <div class="col-md-7">
+                                                                    <label class="">Dni</label>
+
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control {{ $errors->has('dni_contacto_admin') ? ' is-invalid' : '' }}" name="dni_contacto_admin" maxlength="8" value="{{ old('dni_contacto_admin')}}" id="dni_contacto_admin" onkeyup="return mayus(this)"> 
+                                                                        <span class="input-group-append"><a style="color:white" onclick="consultarDniAdmin()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+
+                                                                        @if ($errors->has('dni_contacto_admin'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('dni_contacto_admin') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-5">
+                                                                    <label class="">Estado</label>
+
+                                                                    <input type="text" class="form-control  text-center {{ $errors->has('estado_dni_contacto_admin') ? ' is-invalid' : '' }}"
+                                                                    name="estado_dni_contacto_admin" value="{{ old('estado_dni_contacto_admin','SIN VERIFICAR')}}" id="estado_dni_contacto_admin"
+                                                                    onkeyup="return mayus(this)" readonly>
+
+                                                                        @if ($errors->has('estado_dni_contacto_admin'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('estado_dni_contacto_admin') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                </div>
+
                                                             </div>
 
                                                             <div class="form-group">
@@ -801,6 +885,41 @@
                                                                 <p>Registrar datos del contacto Crédito & Cobranza:</p>
                                                             </div>
 
+                                                            <div class="form-group row">
+
+                                                                <div class="col-md-7">
+                                                                    <label class="">Dni</label>
+
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control {{ $errors->has('dni_contacto_credito') ? ' is-invalid' : '' }}" name="dni_contacto_credito" maxlength="8" value="{{ old('dni_contacto_credito')}}" id="dni_contacto_credito" onkeyup="return mayus(this)"> 
+                                                                        <span class="input-group-append"><a style="color:white" onclick="consultarDniCredito()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+
+                                                                        @if ($errors->has('dni_contacto_credito'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('dni_contacto_credito') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-5">
+                                                                    <label class="">Estado</label>
+
+                                                                    <input type="text" class="form-control  text-center {{ $errors->has('estado_dni_contacto_credito') ? ' is-invalid' : '' }}"
+                                                                    name="estado_dni_contacto_credito" value="{{ old('estado_dni_contacto_credito','SIN VERIFICAR')}}" id="estado_dni_contacto_credito"
+                                                                    onkeyup="return mayus(this)" readonly>
+
+                                                                        @if ($errors->has('estado_dni_contacto_credito'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('estado_dni_contacto_credito') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                </div>
+
+                                                            </div>
+
+
                                                             <div class="form-group">
                                                                 <label class="">Nombre</label>
 
@@ -925,6 +1044,41 @@
                                                                 <h4><b>Contacto: "Vendedor"</b></h4>
                                                                 <p>Registrar datos del contacto Vendedor:</p>
                                                                 
+                                                            </div>
+
+
+                                                            <div class="form-group row">
+
+                                                                <div class="col-md-7">
+                                                                    <label class="">Dni</label>
+
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control {{ $errors->has('dni_contacto_vendedor') ? ' is-invalid' : '' }}" name="dni_contacto_vendedor" maxlength="8" value="{{ old('dni_contacto_vendedor')}}" id="dni_contacto_vendedor" onkeyup="return mayus(this)"> 
+                                                                        <span class="input-group-append"><a style="color:white" onclick="consultarDniVendedor()" class="btn btn-primary"><i class="fa fa-search"></i> Reniec</a></span>
+
+                                                                        @if ($errors->has('dni_contacto_vendedor'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('dni_contacto_vendedor') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-5">
+                                                                    <label class="">Estado</label>
+
+                                                                    <input type="text" class="form-control  text-center {{ $errors->has('estado_dni_contacto_vendedor') ? ' is-invalid' : '' }}"
+                                                                    name="estado_dni_contacto_vendedor" value="{{ old('estado_dni_contacto_vendedor','SIN VERIFICAR')}}" id="estado_dni_contacto_vendedor"
+                                                                    onkeyup="return mayus(this)" readonly>
+
+                                                                        @if ($errors->has('estado_dni_contacto_vendedor'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('estado_dni_contacto_vendedor') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                </div>
+
                                                             </div>
 
                                                             <div class="form-group">
@@ -1166,8 +1320,36 @@ $(".select2_form").select2({
     width: '100%',
 });
 
+$("#nombre_responsable_recoger").keyup(function() {
+    if ($('#estado_responsable_recoger').val('ACTIVO')) {
+        $('#estado_responsable_recoger').val('SIN VERIFICAR');
+    }
+})
+
+
+$("#nombre_transporte_domicilio").keyup(function() {
+    if ($('#estado_transporte_domicilio').val('ACTIVO')) {
+        $('#estado_transporte_domicilio').val('SIN VERIFICAR');
+    }
+})
+
+
+$("#nombre_contacto_recoger").keyup(function() {
+    if ($('#estado_dni_contacto_recoger').val('ACTIVO')) {
+        $('#estado_dni_contacto_recoger').val('SIN VERIFICAR');
+    }
+})
+
 // Solo campos numericos
 $('#ruc').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('#dni_contacto_recoger').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('#ruc_transporte_domicilio').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
@@ -1264,10 +1446,15 @@ function validarCampos() {
 
   }else{
 
+    if ($('#ruc_transporte_domicilio').val() == ''){
+      campos = false
+      $('#envios').click()
+    }
+
     if ($('#nombre_transporte_domicilio').val() == ''){
       campos = false
       $('#envios').click()
-    } 
+    }
 
     if ($('#direccion_domicilio').val() == ''){
       campos = false
@@ -1327,7 +1514,6 @@ $('#enviar_empresa').submit(function(e) {
         }
     })
 })
-
 
 
 $('.tabs-container .nav-tabs #envios').click(function() {
@@ -1454,6 +1640,13 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
             $('#error-nombre_transporte_domicilio').text("El campo Nombre del Transporte es obligatorio.")
         }
 
+        if ($('#ruc_transporte_domicilio').val() == '') {
+            enviar = false
+            $('#ruc_transporte_domicilio').addClass("is-invalid")
+            toastr.error("Ingrese el Nombre.", 'Error');
+            $('#error-ruc_transporte_domicilio').text("El campo Ruc del Transporte es obligatorio.")
+        }
+
         if ($('#direccion_domicilio').val() == '') {
             enviar = false
             $('#direccion_domicilio').addClass("is-invalid")
@@ -1474,9 +1667,6 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
     return enviar
 
 })
-
-
-
 
 
 function limpiarErrores() {
@@ -1512,6 +1702,9 @@ function limpiarErrores() {
     $('#nombre_responsable_pago').removeClass("is-invalid")
     $('#error-responsable_pago').text("")
 
+
+    $('#ruc_transporte_domicilio').removeClass("is-invalid")
+    $('#error-ruc_transporte_domicilio').text("")
 
     $('#nombre_transporte_domicilio').removeClass("is-invalid")
     $('#error-nombre_transporte_domicilio').text("")
@@ -1551,8 +1744,10 @@ $(document).ready(function() {
             $('#reparto_domicilio').css("display","")
             $('#reparto_oficina').css("display","none")
 
+            $('#ruc_transporte_domicilio').prop('disabled', false)
             $('#nombre_transporte_domicilio').prop('disabled', false)
             $('#direccion_domicilio').prop('disabled', false)
+            $('#dni_contacto_recoger').prop('disabled', false)
             $('#nombre_contacto_recoger').prop('disabled', false)
             $('#telefono_contacto_recoger').prop('disabled', false)
             $('#observacion_domicilio').prop('disabled', false)
@@ -1570,8 +1765,11 @@ $(document).ready(function() {
             $('#telefono_responsable_recoger').prop('disabled', true)
             $('#observacion_envio').prop('disabled', true)
 
+
+            $('#ruc_transporte_domicilio').prop('disabled', true)
             $('#nombre_transporte_domicilio').prop('disabled', true)
             $('#direccion_domicilio').prop('disabled', true)
+            $('#dni_contacto_recoger').prop('disabled', true)
             $('#nombre_contacto_recoger').prop('disabled', true)
             $('#telefono_contacto_recoger').prop('disabled', true)
             $('#observacion_domicilio').prop('disabled', true)
@@ -1580,8 +1778,12 @@ $(document).ready(function() {
 
 function limpiarDomicilio(){
 
+    $('#ruc_transporte_domicilio').val('')
+    $('#estado_transporte_domicilio').val('SIN VERIFICAR')
+    $('#estado_dni_contacto_recoger').val('SIN VERIFICAR')
     $('#nombre_transporte_domicilio').val('')
     $('#direccion_domicilio').val('')
+    $('#dni_contacto_recoger').val('')
     $('#nombre_contacto_recoger').val('')
     $('#telefono_contacto_recoger').val('')
     $('#observacion_domicilio').val('')
@@ -1614,6 +1816,24 @@ $("#nombre_responsable_recoger").keyup(function() {
     }
 })
 
+$("#dni_contacto_recoger").keyup(function() {
+    if ($('#estado_dni_contacto_recoger').val('ACTIVO')) {
+        $('#estado_dni_contacto_recoger').val('SIN VERIFICAR')
+    }
+})
+
+$("#dni_responsable_recoger").keyup(function() {
+    if ($('#estado_responsable_recoger').val('ACTIVO')) {
+        $('#estado_responsable_recoger').val('SIN VERIFICAR')
+    }
+})
+
+$("#ruc_transporte_domicilio").keyup(function() {
+    if ($('#estado_transporte_domicilio').val('ACTIVO')) {
+        $('#estado_transporte_domicilio').val('SIN VERIFICAR')
+    }
+})
+
 
 $("#condicion_reparto").on('change',function(e){
     limpiarErrores()
@@ -1640,9 +1860,14 @@ $("#condicion_reparto").on('change',function(e){
             $('#reparto_domicilio').css("display","")
             $('#reparto_oficina').css("display","none")
 
+            $('#estado_transporte_domicilio').val("SIN VERIFICAR")
+            $('#ruc_transporte_domicilio').prop('disabled', false)
             $('#nombre_transporte_domicilio').prop('disabled', false)
             $('#direccion_domicilio').prop('disabled', false)
             $('#nombre_contacto_recoger').prop('disabled', false)
+            $('#dni_contacto_recoger').prop('disabled', false)
+            $('#estado_dni_contacto_recoger').val("SIN VERIFICAR")
+
             $('#telefono_contacto_recoger').prop('disabled', false)
             $('#observacion_domicilio').prop('disabled', false)
             limpiarOficina()        
@@ -1658,9 +1883,13 @@ $("#condicion_reparto").on('change',function(e){
             $('#telefono_responsable_recoger').prop('disabled', true)
             $('#observacion_envio').prop('disabled', true)
 
+            
+            $('#ruc_transporte_domicilio').prop('disabled', true)
             $('#nombre_transporte_domicilio').prop('disabled', true)
             $('#direccion_domicilio').prop('disabled', true)
+            
             $('#nombre_contacto_recoger').prop('disabled', true)
+            $('#dni_contacto_recoger').prop('disabled', true)
             $('#telefono_contacto_recoger').prop('disabled', true)
             $('#observacion_domicilio').prop('disabled', true)
             limpiarOficina()
@@ -1737,6 +1966,392 @@ function camposDni(objeto) {
     $('#estado_responsable_recoger').val('ACTIVO')
 
 }
+
+
+// Consulta Dni
+function consultarReniecContacto() {
+    var dni = $('#dni_contacto_recoger').val()
+    if (dni.length == 8) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Dni a Reniec?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApidni", ":dni")}}';
+                url = url.replace(':dni', dni);
+
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_dni_contacto_recoger').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Dni Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            camposDnicontacto(result)
+        
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
+    }
+}
+
+function camposDnicontacto(objeto) {
+
+    var nombres = objeto.value.nombres;
+    var apellidopa = objeto.value.apellidoPaterno;
+    var apellidoma = objeto.value.apellidoMaterno;
+
+    var nombre_completo = []
+
+    if (nombres != "-" && nombres != null) {
+        nombre_completo.push(nombres)
+    }
+
+    if (apellidopa != "-" && apellidopa != null) {
+        nombre_completo.push(apellidopa)
+    }
+
+    if (apellidoma != "-" && apellidoma != null) {
+        nombre_completo.push(apellidoma)
+    }
+
+    $('#nombre_contacto_recoger').val(nombre_completo.join(' '))
+    $('#estado_dni_contacto_recoger').val('ACTIVO')
+
+}
+
+function consultarRuc() {
+    // limpiarErrores()
+    var ruc = $('#ruc_transporte_domicilio').val()
+    if (ruc.length == 11) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Ruc a Sunat?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApiruc", ":ruc")}}';
+                url = url.replace(':ruc', ruc);
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_transporte_domicilio').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Ruc Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            console.log(result)
+           
+            camposRuc(result)
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
+    }
+}
+
+function camposRuc(objeto) {
+    var razonsocial = objeto.value.razonSocial;
+    var direccion = objeto.value.direccion;
+    var departamento = objeto.value.departamento;
+    var provincia = objeto.value.provincia;
+    var distrito = objeto.value.distrito;
+    var estado = objeto.value.estado;
+
+    if (razonsocial != '-' && razonsocial != "NULL") {
+        $('#nombre_transporte_domicilio').val(razonsocial)
+    }
+
+    if (estado == "ACTIVO") {
+        $('#estado_transporte_domicilio').val(estado)
+    } else {
+        $('#estado_transporte_domicilio').val('INACTIVO')
+    }
+
+    if (direccion != '-' && direccion != "NULL") {
+        $('#direccion_domicilio').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
+    }
+}
+
+
+// Consultar Administrativo
+
+function consultarDniAdmin() {
+    var dni = $('#dni_contacto_admin').val()
+    if (dni.length == 8) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Dni a Reniec?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApidni", ":dni")}}';
+                url = url.replace(':dni', dni);
+
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_dni_contacto_admin').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Dni Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            camposDnicontactoAdmin(result)
+        
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
+    }
+}
+
+function camposDnicontactoAdmin(objeto) {
+
+    var nombres = objeto.value.nombres;
+    var apellidopa = objeto.value.apellidoPaterno;
+    var apellidoma = objeto.value.apellidoMaterno;
+
+    var nombre_completo = []
+
+    if (nombres != "-" && nombres != null) {
+        nombre_completo.push(nombres)
+    }
+
+    if (apellidopa != "-" && apellidopa != null) {
+        nombre_completo.push(apellidopa)
+    }
+
+    if (apellidoma != "-" && apellidoma != null) {
+        nombre_completo.push(apellidoma)
+    }
+
+    $('#nombre_administrador').val(nombre_completo.join(' '))
+    $('#estado_dni_contacto_admin').val('ACTIVO')
+
+}
+
+$("#dni_contacto_admin").keyup(function() {
+    if ($('#estado_dni_contacto_admin').val('ACTIVO')) {
+        $('#estado_dni_contacto_admin').val('SIN VERIFICAR')
+    }
+})
+
+$("#nombre_administrador").keyup(function() {
+    if ($('#estado_dni_contacto_admin').val('ACTIVO')) {
+        $('#estado_dni_contacto_admin').val('SIN VERIFICAR')
+    }
+})
+
+//Contacto Credito
+function consultarDniCredito() {
+    var dni = $('#dni_contacto_credito').val()
+    if (dni.length == 8) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Dni a Reniec?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApidni", ":dni")}}';
+                url = url.replace(':dni', dni);
+
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_dni_contacto_credito').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Dni Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            camposDnicontactoCredito(result)
+        
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
+    }
+}
+
+function camposDnicontactoCredito(objeto) {
+
+    var nombres = objeto.value.nombres;
+    var apellidopa = objeto.value.apellidoPaterno;
+    var apellidoma = objeto.value.apellidoMaterno;
+
+    var nombre_completo = []
+
+    if (nombres != "-" && nombres != null) {
+        nombre_completo.push(nombres)
+    }
+
+    if (apellidopa != "-" && apellidopa != null) {
+        nombre_completo.push(apellidopa)
+    }
+
+    if (apellidoma != "-" && apellidoma != null) {
+        nombre_completo.push(apellidoma)
+    }
+
+    $('#nombre_credito').val(nombre_completo.join(' '))
+    $('#estado_dni_contacto_credito').val('ACTIVO')
+
+}
+
+
+$("#dni_contacto_credito").keyup(function() {
+    if ($('#estado_dni_contacto_credito').val('ACTIVO')) {
+        $('#estado_dni_contacto_credito').val('SIN VERIFICAR')
+    }
+})
+
+$("#nombre_credito").keyup(function() {
+    if ($('#estado_dni_contacto_credito').val('ACTIVO')) {
+        $('#estado_dni_contacto_credito').val('SIN VERIFICAR')
+    }
+})
+
+
+//Contacto Vendedor
+function consultarDniVendedor() {
+    var dni = $('#dni_contacto_vendedor').val()
+    if (dni.length == 8) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Dni a Reniec?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApidni", ":dni")}}';
+                url = url.replace(':dni', dni);
+
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_dni_contacto_vendedor').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Dni Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            camposDnicontactoVendedor(result)
+        
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
+    }
+}
+
+function camposDnicontactoVendedor(objeto) {
+
+    var nombres = objeto.value.nombres;
+    var apellidopa = objeto.value.apellidoPaterno;
+    var apellidoma = objeto.value.apellidoMaterno;
+
+    var nombre_completo = []
+
+    if (nombres != "-" && nombres != null) {
+        nombre_completo.push(nombres)
+    }
+
+    if (apellidopa != "-" && apellidopa != null) {
+        nombre_completo.push(apellidopa)
+    }
+
+    if (apellidoma != "-" && apellidoma != null) {
+        nombre_completo.push(apellidoma)
+    }
+
+    $('#nombre_vendedor').val(nombre_completo.join(' '))
+    $('#estado_dni_contacto_vendedor').val('ACTIVO')
+
+}
+
+
+$("#dni_contacto_vendedor").keyup(function() {
+    if ($('#estado_dni_contacto_vendedor').val('ACTIVO')) {
+        $('#estado_dni_contacto_vendedor').val('SIN VERIFICAR')
+    }
+})
+
+$("#nombre_vendedor").keyup(function() {
+    if ($('#estado_dni_contacto_vendedor').val('ACTIVO')) {
+        $('#estado_dni_contacto_vendedor').val('SIN VERIFICAR')
+    }
+})
+
 
 
  

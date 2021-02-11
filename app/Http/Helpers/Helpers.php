@@ -266,6 +266,14 @@ if (!function_exists('modo_responsables')) {
         return General::find(24)->detalles;
     }
 }
+//Linea Comercial
+if (!function_exists('lineas_comerciales')) {
+    function lineas_comerciales()
+    {
+        return General::find(25)->detalles;
+    }
+}
+
 
 // Monto a Pagar Orden de compra
 if (!function_exists('calcularMonto')) {
