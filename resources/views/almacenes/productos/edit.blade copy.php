@@ -54,18 +54,32 @@
 
 
                                 <div class="form-group row">
-
-                                    <div class="col-lg-12 col-xs-12">
-                                        <label class="required">Unidad de Medida</label>
-                                        <select id="medida" name="medida" class="select2_form form-control {{ $errors->has('medida') ? ' is-invalid' : '' }}">
+                                <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Moneda</label>
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" required>
                                             <option></option>
-                                            @foreach(unidad_medida() as $medida)
-                                                <option value="{{ $medida->id }}" {{ (old('medida', $producto->medida) == $medida->id ? "selected" : "") }}>{{ $medida->simbolo.' - '.$medida->descripcion }}</option>
+                                            @foreach(tipos_moneda() as $tipo)
+                                                <option value="{{ $tipo->id }}" {{ (old('moneda', $producto->moneda ) == $tipo->id ? "selected" : "") }} >{{ $tipo->descripcion }}</option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('medida'))
+                                        @if ($errors->has('moneda'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('medida') }}</strong>
+                                                <strong>{{ $errors->first('moneda') }}</strong>
+                                            </span>
+                                        @endif
+
+                                    </div>
+                                    <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Presentación</label>
+                                        <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
+                                            <option></option>
+                                            @foreach(presentaciones() as $presentacion)
+                                                <option value="{{ $presentacion->simbolo }}" {{ (old('presentacion', $producto->presentacion) == $presentacion->simbolo ? "selected" : "") }}>{{ $presentacion->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('presentacion'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('presentacion') }}</strong>
                                             </span>
                                         @endif
 
@@ -215,7 +229,7 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="required">Cliente</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="cliente"
@@ -230,16 +244,6 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="required">Moneda</label>
-                                                <select class="select2_form form-control" style="text-transform: uppercase; width:100%" name="moneda_cliente" id="moneda_cliente">
-                                                    <option></option>
-                                                    @foreach (tipos_moneda() as $tipo_moneda)
-                                                    <option value="{{$tipo_moneda->id}}">{{$tipo_moneda->simbolo.' - '.$tipo_moneda->descripcion}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="invalid-feedback"><b><span id="error-moneda"></span></b></div>
-                                            </div>
-                                            <div class="col-md-2">
                                                 <label class="required">Monto</label>
                                                 <input type="text" id="monto" name="monto" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-monto"></span></b></div>
@@ -265,7 +269,6 @@
                                                         
                                                         <th class="text-center">ACCIONES</th>
                                                         <th class="text-center">CLIENTE</th>
-                                                        <th class="text-center">MONEDA</th>
                                                         <th class="text-center">MONTO</th>
 
                                                     </tr>
@@ -831,15 +834,6 @@
                         "targets": [2],
                         className: "text-center",
                     },
-                    {
-                        "targets": [3],
-                        className: "text-center",
-                    },
-                    {
-                        "targets": [4],
-                        visible: false,
-                        className: "text-center",
-                    },
 
                 ],
 
@@ -856,8 +850,7 @@
             var data = table.row($(this).parents('tr')).data();
             $('#indice').val(table.row($(this).parents('tr')).index());
             $('#cliente_id_editar').val(data[1]).trigger('change');
-            $('#moneda_id_editar').val(data[4]).trigger('change');
-            $('#monto_editar').val(data[3]);
+            $('#monto_editar').val(data[2]);
             $('#modal_editar_cliente').modal('show');
         })
 
@@ -912,7 +905,7 @@
                 $('#cliente').addClass("is-invalid")
                 $('#error-cliente').text('El campo Cliente es obligatorio.')
             } else {
-                var existe = buscarClientes($('#cliente').val(), $('#moneda_cliente').val())
+                var existe = buscarClientes($('#cliente').val())
                 if (existe == true) {
                     toastr.error('Tipo de Cliente ya se encuentra ingresado.', 'Error');
                     enviar = true;
@@ -927,16 +920,6 @@
                 $("#monto").addClass("is-invalid");
                 $('#error-monto').text('El campo Monto es obligatorio.')
             }
-
-            if ($('#moneda_cliente').val() == '') {
-
-                toastr.error('Seleccione la moneda del tipo de cliente.', 'Error');
-                enviar = true;
-
-                $("#moneda_cliente").addClass("is-invalid");
-                $('#error-moneda').text('El campo Moneda es obligatorio.')
-            }
-
 
             if (enviar != true) {
                 const swalWithBootstrapButtons = Swal.mixin({
@@ -961,9 +944,6 @@
                         var detalle = {
                             cliente: $('#cliente').val(),
                             monto: $('#monto').val(),
-                            // moneda: cargarMoneda($('#moneda_cliente').val()),
-                            moneda: $('#moneda_cliente').val(),
-                            id_moneda: $('#moneda_cliente').val(),
                         }
                         limpiarDetalle()
                         agregarTabla(detalle);
@@ -985,12 +965,11 @@
             }
         })
 
-        function buscarClientes(cliente,moneda) {
-            var tipo_moneda = cargarMoneda(moneda)
+        function buscarClientes(cliente) {
             var existe = false;
             var t = $('.dataTables-clientes').DataTable();
             t.rows().data().each(function(el, index) {
-                if (el[1] == cliente && el[2] == tipo_moneda ) {
+                if (el[1] == cliente) {
                     existe = true
                 }
             });
@@ -1002,30 +981,13 @@
             t.row.add([
                 '',
                 detalle.cliente,
-                cargarMoneda(detalle.moneda),
                 detalle.monto,
-                detalle.moneda,
 
             ]).draw(false);
 
             cargarClientes()
 
         }
-
-        function cargarMoneda(id) {
-
-            var moneda = ""
-
-            @foreach (tipos_moneda() as $tipo_moneda)
-                if ("{{$tipo_moneda->id}}" == id ) {
-                    moneda = "{{$tipo_moneda->descripcion}}"
-                }
-            @endforeach
-
-            return moneda
-
-        }
-
 
         function cargarClientes() {
 
@@ -1035,9 +997,7 @@
             data.each(function(value, index) {
                 let fila = {
                     cliente: value[1],
-                    monto: value[3],
-                    moneda: value[2],
-                    id_moneda: value[4],
+                    monto: value[2],
                 };
 
                 clientes.push(fila);
@@ -1049,8 +1009,7 @@
 
         function limpiarDetalle() {
             $('#monto').val('')
-            $('#cliente').val($('#cliente option:first-child').val()).trigger('change');
-            $('#moneda_cliente').val($('#moneda_cliente option:first-child').val()).trigger('change');
+            $('#cliente').val($('#articulo_id option:first-child').val()).trigger('change');
 
         }
 
@@ -1060,9 +1019,6 @@
 
             $('#cliente').removeClass("is-invalid")
             $('#error-cliente').text('')
-            
-            $('#moneda_cliente').removeClass("is-invalid")
-            $('#error-moneda').text('')
         }
 
         function obtenerTabla() {
@@ -1071,9 +1027,7 @@
             t.row.add([
                 '',
                 "{{$cliente->cliente}}",
-                cargarMoneda("{{$cliente->moneda}}"),
                 "{{$cliente->monto}}",
-                "{{$cliente->moneda}}",
             ]).draw(false);
             @endforeach
         }

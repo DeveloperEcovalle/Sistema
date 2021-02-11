@@ -16,6 +16,7 @@ class TablaSeeder extends Seeder
          $tabla = new General();
          $tabla->descripcion = 'TIPOS DE MONEDA';
          $tabla->sigla = 'TIPOS DE MONEDA';
+         $tabla->editable = '1';
          $tabla->save();
 
          // 2
@@ -88,6 +89,7 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'UNIDAD MEDIDA';
         $tabla->sigla = 'UNIDAD MEDIDA';
+        $tabla->editable = '1';
         $tabla->save();
         //14
         $tabla = new General();
@@ -111,6 +113,7 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'TIPO DE CLIENTE';
         $tabla->sigla = 'TIPO DE CLIENTE';
+        $tabla->editable = '1';
         $tabla->save();
 
         //18
@@ -160,7 +163,5 @@ class TablaSeeder extends Seeder
         $tabla->descripcion = 'LINEA COMERCIAL';
         $tabla->sigla = 'LINEA COMERCIAL';
         $tabla->save();
-
-
     }
 }

@@ -379,28 +379,6 @@ class TablaDetalleSeeder extends Seeder
 
 
         // UNIDAD DE MEDIDA
-        $detalle = new Detalle();
-        $detalle->descripcion = "KILOGRAMO";
-        $detalle->simbolo = "KGM";
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 13;
-        $detalle->save();
-
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "US GALON (3,7843 L)";
-        $detalle->simbolo = "GLL";
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 13;
-        $detalle->save();
-
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "BOTELLAS";
-        $detalle->simbolo = "BO";
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 13;
-        $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "BOBINAS";
@@ -429,6 +407,420 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 13;
         $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "BOTELLAS";
+        $detalle->simbolo = "BO";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CAJA";
+        $detalle->simbolo = "BX";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CARTONES";
+        $detalle->simbolo = "CT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CENTIMETRO CUADRADO";
+        $detalle->simbolo = "CMK";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CENTIMETRO CUBICO";
+        $detalle->simbolo = "CMQ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CENTIMETRO LINEAL";
+        $detalle->simbolo = "CMT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CIENTO DE UNIDADES";
+        $detalle->simbolo = "CEN";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CILINDRO";
+        $detalle->simbolo = "CY";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CONOS";
+        $detalle->simbolo = "CJ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "DOCENA";
+        $detalle->simbolo = "DZN";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "DOCENA POR 10**6";
+        $detalle->simbolo = "DZP";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "FARDO";
+        $detalle->simbolo = "BE";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "GALON INGLES (4,545956L)";
+        $detalle->simbolo = "GLI";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "GRAMO";
+        $detalle->simbolo = "GRM";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "GRUESA";
+        $detalle->simbolo = "GRO";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "HECTOLITRO";
+        $detalle->simbolo = "HLT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "HOJA";
+        $detalle->simbolo = "LEF";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "JUEGO";
+        $detalle->simbolo = "SET";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "KILOGRAMO";
+        $detalle->simbolo = "KGM";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "KILOMETRO";
+        $detalle->simbolo = "KTM";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "KILOVATIO HORA";
+        $detalle->simbolo = "KWH";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "KIT";
+        $detalle->simbolo = "KIT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "LATAS";
+        $detalle->simbolo = "CA";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "LIBRAS";
+        $detalle->simbolo = "LBR";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "LITRO";
+        $detalle->simbolo = "LTR";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MEGAWATT HORA";
+        $detalle->simbolo = "MWH";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MEGAWATT HORA";
+        $detalle->simbolo = "MWH";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "METRO";
+        $detalle->simbolo = "MTR";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "METRO CUADRADO";
+        $detalle->simbolo = "MTK";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "METRO CUBICO";
+        $detalle->simbolo = "MTQ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILIGRAMOS";
+        $detalle->simbolo = "MGM";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILILITRO";
+        $detalle->simbolo = "MLT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILIMETRO";
+        $detalle->simbolo = "MMT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILIMETRO CUADRADO";
+        $detalle->simbolo = "MMK";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILIMETRO CUBICO";
+        $detalle->simbolo = "MMQ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILLARES";
+        $detalle->simbolo = "MLL";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MILLON DE UNIDADES";
+        $detalle->simbolo = "UM";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        
+        $detalle = new Detalle();
+        $detalle->descripcion = "ONZAS";
+        $detalle->simbolo = "ONZ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PALETAS";
+        $detalle->simbolo = "PF";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PAQUETE";
+        $detalle->simbolo = "PK";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PAR";
+        $detalle->simbolo = "PR";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PIES";
+        $detalle->simbolo = "FOT";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PIES CUADRADOS";
+        $detalle->simbolo = "FTK";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PIES CUBICOS";
+        $detalle->simbolo = "FTQ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PIEZAS";
+        $detalle->simbolo = "C62";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PLIEGO";
+        $detalle->simbolo = "ST";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "PULGADAS";
+        $detalle->simbolo = "INH";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "RESMA";
+        $detalle->simbolo = "RM";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TAMBOR";
+        $detalle->simbolo = "DR";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TONELADA CORTA";
+        $detalle->simbolo = "STN";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TONELADA LARGA";
+        $detalle->simbolo = "LTN";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TONELADAS";
+        $detalle->simbolo = "TNE";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "TUBOS";
+        $detalle->simbolo = "TU";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "UNIDAD (BIENES)";
+        $detalle->simbolo = "NIU";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "UNIDAD (SERVICIOS)";
+        $detalle->simbolo = "ZZ";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "US GALON (3,7843 L)";
+        $detalle->simbolo = "GLL";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "YARDA";
+        $detalle->simbolo = "YRD";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "YARDA CUADRADA";
+        $detalle->simbolo = "YDK";
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 13;
+        $detalle->save();
+
+
+
 
 
 
@@ -672,7 +1064,62 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 25;
         $detalle->save();
 
+        $detalle = new Detalle();
+        $detalle->descripcion = "SEMILLAS Y CEREALES";
+        $detalle->simbolo = 'SEMILLAS Y CEREALES';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
 
-        
+        $detalle = new Detalle();
+        $detalle->descripcion = "BEBIDAS Y EXTRACTOS";
+        $detalle->simbolo = 'BEBIDAS Y EXTRACTOS';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "HARINAS Y POLVOS";
+        $detalle->simbolo = 'HARINAS Y POLVOS';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "COSMÉTICA NATURAL";
+        $detalle->simbolo = 'COSMÉTICA NATURAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MINERALES Y SALES";
+        $detalle->simbolo = 'MINERALES Y SALES';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "HOJAS DESHIDRATADAS";
+        $detalle->simbolo = 'HOJAS DESHIDRATADAS';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "JARABES Y MIEL";
+        $detalle->simbolo = 'JARABES Y MIEL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "MANTEQUILLAS Y MERMELADAS";
+        $detalle->simbolo = 'MANTEQUILLAS Y MERMELADAS';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
     }
 }

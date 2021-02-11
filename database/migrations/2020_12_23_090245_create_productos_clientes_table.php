@@ -22,7 +22,10 @@ class CreateProductosClientesTable extends Migration
             $table->unsignedInteger('producto_id');
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
 
+            $table->string('moneda');
+            
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
+            
             $table->timestamps();
         });
     }

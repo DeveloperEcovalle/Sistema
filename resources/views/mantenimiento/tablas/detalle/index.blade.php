@@ -19,11 +19,13 @@
 
         </ol>
     </div>
+    @if($tabla->editable != 1)
     <div class="col-lg-2 col-md-2">
         <a data-toggle="modal" data-target="#modal_crear_tabla_detalle"  id="btn_añadir_empleado" class="btn btn-block btn-w-m btn-primary m-t-md" href="#">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </a>
     </div>
+    @endif
     
 </div>
 
@@ -130,7 +132,7 @@
                     data: null,
                     className:"text-center",
                     render: function (data) {
-                        if (data.id != '4') {
+                        if (data.editable != 1) {
                             return "<div class='btn-group'><button class='btn btn-warning btn-sm modificarDetalle' onclick='obtenerData("+data.id+")' type='button' title='Modificar'><i class='fa fa-edit'></i></button><a class='btn btn-danger btn-sm' href='#' onclick='eliminar("+data.id+")' title='Eliminar'><i class='fa fa-trash'></i></a></div>"
                         }else{
                             return " - "

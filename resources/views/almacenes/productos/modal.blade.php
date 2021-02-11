@@ -13,11 +13,7 @@
             <div class="modal-body">
                 <form role="form" id="">
 
-                    <div class="form-group row">
-
-                        <input type="hidden" name="" id="indice">
-
-                        <div class="col-md-8">
+                        <div class="form-group">
                             <label class="required">Cliente</label>
                             <select class="select2_form form-control" style="text-transform: uppercase; width:100%"
                                 name="cliente_id" id="cliente_id_editar" disabled>
@@ -28,6 +24,23 @@
                                 @endforeach
                             </select>
                             <div class="invalid-feedback"><b><span id="error-cliente_id_editar"></span></b></div>
+                        </div>
+
+                    <div class="form-group row">
+
+                        <input type="hidden" name="" id="indice">
+
+                        <div class="col-md-8">
+                            <label class="required">Moneda</label>
+                            <select class="select2_form form-control" style="text-transform: uppercase; width:100%"
+                                name="moneda_id" id="moneda_id_editar" disabled>
+                                <option></option>
+                                @foreach (tipos_moneda() as $tipo)
+                                <option value="{{$tipo->id}}">{{$tipo->simbolo.' - '.$tipo->descripcion}}
+                                </option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"><b><span id="error-moneda_id_editar"></span></b></div>
                         </div>
 
                         <div class="col-md-4">
@@ -63,9 +76,18 @@
 
 @push('scripts')
 <script>
+
+    function limpiarErroresRegistro() {
+        $('#monto_editar').removeClass("is-invalid")
+        $('#error-monto_editar').text('')
+        
+        $('#moneda_id_editar').removeClass("is-invalid")
+        $('#error-moneda_id_editar').text('')
+    }
+
 //Validacion al ingresar tablas
 $(".editarRegistro").click(function() {
-    // limpiarErrores()
+    limpiarErroresRegistro()
     var enviar = false;
 
     if ($('#monto_editar').val() == '') {
@@ -76,6 +98,16 @@ $(".editarRegistro").click(function() {
         $("#monto_editar").addClass("is-invalid");
         $('#error-monto_editar').text('El campo Monto es obligatorio.')
     }
+
+    if ($('#moneda_id_editar').val() == '') {
+
+        toastr.error('Seleccione la moneda del tipo de cliente.', 'Error');
+        enviar = true;
+
+        $("#moneda_id_editar").addClass("is-invalid");
+        $('#error-moneda_id_editar').text('El campo Moneda es obligatorio.')
+    }
+
 
     if (enviar != true) {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -125,6 +157,8 @@ function actualizarTabla(i) {
     var detalle = {
         cliente: $('#cliente_id_editar').val(),
         monto: $('#monto_editar').val(),
+        moneda: $('#moneda_id_editar').val(),
+        id_moneda: $('#moneda_id_editar').val(),
     }
     agregarTabla(detalle);
 
@@ -133,8 +167,12 @@ function actualizarTabla(i) {
 
 function limpiar() {
 
+    $('#moneda_id_editar').removeClass("is-invalid")
+    $('#error-moneda_id_editar').text('')
+
     $('#monto_editar').removeClass("is-invalid")
     $('#error-monto_editar').text('')
+
     $('#modal_editar_cliente').modal('hide');
 }
 

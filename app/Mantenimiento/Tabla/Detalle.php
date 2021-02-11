@@ -12,6 +12,6 @@ class Detalle extends Model
 
     public function tabla()
     {
-        return $this->belongsTo('App\Mantenimiento\Tabla\General');
+        return $this->belongsTo('App\Mantenimiento\Tabla\General','tabla_id');
     }
 }

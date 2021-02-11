@@ -105,6 +105,13 @@ if (!function_exists('modo_compra')) {
     }
 }
 
+if (!function_exists('unidad_medida')) {
+    function unidad_medida()
+    {
+        return General::find(13)->detalles;
+    }
+}
+
 if (!function_exists('tipo_compra')) {
     function tipo_compra()
     {

@@ -18,6 +18,7 @@ class CreateTablasTable extends Migration
             $table->Increments('id');
             $table->string('descripcion');
             $table->string('sigla');
+            $table->enum('editable',['1','0'])->default('0');
             $table->timestamps();
         });
     }

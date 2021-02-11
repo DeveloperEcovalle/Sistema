@@ -11,6 +11,7 @@ class TipoCliente extends Model
         'cliente',
         'monto',
         'producto_id',
+        'moneda',
         'estado'
     ];
 

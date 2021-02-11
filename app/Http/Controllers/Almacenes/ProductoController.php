@@ -61,11 +61,11 @@ class ProductoController extends Controller
                 $query->whereIn('estado',["ACTIVO"]);
             })],
             'nombre' => 'required',
-            'moneda' => 'required',
+            // 'moneda' => 'required',
             'linea_comercial' => 'required',
             'familia' => 'required',
             'sub_familia' => 'required',
-            'presentacion' => 'required',
+            'medida' => 'required',
             'stock' => 'required|numeric',
             'stock_minimo' => 'required|numeric',
             'precio_venta_minimo' => 'required|numeric',
@@ -77,14 +77,14 @@ class ProductoController extends Controller
         $message = [
             'codigo.required' => 'El campo Código es obligatorio',
             'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
-            'moneda.required' => 'El campo Moneda es obligatorio',
+            // 'moneda.required' => 'El campo Moneda es obligatorio',
             'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'codigo.unique' => 'El campo Código debe ser único',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
             'nombre.required' => 'El campo Nombre es obligatorio',
             'familia.required' => 'El campo Categoria es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
-            'presentacion.required' => 'El campo Presentación completa es obligatorio',
+            'medida.required' => 'El campo Unidad de medida es obligatorio',
             'stock.required' => 'El campo Stock es obligatorio',
             'stock.numeric' => 'El campo Stock debe ser numérico',
             'stock_minimo.required' => 'El campo Stock mínimo es obligatorio',
@@ -106,11 +106,10 @@ class ProductoController extends Controller
             $producto = new Producto();
             $producto->codigo = $request->get('codigo');
             $producto->codigo_barra = $request->get('codigo_barra');
-            $producto->moneda = $request->get('moneda');
             $producto->nombre = $request->get('nombre');
             $producto->familia_id = $request->get('familia');
             $producto->sub_familia_id = $request->get('sub_familia');
-            $producto->presentacion = $request->get('presentacion');
+            $producto->medida = $request->get('medida');
             $producto->linea_comercial = $request->get('linea_comercial');
             $producto->stock = $request->get('stock');
             $producto->stock_minimo = $request->get('stock_minimo');
@@ -129,6 +128,7 @@ class ProductoController extends Controller
                     'producto_id' => $producto->id,
                     'cliente' => $cliente->cliente,
                     'monto' => $cliente->monto,
+                    'moneda' => $cliente->id_moneda,
                 ]);
             }
         
@@ -174,7 +174,6 @@ class ProductoController extends Controller
 
     public function update(Request $request, $id)
     {
-    
         $data = $request->all();
 
         $rules = [
@@ -185,11 +184,10 @@ class ProductoController extends Controller
                 $query->whereIn('estado',["ACTIVO"]);
             })->ignore($id)],
             'nombre' => 'required',
-            'nombre' => 'required',
             'familia' => 'required',
             'linea_comercial' => 'required',
             'sub_familia' => 'required',
-            'presentacion' => 'required',
+            'medida' => 'required',
             'stock' => 'required|numeric',
             'stock_minimo' => 'required|numeric',
             'precio_venta_minimo' => 'required|numeric',
@@ -206,7 +204,7 @@ class ProductoController extends Controller
             'familia.required' => 'El campo Categoria es obligatorio',
             'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
-            'presentacion.required' => 'El campo Presentación completa es obligatorio',
+            'medida.required' => 'El campo Unidad de Medida es obligatorio',
             'stock.required' => 'El campo Stock es obligatorio',
             'stock.numeric' => 'El campo Stock debe ser numérico',
             'stock_minimo.required' => 'El campo Stock mínimo es obligatorio',
@@ -218,7 +216,7 @@ class ProductoController extends Controller
             'igv.required' => 'El campo IGV es obligatorio',
             'igv.boolean' => 'El campo IGV debe ser SI o NO',
             'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
-            'moneda.required' => 'El campo Moneda es obligatorio',
+            // 'moneda.required' => 'El campo Moneda es obligatorio',
             // 'detalles.required' => 'Debe exitir al menos un detalle del producto',
             // 'detalles.string' => 'El formato de texto de los detalles es incorrecto',
         ];
@@ -230,7 +228,7 @@ class ProductoController extends Controller
         $producto->nombre = $request->get('nombre');
         $producto->familia_id = $request->get('familia');
         $producto->sub_familia_id = $request->get('sub_familia');
-        $producto->presentacion = $request->get('presentacion');
+        $producto->medida = $request->get('medida');
         $producto->stock = $request->get('stock');
         $producto->linea_comercial = $request->get('linea_comercial');
         $producto->stock_minimo = $request->get('stock_minimo');
@@ -238,32 +236,7 @@ class ProductoController extends Controller
         $producto->precio_venta_maximo = $request->get('precio_venta_maximo');
         $producto->igv = $request->get('igv');
         $producto->codigo_barra = $request->get('codigo_barra');
-        $producto->moneda = $request->get('moneda');
         $producto->update();
-
-        // Actualizamos o creamos los detalles según el valor 'id'
-        // foreach (json_decode($request->get('detalles')) as $detalle) {
-        //     if (!is_null($detalle->id)) {
-        //         // Actualizamos
-        //         $producto_detalle = $producto->detalles->firstWhere('id', $detalle->id);
-        //         if ($producto_detalle) {
-        //             $producto_detalle->articulo_id = $detalle->articulo_id;
-        //             $producto_detalle->cantidad = $detalle->cantidad;
-        //             $producto_detalle->peso = $detalle->peso;
-        //             $producto_detalle->observacion = $detalle->observacion;
-        //             $producto_detalle->update();
-        //         }
-        //     } else {
-        //         // Creamos
-        //         $producto_detalle = new ProductoDetalle();
-        //         $producto_detalle->producto_id = $producto->id;
-        //         $producto_detalle->articulo_id = $detalle->articulo_id;
-        //         $producto_detalle->cantidad = $detalle->cantidad;
-        //         $producto_detalle->peso = $detalle->peso;
-        //         $producto_detalle->observacion = $detalle->observacion;
-        //         $producto_detalle->save();
-        //     }
-        // }
 
         $clientesJSON = $request->get('clientes_tabla');
         $clientetabla = json_decode($clientesJSON[0]);
@@ -279,6 +252,7 @@ class ProductoController extends Controller
                     'producto_id' => $producto->id,
                     'cliente' => $cliente->cliente,
                     'monto' => $cliente->monto,
+                    'moneda' => $cliente->id_moneda,
                 ]);
             }
         }

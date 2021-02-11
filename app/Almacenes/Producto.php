@@ -13,7 +13,7 @@ class Producto extends Model
         'descripcion',
         'familia_id',
         'sub_familia_id',
-        'presentacion',
+        'medida',
         'stock',
         'stock_minimo',
         'precio_venta_minimo',
@@ -21,7 +21,6 @@ class Producto extends Model
         'igv',
         'estado',
         'codigo_barra',
-        'moneda',
         'linea_comercial',
     ];
     protected $casts = [

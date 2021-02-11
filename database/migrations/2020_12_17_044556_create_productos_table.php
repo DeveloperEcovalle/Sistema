@@ -22,10 +22,10 @@ class CreateProductosTable extends Migration
             $table->foreign('familia_id')->references('id')->on('familias')->onDelete('cascade');
             $table->unsignedInteger('sub_familia_id');
             $table->foreign('sub_familia_id')->references('id')->on('subfamilias')->onDelete('cascade');
-            $table->string('presentacion');
+            $table->string('medida');
             $table->string('linea_comercial');
             $table->string('codigo_barra')->nullable();
-            $table->string('moneda');
+            // $table->string('moneda');
             $table->unsignedInteger('stock');
             $table->unsignedInteger('stock_minimo');
             $table->unsignedDecimal('precio_venta_minimo', 15, 2);

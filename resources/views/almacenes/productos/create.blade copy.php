@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>MODIFICAR PRODUCTO TERMINADO</b></h2>
+       <h2  style="text-transform:uppercase"><b>REGISTRAR NUEVO PRODUCTO TERMINADO</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -14,7 +14,7 @@
                 <a href="{{ route('almacenes.producto.index') }}">Productos Terminados</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Modificar</strong>
+                <strong>Registrar</strong>
             </li>
         </ol>
     </div>
@@ -25,15 +25,15 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <form action="{{ route('almacenes.producto.update', $producto->id) }}" method="POST" id="form_actualizar_producto">
-                        @csrf @method('PUT')
+                    <form action="{{ route('almacenes.producto.store') }}" method="POST" id="form_registrar_producto">
+                        @csrf
                         <div class="row">
                             <div class="col-lg-6 col-xs-12 b-r">
                                 <h4><b>Datos Generales</b></h4>
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Código ISO</label>
-                                        <input type="text" id="codigo" name="codigo" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{ old('codigo', $producto->codigo) }}" maxlength="50" onkeyup="return mayus(this)" required>
+                                        <input type="text" id="codigo" name="codigo" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{old('codigo')}}" maxlength="50" onkeyup="return mayus(this)" required>
                                         @if ($errors->has('codigo'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('codigo') }}</strong>
@@ -41,76 +41,88 @@
                                         @endif
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
-                                    <label class="">Código de Barra</label>
-                                        <input type="text" id="codigo_barra" class="form-control {{ $errors->has('codigo_barra') ? ' is-invalid' : '' }}" name="codigo_barra" value="{{ old('codigo_barra',$producto->codigo_barra)}}"   onkeyup="return mayus(this)">
+                                        <label class="">Código de Barra</label>
+                                        <input type="text" id="codigo_barra" class="form-control {{ $errors->has('codigo_barra') ? ' is-invalid' : '' }}" name="codigo_barra" value="{{ old('codigo_barra')}}"   onkeyup="return mayus(this)">
                                         @if ($errors->has('codigo_barra'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('codigo_barra') }}</strong>
                                             </span>
                                         @endif 
-
                                     </div>
                                 </div>
-
 
                                 <div class="form-group row">
-
-                                    <div class="col-lg-12 col-xs-12">
-                                        <label class="required">Unidad de Medida</label>
-                                        <select id="medida" name="medida" class="select2_form form-control {{ $errors->has('medida') ? ' is-invalid' : '' }}">
+                                    <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Moneda</label>
+                                        <select id="moneda" name="moneda" class="select2_form form-control {{ $errors->has('moneda') ? ' is-invalid' : '' }}" required>
                                             <option></option>
-                                            @foreach(unidad_medida() as $medida)
-                                                <option value="{{ $medida->id }}" {{ (old('medida', $producto->medida) == $medida->id ? "selected" : "") }}>{{ $medida->simbolo.' - '.$medida->descripcion }}</option>
+                                            @foreach(tipos_moneda() as $tipo)
+                                                <option value="{{ $tipo->id }}" {{ (old('moneda') == $tipo->id ? "selected" : "") }} >{{ $tipo->descripcion }}</option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('medida'))
+                                        @if ($errors->has('moneda'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('medida') }}</strong>
+                                                <strong>{{ $errors->first('moneda') }}</strong>
                                             </span>
                                         @endif
 
                                     </div>
-                                </div>
-
-                                <div class="form-group">
-                                
-                                        <label class="required">Nombre</label>
-                                        <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre', $producto->nombre) }}" maxlength="191" onkeyup="return mayus(this)" required>
-                                        @if ($errors->has('nombre'))
+                                    <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Presentación</label>
+                                        <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
+                                            <option></option>
+                                            @foreach(presentaciones() as $presentacion)
+                                                <option value="{{ $presentacion->simbolo }}" {{ (old('presentacion') == $presentacion->simbolo ? "selected" : "") }}>{{ $presentacion->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('presentacion'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('nombre') }}</strong>
+                                                <strong>{{ $errors->first('presentacion') }}</strong>
                                             </span>
                                         @endif
-                                
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+ 
+                                    <label class="required">Nombre</label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
+                                    @if ($errors->has('nombre'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('nombre') }}</strong>
+                                        </span>
+                                    @endif
                                 
                                 </div>
+
 
                                 <div class="form-group">
                                     
-                                    <label class="required">Línea Comercial</label>
-                                    <select id="linea_comercial" name="linea_comercial" class="select2_form form-control {{ $errors->has('linea_comercial') ? ' is-invalid' : '' }}" required value="{{old('linea_comercial',$producto->linea_comercial)}}">
-                                        <option></option>
-                                        @foreach(lineas_comerciales() as $linea)
-                                            <option value="{{ $linea->id }}" {{ (old('linea_comercial',$producto->linea_comercial) == $linea->id ? "selected" : "") }} >{{ $linea->descripcion }}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('linea_comercial'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('linea_comercial') }}</strong>
-                                        </span>
-                                    @endif
+                                        <label class="required">Línea Comercial</label>
+                                        <select id="linea_comercial" name="linea_comercial" class="select2_form form-control {{ $errors->has('linea_comercial') ? ' is-invalid' : '' }}" required value="{{old('linea_comercial')}}">
+                                            <option></option>
+                                            @foreach(lineas_comerciales() as $linea)
+                                                <option value="{{ $linea->id }}" {{ (old('linea_comercial') == $linea->id ? "selected" : "") }} >{{ $linea->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('linea_comercial'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('linea_comercial') }}</strong>
+                                            </span>
+                                        @endif
 
-                                
+                                    
                                 </div>
-
 
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Categoria</label>
-                                        <select id="familia" name="familia" value="{{old('familia', $producto->familia_id)}}"class="select2_form form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}">
+                                        <select id="familia" name="familia" class="select2_form form-control {{ $errors->has('familia') ? ' is-invalid' : '' }}">
                                             <option></option>
                                             @foreach($familias as $familia)
-                                                <option value="{{ $familia->id }}" {{ (old('familia', $producto->familia_id) == $familia->id ? "selected" : "") }} >{{ $familia->familia }}</option>
+                                                <option value="{{ $familia->id }}" {{ (old('familia') == $familia->id ? "selected" : "") }} >{{ $familia->familia }}</option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('familia'))
@@ -121,7 +133,7 @@
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Sub Categoria</label>
-                                        <select id="sub_familia" name="sub_familia" class="select2_form form-control {{ $errors->has('sub_familia') ? ' is-invalid' : '' }}">
+                                        <select id="sub_familia" name="sub_familia" class="select2_form form-control {{ $errors->has('sub_familia') ? ' is-invalid' : '' }}" disabled required >
                                             <option></option>
                                         </select>
                                         @if ($errors->has('sub_familia'))
@@ -138,7 +150,7 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Stock</label>
-                                        <input type="text" id="stock" name="stock" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{ old('stock', $producto->stock) }}" maxlength="10" onkeypress="return isNumber(event);" required>
+                                        <input type="text" id="stock" name="stock" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{old('stock')}}" maxlength="10" onkeypress="return isNumber(event);" required>
                                         @if ($errors->has('stock'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('stock') }}</strong>
@@ -147,7 +159,7 @@
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Stock mínimo</label>
-                                        <input type="text" id="stock_minimo" name="stock_minimo" class="form-control {{ $errors->has('stock_minimo') ? ' is-invalid' : '' }}" value="{{ old('stock_minimo', $producto->stock_minimo) }}" maxlength="10" onkeypress="return isNumber(event);" required>
+                                        <input type="text" id="stock_minimo" name="stock_minimo" class="form-control {{ $errors->has('stock_minimo') ? ' is-invalid' : '' }}" value="{{old('stock_minimo')}}" maxlength="10" onkeypress="return isNumber(event);" required>
                                         @if ($errors->has('stock_minimo'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('stock_minimo') }}</strong>
@@ -158,7 +170,7 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Precio venta mínimo</label>
-                                        <input type="text" id="precio_venta_minimo" name="precio_venta_minimo" class="form-control {{ $errors->has('precio_venta_minimo') ? ' is-invalid' : '' }}" value="{{ old('precio_venta_minimo', $producto->precio_venta_minimo) }}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
+                                        <input type="text" id="precio_venta_minimo" name="precio_venta_minimo" class="form-control {{ $errors->has('precio_venta_minimo') ? ' is-invalid' : '' }}" value="{{old('precio_venta_minimo')}}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
                                         @if ($errors->has('precio_venta_minimo'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('precio_venta_minimo') }}</strong>
@@ -167,7 +179,7 @@
                                     </div>
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Precio venta máximo</label>
-                                        <input type="precio_venta_maximo" id="precio_venta_maximo" name="precio_venta_maximo" class="form-control {{ $errors->has('precio_venta_maximo') ? ' is-invalid' : '' }}" value="{{ old('precio_venta_maximo', $producto->precio_venta_maximo) }}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
+                                        <input type="precio_venta_maximo" id="precio_venta_maximo" name="precio_venta_maximo" class="form-control {{ $errors->has('precio_venta_maximo') ? ' is-invalid' : '' }}" value="{{old('precio_venta_maximo')}}" maxlength="15" onkeypress="return filterFloat(event, this);" required>
                                         @if ($errors->has('precio_venta_maximo'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('precio_venta_maximo') }}</strong>
@@ -181,7 +193,7 @@
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-6">
                                                 <div class="radio">
-                                                    <input type="radio" name="igv" id="igv_si" value="1" {{ ($producto->igv == 1) ? "checked" : "" }}>
+                                                    <input type="radio" name="igv" id="igv_si" value="1" checked="">
                                                     <label for="igv_si">
                                                         SI
                                                     </label>
@@ -189,7 +201,7 @@
                                             </div>
                                             <div class="col-sm-6 col-xs-6">
                                                 <div class="radio">
-                                                    <input type="radio" name="igv" id="igv_no" value="0" {{ ($producto->igv == 0) ? "checked" : "" }}>
+                                                    <input type="radio" name="igv" id="igv_no" value="0">
                                                     <label for="igv_no">
                                                         NO
                                                     </label>
@@ -200,7 +212,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr>
 
                         <div class="row">
@@ -215,7 +226,7 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="required">Cliente</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="cliente"
@@ -230,18 +241,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="required">Moneda</label>
-                                                <select class="select2_form form-control" style="text-transform: uppercase; width:100%" name="moneda_cliente" id="moneda_cliente">
-                                                    <option></option>
-                                                    @foreach (tipos_moneda() as $tipo_moneda)
-                                                    <option value="{{$tipo_moneda->id}}">{{$tipo_moneda->simbolo.' - '.$tipo_moneda->descripcion}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="invalid-feedback"><b><span id="error-moneda"></span></b></div>
-                                            </div>
-                                            <div class="col-md-2">
                                                 <label class="required">Monto</label>
-                                                <input type="text" id="monto" name="monto" class="form-control">
+                                                <input type="text" id="monto" name="monto" class="form-control" pattern="^[0-9]+(.[0-9]+)?$">
                                                 <div class="invalid-feedback"><b><span id="error-monto"></span></b></div>
                                             </div>
 
@@ -249,11 +250,10 @@
                                                 <label class="">&nbsp;</label>
                                                 <a class="btn btn-block btn-warning enviar_cliente" style='color:white;'> <i class="fa fa-plus"></i> AGREGAR</a>
                                             </div>
-
-
                                         </div>
+
                                         <input type="hidden" id="clientes_tabla" name="clientes_tabla[]">
-                                        
+
                                         <hr>
 
                                         <div class="table-responsive">
@@ -262,10 +262,8 @@
                                                 style="text-transform:uppercase">
                                                 <thead>
                                                     <tr>
-                                                        
                                                         <th class="text-center">ACCIONES</th>
                                                         <th class="text-center">CLIENTE</th>
-                                                        <th class="text-center">MONEDA</th>
                                                         <th class="text-center">MONTO</th>
 
                                                     </tr>
@@ -277,22 +275,12 @@
                                             </table>
                                         </div>
 
-
-
-
-
-
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-
-
-
-
-
-
+                        
                         <div class="hr-line-dashed"></div>
                         <div class="row">
                             <div class="col-lg-12">
@@ -363,7 +351,7 @@
                     extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel-o"></i> Excel',
                     titleAttr: 'Excel',
-                    title: 'Detalle de Orden de Compra'
+                    title: 'Detalle del Producto Terminado'
                 },
                     {
                         titleAttr: 'Imprimir',
@@ -385,7 +373,7 @@
                 "bInfo": false,
                 "columnDefs": [
                     {
-                        "targets": [0, 1],
+                        "targets": 0,
                         "visible": false,
                         "searchable": false
                     },
@@ -394,16 +382,15 @@
                         targets: -1,
                         data: null,
                         defaultContent: "<button type='button' class='btn btn-sm btn-warning mr-1 btn-edit'>" +
-                            "<i class='fa fa-pencil'></i>" +
-                            "</button>" +
-                            "<button type='button' class='btn btn-sm btn-danger mr-1 btn-delete'>" +
-                            "<i class='fa fa-trash'></i>" +
-                            "</button>"
+                                                "<i class='fa fa-pencil'></i>" +
+                                            "</button>" +
+                                            "<button type='button' class='btn btn-sm btn-danger mr-1 btn-delete'>" +
+                                                "<i class='fa fa-trash'></i>" +
+                                            "</button>"
                     }
                 ],
                 'bAutoWidth': false,
                 'aoColumns': [
-                    { sWidth: '0%' },
                     { sWidth: '0%' },
                     { sWidth: '40%', sClass: 'text-left' },
                     { sWidth: '10%', sClass: 'text-center' },
@@ -411,7 +398,7 @@
                     { sWidth: '30%', sClass: 'text-left' },
                     { sWidth: '10%', sClass: 'text-center' },
                 ],
-                "data": getData(),
+                'data': getData(),
                 "language": {
                     url: "{{asset('Spanish.json')}}"
                 },
@@ -433,11 +420,11 @@
 
             $('.dataTables-detalle-producto tbody').on('click', 'button.btn-delete', eliminarDetalle);
 
-            $('#form_actualizar_producto').submit(function(e) {
+            $('#form_registrar_producto').submit(function(e) {
                 e.preventDefault();
                 if (detalles !== undefined && detalles.length <= 0) {
-                    // toastr.error('Debe ingresar los detalles del producto');
-                    // return false;
+                    //.error('Debe ingresar los detalles del producto');
+                    //return false;
                 }
                 //$("#detalles").val(JSON.stringify(detalles));
 
@@ -451,6 +438,8 @@
                     cancelButtonText: "No, Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
+
+
                         var existe = cantidadTipo()
             
                         if (existe == false) {
@@ -484,6 +473,7 @@
                             this.submit();
                         }
 
+
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire(
                             'Cancelado',
@@ -494,45 +484,13 @@
                 })
             });
 
-            //OBTENER DATA DE EDITAR
-            var id = "{{$producto->familia_id}}"
-           
-            $.get('/almacenes/subcategoria/pt/getBySubFamilia/'+ id, function (data) {
-
-                
-                if(data.length > 0){
-                    
-                    var select = '<option value="" selected disabled >SELECCIONAR</option>'
-                    for (var i = 0; i < data.length; i++)
-                        if (data[i].id == "{{$producto->sub_familia_id}}") {
-                            select += '<option value="' + data[i].id + '" selected >' + data[i].descripcion +'</option>';
-                        }else{
-                            select += '<option value="' + data[i].id + '">' + data[i].descripcion+ '</option>';
-                        }
-        
-        
-                }else{
-                    toastr.error('Sub Familias no registrados.','Error');
-                }
-        
-                $("#sub_familia").html(select);
-                $("#sub_familia").val("{{$producto->sub_familia_id}}").trigger("change");
-        
-            });
-
-           
-
-            
-
         });
-
 
         function getData() {
             detalles = ($("#detalles").val() === undefined || $("#detalles").val() === "") ? [] : JSON.parse($("#detalles").val());
             var data = [];
             detalles.forEach(obj => {
                 data.push([
-                    String(obj.id),
                     String(obj.articulo_id),
                     String(obj.articulo),
                     parseInt(obj.cantidad),
@@ -552,7 +510,7 @@
                 data : {
                     '_token' : $('input[name=_token]').val(),
                     'codigo' : $(this).val(),
-                    'id': '{{ $producto->id }}'
+                    'id': null
                 }
             }).done(function (result){
                 if (result.existe) {
@@ -562,9 +520,11 @@
             });
         }
 
+        @if(old('familia'))
+            obtenerSubFamilias()
+        @endif
+
         function obtenerSubFamilias() {
-            
-            // alert($("#familia").val())
             $.ajax({
                 dataType : 'json',
                 type : 'post',
@@ -574,27 +534,26 @@
                     'familia_id' : $(this).val()
                 }
             }).done(function (data){
+               
                 // Limpiamos data
                 $("#sub_familia").empty();
-                $("#sub_familia").val('');
-                $("#sub_familia").val('').trigger("change");
 
                 if (!data.error) {
-                    // Mostramos la información
 
                     $('#sub_familia').prop('disabled', false)
                     $('#sub_familia').prop('required', true)
-                    
+                    console.log(data)
+                    // Mostramos la información
                     if (data != null) {
                         var select = '<option value="" selected disabled >SELECCIONAR</option>'
                         for (var i = 0; i < data.length; i++)
+                                select += '<option value="' + data[i].id + '">' + data[i].text+ '</option>';
                             
-                            select += '<option value="' + data[i].id + '">' + data[i].text+ '</option>';
-
                         $("#sub_familia").html(select);
-                       
 
                     }
+
+
                 } else {
                     toastr.error(data.message, 'Mensaje de Error', {
                         "closeButton": true,
@@ -604,13 +563,9 @@
             });
         }
 
-
-
-
         function agregarDetalle() {
 
             var detalle = {
-                id: null,
                 articulo_id: $("#articulo").val(),
                 articulo: $("#articulo").select2('data')[0].text,
                 cantidad: parseInt($("#cantidad").val()),
@@ -620,7 +575,6 @@
 
             if (validarDetalle(detalle)) {
                 table.row.add([
-                    detalle.id,
                     detalle.articulo_id,
                     detalle.articulo,
                     detalle.cantidad,
@@ -636,19 +590,16 @@
             //console.log(table.row($(this).parents("tr")).data());
             var dataRow = table.row($(this).parents("tr")).data();
             objectRowEdit = table.row($(this).parents("tr"));
-            $("#id_editar").val(dataRow[0]);
-            $("#articulo_editar").val(dataRow[1]).trigger("change");
-            $("#cantidad_editar").val(dataRow[3]);
-            $("#peso_editar").val(dataRow[4]);
-            $("#observacion_editar").val(dataRow[5]);
+            $("#articulo_editar").val(dataRow[0]).trigger("change");
+            $("#cantidad_editar").val(dataRow[2]);
+            $("#peso_editar").val(dataRow[3]);
+            $("#observacion_editar").val(dataRow[4]);
 
             $('#modal_editar_detalle').modal('show');
         }
 
         function editarDetalle() {
-            var id = ($("#id_editar").val() === undefined || ($("#id_editar").val() === "")) ? null : $("#id_editar").val();
             var detalle = {
-                id: id,
                 articulo_id: $("#articulo_editar").val(),
                 articulo: $("#articulo_editar").select2('data')[0].text,
                 cantidad: parseInt($("#cantidad_editar").val()),
@@ -663,11 +614,11 @@
                         detalles[index] = detalle;
                     }
                 });
-                objectRowEdit.cell(indexRow, 1).data(detalle.articulo_id).draw(false);
-                objectRowEdit.cell(indexRow, 2).data(detalle.articulo).draw(false);
-                objectRowEdit.cell(indexRow, 3).data(detalle.cantidad).draw(false);
-                objectRowEdit.cell(indexRow, 4).data(detalle.peso).draw(false);
-                objectRowEdit.cell(indexRow, 5).data(detalle.observacion).draw(false);
+                objectRowEdit.cell(indexRow, 0).data(detalle.articulo_id).draw(false);
+                objectRowEdit.cell(indexRow, 1).data(detalle.articulo).draw(false);
+                objectRowEdit.cell(indexRow, 2).data(detalle.cantidad).draw(false);
+                objectRowEdit.cell(indexRow, 3).data(detalle.peso).draw(false);
+                objectRowEdit.cell(indexRow, 4).data(detalle.observacion).draw(false);
 
                 $('#modal_editar_detalle').modal('hide');
             }
@@ -689,26 +640,8 @@
                     var dataRow = table.row($(this).parents("tr")).data();
                     objectRowDelete = table.row($(this).parents("tr"));
                     table.row($(this).parents("tr")).remove().draw();
-
-                    if (dataRow[0] !== undefined && dataRow[0] !== "") {
-                        $.ajax({
-                            dataType : 'json',
-                            type : 'post',
-                            url : '{{ route('almacenes.producto.destroyDetalle') }}',
-                            data : {
-                                '_token' : $('input[name=_token]').val(),
-                                'id': dataRow[0]
-                            }
-                        }).done(function (result){
-                            if (result.exito) {
-                                var removeIndex = detalles.map(function(item) { return item.articulo_id; }).indexOf(dataRow[1]);
-                                detalles.splice(removeIndex, 1);
-                            }
-                        });
-                    } else {
-                        var removeIndex = detalles.map(function(item) { return item.articulo_id; }).indexOf(dataRow[1]);
-                        detalles.splice(removeIndex, 1);
-                    }
+                    var removeIndex = detalles.map(function(item) { return item.articulo_id; }).indexOf(dataRow[0]);
+                    detalles.splice(removeIndex, 1);
 
                 }else if (
                     /* Read more about handling dismissals below */
@@ -733,7 +666,7 @@
                     toastr.error('El campo Artículo es obligatorio');
                     return false;
                 }
-                if (detalles.find(d => parseInt(d.articulo_id) === parseInt(detalle.articulo_id)) !== undefined) {
+                if (detalles.find(d => d.articulo_id === detalle.articulo_id) !== undefined) {
                     toastr.error('El artículo seleccionado ya existe en el detalle del producto');
                     return false;
                 }
@@ -770,14 +703,14 @@
             $("#articulo_editar").val("").trigger("change");
             $("#cantidad_editar").val("");
             $("#peso_editar").val("");
-            $("#observacion_editar_editar").val("");
+            $("#observacion_editar").val("");
         });
 
 
     </script>
 
     <script>
-        
+
         $('#monto').keyup(function() {
             var val = $(this).val();
             if (isNaN(val)) {
@@ -797,7 +730,8 @@
             }
             $(this).val(val);
         });
-
+        
+        
         $(document).ready(function() {
 
             // DataTables
@@ -831,21 +765,10 @@
                         "targets": [2],
                         className: "text-center",
                     },
-                    {
-                        "targets": [3],
-                        className: "text-center",
-                    },
-                    {
-                        "targets": [4],
-                        visible: false,
-                        className: "text-center",
-                    },
 
                 ],
 
             });
-
-            obtenerTabla()
 
         })
 
@@ -856,8 +779,7 @@
             var data = table.row($(this).parents('tr')).data();
             $('#indice').val(table.row($(this).parents('tr')).index());
             $('#cliente_id_editar').val(data[1]).trigger('change');
-            $('#moneda_id_editar').val(data[4]).trigger('change');
-            $('#monto_editar').val(data[3]);
+            $('#monto_editar').val(data[2]);
             $('#modal_editar_cliente').modal('show');
         })
 
@@ -912,7 +834,7 @@
                 $('#cliente').addClass("is-invalid")
                 $('#error-cliente').text('El campo Cliente es obligatorio.')
             } else {
-                var existe = buscarClientes($('#cliente').val(), $('#moneda_cliente').val())
+                var existe = buscarClientes($('#cliente').val())
                 if (existe == true) {
                     toastr.error('Tipo de Cliente ya se encuentra ingresado.', 'Error');
                     enviar = true;
@@ -927,16 +849,6 @@
                 $("#monto").addClass("is-invalid");
                 $('#error-monto').text('El campo Monto es obligatorio.')
             }
-
-            if ($('#moneda_cliente').val() == '') {
-
-                toastr.error('Seleccione la moneda del tipo de cliente.', 'Error');
-                enviar = true;
-
-                $("#moneda_cliente").addClass("is-invalid");
-                $('#error-moneda').text('El campo Moneda es obligatorio.')
-            }
-
 
             if (enviar != true) {
                 const swalWithBootstrapButtons = Swal.mixin({
@@ -961,9 +873,6 @@
                         var detalle = {
                             cliente: $('#cliente').val(),
                             monto: $('#monto').val(),
-                            // moneda: cargarMoneda($('#moneda_cliente').val()),
-                            moneda: $('#moneda_cliente').val(),
-                            id_moneda: $('#moneda_cliente').val(),
                         }
                         limpiarDetalle()
                         agregarTabla(detalle);
@@ -985,47 +894,30 @@
             }
         })
 
-        function buscarClientes(cliente,moneda) {
-            var tipo_moneda = cargarMoneda(moneda)
+        function buscarClientes(cliente) {
             var existe = false;
             var t = $('.dataTables-clientes').DataTable();
             t.rows().data().each(function(el, index) {
-                if (el[1] == cliente && el[2] == tipo_moneda ) {
+                if (el[1] == cliente) {
                     existe = true
                 }
             });
             return existe
         }
 
+        
         function agregarTabla(detalle) {
             var t = $('.dataTables-clientes').DataTable();
             t.row.add([
                 '',
                 detalle.cliente,
-                cargarMoneda(detalle.moneda),
                 detalle.monto,
-                detalle.moneda,
 
             ]).draw(false);
 
             cargarClientes()
 
         }
-
-        function cargarMoneda(id) {
-
-            var moneda = ""
-
-            @foreach (tipos_moneda() as $tipo_moneda)
-                if ("{{$tipo_moneda->id}}" == id ) {
-                    moneda = "{{$tipo_moneda->descripcion}}"
-                }
-            @endforeach
-
-            return moneda
-
-        }
-
 
         function cargarClientes() {
 
@@ -1035,9 +927,7 @@
             data.each(function(value, index) {
                 let fila = {
                     cliente: value[1],
-                    monto: value[3],
-                    moneda: value[2],
-                    id_moneda: value[4],
+                    monto: value[2],
                 };
 
                 clientes.push(fila);
@@ -1049,8 +939,7 @@
 
         function limpiarDetalle() {
             $('#monto').val('')
-            $('#cliente').val($('#cliente option:first-child').val()).trigger('change');
-            $('#moneda_cliente').val($('#moneda_cliente option:first-child').val()).trigger('change');
+            $('#cliente').val($('#articulo_id option:first-child').val()).trigger('change');
 
         }
 
@@ -1060,22 +949,6 @@
 
             $('#cliente').removeClass("is-invalid")
             $('#error-cliente').text('')
-            
-            $('#moneda_cliente').removeClass("is-invalid")
-            $('#error-moneda').text('')
-        }
-
-        function obtenerTabla() {
-            var t = $('.dataTables-clientes').DataTable();
-            @foreach($clientes as $cliente)
-            t.row.add([
-                '',
-                "{{$cliente->cliente}}",
-                cargarMoneda("{{$cliente->moneda}}"),
-                "{{$cliente->monto}}",
-                "{{$cliente->moneda}}",
-            ]).draw(false);
-            @endforeach
         }
 
         //Consultar si existe tipos de clientes
@@ -1089,6 +962,8 @@
             }
             return existe
         }
+
+
 
     </script>
 @endpush

@@ -534,7 +534,8 @@
             $.get('/almacenes/productos/obtenerProducto/'+ producto.value, function (data) {
 
                 for (var i = 0; i < data.length; i++)
-                    if (data[i].cliente == tipo) {
+                 //SOLO SOLES LOS MONTOS
+                    if (data[i].cliente == tipo && data[i].moneda == 4  ) {
                         $('#precio').val(data[i].monto)
                     }
 

@@ -51,19 +51,16 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label><strong>PRESENTACION: </strong></label>
-                                    <p class="text-navy">{{$producto->presentacion}}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <label><strong>MONEDA: </strong></label> 
-                                    @foreach(tipos_moneda() as $tipo)
-                                        @if ($tipo->id == $producto->moneda)
-                                            <p>{{ $tipo->descripcion }}</p>
+                            <div class="form-group">
+                                
+                                    <label><strong>UNIDA DE MEDIDA: </strong></label>
+                                    @foreach(unidad_medida() as $medida)
+                                        @if ($medida->id == $producto->medida)
+                                            <p>{{ $medida->simbolo.' - '.$medida->descripcion }}</p>
                                         @endif
                                     @endforeach
-                                </div>
+                               
+                                
                                 
                             </div>
 
@@ -111,6 +108,7 @@
                                             <tr>
                                                 
                                                 <th class="text-center">CLIENTE</th>
+                                                <th class="text-center">MONEDA</th>
                                                 <th class="text-center">MONTO</th>
 
                                             </tr>
@@ -119,6 +117,14 @@
                                         @foreach($clientes as $cliente)
                                             <tr>
                                                 <td class="text-left">{{$cliente->cliente}}</td>
+                                                <td class="text-center">
+                                                    @foreach(tipos_moneda() as $tipo)
+                                                        @if ($tipo->id == $cliente->moneda)
+                                                            {{$tipo->descripcion}}              
+                                                        @endif
+                                                    @endforeach
+                                                
+                                                </td>
                                                 <td class="text-center">{{$cliente->monto}}</td>
                                             </tr>
                                         @endforeach
