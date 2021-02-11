@@ -50,6 +50,22 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 1;
         $detalle->save();
 
+
+        //TIPO DE CONDICION DE REPARTO
+        $detalle = new Detalle();
+        $detalle->descripcion = "OFICINA";
+        $detalle->simbolo = 'OFICINA';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 18;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "DOMICILIO";
+        $detalle->simbolo = 'DOMICILIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 18;
+        $detalle->save();
+
         // TIPO DE DOCUMENTO
 
         $detalle = new Detalle();
@@ -276,27 +292,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->save();
 
         //PRESENTACIONES
-        // $detalle = new Detalle();
-        // $detalle->descripcion = "KILOGRAMO";
-        // $detalle->simbolo = 'KG';
-        // $detalle->estado = 'ACTIVO';
-        // $detalle->tabla_id = 10;
-        // $detalle->save();
-
-        // $detalle = new Detalle();
-        // $detalle->descripcion = "TONELADA";
-        // $detalle->simbolo = 'TMB';
-        // $detalle->estado = 'ACTIVO';
-        // $detalle->tabla_id = 10;
-        // $detalle->save();
-
-        // $detalle = new Detalle();
-        // $detalle->descripcion = "LITRO";
-        // $detalle->simbolo = 'L';
-        // $detalle->estado = 'ACTIVO';
-        // $detalle->tabla_id = 10;
-        // $detalle->save();
-
         $detalle = new Detalle();
         $detalle->descripcion = "PAQUETE";
         $detalle->simbolo = 'PAQ';
@@ -924,22 +919,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'CLIENTE FINAL';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 17;
-        $detalle->save();
-
-
-        //TIPO DE CONDICION DE REPARTO
-        $detalle = new Detalle();
-        $detalle->descripcion = "OFICINA";
-        $detalle->simbolo = 'OFICINA';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 18;
-        $detalle->save();
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "DOMICILIO";
-        $detalle->simbolo = 'DOMICILIO';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 18;
         $detalle->save();
 
 

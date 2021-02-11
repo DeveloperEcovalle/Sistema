@@ -1412,7 +1412,7 @@ function validarCampos() {
       $('#tiendas').click()
   } 
 
-  if ($("#condicion_reparto").val() == '68') {
+  if ($("#condicion_reparto").val() == '6') {
 
     if ($('#nombre_transporte_oficina').val() == ''){
       campos = false
@@ -1588,80 +1588,81 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
 
 
     switch($("#condicion_reparto").val()) {
-    case "68":
-        if ($('#nombre_transporte_oficina').val() == '') {
-            enviar = false
-            $('#nombre_transporte_oficina').addClass("is-invalid")
-            toastr.error("Ingrese el nombre del Transporte.", 'Error');
-            $('#error-nombre_transporte_oficina').text("El campo Nombre es obligatorio.")
-        }
+        
+        case "6":
+            if ($('#nombre_transporte_oficina').val() == '') {
+                enviar = false
+                $('#nombre_transporte_oficina').addClass("is-invalid")
+                toastr.error("Ingrese el Nombre del Transporte.", 'Error');
+                $('#error-nombre_transporte_oficina').text("El campo Nombre del transporte es obligatorio.")
+            }
 
-        if ($('#direccion_transporte_oficina').val() == '') {
-            enviar = false
-            $('#direccion_transporte_oficina').addClass("is-invalid")
-            toastr.error("Ingrese la dirección del Transporte.", 'Error');
-            $('#error-direccion_transporte_oficina').text("El campo Dirección es obligatorio.")
-        }
+            if ($('#direccion_transporte_oficina').val() == '') {
+                enviar = false
+                $('#direccion_transporte_oficina').addClass("is-invalid")
+                toastr.error("Ingrese la dirección del Transporte.", 'Error');
+                $('#error-direccion_transporte_oficina').text("El campo Dirección del transporte es obligatorio.")
+            }
 
-        if ($('#responsable_pago_flete').val() == '') {
-            enviar = false
-            $('#responsable_pago_flete').addClass("is-invalid")
-            toastr.error("Ingrese el Nombre del Responsable (Pago de Flete).", 'Error');
-            $('#error-responsable_pago_flete').text("El campo Nombre del Responsable es obligatorio.")
-        }
+            if ($('#responsable_pago_flete').val() == '') {
+                enviar = false
+                $('#responsable_pago_flete').addClass("is-invalid")
+                toastr.error("Ingrese el Nombre del Responsable (Pago de Flete).", 'Error');
+                $('#error-responsable_pago_flete').text("El campo Nombre del Responsable es obligatorio.")
+            }
 
-        if ($('#dni_responsable_recoger').val() == '') {
-            enviar = false
-            $('#dni_responsable_recoger').addClass("is-invalid")
-            toastr.error("Ingrese el Dni.", 'Error');
-            $('#error-dni_responsable_recoger').text("El campo Dni es obligatorio.")
-        }
+            if ($('#dni_responsable_recoger').val() == '') {
+                enviar = false
+                $('#dni_responsable_recoger').addClass("is-invalid")
+                toastr.error("Ingrese el Dni del responsable.", 'Error');
+                $('#error-dni_responsable_recoger').text("El campo Dni del responsable es obligatorio.")
+            }
 
-        if ($('#nombre_responsable_recoger').val() == '') {
-            enviar = false
-            $('#nombre_responsable_recoger').addClass("is-invalid")
-            toastr.error("Ingrese el Nombre.", 'Error');
-            $('#error-nombre_responsable_recoger').text("El campo Nombre es obligatorio.")
-        }
+            if ($('#nombre_responsable_recoger').val() == '') {
+                enviar = false
+                $('#nombre_responsable_recoger').addClass("is-invalid")
+                toastr.error("Ingrese el Nombre del responsable.", 'Error');
+                $('#error-nombre_responsable_recoger').text("El campo Nombre del responsable es obligatorio.")
+            }
 
-        if ($('#responsable_pago').val() == '') {
-            enviar = false
-            $('#responsable_pago').addClass("is-invalid")
-            toastr.error("Ingrese el Nombre.", 'Error');
-            $('#error-responsable_pago').text("El campo Modo es obligatorio.")
-        }
+            if ($('#responsable_pago').val() == '') {
+                enviar = false
+                $('#responsable_pago').addClass("is-invalid")
+                toastr.error("Ingrese el Modo de cancelación.", 'Error');
+                $('#error-responsable_pago').text("El campo Modo es obligatorio.")
+            }
 
-        break;
-    case "69":
-        if ($('#nombre_transporte_domicilio').val() == '') {
-            enviar = false
-            $('#nombre_transporte_domicilio').addClass("is-invalid")
-            toastr.error("Ingrese el Nombre.", 'Error');
-            $('#error-nombre_transporte_domicilio').text("El campo Nombre del Transporte es obligatorio.")
-        }
+            break;
+        case "7":
+            if ($('#nombre_transporte_domicilio').val() == '') {
+                enviar = false
+                $('#nombre_transporte_domicilio').addClass("is-invalid")
+                toastr.error("Ingrese el Nombre del transporte.", 'Error');
+                $('#error-nombre_transporte_domicilio').text("El campo Nombre del Transporte es obligatorio.")
+            }
 
-        if ($('#ruc_transporte_domicilio').val() == '') {
-            enviar = false
-            $('#ruc_transporte_domicilio').addClass("is-invalid")
-            toastr.error("Ingrese el Nombre.", 'Error');
-            $('#error-ruc_transporte_domicilio').text("El campo Ruc del Transporte es obligatorio.")
-        }
+            if ($('#ruc_transporte_domicilio').val() == '') {
+                enviar = false
+                $('#ruc_transporte_domicilio').addClass("is-invalid")
+                toastr.error("Ingrese Ruc del Transportista.", 'Error');
+                $('#error-ruc_transporte_domicilio').text("El campo Ruc del Transporte es obligatorio.")
+            }
 
-        if ($('#direccion_domicilio').val() == '') {
-            enviar = false
-            $('#direccion_domicilio').addClass("is-invalid")
-            toastr.error("Ingrese la dirección del domicilio.", 'Error');
-            $('#error-direccion_domicilio').text("El campo Nombre del Transporte es obligatorio.")
-        }
+            if ($('#direccion_domicilio').val() == '') {
+                enviar = false
+                $('#direccion_domicilio').addClass("is-invalid")
+                toastr.error("Ingrese la dirección del domicilio.", 'Error');
+                $('#error-direccion_domicilio').text("El campo Dirección del domicilio es obligatorio.")
+            }
 
-        break;
-    default:    
-        if ($('#condicion_reparto').val() == '') {
-            enviar = false
-            $('#condicion_reparto').addClass("is-invalid")
-            toastr.error("Ingrese la condición de Reparto.", 'Error');
-            $('#error-condicion_reparto').text("El campo Condición Reparto es obligatorio.")
-        }
+            break;
+        default:    
+            if ($('#condicion_reparto').val() == '') {
+                enviar = false
+                $('#condicion_reparto').addClass("is-invalid")
+                toastr.error("Ingrese la condición de Reparto.", 'Error');
+                $('#error-condicion_reparto').text("El campo Condición Reparto es obligatorio.")
+            }
     }
 
     return enviar
@@ -1724,7 +1725,7 @@ function limpiarErrores() {
 
 $(document).ready(function() {
     switch($('#condicion_reparto').val()) {
-    case "68":
+    case "6":
             $('#reparto_domicilio').css("display","none")
             $('#reparto_oficina').css("display","")
 
@@ -1740,7 +1741,7 @@ $(document).ready(function() {
             $('#responsable_pago').prop('disabled', false)
             $('#responsable_pago').val($('#responsable_pago option:first-child').val()).trigger('change');
         break;
-    case "69":
+    case "7":
             $('#reparto_domicilio').css("display","")
             $('#reparto_oficina').css("display","none")
 
@@ -1839,7 +1840,7 @@ $("#condicion_reparto").on('change',function(e){
     limpiarErrores()
     $('#estado_responsable_recoger').val('SIN VERIFICAR')
     switch($(this).val()) {
-    case "68":
+    case "6":
             $('#reparto_domicilio').css("display","none")
             $('#reparto_oficina').css("display","")
 
@@ -1856,7 +1857,7 @@ $("#condicion_reparto").on('change',function(e){
             $('#observacion_envio').prop('disabled', false)
             limpiarDomicilio()
         break;
-    case "69":
+    case "7":
             $('#reparto_domicilio').css("display","")
             $('#reparto_oficina').css("display","none")
 
@@ -2103,7 +2104,6 @@ function camposRuc(objeto) {
         $('#direccion_domicilio').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
     }
 }
-
 
 // Consultar Administrativo
 

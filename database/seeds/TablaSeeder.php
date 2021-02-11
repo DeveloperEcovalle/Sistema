@@ -120,6 +120,7 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'CONDICION DE REPARTO';
         $tabla->sigla = 'CONDICION DE REPARTO';
+        $tabla->editable = '1';
         $tabla->save();
 
         //19
