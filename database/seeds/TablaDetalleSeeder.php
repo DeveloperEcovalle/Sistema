@@ -182,7 +182,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 6;
         $detalle->save();
-
+// --------------------------NO MODIFICABLE-------------------------------------------------
         // AREAS
         $detalle = new Detalle();
         $detalle->descripcion = "GERENCIA GENERAL";
