@@ -75,6 +75,7 @@
             <li><a href="404.html">Programación O/P</a></li>
             <li><a href="500.html">Consultas</a></li>
             <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Produccion</a></li>
+            <li class="@yield('programacion_produccion-active')"><a href="{{route('produccion.programacion_produccion.index')}}">Programación de la Produccion</a></li>
         </ul>
     </li>
 

@@ -447,3 +447,17 @@ Route::prefix('almacenes/ingresos_mercaderia')->group(function() {
     Route::get('reporte/{id}','Almacenes\Ingreso_mercaderiaController@report')->name('almacenes.ingreso_mercaderia.reporte');
     Route::get('email/{id}','Almacenes\Ingreso_mercaderiaController@email')->name('almacenes.ingreso_mercaderia.email');
 });
+
+// Programacion de la ProducciónProduccion
+Route::prefix('produccion/programacion_produccion')->group(function() {
+    Route::get('index', 'Produccion\Programacion_produccionController@index')->name('produccion.programacion_produccion.index');
+    Route::get('getProgramacionProduccion','Produccion\Programacion_produccionController@getProgramacionProduccion')->name('getProgramacionProduccion');
+    Route::get('create','Produccion\Programacion_produccionController@create')->name('produccion.programacion_produccion.create');
+    Route::post('store', 'Produccion\Programacion_produccionController@store')->name('produccion.programacion_produccion.store');
+    Route::get('edit/{id}','Produccion\Programacion_produccionController@edit')->name('produccion.programacion_produccion.edit');
+    Route::get('show/{id}','Produccion\Programacion_produccionController@show')->name('produccion.programacion_produccion.show');
+    Route::put('update/{id}', 'Produccion\Programacion_produccionController@update')->name('produccion.programacion_produccion.update');
+    Route::get('destroy/{id}', 'Produccion\Programacion_produccionController@destroy')->name('produccion.programacion_produccion.destroy');
+    Route::get('reporte/{id}','Produccion\Programacion_produccionController@report')->name('produccion.programacion_produccion.reporte');
+    Route::get('email/{id}','Produccion\Programacion_produccionController@email')->name('produccion.programacion_produccion.email');
+});
