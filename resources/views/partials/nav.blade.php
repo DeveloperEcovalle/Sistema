@@ -72,7 +72,6 @@
             <li><a href="login_two_columns.html">Linea de Producción</a></li>
             <li><a href="forgot_password.html">Detalle de Linea</a></li>
             <li><a href="register.html">Ordenes</a></li>
-            <li><a href="404.html">Programación O/P</a></li>
             <li><a href="500.html">Consultas</a></li>
             <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Produccion</a></li>
         </ul>
