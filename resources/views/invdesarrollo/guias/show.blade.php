@@ -45,7 +45,7 @@
                             <h4 class=""><b>Guia Interna</b></h4>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p>Modificar datos de la guia interna:</p>
+                                    <p>Mostrar datos de la guia interna:</p>
                                 </div>
                             </div>
 
