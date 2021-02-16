@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4" id="fecha_creacion">
+                                <div class="col-md-4" id="fecha_creacion" style="display:none">
                                     <label>Fecha Creacion</label>
                                     <div class="input-group date">
                                         <span class="input-group-addon">
@@ -119,8 +119,8 @@
                                     @endif
                                 </div>
                                 
-                                <div class="col-md-4">
-                                    <label class="required">Cantidad Producida(*) :</label>
+                                <div class="col-md-4" style="display:none">
+                                    <label class="required">Cantidad Producida :</label>
                                     <input type="text" id="cantidad_producida" name="cantidad_producida" class="form-control {{ $errors->has('cantidad_producida') ? ' is-invalid' : '' }}" value="{{old('cantidad_producida')}}" >
                                     @if ($errors->has('cantidad_producida'))
                                     <span class="invalid-feedback" role="alert">

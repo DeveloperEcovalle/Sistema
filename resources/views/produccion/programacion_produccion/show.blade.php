@@ -48,7 +48,7 @@
                                       
                       		<div class="col-md-6">
                       			<div class="form-group">
-                      				<label>Productos(*)</label>
+                      				<label class="required">Productos</label>
                       				<select name="producto_id" class="form-control" disabled>
                                           <option value="">Seleccionar Productos</option>
                       					@foreach ($productos as $producto)
@@ -125,7 +125,7 @@
                           </div>
                           
                           <div class="col-md-4">
-                              <label class="required">Cantidad Producida(*) :</label>
+                              <label>Cantidad Producida :</label>
                               <input type="text" id="cantidad_producida" name="cantidad_producida" class="form-control {{ $errors->has('cantidad_producida') ? ' is-invalid' : '' }}" value="{{old('cantidad_producida',$programacion_produccion->cantidad_producida)}}" disabled>
                               @if ($errors->has('cantidad_producida'))
                               <span class="invalid-feedback" role="alert">

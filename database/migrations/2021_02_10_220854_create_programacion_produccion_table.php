@@ -23,7 +23,7 @@ class CreateProgramacionProduccionTable extends Migration
             $table->date('fecha_produccion');
             $table->date('fecha_termino');            
             $table->unsignedInteger('cantidad_programada');
-            $table->unsignedInteger('cantidad_producida');
+            $table->unsignedInteger('cantidad_producida')->nullable();
             $table->mediumText('observacion')->nullable();
             $table->BigInteger('usuario_id');
             $table->enum('estado',['VIGENTE','PRODUCCION','TERMINADO','ANULADO'])->default('VIGENTE');
