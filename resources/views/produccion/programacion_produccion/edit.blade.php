@@ -91,7 +91,7 @@
                                 @endif
                             </div>
                           </div>
-                          <div class="col-md-4" id="fecha_termino">
+                          <div class="col-md-4" id="fecha_termino" style="display:none">
                               <label>Fecha Termino</label>
                               <div class="input-group date">
                                   <span class="input-group-addon">

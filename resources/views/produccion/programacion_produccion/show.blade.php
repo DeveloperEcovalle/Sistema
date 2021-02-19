@@ -63,7 +63,7 @@
                       			</div>
                       		</div>
 
-                          <div class="col-md-4" id="fecha_creacion">
+                          <div class="col-md-4" id="fecha_creacion" style="display:none">
                             <label>Fecha Creacion</label>
                             <div class="input-group date">
                                 <span class="input-group-addon">
@@ -97,7 +97,7 @@
                                 @endif
                             </div>
                           </div>
-                          <div class="col-md-4" id="fecha_termino">
+                          <div class="col-md-4" id="fecha_termino" style="display:none">
                               <label>Fecha Termino</label>
                               <div class="input-group date">
                                   <span class="input-group-addon">
@@ -124,7 +124,7 @@
                               @endif
                           </div>
                           
-                          <div class="col-md-4">
+                          <div class="col-md-4" style="display:none">
                               <label>Cantidad Producida :</label>
                               <input type="text" id="cantidad_producida" name="cantidad_producida" class="form-control {{ $errors->has('cantidad_producida') ? ' is-invalid' : '' }}" value="{{old('cantidad_producida',$programacion_produccion->cantidad_producida)}}" disabled>
                               @if ($errors->has('cantidad_producida'))

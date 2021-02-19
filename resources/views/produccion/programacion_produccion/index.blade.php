@@ -36,7 +36,7 @@
                                     <th class="text-center">Productos</th>
                                     <th class="text-center" style="display:none">Fecha Creacion</th>
                                     <th class="text-center">Fecha Produccion</th>
-                                    <th class="text-center">Fecha Termino</th>
+                                    <th class="text-center" style="display:none">Fecha Termino</th>
                                     <th class="text-center">Cantidad Programada</th>
                                     <th class="text-center">Cantidad Producida</th>
                                     <th class="text-center">Observacion</th>
