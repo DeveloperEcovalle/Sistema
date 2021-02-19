@@ -34,13 +34,13 @@
                                 <tr>
 
                                     <th class="text-center">Productos</th>
-                                    <th class="text-center">Fecha Creacion</th>
+                                    <th class="text-center" style="display:none">Fecha Creacion</th>
                                     <th class="text-center">Fecha Produccion</th>
                                     <th class="text-center">Fecha Termino</th>
                                     <th class="text-center">Cantidad Programada</th>
                                     <th class="text-center">Cantidad Producida</th>
                                     <th class="text-center">Observacion</th>
-                                    <th class="text-center">Usuario Id</th>
+                                    <th class="text-center" style="display:none">Usuario Id</th>
                                     <th class="text-center">Estado</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
@@ -105,13 +105,13 @@ $(document).ready(function() {
             //{ data: 'id',className: "text-center"},
             
             { data: 'nombre',className: "text-center"},
-            { data: 'fecha_creacion',className: "text-center"},
+            { data: 'fecha_creacion',className: "text-center","visible":false},
             { data: 'fecha_produccion',className: "text-center"},
             { data: 'fecha_termino',className: "text-center"},
             { data: 'cantidad_programada',className: "text-center"},
             { data: 'cantidad_producida',className: "text-center"},
             { data: 'observacion',className: "text-center"},
-            { data: 'usuario_id',className: "text-center"},
+            { data: 'usuario_id',className: "text-center","visible":false},
             { data: 'estado',className: "text-center"},
             {
                 data: null,
