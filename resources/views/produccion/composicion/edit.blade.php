@@ -91,7 +91,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
-                                                        <label class="required">Peso</label>
+                                                        <label>Peso</label>
                                                         <input type="text" id="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this, true);">
                                                         @if ($errors->has('peso'))
                                                             <span class="invalid-feedback" role="alert">
@@ -518,14 +518,14 @@
                 toastr.error('La cantidad ingresada debe ser mayor a cero');
                 return false;
             }
-            if (detalle.peso === undefined || detalle.peso === null || Number.isNaN(detalle.peso)) {
-                toastr.error('El campo Peso es obligatorio');
-                return false;
-            }
-            if (detalle.peso <= 0) {
-                toastr.error('El peso ingresado debe ser mayor a cero');
-                return false;
-            }
+            // if (detalle.peso === undefined || detalle.peso === null || Number.isNaN(detalle.peso)) {
+            //     toastr.error('El campo Peso es obligatorio');
+            //     return false;
+            // }
+            // if (detalle.peso <= 0) {
+            //     toastr.error('El peso ingresado debe ser mayor a cero');
+            //     return false;
+            // }
 
             return true;
         }

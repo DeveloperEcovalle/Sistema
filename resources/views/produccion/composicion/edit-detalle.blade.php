@@ -27,7 +27,7 @@
                         <input type="text" id="cantidad_editar" name="cantidad_editar" class="form-control" maxlength="10" onkeypress="return isNumber(event);" required>
                     </div>
                     <div class="col-lg-6 col-xs-12">
-                        <label class="required">Peso</label>
+                        <label>Peso</label>
                         <input type="text" id="peso_editar" name="peso_editar" class="form-control" maxlength="15" onkeypress="return filterFloat(event, this, true);" required>
                     </div>
                 </div>

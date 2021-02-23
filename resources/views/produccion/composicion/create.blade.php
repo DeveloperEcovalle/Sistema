@@ -39,26 +39,28 @@
                             
                             <div class="col-lg-6 col-xs-12">
 
-                                <label class="required">Nombre</label>
+                                <!-- <label class="required">Nombre</label>
                                 <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
                                 @if ($errors->has('nombre'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('nombre') }}</strong>
                                     </span>
-                                @endif
-
+                                @endif -->
+                                <label class="required">Productos</label>
+                                <select name="producto_id" id="producto_id" class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" >
+                                    <option></option>
+                                    @foreach ($productos as $producto)
+                                        <option {{ old('producto_id') == $producto->id ? 'selected' : '' }} value="{{$producto->id}}">{{$producto->nombre}}</option>
+                                    @endforeach
+                                </select>
 
                             </div>
-                            
+
+                           
                             <div class="col-lg-6 col-xs-12">
-
-
                                 <label class="required">Presentación</label>
-                                <select id="presentacion" name="presentacion" class="select2_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}">
-                                    <option></option>
-                                    @foreach(presentaciones() as $presentacion)
-                                        <option value="{{ $presentacion->simbolo }}" {{ (old('presentacion') == $presentacion->simbolo ? "selected" : "") }}>{{ $presentacion->descripcion }}</option>
-                                    @endforeach
+                                <select id="presentacion" name="presentacion" class="select3_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}" disabled>
+                                    <option value="UND" selected>UNIDAD</option>
                                 </select>
                                 @if ($errors->has('presentacion'))
                                     <span class="invalid-feedback" role="alert">
@@ -105,7 +107,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
-                                                        <label class="required">Peso</label>
+                                                        <label>Peso</label>
                                                         <input type="text" id="peso" class="form-control {{ $errors->has('peso') ? ' is-invalid' : '' }}" value="{{old('peso')}}" maxlength="15" onkeypress="return filterFloat(event, this, true);">
                                                         @if ($errors->has('peso'))
                                                             <span class="invalid-feedback" role="alert">
@@ -219,7 +221,11 @@
                 height: '200px',
                 width: '100%',
             });
-
+            $(".select3_form").select2({
+                allowClear: true,
+                height: '200px',
+                width: '100%',
+            });
             table = $('.dataTables-detalle-producto').DataTable({
                 "dom": '<"html5buttons"B>lTfgitp',
                 "buttons": [{
@@ -506,10 +512,10 @@
                 toastr.error('La cantidad ingresada debe ser mayor a cero');
                 return false;
             }
-            if (detalle.peso === undefined || detalle.peso === null || Number.isNaN(detalle.peso)) {
-                toastr.error('El campo Peso es obligatorio');
-                return false;
-            }
+            // if (detalle.peso === undefined || detalle.peso === null || Number.isNaN(detalle.peso)) {
+            //     toastr.error('El campo Peso es obligatorio');
+            //     return false;
+            // }
             if (detalle.peso <= 0) {
                 toastr.error('El peso ingresado debe ser mayor a cero');
                 return false;
