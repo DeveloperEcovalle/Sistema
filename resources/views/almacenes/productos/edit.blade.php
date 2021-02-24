@@ -751,10 +751,10 @@
                 toastr.error('El campo Peso es obligatorio');
                 return false;
             }
-            if (detalle.peso <= 0) {
-                toastr.error('El peso ingresado debe ser mayor a cero');
-                return false;
-            }
+            // if (detalle.peso <= 0) {
+            //     toastr.error('El peso ingresado debe ser mayor a cero');
+            //     return false;
+            // }
 
             return true;
         }

@@ -18,7 +18,8 @@ class RegistroSanitarioController extends Controller
         public function index()
     {
         $productos = Producto::where('estado','ACTIVO')->get();
-        return view('invdesarrollo.registro_sanitario.index',["productos"=>$productos]);
+        $fecha_hoy = Carbon::now()->toDateString();
+        return view('invdesarrollo.registro_sanitario.index',["productos"=>$productos,'fecha_hoy' => $fecha_hoy,]);
     }
     public function getRegistroSanitario(){
         return datatables()->query(
