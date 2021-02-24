@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>MODIFICAR PRODUCTO TERMINADO</b></h2>
+       <h2  style="text-transform:uppercase"><b>MODIFICAR COMPOSICIÓN DE PRODUCTO</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -50,8 +50,8 @@
                                         <p>{{ $producto->sub_familia->descripcion }}</p>
                                     </div>
                                     <div class="col-lg-4 col-xs-12">
-                                        <label><strong>PRESENTACIÓN</strong></label>
-                                        <p>{{ $producto->presentacion }}</p>
+                                        <label><strong>UNIDAD DE MEDIDA</strong></label>
+                                        <p>{{ $producto->medida }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -379,7 +379,7 @@
         }
 
         function agregarDetalle() {
-
+            
             var detalle = {
                 id: null,
                 articulo_id: $("#articulo").val(),

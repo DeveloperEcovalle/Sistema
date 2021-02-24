@@ -40,11 +40,23 @@ class ComposicionController extends Controller
         return DataTables::of($coleccion)->toJson();
     }
 
+    // No se esta usando
+    public function getTable2($id){
+         $composicions = ProductoDetalle::
+            where('estado','ACTIVO')
+            ->where('producto_id',$id)
+            ->get();
+        return $composicions;
+    }
+
     public function create()
     {
         $familias = Familia::where('estado', 'ACTIVO')->get();
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
-        $productos = Producto::where('estado','ACTIVO')->get();
+        $producto_detalles = ProductoDetalle::where('estado','ACTIVO')->distinct()->pluck('producto_id');
+        $productos = Producto::where('estado','ACTIVO')
+            ->whereNotIn('id',$producto_detalles)
+            ->get();
         return view('produccion.composicion.create', compact('familias', 'articulos','productos'));
     }
 
@@ -128,7 +140,6 @@ class ComposicionController extends Controller
         $producto = Producto::findOrFail($id);
         $familias = Familia::where('estado', 'ACTIVO')->get();
         $sub_familias = SubFamilia::where('id', $producto->familia_id)->get();
-        //dd($familia);
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
         $detalles = [];
 
@@ -156,7 +167,6 @@ class ComposicionController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-
         $rules = [
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
@@ -169,7 +179,7 @@ class ComposicionController extends Controller
             'detalles.string' => 'El formato de texto de los detalles es incorrecto',
         ];
 
-        Validator::make($data, $rules, $message)->validate();
+        //Validator::make($data, $rules, $message)->validate();
 
         $producto = Producto::findOrFail($id);
 

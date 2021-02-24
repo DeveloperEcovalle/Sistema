@@ -46,8 +46,8 @@
                                         <strong>{{ $errors->first('nombre') }}</strong>
                                     </span>
                                 @endif -->
-                                <label class="required">Productos</label>
-                                <select name="producto_id" id="producto_id" class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" >
+                                <label class="required">Producto</label>
+                                <select name="producto_id" id="producto_id" class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" onchange="ponerMedida()">
                                     <option></option>
                                     @foreach ($productos as $producto)
                                         <option {{ old('producto_id') == $producto->id ? 'selected' : '' }} value="{{$producto->id}}">{{$producto->nombre}}</option>
@@ -58,16 +58,13 @@
 
                            
                             <div class="col-lg-6 col-xs-12">
-                                <label class="required">Presentación</label>
-                                <select id="presentacion" name="presentacion" class="select3_form form-control {{ $errors->has('presentacion') ? ' is-invalid' : '' }}" disabled>
-                                    <option value="UND" selected>UNIDAD</option>
-                                </select>
-                                @if ($errors->has('presentacion'))
+                                <label>Unidad de Medida</label>
+                                <input type="text" id="medida" class="form-control {{ $errors->has('medida') ? ' is-invalid' : '' }}" value="{{old('medida')}}" maxlength="300" disabled>
+                                @if ($errors->has('medida'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('presentacion') }}</strong>
+                                        <strong>{{ $errors->first('medida') }}</strong>
                                     </span>
                                 @endif
-                        
                             </div>
                         </div>
 
@@ -538,6 +535,55 @@
             $("#observacion_editar").val("");
         });
 
+        function ponerMedida(){
+            producto = $("#producto_id").val()
+            var medida = ""
+            @foreach($productos as $producto)
+            if ("{{$producto->id}}" == producto) {
+                medida = "{{$producto->medida}}"
+            }
+            @endforeach
+            $("#medida").val(medida)
+        }
+
+        // no se esta usando, se debería usar si deseo escoger productos que ya tienen composición
+        function cargarComposicion(){
+            const producto = $("#producto_id").val()
+            @foreach($productos as $producto)
+                if ("{{$producto->id}}" == producto) {
+                    $.ajax({
+                        dataType : 'json',
+                        type : 'post',
+                        url : "{{ route('produccion.composicion.getTable2',':producto') }}",
+                        success: function(respuesta) {
+                            $.each(respuesta.data, function(inde, elemento){
+                              var detalle = {
+                                articulo_id: elemento.articulo_id,
+                                articulo: elemento.articulo_id,
+                                cantidad: elemento.cantidad,
+                                peso: elemento.peso,
+                                observacion: elemento.observacion
+                               };
+                                if (validarDetalle(detalle)) {
+                                    table.row.add([
+                                        detalle.articulo_id,
+                                        detalle.articulo,
+                                        detalle.cantidad,
+                                        detalle.peso,
+                                        detalle.observacion
+                                    ]).draw(false);
+                                    detalles.push(detalle);  
+                                }
+                            });
+                            console.log($detalles);
+                        },
+                        error: function() {
+                          console.log("No se ha podido obtener la información");
+                        }
+                    });
+                }
+            @endforeach
+        }
 
     </script>
 @endpush

@@ -240,6 +240,7 @@ Route::prefix('almacenes/productos')->group(function() {
 Route::prefix('produccion/composicion')->group(function() {
     Route::get('/', 'Produccion\ComposicionController@index')->name('produccion.composicion.index');
     Route::get('/getTable', 'Produccion\ComposicionController@getTable')->name('produccion.composicion.getTable');
+    Route::get('/getTable2/{id}', 'Produccion\ComposicionController@getTable2')->name('produccion.composicion.getTable2');
     Route::get('/registrar', 'Produccion\ComposicionController@create')->name('produccion.composicion.create');
     Route::post('/registrar', 'Produccion\ComposicionController@store')->name('produccion.composicion.store');
     Route::get('/actualizar/{id}', 'Produccion\ComposicionController@edit')->name('produccion.composicion.edit');
