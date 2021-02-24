@@ -119,6 +119,11 @@ class LineaProduccionController extends Controller
             ]);
         }
 
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA LINEA DE PRODUCCION CON EL NOMBRE: ". $linea_produccion->nombre_linea;
+        $gestion = "LINEA DE PRODUCCION";
+        crearRegistro($linea_produccion, $descripcion , $gestion);
+
         Session::flash('success','Linea de Produccion creada.');
         return redirect()->route('produccion.linea_produccion.index')->with('guardar', 'success');
     }
@@ -185,6 +190,11 @@ class LineaProduccionController extends Controller
                 ]);
             }
         }
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA LINEA DE PRODUCCION CON EL NOMBRE: ". $linea_produccion->nombre_linea;
+        $gestion = "LINEA DE PRODUCCION";
+        modificarRegistro($linea_produccion, $descripcion , $gestion);
         
         Session::flash('success','Linea de Produccion modificada.');
         return redirect()->route('produccion.linea_produccion.index')->with('modificar', 'success');
@@ -196,6 +206,11 @@ class LineaProduccionController extends Controller
         $linea_produccion = Linea_produccion::findOrFail($id);
         $linea_produccion->estado = 'ANULADA';
         $linea_produccion->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA LINEA DE PRODUCCION CON EL NOMBRE: ". $linea_produccion->nombre_linea;
+        $gestion = "LINEA DE PRODUCCION";
+        eliminarRegistro($linea_produccion, $descripcion , $gestion);
 
         Session::flash('success','Linea de Produccion eliminada.');
         return redirect()->route('produccion.linea_produccion.index')->with('eliminar', 'success');
@@ -225,9 +240,6 @@ class LineaProduccionController extends Controller
             'detalles' => $detalles,
             'maquinarias_equipos' => $maquinarias_equipos, 
             ])->setPaper('a4')->setWarnings(false);
-        //dd($pdf);
-        //$pdf= new Dompdf();
-        //$pdf->loadHtml('hello world');
         return $pdf->stream();
     }
 }

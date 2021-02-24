@@ -1003,7 +1003,7 @@
                 '',
                 detalle.cliente,
                 cargarMoneda(detalle.moneda),
-                detalle.monto,
+                Number(detalle.monto).toFixed(2),
                 detalle.moneda,
 
             ]).draw(false);
@@ -1035,7 +1035,7 @@
             data.each(function(value, index) {
                 let fila = {
                     cliente: value[1],
-                    monto: value[3],
+                    monto_igv: value[3],
                     moneda: value[2],
                     id_moneda: value[4],
                 };
@@ -1074,6 +1074,7 @@
                 cargarMoneda("{{$cliente->moneda}}"),
                 "{{$cliente->monto}}",
                 "{{$cliente->moneda}}",
+
             ]).draw(false);
             @endforeach
         }

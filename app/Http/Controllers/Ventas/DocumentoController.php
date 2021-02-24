@@ -25,6 +25,9 @@ use App\Ventas\Documento\Pago\PagoDetalle as PivotPago;
 use App\Ventas\Documento\Pago\Pago as PagoOtros;
 use App\Ventas\Documento\Pago\Transferencia;
 
+//CONVERTIR DE NUMEROS A LETRAS
+use Luecano\NumeroALetras\NumeroALetras;
+
 class DocumentoController extends Controller
 {
     public function index()
@@ -43,7 +46,6 @@ class DocumentoController extends Controller
 
             //TIPO DE PAGO (OTROS) 
             $otros = calcularMontosAcuentaVentas($documento->id);
-
             $acuenta = calcularMontosAcuentaVentasTransferencia($documento->id);
 
             
@@ -57,18 +59,11 @@ class DocumentoController extends Controller
 
             $coleccion->push([
                 'id' => $documento->id,
-                // 'tipo' => $documento->tipo_compra,
                 'tipo_venta' => $documento->tipo_venta,
                 'tipo_pago' => $documento->tipo_pago,
                 'cliente' => $documento->cliente->nombre,
-                // 'empresa' => $documento->empresa->razon_social,
-                // 'fecha_emision' =>  Carbon::parse($documento->fecha_emision)->format( 'd/m/Y'),
-                // 'igv' =>  $documento->igv,
                 'cotizacion_venta' =>  $documento->cotizacion_venta,
-                // 'subtotal' => $tipo_moneda.' '.number_format($subtotal, 2, '.', ''),
-
                 'fecha_documento' =>  Carbon::parse($documento->fecha_documento)->format( 'd/m/Y'),
-                // 'fecha_atencion' =>  Carbon::parse($documento->fecha_atencion)->format( 'd/m/Y'), 
                 'estado' => $documento->estado,
                 
                 'otros' => 'S/. '.number_format($otros, 2, '.', ''),
@@ -114,7 +109,6 @@ class DocumentoController extends Controller
                 'empresas' => $empresas,
                 'clientes' => $clientes,
                 'productos' => $productos,  
-                // 'fecha_hoy' => $fecha_hoy,
                 'detalles' => $detalles
             ]);
         }
@@ -171,6 +165,51 @@ class DocumentoController extends Controller
         };
         
 
+
+ 
+
+        // $arrayLeyenda = Array();
+        // $arrayLeyenda[] = array(  
+        //     "code" => "1000",
+        //     "value" => "SON TRESCIENTOS TREINTA Y SEIS CON OO/100 SOLES"
+        // );
+    
+        // //ARREGLO COMPROBANTE
+        // $arreglo_comprobante = array(
+        //     "tipoOperacion" => "10",
+        //     "tipoDoc"=> "01",
+        //     "serie" => "F001",
+        //     "correlativo" => "123",
+        //     "fechaEmision" => "2019-10-27T00:00:00-05:00",
+        //     "tipoMoneda" => "PEN",
+        //     "client" => array(
+        //         "tipoDoc" => "6",
+        //         "numDoc" => $documento->cliente->documento,
+        //         "rznSocial" => $documento->cliente->nombre,
+        //         "address" => array(
+        //             "direccion" => $documento->cliente->direccion,
+        //         )),
+        //     "company" => array(
+        //         "ruc" =>  $documento->empresa->ruc,
+        //         "razonSocial" => $documento->empresa->razon_social,
+        //         "address" => array(
+        //             "direccion" => $documento->empresa->direccion_fiscal,
+        //         )),
+        //     "mtoOperGravadas" => 200,
+        //     "mtoOperExoneradas" => 100,
+        //     "mtoIGV" => 36,
+        //     "valorVenta" => 300,
+        //     "totalImpuestos" => 36,
+        //     "mtoImpVenta" => 336,
+        //     "ublVersion" => "2.1",
+        //     "details" => $arrayDetalle ,
+        //     "legends" =>  $arrayLeyenda,
+        // );
+        
+        // dd(json_encode($arreglo_comprobante));
+        // agregarComprobanteapi($empresa);
+
+
         $documento->cotizacion_venta = $request->get('cotizacion_id');
         $documento->save();
 
@@ -187,6 +226,13 @@ class DocumentoController extends Controller
                 'importe' => $producto->total,
             ]);
         }
+
+
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL DOCUMENTO DE VENTA CON LA FECHA: ". Carbon::parse($documento->fecha_documento)->format('d/m/y');
+        $gestion = "DOCUMENTO DE VENTA";
+        crearRegistro($documento , $descripcion , $gestion);
+        
 
         Session::flash('success','Documento de Venta creada.');
         return redirect()->route('ventas.documento.index')->with('guardar', 'success');
@@ -214,7 +260,6 @@ class DocumentoController extends Controller
 
     public function update(Request $request, $id){
 
-        // dd($request);
         $data = $request->all();
         $rules = [
             'fecha_documento_campo'=> 'required',
@@ -285,6 +330,12 @@ class DocumentoController extends Controller
                 ]);
             }
         }
+
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL DOCUMENTO DE VENTA CON LA FECHA: ". Carbon::parse($documento->fecha_documento)->format('d/m/y');
+        $gestion = "DOCUMENTO DE VENTA";
+        modificarRegistro($documento , $descripcion , $gestion);
         
         Session::flash('success','Documento de Venta modificada.');
         return redirect()->route('ventas.documento.index')->with('modificar', 'success');
@@ -305,6 +356,10 @@ class DocumentoController extends Controller
             $detalle->update();
         }
 
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL DOCUMENTO DE VENTA CON LA FECHA: ". Carbon::parse($documento->fecha_documento)->format('d/m/y');
+        $gestion = "DOCUMENTO DE VENTA";
+        eliminarRegistro($documento, $descripcion , $gestion);
 
         Session::flash('success','Documento de Venta eliminada.');
         return redirect()->route('ventas.documento.index')->with('eliminar', 'success');
@@ -316,11 +371,16 @@ class DocumentoController extends Controller
         $documento = Documento::findOrFail($id);
         $nombre_completo = $documento->user->empleado->persona->apellido_paterno.' '.$documento->user->empleado->persona->apellido_materno.' '.$documento->user->empleado->persona->nombres;
         $detalles = Detalle::where('documento_id',$id)->get(); 
+        //TOTAL EN LETRAS
+        $formatter = new NumeroALetras();
+        $convertir = $formatter->toInvoice($documento->total, 2, 'SOLES');
+        
         
         return view('ventas.documentos.show', [
             'documento' => $documento,
             'detalles' => $detalles,
-            'nombre_completo' => $nombre_completo
+            'nombre_completo' => $nombre_completo,
+            'cadena_valor' => $convertir
         ]);
 
     }
@@ -410,6 +470,89 @@ class DocumentoController extends Controller
 
         Session::flash('success','Tipo de pagos anulados, puede crear nuevo pago.');
         return redirect()->route('ventas.documento.index')->with('exitosa', 'success');
+    }
+
+    public function voucher($id)
+    {
+        $documento = Documento::findOrFail($id);
+        $nombre_completo = $documento->user->empleado->persona->apellido_paterno.' '.$documento->user->empleado->persona->apellido_materno.' '.$documento->user->empleado->persona->nombres;
+        $detalles = Detalle::where('documento_id',$id)->get();
+        //TOTAL EN LETRAS
+        $formatter = new NumeroALetras();
+        $convertir = $formatter->toInvoice($documento->total, 2, 'SOLES');
+
+        $arrayDetalle = Array();
+        for($i = 0; $i < count($detalles); $i++){
+            $arrayDetalle[] = array(
+                "codProducto" => $detalles[$i]->producto->codigo,
+                "unidad" => $detalles[$i]->producto->getMedida(),
+                "descripcion"=> $detalles[$i]->producto->nombre,
+                "cantidad" => $detalles[$i]->cantidad,
+                "mtoValorUnitario" => $detalles[$i]->precio,
+                "mtoValorVenta" => $detalles[$i]->importe,
+                "mtoBaseIgv" => $detalles[$i]->importe,
+                "porcentajeIgv" => 18,
+                "igv" => 18,
+                "tipAfeIgv" => 10,
+                "totalImpuestos" => 18,
+                "mtoPrecioUnitario" => $detalles[$i]->precio + 18
+            );
+        }
+
+        //Leyenda
+        $arrayLeyenda = Array();
+        $arrayLeyenda[] = array(  
+            "code" => "1000",
+            "value" => $convertir
+        );
+        
+        $date = strtotime($documento->fecha_documento);
+        $fecha_emision = date('Y-m-d', $date); 
+        $hora_emision = date('H:i:s', $date); 
+        $fecha = $fecha_emision.'T'.$hora_emision.'-05:00';
+
+        //ARREGLO COMPROBANTE
+        $arreglo_comprobante = array(
+            "tipoOperacion" => $documento->tipoOperacion(),
+            "tipoDoc"=> $documento->tipoDocumento(),
+            "serie" => $documento->serie()."00".$documento->id,
+            "correlativo" => "123",
+            "fechaEmision" => $fecha,
+            "tipoMoneda" => $documento->simboloMoneda(),
+            "client" => array(
+                "tipoDoc" => "6",
+                "numDoc" => $documento->cliente->documento,
+                "rznSocial" => $documento->cliente->nombre,
+                "address" => array(
+                    "direccion" => $documento->cliente->direccion,
+                )),
+            "company" => array(
+                "ruc" =>  $documento->empresa->ruc,
+                "razonSocial" => $documento->empresa->razon_social,
+                "address" => array(
+                    "direccion" => $documento->empresa->direccion_fiscal,
+                )),
+            "mtoOperGravadas" => $documento->sub_total,
+            "mtoOperExoneradas" => 0, //(PREGUNTAR)
+            "mtoIGV" => $documento->total_igv,
+            "valorVenta" => $documento->sub_total,
+            "totalImpuestos" =>  $documento->total_igv,
+            "mtoImpVenta" => $documento->total,
+            "ublVersion" => "2.1",
+            "details" => $arrayDetalle ,
+            "legends" =>  $arrayLeyenda,
+        );
+
+        // dd(json_encode($arreglo_comprobante));
+        $data = agregarComprobanteapi(json_encode($arreglo_comprobante));
+        $name = $documento->id.'.pdf';
+        $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'.DIRECTORY_SEPARATOR.$name);
+        
+        if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'))) {
+            mkdir(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'));
+        }
+        file_put_contents($pathToFile, $data);
+        return response()->file($pathToFile);
     }
 
 

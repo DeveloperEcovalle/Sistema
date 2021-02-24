@@ -202,11 +202,8 @@ $(document).ready(function() {
 
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
-                        
-                        "<li><a class='dropdown-item' onclick='modificar("+data.cotizacion_venta+","+data.id +")' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
-                        
-                        "<li><a class='dropdown-item' href='" + url_detalle +
-                        "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                    
+                        "<li><a class='dropdown-item' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
                         ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
@@ -232,7 +229,17 @@ $(document).ready(function() {
 //Controlar Error
 $.fn.DataTable.ext.errMode = 'throw';
 
+const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false
+})
+
+
 function eliminar(id) {
+
     Swal.fire({
         title: 'Opción Eliminar',
         text: "¿Seguro que desea guardar cambios?",
@@ -263,7 +270,6 @@ function eliminar(id) {
 
 function pagar(id,tipo) {
   
-    alert(tipo);
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -375,8 +381,6 @@ function pagar(id,tipo) {
 
 }
 
-
-
 function modificar(cotizacion,id) {
     if (cotizacion) {
         toastr.error('El documento de venta fue generado por una cotización (Opción "Editar" en cotizaciones).', 'Error');
@@ -408,6 +412,56 @@ function modificar(cotizacion,id) {
             }
         })
     }
+}
+
+function comprobanteElectronico(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+    Swal.fire({
+        title: "Opción Detalle",
+        text: "¿Seguro que desea obtener el documento de venta?",
+        showCancelButton: true,
+        icon: 'info',
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+        // showLoaderOnConfirm: true,
+    }).then((result) => {
+        if (result.value) {
+            
+            var url = '{{ route("ventas.documento.comprobante", ":id")}}';
+            url = url.replace(':id',id);
+
+            window.location.href = url
+
+            Swal.fire({
+                title: '¡Cargando!',
+                type: 'info',
+                text: 'Generando Detalle',
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+
 }
 
 

@@ -14,6 +14,8 @@
                 <form role="form" action="{{route('almacenes.almacen.store')}}" method="POST" id="crear_almacen">
                     {{ csrf_field() }} {{method_field('POST')}}
 
+                    <input type="hidden" name="almacen_existe" id="almacen_existe">
+
                    <div class="form-group">
                         <label class="required">Descripción:</label> 
                         <input type="text" class="form-control {{ $errors->has('descripcion_guardar') ? ' is-invalid' : '' }}" name="descripcion_guardar" id="descripcion_guardar" value="{{old('descripcion_guardar')}}" onkeyup="return mayus(this)" required>
@@ -43,7 +45,7 @@
                             <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</button>
+                            <a class="btn btn-primary btn-sm" style="color:white;" onclick="crearFormulario()"><i class="fa fa-save"></i> Guardar</a>
                             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                         </div>
                     </div>
@@ -52,3 +54,73 @@
         </div>
     </div>
 </div>
+
+
+@push('scripts')
+<script>
+
+    function crearFormulario() {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger',
+                },
+                buttonsStyling: false
+            })
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Opción Guardar',
+                text: "¿Seguro que desea guardar cambios?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                            $.ajax({
+                                dataType : 'json',
+                                type : 'post',
+                                url : '{{ route('almacenes.almacen.exist') }}',
+                                data : {
+                                    '_token' : $('input[name=_token]').val(),
+                                    'descripcion' : $('#descripcion_guardar').val(),
+                                    'ubicacion' : $('#ubicacion_guardar').val(),
+                                    'id':  null
+                                }
+                            }).done(function (result){
+                                console.log(result)
+                                if (result.existe == true) {
+                                    toastr.error('El Almacen ya se encuentra registrado','Error');
+                                    $(this).focus();
+                                    
+                                }else{
+                                    // this.submit();
+                                    var url = $('#crear_almacen').attr('id');
+                                    var enviar = '#'+url;
+                                    $(enviar).submit();
+                                }
+                            });
+
+
+                        }else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        'La Solicitud se ha cancelado.',
+                        'error'
+                        )
+                        
+                    }
+                })
+    }
+
+
+</script>
+@endpush

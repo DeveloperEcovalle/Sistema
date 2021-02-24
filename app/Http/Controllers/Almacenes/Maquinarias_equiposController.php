@@ -75,6 +75,13 @@ class Maquinarias_equiposController extends Controller
         //$maquinarias_equipos->estado=$request->get('estado');
         $maquinarias_equipos->save();
 
+
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA MAQUINARIA / EQUIPO CON EL NOMBRE: ". $maquinarias_equipos->nombre;
+        $gestion = "MAQUINARIA / EQUIPO";
+        crearRegistro($maquinarias_equipos, $descripcion , $gestion);
+        
+
         Session::flash('success','Maquinaria-Equipo creado.');
         return redirect()->route('almacenes.maquinaria_equipo.index')->with('guardar', 'success');
     }
@@ -123,8 +130,12 @@ class Maquinarias_equiposController extends Controller
         }
         //$maquinarias_equipos->nombre_imagen = $request->get('nombre_imagen');
         $maquinarias_equipos->vidautil = $request->get('vidautil');
-        //$maquinarias_equipos->estado = $request->get('estado');
         $maquinarias_equipos->update();
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA MAQUINARIA / EQUIPO CON EL NOMBRE: ". $maquinarias_equipos->nombre;
+        $gestion = "MAQUINARIA / EQUIPO";
+        modificarRegistro($maquinarias_equipos, $descripcion , $gestion);
 
         Session::flash('success','Maquinaria-Equipo modificado.');
         return redirect()->route('almacenes.maquinaria_equipo.index')->with('modificar', 'success');
@@ -135,10 +146,13 @@ class Maquinarias_equiposController extends Controller
     {
         
         $maquinarias_equipos = Maquinaria_equipo::findOrFail($id);
-        //dd($maquinarias_equipos);
         $maquinarias_equipos->estado = 'ANULADO';
-        //dd($maquinarias_equipos);
         $maquinarias_equipos->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA MAQUINARIA / EQUIPO CON EL NOMBRE: ".   $maquinarias_equipos->nombre;
+        $gestion = "MAQUINARIA / EQUIPO";
+        eliminarRegistro($maquinarias_equipos, $descripcion , $gestion);
 
         Session::flash('success','Maquinaria-Equipo eliminado.');
         return redirect()->route('almacenes.maquinaria_equipo.index')->with('eliminar', 'success');

@@ -101,7 +101,7 @@ $(document).ready(function() {
         "columns": [
             //prototipo 
             { data: 'id', className:"text-center", "visible":false},
-            { data: 'producto',className: "text-center"},
+            { data: 'producto', className: "text-center"},
             { data: 'fecha_registro',className: "text-center"},
             { data: 'fecha_inicio',className: "text-center"},
             { data: 'fecha_fin',className: "text-center"},
@@ -147,6 +147,15 @@ $(document).ready(function() {
 
 //Controlar Error
 $.fn.DataTable.ext.errMode = 'throw';
+
+const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
 
 function eliminar(id) {
     Swal.fire({

@@ -128,6 +128,11 @@ class ClienteController extends Controller
 
         $cliente->save();
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL CLIENTE CON EL NOMBRE: ". $cliente->nombre;
+        $gestion = "CLIENTES";
+        crearRegistro($cliente, $descripcion , $gestion);
+
         Session::flash('success','Cliente creado.');
         return redirect()->route('ventas.cliente.index')->with('guardar', 'success');
     }
@@ -233,6 +238,11 @@ class ClienteController extends Controller
         $cliente->correo_propietario  = $request->get('correo_propietario');
         $cliente->update();
 
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL CLIENTE CON EL NOMBRE: ". $cliente->nombre;
+        $gestion = "CLIENTES";
+        modificarRegistro($cliente, $descripcion , $gestion);
+
         Session::flash('success','Cliente modificado.');
         return redirect()->route('ventas.cliente.index')->with('guardar', 'success');
     }
@@ -250,6 +260,11 @@ class ClienteController extends Controller
         $cliente = Cliente::findOrFail($id);
         $cliente->estado = 'ANULADO';
         $cliente->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL CLIENTE CON EL NOMBRE: ". $cliente->nombre;
+        $gestion = "CLIENTES";
+        eliminarRegistro($cliente, $descripcion , $gestion);
 
         Session::flash('success','Cliente eliminado.');
         return redirect()->route('ventas.cliente.index')->with('eliminar', 'success');

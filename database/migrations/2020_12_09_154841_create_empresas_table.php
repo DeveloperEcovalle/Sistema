@@ -21,6 +21,7 @@ class CreateEmpresasTable extends Migration
             $table->string('razon_social_abreviada')->nullable();
             $table->string('ruta_logo')->nullable();
             $table->string('nombre_logo')->nullable();
+            $table->longText('base64_logo')->nullable();
 
             $table->mediumText('direccion_fiscal');
             $table->string('telefono')->nullable();
@@ -40,6 +41,10 @@ class CreateEmpresasTable extends Migration
             $table->string('estado_ruc')->default('INACTIVO');
             $table->string('estado_dni_representante')->default('INACTIVO');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
+
+            // Facturacion Electronica
+            $table->enum('estado_fe',['0','1'])->default('0');
+
 
             $table->timestamps();
         });

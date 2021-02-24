@@ -108,7 +108,12 @@ class Programacion_produccionController extends Controller
         //$programacion_produccion->estado=$request->get('estado');
         $programacion_produccion->save();
 
-        Session::flash('success','Programacion_produccion creado.');
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA PROGRAMACION DE PRODUCCION DEL PRODUCTO CON EL NOMBRE: ". $programacion_produccion->producto->nombre;
+        $gestion = "PROGRAMACION DE PRODUCCION";
+        crearRegistro($programacion_produccion, $descripcion , $gestion);
+
+        Session::flash('success','Programacion de produccion creado.');
         return redirect()->route('produccion.programacion_produccion.index')->with('guardar', 'success');
     }
 
@@ -145,16 +150,17 @@ class Programacion_produccionController extends Controller
 
         $programacion_produccion = Programacion_produccion::findOrFail($id);
         $programacion_produccion->producto_id = $request->get('producto_id');
-        //$programacion_produccion->fecha_creacion=Carbon::createFromFormat('d/m/Y', $request->get('fecha_creacion'))->format('Y-m-d');
-        //$programacion_produccion->fecha_produccion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
-        //$programacion_produccion->fecha_termino=Carbon::createFromFormat('d/m/Y', $request->get('fecha_termino'))->format('Y-m-d');
         $programacion_produccion->cantidad_programada = $request->get('cantidad_programada');
         $programacion_produccion->cantidad_producida = $request->get('cantidad_producida');
         $programacion_produccion->observacion = $request->get('observacion');
         $programacion_produccion->usuario_id = auth()->user()->id;
-        //$programacion_produccion->estado = $request->get('estado');
 
         $programacion_produccion->update();
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA PROGRAMACION DE PRODUCCION DEL PRODUCTO CON EL NOMBRE: ". $programacion_produccion->producto->nombre;
+        $gestion = "PROGRAMACION DE PRODUCCION";
+        modificarRegistro($programacion_produccion, $descripcion , $gestion);
 
         Session::flash('success','Programacion_produccion modificado.');
         return redirect()->route('produccion.programacion_produccion.index')->with('modificar', 'success');
@@ -168,7 +174,12 @@ class Programacion_produccionController extends Controller
         $programacion_produccion->estado = 'ANULADO';
         $programacion_produccion->update();
 
-        Session::flash('success','Programacion_produccion eliminado.');
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA PROGRAMACION DE PRODUCCION DEL PRODUCTO CON EL NOMBRE: ". $programacion_produccion->producto->nombre;
+        $gestion = "PROGRAMACION DE PRODUCCION";
+        eliminarRegistro($programacion_produccion, $descripcion , $gestion);
+
+        Session::flash('success','Programacion de Produccion eliminado.');
         return redirect()->route('produccion.programacion_produccion.index')->with('eliminar', 'success');
 
     }

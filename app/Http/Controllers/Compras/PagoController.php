@@ -189,9 +189,7 @@ class PagoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // dd($request);
-       
+    {       
         $data = $request->all();
 
         $rules = [
@@ -289,10 +287,20 @@ class PagoController extends Controller
                 $pago_transferencia->ruta_archivo = $request->file('archivo')->store('public/documentos/pagos');
             }
             $pago_transferencia->save();
+
+            //Registro de actividad
+            $descripcion = "SE AGREGÓ EL PAGO A LA ORDEN DE COMPRA (TRANSFERENCIA) CON EL MONTO: ".  $pago_transferencia->monto;
+            $gestion = "PAGO (ORDEN DE COMPRA) - TRANSFERENCIA";
+            crearRegistro(  $pago_transferencia, $descripcion , $gestion);
         
         }
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL PAGO A LA ORDEN DE COMPRA CON LA FECHA DE PAGO: ".  $pago->fecha_pago;
+        $gestion = "PAGO (ORDEN DE COMPRA)";
+        crearRegistro(  $pago, $descripcion , $gestion);
 
+ 
 
         Session::flash('success','Pago creado.');
         return redirect()->route('compras.pago.index',$request->get('id_orden'))->with('guardar', 'success');
@@ -341,7 +349,10 @@ class PagoController extends Controller
 
         }
         
-
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PAGO A LA ORDEN DE COMPRA CON LA FECHA DE PAGO: ".  $pago->fecha_pago;
+        $gestion = "PAGO (ORDEN DE COMPRA)";
+        eliminarRegistro(  $pago, $descripcion , $gestion);
 
         Session::flash('success','Pago eliminado.');
         return redirect()->route('compras.pago.index', $request->get('amp;orden'))->with('eliminar', 'success');

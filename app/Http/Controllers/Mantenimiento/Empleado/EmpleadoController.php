@@ -23,7 +23,7 @@ class EmpleadoController extends Controller
 
     public function getTable()
     {
-        $empleados = Empleado::where('estado','ACTIVO')->get();
+        $empleados = Empleado::where('estado','ACTIVO')->orderBy('id','DESC')->get();
         $coleccion = collect([]);
         foreach($empleados as $empleado) {
             if ($empleado->vendedor)
@@ -33,8 +33,8 @@ class EmpleadoController extends Controller
                 'documento' => $empleado->persona->getDocumento(),
                 'apellidos_nombres' => $empleado->persona->getApellidosYNombres(),
                 'telefono_movil' => $empleado->persona->telefono_movil,
-                'area' => $empleado->area,
-                'cargo' => $empleado->cargo
+                'area' => $empleado->getArea(),
+                'cargo' => $empleado->getCargo(),
             ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -105,7 +105,15 @@ class EmpleadoController extends Controller
                 $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
             $empleado->save();
+
+            //Registro de actividad
+            $descripcion = "SE AGREGÓ EL EMPLEADO CON EL NOMBRE: ". $empleado->persona->nombres.' '.$empleado->persona->apellido_paterno.' '.$empleado->persona->apellido_materno;
+            $gestion = "EMPLEADOS";
+            crearRegistro($empleado, $descripcion , $gestion);
+
         });
+
+
 
         Session::flash('success','Empleado creado.');
         return redirect()->route('mantenimiento.empleado.index')->with('guardar', 'success');
@@ -122,7 +130,6 @@ class EmpleadoController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        //dd($data);
         $empleado = Empleado::findOrFail($id);
 
         DB::transaction(function () use ($request, $empleado) {
@@ -191,7 +198,13 @@ class EmpleadoController extends Controller
                 $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
             $empleado->update();
+            //Registro de actividad
+            $descripcion = "SE MODIFICÓ EL EMPLEADO CON EL NOMBRE: ". $empleado->persona->nombres.' '.$empleado->persona->apellido_paterno.' '.$empleado->persona->apellido_materno;
+            $gestion = "EMPLEADOS";
+            modificarRegistro($empleado, $descripcion , $gestion);
         });
+
+
 
         Session::flash('success','Empleado modificado.');
         return redirect()->route('mantenimiento.empleado.index')->with('modificar', 'success');
@@ -217,7 +230,14 @@ class EmpleadoController extends Controller
             $persona->estado = 'ANULADO';
             $persona->update();
 
+            //Registro de actividad
+            $descripcion = "SE ELIMINÓ EL EMPLEADO CON EL NOMBRE: ". $empleado->persona->nombres.' '.$empleado->persona->apellido_paterno.' '.$empleado->persona->apellido_materno;
+            $gestion = "EMPLEADOS";
+            eliminarRegistro($empleado, $descripcion , $gestion);
+
         });
+
+
 
         Session::flash('success','Empleado eliminado.');
         return redirect()->route('mantenimiento.empleado.index')->with('eliminar', 'success');

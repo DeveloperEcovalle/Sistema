@@ -58,8 +58,7 @@ class RegistroSanitarioController extends Controller
         $registro_sanitario->producto_id = $request->get('producto_id');
         $registro_sanitario->fecha_inicio = $request->get('fecha_inicio');
         $registro_sanitario->fecha_fin = $request->get('fecha_fin');
-        //$registro_sanitario->archivo_word = $request->get('archivo_word');
-        //$registro_sanitario->archivo_pdf = $request->get('archivo_pdf');
+
 
         if($request->hasFile('archivo_word')){                
             $file = $request->file('archivo_word');
@@ -75,7 +74,12 @@ class RegistroSanitarioController extends Controller
         }
         $registro_sanitario->save();
 
-        Session::flash('success','Registro_sanitario creado.');
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL REGISTRO SANITARIO DEL PRODUCTO CON EL NOMBRE: ". $registro_sanitario->producto->nombre;
+        $gestion = "REGISTRO SANITARIO";
+        crearRegistro($registro_sanitario, $descripcion , $gestion);
+
+        Session::flash('success','Registro Sanitario creado.');
         return redirect()->route('invdesarrollo.registro_sanitario.index')->with('guardar', 'success');
     }
 
@@ -130,7 +134,12 @@ class RegistroSanitarioController extends Controller
         }
         $registro_sanitario->update();
 
-        Session::flash('success','Registro_sanitario modificado.');
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL REGISTRO SANITARIO DEL PRODUCTO CON EL NOMBRE: ". $registro_sanitario->producto->nombre;
+        $gestion = "REGISTRO SANITARIO";
+        modificarRegistro($registro_sanitario, $descripcion , $gestion);
+
+        Session::flash('success','Registro Sanitario modificado.');
         return redirect()->route('invdesarrollo.registro_sanitario.index')->with('modificar', 'success');
     }
 
@@ -142,7 +151,12 @@ class RegistroSanitarioController extends Controller
         $registro_sanitario->estado = 'ANULADO';
         $registro_sanitario->update();
 
-        Session::flash('success','Registro_sanitario eliminado.');
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL REGISTRO SANITARIO DEL PRODUCTO CON EL NOMBRE: ". $registro_sanitario->producto->nombre;
+        $gestion = "REGISTRO SANITARIO";
+        eliminarRegistro($registro_sanitario, $descripcion , $gestion);
+
+        Session::flash('success','Registro Sanitario eliminado.');
         return redirect()->route('invdesarrollo.registro_sanitario.index')->with('eliminar', 'success');
 
     }

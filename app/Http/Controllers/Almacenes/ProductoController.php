@@ -26,7 +26,7 @@ class ProductoController extends Controller
 
     public function getTable()
     {
-        $productos = Producto::where('estado','ACTIVO')->get();
+        $productos = Producto::where('estado','ACTIVO')->orderBy('id', 'desc')->get();
         $coleccion = collect([]);
         foreach($productos as $producto) {
             $coleccion->push([
@@ -50,7 +50,6 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         $data = $request->all();
 
         $rules = [
@@ -127,16 +126,21 @@ class ProductoController extends Controller
                 TipoCliente::create([
                     'producto_id' => $producto->id,
                     'cliente' => $cliente->cliente,
-                    'monto' => $cliente->monto,
+                    'monto' => $cliente->monto_igv,
                     'moneda' => $cliente->id_moneda,
                 ]);
             }
+
+            //Registro de actividad
+            $descripcion = "SE AGREGÓ EL PRODUCTO CON EL NOMBRE: ". $producto->nombre;
+            $gestion = "PRODUCTO";
+            crearRegistro($producto, $descripcion , $gestion);
         
 
         });
 
-
-
+  
+        
         Session::flash('success','Producto creado.');
         return redirect()->route('almacenes.producto.index')->with('guardar', 'success');
     }
@@ -216,9 +220,6 @@ class ProductoController extends Controller
             'igv.required' => 'El campo IGV es obligatorio',
             'igv.boolean' => 'El campo IGV debe ser SI o NO',
             'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
-            // 'moneda.required' => 'El campo Moneda es obligatorio',
-            // 'detalles.required' => 'Debe exitir al menos un detalle del producto',
-            // 'detalles.string' => 'El formato de texto de los detalles es incorrecto',
         ];
 
         Validator::make($data, $rules, $message)->validate();
@@ -251,15 +252,17 @@ class ProductoController extends Controller
                 TipoCliente::create([
                     'producto_id' => $producto->id,
                     'cliente' => $cliente->cliente,
-                    'monto' => $cliente->monto,
+                    'monto' => $cliente->monto_igv,
                     'moneda' => $cliente->id_moneda,
                 ]);
             }
         }
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL PRODUCTO CON EL NOMBRE: ". $producto->nombre;
+        $gestion = "PRODUCTO";
+        modificarRegistro($producto, $descripcion , $gestion);
         
-
-
-
         Session::flash('success','Producto modificado.');
         return redirect()->route('almacenes.producto.index')->with('guardar', 'success');
     }
@@ -281,6 +284,11 @@ class ProductoController extends Controller
         $producto->update();
 
         $producto->detalles()->update(['estado'=> 'ANULADO']);
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PRODUCTO CON EL NOMBRE: ". $producto->nombre;
+        $gestion = "PRODUCTO";
+        eliminarRegistro($producto, $descripcion , $gestion);
 
         Session::flash('success','Producto eliminado.');
         return redirect()->route('almacenes.producto.index')->with('eliminar', 'success');
@@ -324,8 +332,14 @@ class ProductoController extends Controller
 
     public function obtenerProducto($id)
     {
-        $clientes = TipoCliente::where('estado','ACTIVO')->where('producto_id',$id)->get();
-        return $clientes;
+        $productos = DB::table('productos_clientes')
+                    ->join('productos', 'productos_clientes.producto_id', '=', 'productos.id')
+                    ->where('productos_clientes.estado','ACTIVO')
+                    ->where('productos_clientes.producto_id',$id)
+                    ->get();
+
+
+        return $productos;
     }
 
     public function productoDescripcion($id)

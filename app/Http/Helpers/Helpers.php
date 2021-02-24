@@ -4,13 +4,22 @@ use App\Mantenimiento\Tabla\General;
 use App\Mantenimiento\Ubigeo\Departamento;
 use App\Mantenimiento\Ubigeo\Distrito;
 use App\Mantenimiento\Ubigeo\Provincia;
-use App\Parametro;
+// use App\Parametro;
 use Carbon\Carbon;
 //Orden de compra
 use App\Compras\Documento\Detalle as Detalle_Documento;
 use App\Compras\Detalle;
 use App\Compras\Orden;
 use App\Compras\Documento\Documento;
+
+//Bitacora de actividades
+use Spatie\Activitylog\Contracts\Activity;
+use Illuminate\Support\Facades\Auth;
+
+//Facturacion Electronica
+use Illuminate\Support\Facades\Http;
+use App\Mantenimiento\Parametro\Parametro;
+use GuzzleHttp\Client;
 
 // TABLAS-DETALLES
 
@@ -480,3 +489,190 @@ if (!function_exists('calcularMontosAcuentaVentasTransferencia')) {
     }
 
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// REGISTRO DE ACTIVIDADES
+
+if (!function_exists('crearRegistro')) {
+    function crearRegistro($modelo, $descripcion, $gestion)
+    {
+        activity()
+        ->causedBy(Auth::user())
+        ->performedOn($modelo)
+        ->withProperties(
+            [
+                'operacion' => 'AGREGAR',
+                'gestion' => $gestion
+            ])
+        ->log($descripcion);
+    }
+}
+
+if (!function_exists('modificarRegistro')) {
+    function modificarRegistro($modelo, $descripcion, $gestion)
+    {
+        activity()
+        ->causedBy(Auth::user())
+        ->performedOn($modelo)
+        ->withProperties(
+            [
+                'operacion' => 'MODIFICAR',
+                'gestion' => $gestion
+            ])
+        ->log($descripcion);
+    }
+}
+
+if (!function_exists('eliminarRegistro')) {
+    function eliminarRegistro($modelo, $descripcion, $gestion)
+    {
+        activity()
+        ->causedBy(Auth::user())
+        ->performedOn($modelo)
+        ->withProperties(
+            [
+                'operacion' => 'ELIMINAR',
+                'gestion' => $gestion
+            ])
+        ->log($descripcion);
+    }
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// FACTURACION ELECTRONICA
+// GENERAR TOKEN 
+if (!function_exists('obtenerTokenapi')) {
+    function obtenerTokenapi()
+    {
+        $parametro = Parametro::findOrFail(3);
+        $response = Http::post('https://facturacion.apisperu.com/api/v1/auth/login', [
+            'username' => $parametro->usuario_proveedor,
+            'password' => $parametro->contra_proveedor,
+        ]);
+        $estado = $response->getStatusCode();
+        // dd($response);
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            $resultado = json_decode($resultado); 
+            return $resultado->token;
+        }
+    }
+}
+// AGREGAR EMPRESA
+
+if (!function_exists('agregarEmpresaapi')) {
+    function agregarEmpresaapi($empresa)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/companies";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $empresa
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+// BORRAR EMPRESA
+
+if (!function_exists('borrarEmpresaapi')) {
+    function borrarEmpresaapi($id)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/companies/{$id}";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->delete($url, [
+            'headers' => [
+                        'Authorization' => "Bearer {$token}"
+                    ],
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        return $estado;
+    }
+}
+
+// MODIFICAR EMPRESA 
+
+if (!function_exists('modificarEmpresaapi')) {
+    function modificarEmpresaapi($empresa,$id)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/companies/{$id}";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->put($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $empresa
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        if ($estado=='200'){
+            
+            $resultado = $response->getBody()->getContents();  
+            // json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+//ENVIAR FACTURA O BOLETA
+
+if (!function_exists('agregarComprobanteapi')) {
+    function agregarComprobanteapi($comprobante)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/invoice/pdf";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $comprobante
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        return $response->getBody()->getContents();
+
+
+        
+        dd( $response->getBody()->getContents());
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+
+
+

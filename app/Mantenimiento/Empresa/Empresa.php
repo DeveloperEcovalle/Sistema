@@ -14,6 +14,7 @@ class Empresa extends Model
         'razon_social_abreviada',
         'ruta_logo',
         'nombre_logo',
+        'base64_logo',
         'direccion_fiscal',
         'telefono',
         'celular',
@@ -32,6 +33,8 @@ class Empresa extends Model
         'web',
         'facebook',
         'instagram',
+        
+        'estado_fe',
     ];
 
     public function cotizaciones()

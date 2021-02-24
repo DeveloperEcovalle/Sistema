@@ -20,7 +20,7 @@ class FamiliaController extends Controller
         return view('almacenes.familias.index');
     }
         public function getfamilia(){
-            $familias = Familia::where('estado','ACTIVO')->get();
+            $familias = Familia::where('estado','ACTIVO')->orderBy('id','DESC')->get();
             $coleccion = collect([]);
             foreach($familias as $familia){
                 $coleccion->push([
@@ -44,7 +44,7 @@ class FamiliaController extends Controller
         ];
         
         $message = [
-            'familia_guardar.required' => 'El campo Familia es obligatorio.',
+            'familia_guardar.required' => 'El campo Categoria es obligatorio.',
             
         ];
 
@@ -54,7 +54,12 @@ class FamiliaController extends Controller
         $familia->familia = $request->get('familia_guardar');
         $familia->save();
 
-        Session::flash('success','Familia creado.');
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA CATEGORIA CON EL NOMBRE: ". $familia->familia;
+        $gestion = "CATEGORIA PT";
+        crearRegistro($familia, $descripcion , $gestion);
+
+        Session::flash('success','Categoria creada.');
         return redirect()->route('almacenes.familias.index')->with('guardar', 'success');
     }
 
@@ -69,7 +74,7 @@ class FamiliaController extends Controller
         ];
         
         $message = [
-            'familia.required' => 'El campo Familia es obligatorio.',
+            'familia.required' => 'El campo Categoria es obligatorio.',
             
         ];
 
@@ -79,7 +84,12 @@ class FamiliaController extends Controller
         $familia->familia = $request->get('familia');
         $familia->update();
 
-        Session::flash('success','Familia modificado.');
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA CATEGORIA CON EL NOMBRE: ". $familia->familia;
+        $gestion = "CATEGORIA PT";
+        modificarRegistro($familia, $descripcion , $gestion);
+
+        Session::flash('success','Categoria modificada.');
         return redirect()->route('almacenes.familias.index')->with('modificar', 'success');
     }
 
@@ -91,8 +101,36 @@ class FamiliaController extends Controller
         $familia->estado = 'ANULADO';
         $familia->update();
 
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA CATEGORIA CON EL NOMBRE: ". $familia->familia;
+        $gestion = "CATEGORIA PT";
+        eliminarRegistro($familia, $descripcion , $gestion);
+
         Session::flash('success','Familia eliminado.');
         return redirect()->route('almacenes.familias.index')->with('eliminar', 'success');
+
+    }
+
+    public function exist(Request $request)
+    {
+        
+        $data = $request->all();
+        $familia = $data['familia'];
+        $id = $data['id'];
+        $categoria = null;
+
+        if ($familia && $id) { // edit
+            $categoria = Familia::where([
+                                    ['familia', $data['familia']],
+                                    ['id', '<>', $data['id']]
+                                ])->where('estado','!=','ANULADO')->first();
+        } else if ($familia && !$id) { // create
+            $categoria = Familia::where('familia', $data['familia'])->where('estado','!=','ANULADO')->first();
+        }
+
+        $result = ['existe' => ($categoria) ? true : false];
+
+        return response()->json($result);
 
     }
 }

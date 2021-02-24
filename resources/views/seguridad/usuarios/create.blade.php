@@ -48,7 +48,7 @@
                                         
                                         <label class="required">Empleado: </label> 
                                     
-                                        <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required>
+                                        <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required onchange="obtenerEmpleado(this)">
                                             <option></option>
                                         </select>
 
@@ -95,7 +95,7 @@
                                             </label>
                                             <input type="password" id="password"
                                                     class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                                    name="password" value="{{ old('password')}}">
+                                                    name="password" value="{{ old('password')}}" onkeyup="return mayus(this)">
                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('password') }}</strong>
@@ -108,7 +108,7 @@
                                             </label>
                                             <input type="password" id="password_confirmation"
                                                     class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"
-                                                    name="password_confirmation"
+                                                    name="password_confirmation" onkeyup="return mayus(this)"
                                                     value="{{ old('password_confirmation')}}">
                                         </div>
                                     </div>
@@ -257,7 +257,7 @@
 					results: $.map(data, function (item) {
 						return {
                             id: item.id,
-                            text: item.apellido_paterno+' '+item.apellido_materno+' '+item.nombres
+                            text: item.nombres+' '+item.apellido_paterno+' '+item.apellido_materno
                             }
 						})
 					}
@@ -349,6 +349,21 @@
             $('.logo').attr("src", "{{asset('storage/usuarios/default.jpg')}}")
         }
     });
+
+    function obtenerEmpleado(id) {
+        var url = '{{ route("seguridad.usuario.getEmployee.edit", ":id")}}';
+        url = url.replace(':id', id);
+
+        $.get(url, function(data, status){
+            for (var i = 0; i < data.length; i++){
+                if (data[i].id == $("#empleado_id").val() ) {
+                    var usuario =  String(data[i].nombres).charAt(0) +''+ data[i].apellido_paterno;
+                    $('#usuario').val(usuario)
+                }
+            }
+
+        });
+    }
 </script>
 
 @endpush

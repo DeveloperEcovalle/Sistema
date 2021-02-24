@@ -238,7 +238,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="required">Monto</label>
-                                                <input type="text" id="monto" name="monto" class="form-control" pattern="^[0-9]+(.[0-9]+)?$">
+                                                <input type="text" id="monto" name="monto" class="form-control">
                                                 <div class="invalid-feedback"><b><span id="error-monto"></span></b></div>
                                             </div>
 
@@ -751,7 +751,7 @@
                         "targets": [4],
                         visible: false,
                         className: "text-center",
-                    },
+                    }
 
                 ],
 
@@ -766,7 +766,8 @@
             var data = table.row($(this).parents('tr')).data();
             $('#indice').val(table.row($(this).parents('tr')).index());
             $('#cliente_id_editar').val(data[1]).trigger('change');
-            $('#monto_editar').val(data[2]);
+            $('#moneda_id_editar').val(data[4]).trigger('change');
+            $('#monto_editar').val(data[3]);
             $('#modal_editar_cliente').modal('show');
         })
 
@@ -914,8 +915,9 @@
                 '',
                 detalle.cliente,
                 cargarMoneda(detalle.moneda),
-                detalle.monto,
+                Number(detalle.monto).toFixed(2),
                 detalle.moneda,
+
 
             ]).draw(false);
 
@@ -944,7 +946,7 @@
             data.each(function(value, index) {
                 let fila = {
                     cliente: value[1],
-                    monto: value[3],
+                    monto_igv: value[3],
                     moneda: value[2],
                     id_moneda: value[4],
                 };

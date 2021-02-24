@@ -176,6 +176,15 @@
     //Controlar Error
     $.fn.DataTable.ext.errMode = 'throw';
 
+    const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
+
+
     function obtenerData($id) {
         var table = $('.dataTables-cajas').DataTable();
         var data = table.rows().data();
@@ -192,25 +201,25 @@
         var id = $('#empleado_id_2_editar').val();
         $.get("{{route('pos.caja.getEmployee')}}", function (data) {
             
-        if(data.length > 0){
-            
-            var select = '<option value="" selected disabled >SELECCIONAR</option>'
-            for (var i = 0; i < data.length; i++)
-                if (data[i].id == id) {
-                    select += '<option value="' + data[i].id + '" selected >' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
-                }else{
-                    select += '<option value="' + data[i].id + '">' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
-                }
-  
+            if(data.length > 0){
+                
+                var select = '<option value="" selected disabled >SELECCIONAR</option>'
+                for (var i = 0; i < data.length; i++)
+                    if (data[i].id == id) {
+                        select += '<option value="' + data[i].id + '" selected >' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
+                    }else{
+                        select += '<option value="' + data[i].id + '">' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
+                    }
+    
 
-        }else{
-            toastr.error('Empleados no registrados.','Error');
-        }
+            }else{
+                toastr.error('Empleados no registrados.','Error');
+            }
 
-        $("#empleado_id_editar").html(select);
-        $("#empleado_id_editar").val(id).trigger("change");
+            $("#empleado_id_editar").html(select);
+            $("#empleado_id_editar").val(id).trigger("change");
 
-    });
+        });
 
         $('#modal_editar_caja').modal('show');
 

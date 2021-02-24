@@ -151,9 +151,6 @@ class PagoController extends Controller
         $documento->tipo_pago = '0';
         $documento->update();
 
-
-
-
         Session::flash('success','Pago creado.');
         return redirect()->route('compras.documentos.pago.index',$request->get('id_documento'))->with('guardar', 'success');
         

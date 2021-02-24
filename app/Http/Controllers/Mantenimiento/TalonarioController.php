@@ -85,6 +85,12 @@ class TalonarioController extends Controller
         $talonario->numero_actual = $request->get('numero_actual_guardar');
         $talonario->save();
 
+        
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL TALONARIO DE LA EMPRESA: ". $talonario->empresa->razon_social;
+        $gestion = "TALONARIOS";
+        crearRegistro($talonario, $descripcion , $gestion);
+
         Session::flash('success', 'Talonario creado.');
         return redirect()->route('mantenimiento.talonario.index')->with('guardar', 'success');
     }
@@ -135,6 +141,12 @@ class TalonarioController extends Controller
         $talonario->numero_actual = $request->get('numero_actual_editar');
         $talonario->update();
 
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL TALONARIO DE LA EMPRESA: ". $talonario->empresa->razon_social;
+        $gestion = "TALONARIOS";
+        modificarRegistro($talonario, $descripcion , $gestion);
+
         Session::flash('success', 'Talonario modificado.');
         return redirect()->route('mantenimiento.talonario.index')->with('modificar', 'success');
     }
@@ -144,6 +156,11 @@ class TalonarioController extends Controller
         $talonario = Talonario::findOrFail($id);
         $talonario->estado = 'ANULADO';
         $talonario->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL TALONARIO DE LA EMPRESA: ". $talonario->empresa->razon_social;
+        $gestion = "TALONARIOS";
+        eliminarRegistro($talonario, $descripcion , $gestion);
 
         Session::flash('success','Talonario eliminado.');
         return redirect()->route('mantenimiento.talonario.index')->with('eliminar', 'success');

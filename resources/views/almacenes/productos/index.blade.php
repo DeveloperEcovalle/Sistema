@@ -123,7 +123,7 @@
                 "language": {
                     "url": "{{asset('Spanish.json')}}"
                 },
-                "order": [[ 0, "desc" ]],
+                "order": [],
             });
 
             // Eventos
@@ -152,6 +152,13 @@
         }
 
         function eliminar(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger',
+                    },
+                    buttonsStyling: false
+                })
             Swal.fire({
                 title: 'Opción Eliminar',
                 text: "¿Seguro que desea guardar cambios?",

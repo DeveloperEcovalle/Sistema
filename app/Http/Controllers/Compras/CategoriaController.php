@@ -49,6 +49,11 @@ class CategoriaController extends Controller
         $categoria->descripcion = $request->get('descripcion_guardar');
         $categoria->save();
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA CATEGORIA CON LA DESCRIPCION: ". $categoria->descripcion;
+        $gestion = "CATEGORIA";
+        crearRegistro($categoria, $descripcion , $gestion);
+
         Session::flash('success','Categoria creada.');
         return redirect()->route('compras.categoria.index')->with('guardar', 'success');
     }
@@ -72,6 +77,11 @@ class CategoriaController extends Controller
         $categoria->descripcion = $request->get('descripcion');
         $categoria->update();
 
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA CATEGORIA CON LA DESCRIPCION: ". $categoria->descripcion;
+        $gestion = "CATEGORIA";
+        modificarRegistro($categoria, $descripcion , $gestion);
+
         Session::flash('success','Categoria modificado.');
         return redirect()->route('compras.categoria.index')->with('modificar', 'success');
     }
@@ -83,6 +93,11 @@ class CategoriaController extends Controller
         $categoria = Categoria::findOrFail($id);
         $categoria->estado = 'ANULADO';
         $categoria->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA CATEGORIA CON LA DESCRIPCION: ". $categoria->descripcion;
+        $gestion = "CATEGORIA";
+        eliminarRegistro($categoria, $descripcion , $gestion);
 
         Session::flash('success','Categoria eliminado.');
         return redirect()->route('compras.categoria.index')->with('eliminar', 'success');

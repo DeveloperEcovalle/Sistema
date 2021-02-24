@@ -24,6 +24,7 @@
 
 
 
+
     @stack('styles')
 
     <!-- Styles -->

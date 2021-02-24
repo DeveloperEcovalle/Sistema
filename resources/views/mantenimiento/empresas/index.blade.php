@@ -170,14 +170,59 @@
             confirmButtonColor: "#1ab394",
             confirmButtonText: 'Si, Confirmar',
             cancelButtonText: "No, Cancelar",
+            allowOutsideClick: () => !Swal.isLoading(),
+            // onBeforeOpen: () => {
+            //     Swal.showLoading()
+            // }
             }).then((result) => {
             if (result.isConfirmed) {
                 //Ruta Eliminar
                 var url_eliminar = '{{ route("mantenimiento.empresas.destroy", ":id")}}';
                 url_eliminar = url_eliminar.replace(':id',id);
-                $(location).attr('href',url_eliminar);
 
-                }else if (
+                Swal.fire({
+                    title: '¡Cargando!',
+                    type: 'info',
+                    icon: 'info',
+                    text: 'Eliminando Registro',
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
+
+                return $.ajax({
+
+                    url: url_eliminar,
+
+                    success: function(respuesta) {
+
+                        if (respuesta.success == true) {
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Eliminado',
+                                text: '¡Acción realizada satisfactoriamente!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+
+                            toastr.success(respuesta.mensaje)
+                            
+                            $('.dataTables-empresas').DataTable().ajax.reload();
+                        }
+                        
+                    },
+
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+
+                    
+                }); 
+
+            }else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
             ) {

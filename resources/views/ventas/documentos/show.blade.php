@@ -2,7 +2,7 @@
 @section('ventas-active', 'active')
 @section('documentos-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
        <h2  style="text-transform:uppercase"><b>DETALLE DEL DOCUMENTO DE VENTA: # {{$documento->id}}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -15,6 +15,12 @@
                 <strong>Detalle</strong>
             </li>
         </ol>
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+            <a href="{{route('ventas.documento.comprobante', $documento->id)}}" target="_blank" class="btn btn-warning btn-sm"><i
+                    class="fa fa-file-o"></i> Comprobante Electronico</a>
+        </div>
     </div>
 </div>
 
@@ -253,7 +259,9 @@
 
                             </tr>
                             <tr>
-                                <td colspan="3" class="borde-title"></td>
+                                <th colspan="3" class="borde-title">
+                                    <strong> SON: {{$cadena_valor}}. </strong>
+                                </th>
                                 <th colspan="1" style="text-align:center" class="title-producto"><strong>Total </strong></th>
                                 <th class="text-center"><span id="total">{{'S/. '.$documento->total}}</span></th>
 

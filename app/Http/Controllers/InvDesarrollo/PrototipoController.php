@@ -130,6 +130,11 @@ class PrototipoController extends Controller
             ]);
         }
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL PROTOTIPO DEL PRODUCTO CON EL NOMBRE: ". $prototipo->producto;
+        $gestion = "PROTOTIPO";
+        crearRegistro( $prototipo , $descripcion , $gestion);
+
         Session::flash('success','Prototipo creado.');
         return redirect()->route('invdesarrollo.prototipo.index')->with('guardar', 'success');
     }
@@ -209,6 +214,12 @@ class PrototipoController extends Controller
                 ]);
             }
         }
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL PROTOTIPO DEL PRODUCTO CON EL NOMBRE: ". $prototipo->producto;
+        $gestion = "PROTOTIPO";
+        modificarRegistro( $prototipo, $descripcion , $gestion);
+
         Session::flash('success','Prototipo modificado.');
         return redirect()->route('invdesarrollo.prototipo.index')->with('modificar', 'success');
     }
@@ -220,6 +231,11 @@ class PrototipoController extends Controller
         $prototipos = Prototipo::findOrFail($id);
         $prototipos->estado = 'ANULADO';
         $prototipos->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PROTOTIPO DEL PRODUCTO CON EL NOMBRE: ". $prototipos->producto;
+        $gestion = "PROTOTIPO";
+        eliminarRegistro( $prototipos , $descripcion , $gestion);
 
         Session::flash('success','Prototipo eliminado.');
         return redirect()->route('invdesarrollo.prototipo.index')->with('eliminar', 'success');
@@ -247,9 +263,6 @@ class PrototipoController extends Controller
             'detalles' => $detalles,
             'prototipos' => $prototipos, 
             ])->setPaper('a4')->setWarnings(false);
-        //dd($pdf);
-        //$pdf= new Dompdf();
-        //$pdf->loadHtml('hello world');
         return $pdf->stream();
     }
 }

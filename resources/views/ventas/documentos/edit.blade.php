@@ -146,10 +146,11 @@
 
                                 <div class="form-group">
                                     <label class="required">Cliente: </label>
+                                    <input type="hidden" name="tipo_cliente_documento" id="tipo_cliente_documento">
                                     <select
                                         class="select2_form form-control {{ $errors->has('cliente_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('cliente_id', $documento->cliente_id)}}"
-                                        name="cliente_id" id="cliente_id" required>
+                                        name="cliente_id" id="cliente_id"  onchange="obtenerTipo(this)" required>
                                         <option></option>
                                         @foreach ($clientes as $cliente)
                                        
@@ -378,6 +379,11 @@
 <!-- Chosen -->
 <script src="{{asset('Inspinia/js/plugins/chosen/chosen.jquery.js')}}"></script>
 <script>
+
+    $('#cantidad').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
 //IGV
 $(document).ready(function() {
     if ($("#igv_check").prop('checked')) {
@@ -537,6 +543,18 @@ function validarFecha() {
     return enviar
 }
 
+    function validarTipo() {
+        var enviar = false
+
+        if ($('#tipo_cliente_documento').val() == '1') {
+            toastr.error('El tipo de documento del cliente es diferente a RUC.', 'Error');
+            enviar = true;
+        }
+
+        return enviar
+
+    }
+
 $('#enviar_documento').submit(function(e) {
     e.preventDefault();
     var correcto = validarFecha()
@@ -559,12 +577,17 @@ $('#enviar_documento').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                cargarProductos()
-                //CARGAR DATOS TOTAL
-                $('#monto_sub_total').val($('#subtotal').text())
-                $('#monto_total_igv').val($('#igv_monto').text())
-                $('#monto_total').val($('#total').text())
-                this.submit();
+
+                var tipo = validarTipo()
+
+                    if (tipo == false) {
+                            cargarProductos()
+                            //CARGAR DATOS TOTAL
+                            $('#monto_sub_total').val($('#subtotal').text())
+                            $('#monto_total_igv').val($('#igv_monto').text())
+                            $('#monto_total').val($('#total').text())
+                            this.submit();
+                    }
 
             } else if (
                 /* Read more about handling dismissals below */
@@ -985,6 +1008,11 @@ function buscarProducto(id) {
 
                 if ("{{$cliente->id}}" == tipo.value) {
                     $('#tipo_cliente').val("{{$cliente->detalle->descripcion}}")
+                    if ("{{$cliente->tipo_documento}}" != "RUC") {
+                        $('#tipo_cliente_documento').val("1");
+                    }else{
+                        $('#tipo_cliente_documento').val("0");
+                    }
                 }
 
             @endforeach

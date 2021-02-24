@@ -192,6 +192,7 @@ Route::prefix('almacenes/almacen')->group(function() {
     Route::get('destroy/{id}', 'Almacenes\AlmacenController@destroy')->name('almacenes.almacen.destroy');
     Route::post('store', 'Almacenes\AlmacenController@store')->name('almacenes.almacen.store');
     Route::put('update', 'Almacenes\AlmacenController@update')->name('almacenes.almacen.update');
+    Route::post('almacen/exist', 'Almacenes\AlmacenController@exist')->name('almacenes.almacen.exist');
 });
 
 //Familias
@@ -201,6 +202,7 @@ Route::prefix('almacenes/categorias/pt')->group(function() {
     Route::get('destroy/{id}', 'Almacenes\FamiliaController@destroy')->name('almacenes.familias.destroy');
     Route::post('store', 'Almacenes\FamiliaController@store')->name('almacenes.familias.store');
     Route::put('update', 'Almacenes\FamiliaController@update')->name('almacenes.familias.update');
+    Route::post('/exist', 'Almacenes\FamiliaController@exist')->name('almacenes.familias.exist');
 });
 
 //SubFamilias
@@ -217,6 +219,8 @@ Route::prefix('almacenes/subcategoria/pt')->group(function() {
     Route::get('getBySubFamilia/{id}', 'Almacenes\SubFamiliaController@getBySubFamilia')->name('almacenes.subfamilia.getBySubFamilia');
 
     Route::get('subfamilia/familia', 'Almacenes\SubFamiliaController@getFamilia')->name('subfamilia.familia');
+
+    Route::post('subfamilia/exist', 'Almacenes\SubFamiliaController@exist')->name('almacenes.subfamilia.exist');
 });
 
 // Productos
@@ -288,6 +292,7 @@ Route::prefix('mantenimiento/vendedores')->group(function() {
 
 // Clientes
 Route::prefix('ventas/clientes')->group(function() {
+
     Route::get('/', 'Ventas\ClienteController@index')->name('ventas.cliente.index');
     Route::get('/getTable', 'Ventas\ClienteController@getTable')->name('ventas.cliente.getTable');
     Route::get('/registrar', 'Ventas\ClienteController@create')->name('ventas.cliente.create');
@@ -341,6 +346,7 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('show/{id}','Ventas\DocumentoController@show')->name('ventas.documento.show');
     Route::get('reporte/{id}','Ventas\DocumentoController@report')->name('ventas.documento.reporte');
     Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente');
+    Route::get('comprobante/{id}','Ventas\DocumentoController@voucher')->name('ventas.documento.comprobante');
 
     //Pagos
     Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
@@ -373,6 +379,12 @@ Route::prefix('mantenimiento/talonarios')->group(function() {
     Route::post('/registrar', 'Mantenimiento\TalonarioController@store')->name('mantenimiento.talonario.store');
     Route::put('/actualizar', 'Mantenimiento\TalonarioController@update')->name('mantenimiento.talonario.update');
     Route::get('/destroy/{id}', 'Mantenimiento\TalonarioController@destroy')->name('mantenimiento.talonario.destroy');
+});
+
+// Actividades
+Route::prefix('mantenimiento/actividades')->group(function() {
+    Route::get('index', 'Mantenimiento\Actividad\ActividadController@index')->name('mantenimiento.actividad.index');
+    Route::get('getActivity','Mantenimiento\Actividad\ActividadController@getActivity')->name('actividad.getActivity');
 });
 
 //Registro_Sanitario
@@ -420,6 +432,7 @@ Route::prefix('almacenes/maquinarias_equipos')->group(function() {
     Route::get('destroy/{id}', 'Almacenes\Maquinarias_equiposController@destroy')->name('almacenes.maquinaria_equipo.destroy');
     Route::post('store', 'Almacenes\Maquinarias_equiposController@store')->name('almacenes.maquinaria_equipo.store');
     Route::put('update', 'Almacenes\Maquinarias_equiposController@update')->name('almacenes.maquinaria_equipo.update');
+    
 });
 
 // Linea de Produccionlinea_produccion

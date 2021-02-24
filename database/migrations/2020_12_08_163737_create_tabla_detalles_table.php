@@ -18,6 +18,8 @@ class CreateTablaDetallesTable extends Migration
             $table->Increments('id');
             $table->string('descripcion');
             $table->string('simbolo')->nullable();
+            $table->string('parametro')->nullable();
+            $table->string('operacion')->nullable();
             $table->unsignedInteger('tabla_id')->unsigned();
             $table->foreign('tabla_id')
                   ->references('id')->on('tablas')

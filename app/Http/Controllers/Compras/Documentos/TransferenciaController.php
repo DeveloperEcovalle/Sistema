@@ -255,6 +255,11 @@ class TransferenciaController extends Controller
         }
         $pago->save();
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL PAGO A LA ORDEN DE COMPRA CON LA FECHA DE PAGO: ".  $pago->fecha_pago;
+        $gestion = "PAGO (DOCUMENTO DE COMPRA)";
+        crearRegistro(  $pago, $descripcion , $gestion);
+
         Session::flash('success','Pago creado.');
         return redirect()->route('compras.documentos.transferencia.pago.index',$request->get('id_documento'))->with('guardar', 'success');
 
@@ -266,6 +271,11 @@ class TransferenciaController extends Controller
         $pago = Transferencia::findOrFail($request->get('pago'));
         $pago->estado = 'ANULADO';
         $pago->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PAGO AL DOCUMENTO DE COMPRA CON LA FECHA DE PAGO: ".  $pago->fecha_pago;
+        $gestion = "PAGO (DOCUMENTO DE COMPRA)";
+        eliminarRegistro(  $pago, $descripcion , $gestion);
 
         Session::flash('success','Pago eliminado.');
         return redirect()->route('compras.documentos.transferencia.pago.index', $request->get('amp;documento'))->with('eliminar', 'success');

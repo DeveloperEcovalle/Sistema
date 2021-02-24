@@ -155,6 +155,15 @@
     //Controlar Error
     $.fn.DataTable.ext.errMode = 'throw';
 
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+
     function obtenerData($id) {
         var table = $('.dataTables-maquinarias_equipos').DataTable();
         var data = table.rows().data();

@@ -69,10 +69,6 @@
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composicion de Productos Terminados</a></li>
-            <li><a href="login_two_columns.html">Linea de Producción</a></li>
-            <li><a href="forgot_password.html">Detalle de Linea</a></li>
-            <li><a href="register.html">Ordenes</a></li>
-            <li><a href="500.html">Consultas</a></li>
             <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Produccion</a></li>
             <li class="@yield('programacion_produccion-active')"><a href="{{route('produccion.programacion_produccion.index')}}">Programación de la Produccion</a></li>
         </ul>
@@ -153,9 +149,10 @@
     <li class="@yield('mantenimiento-active')">
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            <li class="@yield('actividades-active')"><a href="{{ route('mantenimiento.actividad.index') }}">Actividades</a></li>
             <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
-            <li class="@yield('vendedores-active')"><a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a></li>
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
+            <li class="@yield('vendedores-active')"><a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a></li>
             <li class="@yield('talonarios-active')"><a href="{{ route('mantenimiento.talonario.index') }}">Talonarios</a></li>
             <li class="@yield('tablas-active')"><a href="{{route('mantenimiento.tabla.general.index')}}">Tablas Generales</a></li>
 

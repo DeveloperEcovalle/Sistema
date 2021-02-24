@@ -134,7 +134,7 @@
             "language": {
                         "url": "{{asset('Spanish.json')}}"
             },
-            "order": [[ 0, "desc" ]],
+            "order": [],
 
            
 
@@ -200,7 +200,13 @@
     });
 
     function eliminar(id) {
-        
+        const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger',
+                    },
+                    buttonsStyling: false
+                })
         Swal.fire({
             title: 'Opción Eliminar',
             text: "¿Seguro que desea eliminar registro?",
@@ -230,84 +236,6 @@
         })
         
     }
-
-    $('#editar_almacen').submit(function(e){
-        e.preventDefault();
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                container: 'my-swal',
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-            
-        })
-
-        Swal.fire({
-            customClass: {
-                container: 'my-swal'
-            },
-            title: 'Opción Modificar',
-            text: "¿Seguro que desea modificar los cambios?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-            }).then((result) => {
-            if (result.isConfirmed) {
-                    this.submit();
-                }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-                )
-                
-            }
-            })
-    })
-
-    $('#crear_almacen').submit(function(e){
-        e.preventDefault();
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                container: 'my-swal',
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
-
-        Swal.fire({
-            customClass: {
-                container: 'my-swal'
-            },
-            title: 'Opción Guardar',
-            text: "¿Seguro que desea guardar cambios?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-            }).then((result) => {
-            if (result.isConfirmed) {
-                    this.submit();
-                }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-                )
-            }
-            })
-    })
 
 
 

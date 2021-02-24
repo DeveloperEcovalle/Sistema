@@ -43,6 +43,12 @@ class DetalleController extends Controller
         $detalle->estado = 'ANULADO';
         $detalle->update();
 
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL DETALLE CON LA DESCRIPCION: ". $detalle->descripcion;
+        $gestion = "TABLA DETALLE";
+        eliminarRegistro($detalle, $descripcion , $gestion);
+
+
         Session::flash('success','Detalle eliminado.');
         return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('eliminar', 'success');
 
@@ -70,6 +76,11 @@ class DetalleController extends Controller
         $detalle->descripcion = $request->get('descripcion_guardar');
         $detalle->simbolo = $request->get('simbolo_guardar');
         $detalle->save();
+        
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL DETALLE CON LA DESCRIPCION: ". $detalle->descripcion;
+        $gestion = "TABLA DETALLE";
+        crearRegistro($detalle, $descripcion , $gestion);
 
         Session::flash('success','Detalle creado.');
         return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('guardar', 'success');
@@ -96,6 +107,11 @@ class DetalleController extends Controller
         $detalle->descripcion = $request->get('descripcion');
         $detalle->simbolo = $request->get('simbolo');
         $detalle->update();
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL DETALLE CON LA DESCRIPCION: ". $detalle->descripcion;
+        $gestion = "TABLA DETALLE";
+        modificarRegistro($detalle, $descripcion , $gestion);
 
         Session::flash('success','Detalle modificado.');
         return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('modificar', 'success');

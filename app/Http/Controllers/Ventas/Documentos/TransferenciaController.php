@@ -156,7 +156,6 @@ class TransferenciaController extends Controller
 
         $pago->fecha_pago = Carbon::createFromFormat('d/m/Y', $request->get('fecha_pago'))->format('Y-m-d');
         $pago->monto =  $request->get('monto');
-        // $pago->moneda =  $request->get('moneda');
 
         $pago->observacion =  $request->get('observacion');
 
@@ -172,6 +171,12 @@ class TransferenciaController extends Controller
         }
         $pago->save();
 
+        
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL PAGO DEL DOCUMENTO DE VENTA (TRANSFERENCIA) CON EL MONTO: ".  $pago->monto ;
+        $gestion = "DOCUMENTO DE VENTA - PAGO TRANSFERENCIA";
+        eliminarRegistro($pago, $descripcion , $gestion);
+
         Session::flash('success','Pago creado.');
         return redirect()->route('ventas.documentos.transferencia.pago.index',$request->get('id_documento'))->with('guardar', 'success');
 
@@ -183,6 +188,11 @@ class TransferenciaController extends Controller
         $pago = Transferencia::findOrFail($request->get('pago'));
         $pago->estado = 'ANULADO';
         $pago->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PAGO DEL DOCUMENTO DE VENTA (TRANSFERENCIA) CON EL MONTO: ".  $pago->monto ;
+        $gestion = "DOCUMENTO DE VENTA - PAGO TRANSFERENCIA";
+        eliminarRegistro($pago, $descripcion , $gestion);
 
         Session::flash('success','Pago eliminado.');
         return redirect()->route('ventas.documentos.transferencia.pago.index', $request->get('amp;documento'))->with('eliminar', 'success');

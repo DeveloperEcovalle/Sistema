@@ -49,4 +49,22 @@ class Empleado extends Model
         else
             return $banco->descripcion;
     }
+
+    public function getArea(): string
+    {
+        $area = areas()->where('simbolo', $this->area)->first();
+        if (is_null($area))
+            return "-";
+        else
+            return $area->descripcion;
+    }
+
+    public function getCargo(): string
+    {
+        $cargo = cargos()->where('simbolo', $this->cargo)->first();
+        if (is_null($cargo))
+            return "-";
+        else
+            return $cargo->descripcion;
+    }
 }

@@ -40,7 +40,6 @@ class PagoController extends Controller
 
         return view('ventas.documentos.pagos.index',[
             'documento' => $documento,
-            // 'moneda' => $tipo_moneda,
             'monto' => $documento->total,
             'acuenta' =>  number_format($acuenta, 2, '.', ''),
             'saldo' => number_format($saldo, 2, '.', ''),
@@ -84,6 +83,8 @@ class PagoController extends Controller
         $venta->observacion =  $request->get('observacion');
         $venta->tipo_pago =  $request->get('tipo_pago');
         $venta->save();
+
+        
         //Llenado de los articulos
 
         $pagosJSON = $request->get('pagos_tabla');
@@ -109,6 +110,11 @@ class PagoController extends Controller
         //TIPO DE PAGO : OTROS
         $documento->tipo_pago = '0';
         $documento->update();
+        
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL PAGO DEL DOCUMENTO DE VENTA CON EL MONTO: ".  $venta->total ;
+        $gestion = "DOCUMENTO DE VENTA";
+        crearRegistro($pago, $descripcion , $gestion);
 
         Session::flash('success','Pago creado.');
         return redirect()->route('ventas.documentos.pago.index',$request->get('id_documento'))->with('guardar', 'success');
@@ -121,6 +127,11 @@ class PagoController extends Controller
         $pago = CajaPago::findOrFail($id);
         $pago->estado = 'ANULADO';
         $pago->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PAGO DEL DOCUMENTO DE VENTA CON EL MONTO: ".  $pago->monto ;
+        $gestion = "DOCUMENTO DE VENTA";
+        crearRegistro($pago, $descripcion , $gestion);
 
         Session::flash('success','Pago del documento de venta eliminada.');
         return redirect::back()->with('guardar', 'success');

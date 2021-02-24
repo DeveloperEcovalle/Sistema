@@ -50,7 +50,7 @@
                             <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</button>
+                            <a class="btn btn-primary btn-sm" style="color:white;" onclick="crearFormulario()"><i class="fa fa-save"></i> Guardar</a>
                             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                         </div>
                     </div>
@@ -101,6 +101,70 @@
 				
             },
 	});
+
+    
+    function crearFormulario() {
+        const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger',
+                    },
+                    buttonsStyling: false
+                })
+        Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Opción Guardar',
+                text: "¿Seguro que desea guardar cambios?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                        // this.submit();
+
+                        $.ajax({
+                            dataType : 'json',
+                            type : 'post',
+                            url : '{{ route('almacenes.subfamilia.exist') }}',
+                            data : {
+                                '_token' : $('input[name=_token]').val(),
+                                'familia' : $('#descripcion').val(),
+                                'familia_2' : $('#familia_id').val(),
+                                'id':  null
+                            }
+                        }).done(function (result){
+                            console.log(result)
+                            if (result.existe == true) {
+                                toastr.error('La Sub categoria ya se encuentra registrada','Error');
+                                $(this).focus();
+                                
+                            }else{
+                                // this.submit();
+                                var url = $('#crear_subfamilia').attr('id');
+                                var enviar = '#'+url;
+                                $(enviar).submit();
+                            }
+                        });
+
+
+                    }else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                    )
+                    
+                }
+                })
+        
+    }
 
 
 

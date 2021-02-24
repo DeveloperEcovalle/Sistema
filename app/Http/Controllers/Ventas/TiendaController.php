@@ -17,16 +17,11 @@ class TiendaController extends Controller
 
     public function getShop($id)
     {
-        // return datatables()->query(
-        //     DB::table('cliente_tiendas')
-        //     ->select('cliente_tiendas.*')->where('cliente_tiendas.estado','ACTIVO')->where('cliente_tiendas.cliente_id',$id))->toJson();
-
             $tiendas = DB::table('cliente_tiendas')
                     ->select('cliente_tiendas.*')
                     ->where('cliente_tiendas.estado','ACTIVO')
                     ->where('cliente_tiendas.cliente_id',$id)->get();
 
-            // dd($tiendas);
             $coleccion = collect([]);
 
             foreach($tiendas as $tienda) {
@@ -72,7 +67,6 @@ class TiendaController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
 
         $data = $request->all();
 
@@ -105,8 +99,6 @@ class TiendaController extends Controller
         $tienda->telefono = $request->get('telefono');
         $tienda->celular = $request->get('celular');
 
-
-        
         $tienda->dni_contacto_admin = $request->get('dni_contacto_admin');
         $tienda->estado_dni_contacto_admin = $request->get('estado_dni_contacto_admin');
 
@@ -173,9 +165,12 @@ class TiendaController extends Controller
         $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
         $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
         $tienda->observacion_domicilio = $request->get('observacion_domicilio');
-
-
         $tienda->save();
+
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA TIENDA CON EL NOMBRE: ".  $tienda->nombre;
+        $gestion = "TIENDAS (CLIENTES)";
+        crearRegistro($tienda, $descripcion , $gestion);
 
         Session::flash('success','Tienda creada.');
         return redirect()->route('clientes.tienda.index',$request->get('cliente_id'))->with('guardar', 'success');
@@ -187,6 +182,11 @@ class TiendaController extends Controller
         $tienda = Tienda::findOrFail($id);
         $tienda->estado = 'ANULADO';
         $tienda->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA TIENDA CON EL NOMBRE: ".  $tienda->nombre;
+        $gestion = "TIENDAS (CLIENTES)";
+        eliminarRegistro($tienda, $descripcion , $gestion);
 
         Session::flash('success','Tienda eliminada.');
         return redirect()->route('clientes.tienda.index',$tienda->cliente_id)->with('eliminar', 'success');
@@ -300,6 +300,11 @@ class TiendaController extends Controller
         $tienda->observacion_domicilio = $request->get('observacion_domicilio');
 
         $tienda->update();
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA TIENDA CON EL NOMBRE: ".  $tienda->nombre;
+        $gestion = "TIENDAS (CLIENTES)";
+        modificarRegistro($tienda, $descripcion , $gestion);
 
         Session::flash('success','Tienda modificada.');
         return redirect()->route('clientes.tienda.index',$tienda->cliente_id)->with('modificar', 'success');

@@ -112,6 +112,11 @@ class ArticuloController extends Controller
         $articulo->codigo_barra = $request->get('codigo_barra');
         $articulo->save();
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL ARTICULO CON LA DESCRIPCION: ". $articulo->descripcion;
+        $gestion = "ARTICULO";
+        crearRegistro($articulo, $descripcion , $gestion);
+
         Session::flash('success','Artículo creada.');
         return redirect()->route('compras.articulo.index')->with('guardar', 'success');
     }
@@ -169,6 +174,11 @@ class ArticuloController extends Controller
         $articulo->codigo_barra = $request->get('codigo_barra');
         $articulo->update();
 
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL ARTICULO CON LA DESCRIPCION: ". $articulo->descripcion;
+        $gestion = "ARTICULO";
+        modificarRegistro($articulo, $descripcion , $gestion);
+
         Session::flash('success','Artículo modificada.');
         return redirect()->route('compras.articulo.index')->with('modificar', 'success');
 
@@ -181,6 +191,11 @@ class ArticuloController extends Controller
         $articulo = Articulo::findOrFail($id);
         $articulo->estado = 'ANULADO';
         $articulo->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL ARTICULO CON LA DESCRIPCION: ". $articulo->descripcion;
+        $gestion = "ARTICULO";
+        eliminarRegistro($articulo, $descripcion , $gestion);
 
         Session::flash('success','Artículo eliminado.');
         return redirect()->route('compras.articulo.index')->with('eliminar', 'success');

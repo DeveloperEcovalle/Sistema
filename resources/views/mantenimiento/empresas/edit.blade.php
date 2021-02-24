@@ -42,10 +42,15 @@
                                 <div class="tabs-container">
                                     <ul class="nav nav-tabs">
                                         <li title="Datos de la Empresa">
-                                            <a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-check-square"></i> Empresa</a>
+                                            <a class="nav-link active" data-toggle="tab" href="#tab-1" id="empresas_link"><i class="fa fa-check-square"></i> Empresa</a>
                                         </li>
+
                                         <li title="Datos de Contacto">
                                             <a class="nav-link" data-toggle="tab"href="#tab-2" id="bancos_link"> <i class="fa fa-user"></i> Bancos</a>
+                                        </li>
+
+                                        <li title="Datos sobre la Facturación Electrónica" id="facturacion_tab" >
+                                            <a class="nav-link" data-toggle="tab"href="#tab-3" id="facturacion_link"> <i class="fa fa-file-pdf-o"></i> Facturación Electrónica</a>
                                         </li>
                                     </ul>
 
@@ -57,8 +62,16 @@
                                                     <div class="col-sm-6 b-r">
                                                         <h4 class=""><b>Empresa</b></h4>
                                                         <div class="row">
-                                                            <div class="col-md-12">
+                                                            <div class="col-lg-6 col-xs-12">
                                                                 <p>Modificar datos de empresa:</p>
+                                                            </div>
+                                                            <div class="col-lg-6 col-xs-12">
+                                                                <label> Facturación Electrónica: &nbsp
+                                                                @if(old('estado_fe',$empresa->estado_fe) == '1')
+                                                                    <input type="checkbox" class="i-checks" id="estado_fe" name="estado_fe" value="{{old('estado_fe',$empresa->estado_fe)}}" checked></label>
+                                                                @else
+                                                                    <input type="checkbox" class="i-checks" id="estado_fe" name="estado_fe" value="{{old('estado_fe',$empresa->estado_fe)}}" ></label>
+                                                                @endif
                                                             </div>
                                                         </div>
 
@@ -207,7 +220,7 @@
 
                                                         <div class="form-group row">
                                                             <div class="col-md-12">
-                                                                <label>Logo:</label>
+                                                                <label id="logo_label">Logo:</label>
 
                                                                 <div class="custom-file">
                                                                     <input id="logo" type="file" name="logo" id="logo"
@@ -216,9 +229,7 @@
 
 
                                                                     <label for="logo" id="logo_txt"
-                                                                        class="custom-file-label selected {{ $errors->has('ruta') ? ' is-invalid' : '' }}">
-                                                                        @if($empresa->nombre_logo) {{$empresa->nombre_logo}} @else Seleccionar
-                                                                        @endif</label>
+                                                                        class="custom-file-label selected {{ $errors->has('ruta') ? ' is-invalid' : '' }}">{{$empresa->nombre_logo ? $empresa->nombre_logo : 'Seleccionar'}}</label>
 
                                                                     @if ($errors->has('logo'))
                                                                     <span class="invalid-feedback" role="alert">
@@ -226,10 +237,14 @@
                                                                     </span>
                                                                     @endif
 
+                                                                    <div class="invalid-feedback"><b><span id="error-logo_empresa"></span></b></div>
+
                                                                 </div>
 
                                                             </div>
                                                         </div>
+
+                                                        <input type="hidden" name="ruta_logo" id="ruta_logo" value="{{old('ruta_logo',$empresa->ruta_logo)}}">
 
                                                         <div class="form-group row justify-content-center">
                                                             <div class="col-6 align-content-center">
@@ -491,6 +506,69 @@
                                             </div>
                                         </div>
 
+                                        <div id="tab-3" class="tab-pane">
+
+                                            <div class="panel-body">
+
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <h4><b>Facturación Electrónica</b></h4>
+                                                        <p>Registrar datos Sunat:</p>
+                                                    </div>
+                                                </div>
+
+                                                @if ($facturacion)
+                                                    <input type="hidden" name="certificado_base" id=certificado_base value="{{old('certificado_base',  $facturacion->certificado  )}}">
+
+                                                @else
+                                                    <input type="hidden" name="certificado_base" id=certificado_base value="{{old('certificado_base')}}">
+                                                @endif
+
+                                                <div class="row">
+                                                    <div class="col-md-6 col-xs-12 b-r">
+                                                        <p>Certificado Sunat</p>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-6 col-xs-12">
+                                                                <label for="">Certificado</label>
+                                                                <a class="btn btn-primary btn-block modal_certificado" style="color:white"><i class="fa fa-upload"></i> Subir Certificado (.pfx)</a>
+                                                            </div>
+                                                            <div class="col-lg-6 col-xs-12">
+                                                                <label for="">Estado</label>
+                                                                <input type="text" id="estado_certificado" class="form-control text-center" name="estado_certificado" value="{{old('estado_certificado', $empresa->estado_fe == '1' ? 'VERIFICADO' : 'SIN VERIFICAR' )}}" readonly>
+                                                            </div>
+                                                            
+                                                        </div>
+
+
+                                                    </div>
+
+                                                    <div class="col-md-6 col-xs-12">
+                                                        <p>Usuario Secundario Sunat/OSE</p>
+
+                                                        <div class="form-group row">
+                                                            <div class="col-md-6 col-xs-12">
+                                                                <label class="required">Soap Usuario:</label>
+                                                                <input type="text" class="form-control {{ $errors->has('soap_usuario') ? ' is-invalid' : '' }}" name="soap_usuario" id="soap_usuario" value="{{old('soap_usuario', $facturacion ? $facturacion->sol_user : '' )}}">
+                                                                <div class="invalid-feedback"><b><span id="error-soap_usuario"></span></b></div>
+                                                            </div>
+
+                                                            <div class="col-md-6 col-xs-12">
+                                                                <label class="required">Soap Contraseña:</label>
+                                                                <input type="text" class="form-control {{ $errors->has('soap_password') ? ' is-invalid' : '' }}" name="soap_password" id="soap_password" value="{{old('soap_password', $facturacion ? $facturacion->soap_password : '' )}}">
+                                                                <div class="invalid-feedback"><b><span id="error-soap_password"></span></b></div>
+                                                            </div>
+
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+
+                                        </div>
+
 
 
                                     </div>
@@ -536,8 +614,12 @@
 
 @push('styles')
 <link href="{{asset('Inspinia/css/plugins/select2/select2.min.css')}}" rel="stylesheet">
+
 <!-- DataTable -->
 <link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+
+<!-- iCheck -->
+<link href="{{asset('Inspinia/css/plugins/iCheck/custom.css')}}" rel="stylesheet">
 
 <style>
 .logo {
@@ -554,8 +636,12 @@
 
 @push('scripts')
 <script src="{{asset('Inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
+
 <!-- DataTable -->
 <script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
+
+<!-- iCheck -->
+<script src="{{asset('Inspinia/js/plugins/iCheck/icheck.min.js')}}"></script>
 
 
 <script>
@@ -583,16 +669,38 @@ $('#celular').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
+$('#estado_fe').on('ifChanged', function(event) {
+    document.getElementById("facturacion_tab").style.display = "";
+    $('#logo_label').addClass("required")
+    if ($('#logo_txt').text() == 'Seleccionar') {
+        $('#logo').prop("required",true)
+    }
+    $('#estado_fe').val('1')
+
+        
+});
+
+$('#estado_fe').on('ifUnchecked', function(event) {
+    document.getElementById("facturacion_tab").style.display = "none";
+    $('#logo_label').removeClass("required")
+    $('#certificado_base').val('')
+    $('#estado_certificado').val('SIN VERIFICAR')
+    $('#logo').prop("required",false)
+    $('#estado_fe').val('0')
+});
+
+
 /* Limpiar imagen */
 $('#limpiar_logo').click(function() {
     $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
     var fileName = "Seleccionar"
     $('.custom-file-label').addClass("selected").html(fileName);
     $('#logo').val('')
+    $('#ruta_logo').val('')
 
 })
 
-$('.custom-file-input').on('change', function() {
+$('#logo').on('change', function() {
     var fileInput = document.getElementById('logo');
     var filePath = fileInput.value;
     var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
@@ -650,16 +758,31 @@ $('#enviar_empresa_editar').submit(function(e) {
                 }).then((result) => {
                     
                     if (result.isConfirmed) {
-                        if ($('#estado').val() == "ACTIVO"  || $('#estado').val() == "SIN VERIFICAR" ) {
-                            $("#estado").prop('disabled', false)
-                            $("#estado_dni_representante").prop('disabled', false)
-                            cargarEntidades()
-                            this.submit();
-                        } else {
-                            $("#estado").prop('disabled', true)
-                            $("#estado_dni_representante").prop('disabled', true)
-                            toastr.error('Ingrese una empresa activa', 'Error');
+                        if (validarCertificado() == true) {
+
+                            if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR" ) {
+                                $("#estado").prop('disabled', false)
+                                $("#estado_dni_representante").prop('disabled', false)
+                                //Cargar Entidades en modal
+                                cargarEntidades()
+                                this.submit();
+                                Swal.fire({
+                                    title: '¡Cargando!',
+                                    type: 'info',
+                                    icon: 'info',
+                                    text: 'Modificando Registro',
+                                    showConfirmButton: false,
+                                    onBeforeOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                })
+                            } else {
+                                $("#estado").prop('disabled', true)
+                                $("#estado_dni_representante").prop('disabled', true)
+                                toastr.error('Ingrese una empresa activa o sin verificar', 'Error');
+                            }
                         }
+                        
                     } else if (
                         /* Read more about handling dismissals below */
                         result.dismiss === Swal.DismissReason.cancel
@@ -668,15 +791,28 @@ $('#enviar_empresa_editar').submit(function(e) {
                     }
                 })
             }else{
-                if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR") {
-                    $("#estado").prop('disabled', false)
-                    $("#estado_dni_representante").prop('disabled', false)
-                    cargarEntidades()
-                    this.submit();
-                } else {
-                    $("#estado").prop('disabled', true)
-                    $("#estado_dni_representante").prop('disabled', true)
-                    toastr.error('Ingrese una empresa activa', 'Error');
+                if (validarCertificado() == true) {
+
+                    if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR") {
+                        $("#estado").prop('disabled', false)
+                        $("#estado_dni_representante").prop('disabled', false)
+                        cargarEntidades()
+                        this.submit();
+                        Swal.fire({
+                            title: '¡Cargando!',
+                            type: 'info',
+                            icon: 'info',
+                            text: 'Modificando Registro',
+                            showConfirmButton: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                    } else {
+                        $("#estado").prop('disabled', true)
+                        $("#estado_dni_representante").prop('disabled', true)
+                        toastr.error('Ingrese una empresa activa', 'Error');
+                    }
                 }
             }
     
@@ -847,6 +983,30 @@ function camposDni(objeto) {
 
 $(document).ready(function() {
 
+    //Iniciar I-Checks
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+
+
+
+    @if(old('estado_fe',$empresa->estado_fe) == '1')
+        document.getElementById("facturacion_tab").style.display = "";
+        $('#logo_label').addClass("required")
+        if ($('#logo_txt').text() == 'Seleccionar') {
+            $('#logo').prop("required",true)
+        }
+        
+    @else
+        document.getElementById("facturacion_tab").style.display = "none";
+        $('#logo').prop("required",false)
+        $('#logo_label').removeClass("required")
+        $('#certificado_base').val('')
+        $('#estado_certificado').val('SIN VERIFICAR')
+
+    @endif
+
     // DataTables
     $('.dataTables-bancos').DataTable({
         "dom": 'Tftp',
@@ -905,17 +1065,17 @@ $(document).ready(function() {
 })
 
 function obtenerTabla() {
-var t = $('.dataTables-bancos').DataTable();
-    @foreach($banco as $ban)
-    t.row.add([
-        '',
-        "{{$ban->descripcion}}",
-        "{{$ban->tipo_moneda}}",
-        "{{$ban->num_cuenta}}",
-        "{{$ban->cci}}",
-        "{{$ban->itf}}",
-    ]).draw(false);
-    @endforeach
+    var t = $('.dataTables-bancos').DataTable();
+        @foreach($banco as $ban)
+        t.row.add([
+            '',
+            "{{$ban->descripcion}}",
+            "{{$ban->tipo_moneda}}",
+            "{{$ban->num_cuenta}}",
+            "{{$ban->cci}}",
+            "{{$ban->itf}}",
+        ]).draw(false);
+        @endforeach
 }
 
 //Añadir Entidad Financiera
@@ -935,9 +1095,108 @@ function entidadFinanciera() {
     return existe
 }
 
+$('.modal_certificado').click(function(){
+    $('#modal_certificado').modal('show');
+})
+
 $('.tabs-container .nav-tabs #bancos_link').click(function() {
     limpiarErrores()
     var enviar = true;
+
+    if ( $('#estado_fe').prop("checked") ) {
+        if ($('#logo_txt').text() == 'Seleccionar') {
+            enviar = false
+            $('#logo').addClass("is-invalid")
+            toastr.error("Ingrese Logo de la empresa.", 'Error');
+            $('#error-logo_empresa').text("El campo Logo es obligatorio.")
+        }
+
+    }else{
+        enviar = true
+        $('#logo').removeClass("is-invalid")
+        $('#error-logo_empresa').text("")
+    }
+
+
+    if ($('#ruc').val() == '') {
+        enviar = false
+        $('#ruc').addClass("is-invalid")
+        toastr.error("Ingrese Ruc de la empresa.", 'Error');
+        $('#error-ruc').text("El campo Ruc es obligatorio.")
+    }
+
+    if ($('#razon_social').val() == '') {
+        enviar = false
+        $('#razon_social').addClass("is-invalid")
+        toastr.error("Ingrese Razón Social de la empresa.", 'Error');
+        $('#error-razon_social').text("El campo Razón Social es obligatorio.")
+    }
+
+    if ($('#direccion_fiscal').val() == '') {
+        enviar = false
+        $('#direccion_fiscal').addClass("is-invalid")
+        toastr.error("Ingrese la Dirección Fiscal de la Empresa.", 'Error');
+        $('#error-direccion_fiscal').text("El campo Dirección Fiscal es obligatorio.")
+    }
+
+    
+    if ($('#direccion_llegada').val() == '') {
+        enviar = false
+        $('#direccion_llegada').addClass("is-invalid")
+        toastr.error("Ingrese la Dirección de Llegada de la Empresa.", 'Error');
+        $('#error-direccion_llegada').text("El campo Dirección de Llegada es obligatorio.")
+    }
+
+    if ($('#dni_representante').val() == '') {
+        enviar = false
+        $('#dni_representante').addClass("is-invalid")
+        toastr.error("Ingrese el Dni del Representante de la Empresa.", 'Error');
+        $('#error-dni_representante').text("El campo Dni es obligatorio.")
+    }
+
+    if ($('#nombre_representante').val() == '') {
+        enviar = false
+        $('#nombre_representante').addClass("is-invalid")
+        toastr.error("Ingrese el Nombre Completo del Representante de la Empresa.", 'Error');
+        $('#error-nombre_representante').text("El campo Nombre Completo es obligatorio.")
+    }
+
+    if ($('#num_asiento').val() == '') {
+        enviar = false
+        $('#num_asiento').addClass("is-invalid")
+        toastr.error("Ingrese el N° de Asiento de la Empresa.", 'Error');
+        $('#error-num_asiento').text("El campo N° de Asiento es obligatorio.")
+    }
+
+    if ($('#num_partida').val() == '') {
+        enviar = false
+        $('#num_partida').addClass("is-invalid")
+        toastr.error("Ingrese el N° de Partida de la Empresa.", 'Error');
+        $('#error-num_partida').text("El campo N° de Partida es obligatorio.")
+    }
+
+    return enviar
+
+})
+
+$('.tabs-container .nav-tabs #facturacion_link').click(function() {
+    limpiarErrores()
+    var enviar = true;
+
+    if ( $('#estado_fe').prop("checked") ) {
+        if ($('#logo_txt').text() == 'Seleccionar') {
+            enviar = false
+            $('#logo').addClass("is-invalid")
+            toastr.error("Ingrese Logo de la empresa.", 'Error');
+            $('#error-logo_empresa').text("El campo Logo es obligatorio.")
+        }
+
+    }else{
+        enviar = true
+        $('#logo').removeClass("is-invalid")
+        $('#error-logo_empresa').text("")
+    }
+
 
     if ($('#ruc').val() == '') {
         enviar = false
@@ -1025,6 +1284,10 @@ function limpiarErrores() {
 
     $('#num_partida').removeClass("is-invalid")
     $('#error-num_partida').text("")
+    
+    $('#logo').removeClass("is-invalid")
+    $('#error-logo_empresa').text("")
+
 }
 
 function consultarRuc() {
@@ -1068,6 +1331,67 @@ function consultarRuc() {
         toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
     }
 }
+
+//CERTIFICADO
+
+$('#certificado').on('change', function() {
+    var fileInput = document.getElementById('certificado');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(.pfx)$/i;
+
+    if (allowedExtensions.exec(filePath)) {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    } else {
+        toastr.error('Extensión inválida, formatos admitidos (.pfx)', 'Error');
+    }
+    
+});
+
+function validarCertificado() {
+    var correcto = true
+    if ( $('#estado_fe').prop("checked") ) {
+        if ($('#estado_certificado').val() != "VERIFICADO") {
+            correcto = false
+            toastr.error("Certitificado Incorrecto.", 'Error');
+            $('#facturacion_link').click();
+        }
+
+        if ($('#logo_txt').text() == 'Seleccionar') {
+            correcto = false
+            toastr.error("Ingrese Logo de la empresa.", 'Error');
+            $('#empresas_link').click();
+        }
+
+        if ($('#soap_usuario').val() == "") {
+            correcto = false
+            $('#soap_usuario').addClass("is-invalid")
+            toastr.error("Ingrese Soap Usuario Sunat.", 'Error');
+            $('#error-soap_usuario').text("El campo Soap Usuario es obligatorio.")
+
+            $('#facturacion_link').click();
+
+        }
+
+        if ($('#soap_password').val() == "") {
+            correcto = false
+            $('#soap_password').addClass("is-invalid")
+            toastr.error("Ingrese Soap Contraseña Sunat.", 'Error');
+            $('#error-soap_password').text("El campo Soap Contraseña es obligatorio.")
+            
+            $('#facturacion_link').click();
+        }
+
+
+
+    }else{
+        $('#soap_usuario').val('')
+        $('#soap_password').val('')
+    }
+
+    return correcto
+}
+
 
 </script>
 

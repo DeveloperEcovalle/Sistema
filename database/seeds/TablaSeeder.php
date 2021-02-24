@@ -127,6 +127,7 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'TIPOS DE PAGO (CAJA CHICA)';
         $tabla->sigla = 'TIPO DE PAGO CAJA CHICA';
+        $tabla->editable = '1';
         $tabla->save();
 
         //20
@@ -139,6 +140,7 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'TIPOS DE VENTA';
         $tabla->sigla = 'TIPO DE VENTA';
+        $tabla->editable = '1';
         $tabla->save();
 
         //22
@@ -163,6 +165,20 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'LINEA COMERCIAL';
         $tabla->sigla = 'LINEA COMERCIAL';
+        $tabla->save();
+
+        //26
+        $tabla = new General();
+        $tabla->descripcion = 'PLAN FATURACION ELECTRONICA';
+        $tabla->sigla = 'PFE';
+        $tabla->editable = '1';
+        $tabla->save();
+
+        //27
+        $tabla = new General();
+        $tabla->descripcion = 'AMBIENTE DE PRODUCCION FATURACION ELECTRONICA';
+        $tabla->sigla = 'APFE';
+        $tabla->editable = '1';
         $tabla->save();
     }
 }

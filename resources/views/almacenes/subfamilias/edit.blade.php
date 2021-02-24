@@ -17,6 +17,7 @@
                    <input type="hidden" name="sub_familia_id_editar" id="sub_familia_id_editar" value="{{old('sub_familia_id_editar')}}">
                    <input type="hidden" name="familia_id_2_editar" id="familia_id_2_editar" value="{{old('familia_id_2_editar')}}">
 
+                   <input type="hidden" name="sub_categoria_existe" id="sub_categoria_existe">
                    
                    <div class="form-group">
                         
@@ -53,7 +54,7 @@
                             <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</button>
+                            <a style="color:white" onclick="enviarFormulario()" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</a>
                             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                         </div>
                     </div>
@@ -72,6 +73,9 @@
 
 <script>
 
+    // $(document).ready(function() {
+    //     $("#descripcion_editar").on("change", validarNombre);
+    // })
     //Select2
     $(".select2_form").select2({
         placeholder: "SELECCIONAR",
@@ -85,6 +89,71 @@
         height: '200px',
         width: '100%',
     });
+
+
+    function enviarFormulario() {
+        const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger',
+                    },
+                    buttonsStyling: false
+                })
+                
+        Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Opción Modificar',
+                text: "¿Seguro que desea modificar los cambios?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                        // this.submit();
+
+                        $.ajax({
+                            dataType : 'json',
+                            type : 'post',
+                            url : '{{ route('almacenes.subfamilia.exist') }}',
+                            data : {
+                                '_token' : $('input[name=_token]').val(),
+                                'familia' : $('#descripcion_editar').val(),
+                                'familia_2' : $('#familia_id_editar').val(),
+                                'id':  $('#sub_familia_id_editar').val(),
+                            }
+                        }).done(function (result){
+                            console.log(result)
+                            if (result.existe == true) {
+                                toastr.error('La Sub categoria ya se encuentra registrada','Error');
+                                $(this).focus();
+                                
+                            }else{
+                                // this.submit();
+                                var url = $('#editar_subfamilia').attr('id');
+                                var enviar = '#'+url;
+                                $(enviar).submit();
+                            }
+                        });
+
+
+                    }else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                    )
+                    
+                }
+                })
+        
+    }
 
 </script>
 

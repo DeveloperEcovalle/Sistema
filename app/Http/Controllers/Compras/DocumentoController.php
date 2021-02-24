@@ -296,7 +296,10 @@ class DocumentoController extends Controller
 
         }
 
-
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL DOCUMENTO DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($documento->fecha_emision)->format('d/m/y');
+        $gestion = "DOCUMENTO DE COMPRA";
+        crearRegistro($documento, $descripcion , $gestion);
 
         Session::flash('success','Documento de Compra creada.');
         return redirect()->route('compras.documento.index')->with('guardar', 'success');
@@ -325,7 +328,6 @@ class DocumentoController extends Controller
 
     public function update(Request $request, $id){
         
-        // dd($request);
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
@@ -400,6 +402,11 @@ class DocumentoController extends Controller
             }
         }
         
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL DOCUMENTO DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($documento->fecha_emision)->format('d/m/y');
+        $gestion = "DOCUMENTO DE COMPRA";
+        modificarRegistro($documento, $descripcion , $gestion);
+
         Session::flash('success','Documento de Compra modificada.');
         return redirect()->route('compras.documento.index')->with('modificar', 'success');
     }
@@ -410,6 +417,11 @@ class DocumentoController extends Controller
         $documento = Documento::findOrFail($id);
         $documento->estado = 'ANULADO';
         $documento->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL DOCUMENTO DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($documento->fecha_emision)->format('d/m/y');
+        $gestion = "DOCUMENTO DE COMPRA";
+        eliminarRegistro($documento, $descripcion , $gestion);
 
         Session::flash('success','Documento de Compra eliminada.');
         return redirect()->route('compras.documento.index')->with('eliminar', 'success');

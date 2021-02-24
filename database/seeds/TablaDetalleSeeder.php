@@ -39,6 +39,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle = new Detalle();
         $detalle->descripcion = "SOLES";
         $detalle->simbolo = 'S/.';
+        $detalle->parametro = 'PEN';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 1;
         $detalle->save();
@@ -46,6 +47,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle = new Detalle();
         $detalle->descripcion = "DOLARES";
         $detalle->simbolo = '$';
+        $detalle->parametro = 'USD';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 1;
         $detalle->save();
@@ -182,6 +184,38 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 6;
         $detalle->save();
+
+        //Plan Facturacion electronica
+        $detalle = new Detalle();
+        $detalle->descripcion = "free";
+        $detalle->simbolo = 'free';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 26;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "premium";
+        $detalle->simbolo = 'premium';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 26;
+        $detalle->save();
+
+        //Ambiente de produccion facturacion electronica
+        $detalle = new Detalle();
+        $detalle->descripcion = "beta";
+        $detalle->simbolo = 'beta';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 27;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "produccion";
+        $detalle->simbolo = 'produccion';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 27;
+        $detalle->save();
+
+
 // --------------------------NO MODIFICABLE-------------------------------------------------
         // AREAS
         $detalle = new Detalle();
@@ -374,7 +408,6 @@ class TablaDetalleSeeder extends Seeder
 
 
         // UNIDAD DE MEDIDA
-
         $detalle = new Detalle();
         $detalle->descripcion = "BOBINAS";
         $detalle->simbolo = "4A";
@@ -941,24 +974,37 @@ class TablaDetalleSeeder extends Seeder
 
         $detalle = new Detalle();
         $detalle->descripcion = "FACTURA";
-        $detalle->simbolo = 'FAC-ELEC';
+        $detalle->simbolo = '01';
+        $detalle->parametro = 'F';
+        $detalle->operacion = '10';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "NOTA DE VENTA";
-        $detalle->simbolo = 'NV-ELEC';
+        $detalle->descripcion = "BOLETA DE VENTA";
+        $detalle->simbolo = '03';
+        $detalle->parametro = 'B';
+        $detalle->operacion = '12';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
 
-        $detalle = new Detalle();
-        $detalle->descripcion = "BOLETA";
-        $detalle->simbolo = 'BOL-ELEC';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 21;
-        $detalle->save();
+        // $detalle = new Detalle();
+        // $detalle->descripcion = "NOTA DE CREDITO";
+        // $detalle->simbolo = '07';
+        // $detalle->estado = 'ACTIVO';
+        // $detalle->tabla_id = 21;
+        // $detalle->save();
+
+        // $detalle = new Detalle();
+        // $detalle->descripcion = "NOTA DE DEBITO";
+        // $detalle->simbolo = '08';
+        // $detalle->estado = 'ACTIVO';
+        // $detalle->tabla_id = 21;
+        // $detalle->save();
+
+
 
         // TIPO DE TIENDA
 
@@ -1023,79 +1069,86 @@ class TablaDetalleSeeder extends Seeder
 
         //Linea Comercial
         $detalle = new Detalle();
-        $detalle->descripcion = "ACEITES VEGETALES";
-        $detalle->simbolo = 'ACEITES VEGETALES';
+        $detalle->descripcion = "BELLEZA";
+        $detalle->simbolo = 'BELLEZA';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "ACEITES ESCENCIALES";
-        $detalle->simbolo = 'ACEITES ESCENCIALES';
+        $detalle->descripcion = "CONTROL DE PESO";
+        $detalle->simbolo = 'CONTROL DE PESO';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "PASTILLEROS";
-        $detalle->simbolo = 'PASTILLEROS';
+        $detalle->descripcion = "ENERGIZANTES";
+        $detalle->simbolo = 'ENERGIZANTES';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "SEMILLAS Y CEREALES";
-        $detalle->simbolo = 'SEMILLAS Y CEREALES';
+        $detalle->descripcion = "NUTRICIÓN";
+        $detalle->simbolo = 'NUTRICIÓN';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "BEBIDAS Y EXTRACTOS";
-        $detalle->simbolo = 'BEBIDAS Y EXTRACTOS';
+        $detalle->descripcion = "SISTEMA CIRCULATORIO";
+        $detalle->simbolo = 'SIST. CIRCULATORIO';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "HARINAS Y POLVOS";
-        $detalle->simbolo = 'HARINAS Y POLVOS';
+        $detalle->descripcion = "SISTEMA DIGESTIVO";
+        $detalle->simbolo = 'SIST. DIGESTIVO';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "COSMÉTICA NATURAL";
-        $detalle->simbolo = 'COSMÉTICA NATURAL';
+        $detalle->descripcion = "SISTEMA ESTRUCTURAL";
+        $detalle->simbolo = 'SIST. ESTRUCTURAL';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "MINERALES Y SALES";
-        $detalle->simbolo = 'MINERALES Y SALES';
+        $detalle->descripcion = "SISTEMA GLANDULAR";
+        $detalle->simbolo = 'SIST. GLANDULAR';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "HOJAS DESHIDRATADAS";
-        $detalle->simbolo = 'HOJAS DESHIDRATADAS';
+        $detalle->descripcion = "SISTEMA INMUNOLÓGICO";
+        $detalle->simbolo = 'SIST. INMUNOLÓGICO';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "JARABES Y MIEL";
-        $detalle->simbolo = 'JARABES Y MIEL';
+        $detalle->descripcion = "SISTEMA NERVIOSO";
+        $detalle->simbolo = 'SIST. NERVIOSO';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();
 
 
         $detalle = new Detalle();
-        $detalle->descripcion = "MANTEQUILLAS Y MERMELADAS";
-        $detalle->simbolo = 'MANTEQUILLAS Y MERMELADAS';
+        $detalle->descripcion = "SISTEMA RESPIRATORIO";
+        $detalle->simbolo = 'SIST. RESPIRATORIO';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 25;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "SISTEMA URINARIO";
+        $detalle->simbolo = 'SIST. URINARIO';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 25;
         $detalle->save();

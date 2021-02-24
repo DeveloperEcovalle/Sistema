@@ -140,6 +140,11 @@ class GuiaController extends Controller
             ]);
         }
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA GUIA INTERNA DEL PROTOTIPO CON EL NOMBRE: ". $guia->prototipo->producto;
+        $gestion = "GUIA INTERNA";
+        crearRegistro($guia, $descripcion , $gestion);
+
         Session::flash('success','Guia Interna creada.');
         return redirect()->route('invdesarrollo.guia.index')->with('guardar', 'success');
     }
@@ -196,6 +201,11 @@ class GuiaController extends Controller
                 ]);
             }
         }
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA GUIA INTERNA DEL PROTOTIPO CON EL NOMBRE: ". $guia->prototipo->producto;
+        $gestion = "GUIA INTERNA";
+        modificarRegistro($guia, $descripcion , $gestion);
         
         Session::flash('success','Guia Interna modificada.');
         return redirect()->route('invdesarrollo.guia.index')->with('modificar', 'success');
@@ -207,6 +217,11 @@ class GuiaController extends Controller
         $guia = Guia::findOrFail($id);
         $guia->estado = 'ANULADA';
         $guia->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA GUIA INTERNA DEL PRODUCTO CON EL NOMBRE: ". $guia->producto->nombre;
+        $gestion = "GUIA INTERNA";
+        eliminarRegistro($guia, $descripcion , $gestion);
 
         Session::flash('success','Guia Interna eliminada.');
         return redirect()->route('invdesarrollo.guia.index')->with('eliminar', 'success');

@@ -45,7 +45,7 @@
                             <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</button>
+                            <a style="color:white" onclick="enviarFormulario2()" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar</a>
                             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                         </div>
                     </div>
@@ -54,3 +54,98 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<link href="{{asset('Inspinia/css/plugins/select2/select2.min.css')}}" rel="stylesheet">
+@endpush 
+@push('scripts')
+<!-- Select2 -->
+<script src="{{asset('Inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
+
+<script>
+
+    // $(document).ready(function() {
+    //     $("#descripcion_editar").on("change", validarNombre);
+    // })
+    //Select2
+    $(".select2_form").select2({
+        placeholder: "SELECCIONAR",
+        allowClear: true,
+        height: '200px',
+        width: '100%',
+    });
+    $("#familia_id_editar").select2({
+        placeholder: "SELECCIONAR",
+        allowClear: true,
+        height: '200px',
+        width: '100%',
+    });
+
+
+    function enviarFormulario2() {
+
+        const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger',
+                    },
+                    buttonsStyling: false
+                })
+        Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Opción Modificar',
+                text: "¿Seguro que desea modificar los cambios?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                        // this.submit();
+
+                        $.ajax({
+                            dataType : 'json',
+                            type : 'post',
+                            url : '{{ route('almacenes.almacen.exist') }}',
+                            data : {
+                                '_token' : $('input[name=_token]').val(),
+                                'ubicacion' : $('#ubicacion_editar').val(),
+                                'descripcion' : $('#descripcion_editar').val(),
+                                'id':  $('#tabla_id_editar').val(),
+                            }
+                        }).done(function (result){
+                            console.log(result)
+                            if (result.existe == true) {
+                                toastr.error('El almacen ya se encuentra registrado','Error');
+                                $(this).focus();
+                                
+                            }else{
+                                // this.submit();
+                                var url = $('#editar_almacen').attr('id');
+                                var enviar = '#'+url;
+                                $(enviar).submit();
+                            }
+                        });
+
+
+                    }else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                    )
+                    
+                }
+                })
+        
+    }
+
+</script>
+
+@endpush

@@ -26,6 +26,7 @@ class UsuarioController extends Controller
         ->join('personas','empleados.persona_id','=','personas.id')
         ->select('users.*','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_materno,\' \',personas.apellido_paterno,\' \',personas.nombres) AS nombre_completo'))
         ->where('users.estado','!=',"ANULADO")
+        ->orderBy('users.id','DESC')
         ->get();
         return DataTables::of($usuarios)->toJson();
     }
@@ -77,7 +78,12 @@ class UsuarioController extends Controller
  
         $coleccion = collect([]);
         foreach($empleados as $empleado){
-            if (DB::table('users')->where('empleado_id', $empleado->empleado_id)->where('estado','ACTIVO')->exists() == false || $empleado->id == $id) {
+            if (
+                DB::table('users')
+                    ->where('empleado_id', $empleado->empleado_id)
+                    ->where('estado','ACTIVO')
+                    ->exists() == false || 
+                    $empleado->id == $id) {
                 $coleccion->push([
                     'id' => $empleado->empleado_id,
                     'apellido_materno' => $empleado->apellido_materno,
@@ -132,16 +138,14 @@ class UsuarioController extends Controller
             $usuario->nombre_imagen = $name;
             $usuario->ruta_imagen = $request->file('logo')->store('public/usuarios');
         }
-        // $usuario = User::create([
-        //     'usuario' => $data['usuario'],
-        //     'empleado_id' => $data['empleado_id'],
-        //     'email' => $data['correo'],
-        //     'password' => bcrypt($data['password']),
-        //     'imagen' => $nombre_img
-        // ]);
 
-        // $password_sinbcry = $data['password'];
         $usuario->save();
+
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL USUARIO CON EL CORREO: ". $usuario->email;
+        $gestion = "USUARIOS";
+        crearRegistro($usuario, $descripcion , $gestion);
+
         Session::flash('success','Usuario creado.');
         return redirect()->route('seguridad.usuario.index')->with('guardar','success');
 
@@ -191,17 +195,13 @@ class UsuarioController extends Controller
             $usuario->nombre_imagen = $name;
             $usuario->ruta_imagen = $request->file('logo')->store('public/usuarios');
         }
-
-        // $usuario = User::create([
-        //     'usuario' => $data['usuario'],
-        //     'empleado_id' => $data['empleado_id'],
-        //     'email' => $data['correo'],
-        //     'password' => bcrypt($data['password']),
-        //     'imagen' => $nombre_img
-        // ]);
-
-        // $password_sinbcry = $data['password'];
         $usuario->update();
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL USUARIO CON EL CORREO: ". $usuario->email;
+        $gestion = "USUARIOS";
+        modificarRegistro($usuario, $descripcion , $gestion);
+
         Session::flash('success','Usuario modificado.');
         return redirect()->route('seguridad.usuario.index')->with('modificar','success');
 
@@ -214,6 +214,11 @@ class UsuarioController extends Controller
         $usuario = User::findOrFail($id);
         $usuario->estado = 'ANULADO';
         $usuario->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL USUARIO CON EL CORREO: ". $usuario->email;
+        $gestion = "USUARIOS";
+        eliminarRegistro($usuario, $descripcion , $gestion);
 
         if ( auth()->user()->estado == 'ACTIVO') {
             Session::flash('success','Usuario eliminado.');

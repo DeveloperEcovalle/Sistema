@@ -15,8 +15,10 @@ class CreateParametrosTable extends Migration
     {
         Schema::create('parametros', function (Blueprint $table) {
             $table->id();
-            $table->string('http');
-            $table->string('token');
+            $table->longText('http')->nullable();
+            $table->longText('token')->nullable();
+            $table->string('usuario_proveedor')->nullable();
+            $table->string('contra_proveedor')->nullable();
             $table->timestamps();
         });
     }

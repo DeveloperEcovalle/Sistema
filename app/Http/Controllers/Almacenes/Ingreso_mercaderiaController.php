@@ -145,6 +145,11 @@ class Ingreso_mercaderiaController extends Controller
             ]);
         }
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL INGRESO MERCADERIA CON LA FACTURA: ". $ingreso_mercaderia->factura;
+        $gestion = "INGRESO MERCADERIA";
+        crearRegistro($ingreso_mercaderia, $descripcion , $gestion);
+
         Session::flash('success','Ingreso Mercaderia creada.');
         return redirect()->route('almacenes.ingreso_mercaderia.index')->with('guardar', 'success');
     }
@@ -205,6 +210,11 @@ class Ingreso_mercaderiaController extends Controller
                 ]);
             }
         }
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL INGRESO MERCADERIA CON LA FACTURA: ". $ingreso_mercaderia->factura;
+        $gestion = "INGRESO MERCADERIA";
+        modificarRegistro($ingreso_mercaderia, $descripcion , $gestion);
         
         Session::flash('success','Ingreso Mercaderia modificada.');
         return redirect()->route('almacenes.ingreso_mercaderia.index')->with('modificar', 'success');
@@ -216,6 +226,11 @@ class Ingreso_mercaderiaController extends Controller
         $ingreso_mercaderia = Ingreso_mercaderia::findOrFail($id);
         $ingreso_mercaderia->estado = 'ANULADO';
         $ingreso_mercaderia->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL INGRESO MERCADERIA CON LA FACTURA: ". $ingreso_mercaderia->factura;
+        $gestion = "INGRESO MERCADERIA";
+        eliminarRegistro($ingreso_mercaderia, $descripcion , $gestion);
 
         Session::flash('success','Ingreso_mercaderia eliminada.');
         return redirect()->route('almacenes.ingreso_mercaderia.index')->with('eliminar', 'success');
@@ -253,9 +268,6 @@ class Ingreso_mercaderiaController extends Controller
             'proveedores' => $proveedores, 
             'presentaciones'  => $presentaciones, 
             ])->setPaper('a4')->setWarnings(false);
-        //dd($pdf);
-        //$pdf= new Dompdf();
-        //$pdf->loadHtml('hello world');
         return $pdf->stream();
     }
 }

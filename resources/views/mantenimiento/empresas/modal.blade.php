@@ -185,6 +185,71 @@
     </div>
 </div>
 
+<div class="modal inmodal" id="modal_certificado" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="limpiarmodalCertificado()" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <i class="fa fa-cogs modal-icon"></i>
+                <h4 class="modal-title">Certificado PEM</h4>
+                <small class="font-bold">Generar Certificado PEM.</small>
+            </div>
+
+            <div class="modal-body">
+                <form role="form" id="fileinfo" enctype="multipart/form-data" method="post" name="fileinfo">
+                    {{ csrf_field() }} {{method_field('POST')}}
+                    <div class="form-group">
+                        <label class="required">Certificado (.pfx):</label>
+                        <div class="custom-file">
+                            <input id="certificado" type="file" name="certificado" class="custom-file-input {{ $errors->has('certificado') ? ' is-invalid' : '' }}" accept="*">
+
+                            <label for="logo" id="certificado_txt"
+                                class="custom-file-label selected {{ $errors->has('ruta_certificado') ? ' is-invalid' : '' }}">Seleccionar</label>
+
+                            @if ($errors->has('certificado'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('certificado') }}</strong>
+                            </span>
+                            @endif
+                            <div class="invalid-feedback"><b><span id="error-archivo_certificado"></span></b></div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Contraseña:</label>
+                        <input type="text" class="form-control {{ $errors->has('contra_certificado') ? ' is-invalid' : '' }}" name="contra_certificado" id="contra_certificado" value="{{old('contra_certificado')}}" >
+                        <div class="invalid-feedback"><b><span id="error-contra_certificado"></span></b></div>
+                    </div>
+
+                </form>
+
+
+            </div>
+            
+
+
+            <div class="modal-footer">
+                <div class="col-md-6 text-left" style="color:#fcbc6c">
+                    <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="btn btn-primary btn-sm consultarCertificado" style="color:white"><i class="fa fa-save"></i>
+                        Guardar</a>
+                    <button type="button" onclick="limpiarmodalCertificado()" class="btn btn-danger btn-sm" data-dismiss="modal"><i
+                            class="fa fa-times"></i>
+                        Cancelar</button>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+
 
 @push('scripts')
 <script>
@@ -644,6 +709,80 @@ function cargarEntidades() {
 
     $('#entidades_tabla').val(JSON.stringify(entidades));
 }
+
+
+
+$(function(){
+    $('.consultarCertificado').on('click', function(){
+
+        var fd = new FormData(document.getElementById("fileinfo"));
+        var request = $.ajax({
+            url: "{{route('mantenimiento.empresas.certificado')}}",  
+            type: 'POST',
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        request.done(function( msg ) {
+            limpiarerrorCertificado()
+            if (msg.success == false) {
+                errorCertificado()
+                toastr.error('Campo Certificado (.pfx) es obligatorio.', 'Error');
+            }
+            if (msg.success == true) {
+                console.log(msg.certificado)
+                $('#certificado_base').val(msg.certificado)
+                $('#estado_certificado').val('VERIFICADO')
+                toastr.success('Certificado correcto.');
+                $('#modal_certificado').modal('hide')
+
+            }
+        });
+
+        request.fail(function( jqXHR, textStatus ) {
+            toastr.error('Contraseña incorrecta', 'Error');
+            $('#estado_certificado').val('SIN VERIFICAR')
+            $('#certificado_base').val('')
+            //MOSTRAR ERROR
+            $("#contra_certificado").addClass("is-invalid");
+            $('#error-contra_certificado').text('Contraseña Invalida o Nula.')
+        });
+
+
+    });
+});
+
+function errorCertificado() {
+    $("#certificado").addClass("is-invalid");
+    $('#error-archivo_certificado').text('El campo Certificado es obligatorio.')
+}
+
+function limpiarerrorCertificado() {
+    $("#certificado").removeClass("is-invalid");
+    $('#error-archivo_certificado').text('')
+
+    $("#contra_certificado").removeClass("is-invalid");
+    $('#error-contra_certificado').text('')
+}
+
+function limpiarmodalCertificado() {
+    limpiarerrorCertificado()
+    // LIMPIAR CAMPOS
+    $('#contra_certificado').val('')
+    var fileName = "Seleccionar"
+    $('#certificado_txt').addClass("selected").html(fileName);
+    $('#certificado').val('')
+
+}
+
+$('#modal_certificado').on('hidden.bs.modal', function(e) {
+    limpiarmodalCertificado()
+});
+
+
+
 
 
 </script>

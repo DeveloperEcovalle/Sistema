@@ -236,9 +236,12 @@ class ProveedorController extends Controller
             }
         }
 
-        
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ EL PROVEEDOR CON LA DESCRIPCION: ". $proveedor->descripcion;
+        $gestion = "PROVEEDORES";
+        crearRegistro($proveedor, $descripcion , $gestion);
 
-        Session::flash('success','Proveedor creada.');
+        Session::flash('success','Proveedor creado.');
         return redirect()->route('compras.proveedor.index')->with('guardar', 'success');
     }
 
@@ -248,6 +251,11 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::findOrFail($id);
         $proveedor->estado = 'ANULADO';
         $proveedor->update();
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ EL PROVEEDOR CON LA DESCRIPCION: ". $proveedor->descripcion;
+        $gestion = "PROVEEDORES";
+        eliminarRegistro($proveedor, $descripcion , $gestion);
 
         Session::flash('success','Proveedor eliminado.');
         return redirect()->route('compras.proveedor.index')->with('eliminar', 'success');
@@ -289,7 +297,7 @@ class ProveedorController extends Controller
     }
 
     public function update(Request $request, $id){
-        // dd($request);
+
         $data = $request->all();
         $rules = [
             'tipo_documento' => 'required',
@@ -467,6 +475,11 @@ class ProveedorController extends Controller
                 $banco->update();
             }
         }
+
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ EL PROVEEDOR CON LA DESCRIPCION: ". $proveedor->descripcion;
+        $gestion = "PROVEEDORES";
+        modificarRegistro($proveedor, $descripcion , $gestion);
 
         Session::flash('success','Proveedor modificada.');
         return redirect()->route('compras.proveedor.index')->with('modificar', 'success');

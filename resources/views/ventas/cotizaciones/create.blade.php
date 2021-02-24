@@ -358,13 +358,19 @@
 
         function obtenerMonto(producto){
             var tipo = $('#tipo_cliente').val()
-            // alert(tipo)
             $.get('/almacenes/productos/obtenerProducto/'+ producto.value, function (data) {
                
                 for (var i = 0; i < data.length; i++)
                  //SOLO SOLES LOS MONTOS
                     if (data[i].cliente == tipo && data[i].moneda == 4  ) {
-                        $('#precio').val(data[i].monto)
+
+                        if ( data[i].igv == '0' ) {
+                            var monto = Number(data[i].monto * 0.18) + Number(data[i].monto)
+                            $('#precio').val(Number(monto).toFixed(2))
+                        }else{
+                            var monto = data[i].monto
+                            $('#precio').val(Number(monto).toFixed(2))
+                        } 
                     }
 
             });
@@ -677,44 +683,19 @@
                 subtotal = Number(el[6]) + subtotal
             });
 
-            var igv = $('#igv').val()
-
-            if (!igv) {
-                sinIgv(subtotal)   
-            }else{
-                conIgv(subtotal)
-            }
-        }
-
-
-        function sinIgv(subtotal) {
-            // calular igv (calcular la base)
-            var igv =  subtotal * 0.18
-            var total = subtotal + igv
-            $('#igv_int').text('18%')
-            $('#subtotal').text(subtotal.toFixed(2))
-            $('#igv_monto').text(igv.toFixed(2))
-            $('#total').text(total.toFixed(2))
-
+            conIgv(subtotal)
+            
         }
 
         function conIgv(subtotal) {
-            // calular igv (calcular la base)
-            var igv = $('#igv').val()
-            ///////////////////////////////
 
-            if (igv) {
-                var calcularIgv = igv/100
-                var base = subtotal / (1 + calcularIgv)
-                var nuevo_igv = subtotal - base;
-                $('#igv_int').text(igv+'%')
-                $('#subtotal').text(base.toFixed(2))
-                $('#igv_monto').text(nuevo_igv.toFixed(2))
-                $('#total').text(subtotal.toFixed(2))
-
-            }else{
-                toastr.error('Ingrese Igv.', 'Error');
-            }
+            var calcularIgv = 18/100
+            var base = subtotal / (1 + calcularIgv)
+            var nuevo_igv = subtotal - base;
+            $('#igv_int').text(18+'%')
+            $('#subtotal').text(base.toFixed(2))
+            $('#igv_monto').text(nuevo_igv.toFixed(2))
+            $('#total').text(subtotal.toFixed(2))
 
         }
 

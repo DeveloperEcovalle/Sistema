@@ -52,8 +52,8 @@
                                 <div class="form-group row">
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_documento">
-                                        <label class="required">Fecha de Documento</label>
-                                        <div class="input-group  @if (empty($cotizacion)) {{'date'}} @endif">
+                                        <label class="">Fecha de Documento</label>
+                                        <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
@@ -66,7 +66,7 @@
                                             <input type="text" id="fecha_documento_campo" name="fecha_documento"
                                                 class="form-control {{ $errors->has('fecha_documento') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_documento',getFechaFormato($fecha_hoy, 'd/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" required readonly disabled>
                                             @endif
 
                                             @if ($errors->has('fecha_documento'))
@@ -78,8 +78,8 @@
                                     </div>
 
                                     <div class="col-lg-6 col-xs-12" id="fecha_entrega">
-                                        <label class="required">Fecha de Atención</label>
-                                        <div class="input-group  @if (empty($cotizacion)) {{'date'}} @endif"">
+                                        <label class="">Fecha de Atención</label>
+                                        <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
@@ -94,7 +94,7 @@
                                             <input type="text" id="fecha_atencion_campo" name="fecha_atencion_campo"
                                                 class="form-control {{ $errors->has('fecha_atencion') ? ' is-invalid' : '' }}"
                                                 value="{{old('fecha_atencion',getFechaFormato( $fecha_hoy ,'d/m/Y'))}}"
-                                                autocomplete="off" required readonly>
+                                                autocomplete="off" required readonly disabled>
 
                                             @endif
 
@@ -180,6 +180,8 @@
 
                                 <div class="form-group">
                                     <label class="required">Cliente: </label>
+
+                                        <input type="hidden" name="tipo_cliente_documento" id="tipo_cliente_documento">
 
                                         @if (!empty($cotizacion))
                                         <select
@@ -429,7 +431,13 @@
 <script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
 <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
 
+
 <script>
+
+    $('#cantidad').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
         //Editar Registro
         $(document).on('click', '.btn-edit', function(event) {
             var table = $('.dataTables-detalle-documento').DataTable();
@@ -519,9 +527,16 @@
 
                     if ("{{$cliente->id}}" == tipo.value) {
                         $('#tipo_cliente').val("{{$cliente->detalle->descripcion}}")
+
+                            if ("{{$cliente->tipo_documento}}" == "RUC") {
+                                $('#tipo_cliente_documento').val("1");
+                            }else{
+                                $('#tipo_cliente_documento').val("0");
+                            }
                     }
 
                 @endforeach
+
             }else{
                 $('#producto').prop('disabled' , true)
                 $('#precio').prop('disabled' , true)
@@ -531,14 +546,22 @@
 
         function obtenerMonto(producto){
             var tipo = $('#tipo_cliente').val()
-            // alert(tipo)
             $.get('/almacenes/productos/obtenerProducto/'+ producto.value, function (data) {
-
-                for (var i = 0; i < data.length; i++)
+                console.log(data[0].cliente)
+                for (var i = 0; i < data.length; i++){
                  //SOLO SOLES LOS MONTOS
+                    
                     if (data[i].cliente == tipo && data[i].moneda == 4  ) {
-                        $('#precio').val(data[i].monto)
+                        
+                        if ( data[i].igv == '0' ) {
+                            var monto = Number(data[i].monto * 0.18) + Number(data[i].monto)
+                            $('#precio').val(Number(monto).toFixed(2))
+                        }else{
+                            var monto = data[i].monto
+                            $('#precio').val(Number(monto).toFixed(2))
+                        }                        
                     }
+                }
 
             });
 
@@ -770,6 +793,7 @@
                 $("#cantidad").addClass("is-invalid");
                 $('#error-cantidad').text('El campo Cantidad es obligatorio.')
             }
+
             if (enviar != true) {
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -892,44 +916,19 @@
                 subtotal = Number(el[6]) + subtotal
             });
 
-            var igv = $('#igv').val()
-
-            if (!igv) {
-                sinIgv(subtotal)   
-            }else{
-                conIgv(subtotal)
-            }
-        }
-
-
-        function sinIgv(subtotal) {
-            // calular igv (calcular la base)
-            var igv =  subtotal * 0.18
-            var total = subtotal + igv
-            $('#igv_int').text('18%')
-            $('#subtotal').text(subtotal.toFixed(2))
-            $('#igv_monto').text(igv.toFixed(2))
-            $('#total').text(total.toFixed(2))
+            conIgv(subtotal)
 
         }
 
         function conIgv(subtotal) {
-            // calular igv (calcular la base)
-            var igv = $('#igv').val()
-            ///////////////////////////////
 
-            if (igv) {
-                var calcularIgv = igv/100
-                var base = subtotal / (1 + calcularIgv)
-                var nuevo_igv = subtotal - base;
-                $('#igv_int').text(igv+'%')
-                $('#subtotal').text(base.toFixed(2))
-                $('#igv_monto').text(nuevo_igv.toFixed(2))
-                $('#total').text(subtotal.toFixed(2))
-
-            }else{
-                toastr.error('Ingrese Igv.', 'Error');
-            }
+            var calcularIgv = 18/100
+            var base = subtotal / (1 + calcularIgv)
+            var nuevo_igv = subtotal - base;
+            $('#igv_int').text(18+'%')
+            $('#subtotal').text(base.toFixed(2))
+            $('#igv_monto').text(nuevo_igv.toFixed(2))
+            $('#total').text(subtotal.toFixed(2))
 
         }
 
@@ -963,6 +962,18 @@
             return enviar
         }
 
+        function validarTipo() {
+
+            var enviar = false
+
+            if ($('#tipo_cliente_documento').val() == '0' &&  $('#tipo_venta').val() == 'FACTURA' ) {
+                toastr.error('El tipo de documento del cliente es diferente a RUC.', 'Error');
+                enviar = true;
+            }
+            return enviar
+
+        }
+
         $('#enviar_documento').submit(function(e) {
             e.preventDefault();
             var correcto = validarFecha()
@@ -986,21 +997,26 @@
                     cancelButtonText: "No, Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        cargarProductos()
-                        //CARGAR DATOS TOTAL
-                        $('#monto_sub_total').val($('#subtotal').text())
-                        $('#monto_total_igv').val($('#igv_monto').text())
-                        $('#monto_total').val($('#total').text())
+                        var tipo = validarTipo()
 
-                        // document.getElementById("igv_check").disabled = false;
-                        document.getElementById("moneda").disabled = false;
-                        document.getElementById("observacion").disabled = false;
-                        document.getElementById("fecha_documento_campo").disabled = false;
-                        document.getElementById("fecha_atencion_campo").disabled = false;
-                        document.getElementById("empresa_id").disabled = false;
-                        document.getElementById("cliente_id").disabled = false;
+                        if (tipo == false) {
+                            cargarProductos()
+                            //CARGAR DATOS TOTAL
+                            $('#monto_sub_total').val($('#subtotal').text())
+                            $('#monto_total_igv').val($('#igv_monto').text())
+                            $('#monto_total').val($('#total').text())
 
-                        this.submit();
+                            // document.getElementById("igv_check").disabled = false;
+                            document.getElementById("moneda").disabled = false;
+                            document.getElementById("observacion").disabled = false;
+                            document.getElementById("fecha_documento_campo").disabled = false;
+                            document.getElementById("fecha_atencion_campo").disabled = false;
+                            document.getElementById("empresa_id").disabled = false;
+                            document.getElementById("cliente_id").disabled = false;
+
+                            this.submit();
+                        }
+
                         
                     } else if (
                         /* Read more about handling dismissals below */

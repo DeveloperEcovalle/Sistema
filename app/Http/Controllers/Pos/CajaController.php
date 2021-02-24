@@ -90,6 +90,11 @@ class CajaController extends Controller
         $caja->moneda = $request->get('moneda');
         $caja->save();
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA CAJA CHICA DEL EMPLEADO CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
+        $gestion = "CAJA CHICA";
+        crearRegistro($caja, $descripcion , $gestion);
+
         Session::flash('success','Caja Chica creada.');
         return redirect()->route('pos.caja.index')->with('guardar', 'success');
     }
@@ -117,23 +122,33 @@ class CajaController extends Controller
         $caja->num_referencia = $request->get('num_referencia_editar');
         $caja->update();
 
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA CAJA CHICA DEL EMPLEADO CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
+        $gestion = "CAJA CHICA";
+        modificarRegistro($caja, $descripcion , $gestion);
 
         Session::flash('success','Caja chica modificada.');
         return redirect()->route('pos.caja.index')->with('modificar', 'success');
     }
 
-    
     public function destroy($id)
     {
         $caja = Caja::findOrFail($id);
         $restante = calcularMontoRestanteCaja($id);
-        if ($restante != $caja->saldo_inicial) {
+
+        if ($restante != $caja->saldo_inicial && $restante != 0) {
             Session::flash('error','No es posible eliminar Caja Chica.');
             return redirect()->route('pos.caja.index')->with('error_caja', 'success');
             
         }else{
             $caja->estado = 'ANULADO';
             $caja->update();
+       
+            //Registro de actividad
+            $descripcion = "SE ELIMINÓ LA CAJA CHICA DEL EMPLEADO CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
+            $gestion = "CAJA CHICA";
+            eliminarRegistro($caja, $descripcion , $gestion);
+       
             Session::flash('success','Caja eliminado.');
             return redirect()->route('pos.caja.index')->with('eliminar', 'success');
         }

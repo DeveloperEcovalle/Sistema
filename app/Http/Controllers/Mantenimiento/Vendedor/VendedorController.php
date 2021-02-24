@@ -47,8 +47,6 @@ class VendedorController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        //dd($data);
-
         DB::transaction(function () use ($request) {
 
             $persona = new Persona();
@@ -114,7 +112,14 @@ class VendedorController extends Controller
             $vendedor->moneda_comision = $request->get('moneda_comision');
             $vendedor->save();
 
+            //Registro de actividad
+            $descripcion = "SE AGREGÓ EL VENDEDOR CON EL NOMBRE: ". $vendedor->empleado->persona->nombres.' '.$vendedor->empleado->persona->apellido_paterno.' '.$vendedor->empleado->persona->apellido_materno;
+            $gestion = "VENDEDORES";
+            crearRegistro($vendedor, $descripcion , $gestion);
+
         });
+
+
 
         Session::flash('success','Vendedor creado.');
         return redirect()->route('mantenimiento.vendedor.index')->with('guardar', 'success');
@@ -131,7 +136,6 @@ class VendedorController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        //dd($data);
         $vendedor = Vendedor::findOrFail($id);
 
         DB::transaction(function () use ($request, $vendedor) {
@@ -208,7 +212,14 @@ class VendedorController extends Controller
             $vendedor->moneda_comision = $request->get('moneda_comision');
             $vendedor->update();
 
+            //Registro de actividad
+            $descripcion = "SE MODIFICÓ EL VENDEDOR CON EL NOMBRE: ".$vendedor->empleado->persona->nombres.' '.$vendedor->empleado->persona->apellido_paterno.' '.$vendedor->empleado->persona->apellido_materno;
+            $gestion = "VENDEDORES";
+            modificarRegistro($vendedor, $descripcion , $gestion);
+
         });
+
+
 
         Session::flash('success','Vendedor modificado.');
         return redirect()->route('mantenimiento.vendedor.index')->with('modificar', 'success');
@@ -238,7 +249,15 @@ class VendedorController extends Controller
             $persona->estado = 'ANULADO';
             $persona->update();
 
+            //Registro de actividad
+            $descripcion = "SE ELIMINÓ EL VENDEDOR CON EL NOMBRE: ". $vendedor->empleado->persona->nombres.' '.$vendedor->empleado->persona->apellido_paterno.' '.$vendedor->empleado->persona->apellido_materno;
+            $gestion = "VENDEDORES";
+            eliminarRegistro($vendedor, $descripcion , $gestion);
+
         });
+
+
+        
 
         Session::flash('success','Vendedor eliminado.');
         return redirect()->route('mantenimiento.vendedor.index')->with('eliminar', 'success');

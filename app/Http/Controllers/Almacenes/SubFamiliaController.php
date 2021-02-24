@@ -29,6 +29,7 @@ class SubFamiliaController extends Controller
         ->join('familias','subfamilias.familia_id','=','familias.id')
         ->select('familias.familia as nombre_familia','familias.id as familia_id','subfamilias.*')
         ->where('subfamilias.estado','!=',"ANULADO")
+        ->orderby('subfamilias.id','DESC')
         ->get();
         $coleccion = collect([]);
         foreach($subfamilias as $subfamilia){
@@ -46,7 +47,6 @@ class SubFamiliaController extends Controller
     }
 
     public function store(Request $request){
-        
         $data = $request->all();
 
         $rules = [
@@ -66,7 +66,14 @@ class SubFamiliaController extends Controller
         $subfamilia->familia_id = $request->get('familia_id');
         $subfamilia->save();
 
-        Session::flash('success','Sub familia creada.');
+
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA SUB CATEGORIA CON EL NOMBRE: ". $subfamilia->descripcion;
+        $gestion = "SUB CATEGORIA PT";
+        crearRegistro($subfamilia, $descripcion , $gestion);
+      
+
+        Session::flash('success','Sub categoria creada.');
         return redirect()->route('almacenes.subfamilia.index')->with('guardar', 'success');
     }
 
@@ -90,7 +97,12 @@ class SubFamiliaController extends Controller
         $subfamilia->familia_id = $request->get('familia_id_editar');
         $subfamilia->update();
 
-        Session::flash('success','Sub familia modificada.');
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA SUB CATEGORIA CON EL NOMBRE: ". $subfamilia->descripcion;
+        $gestion = "SUB CATEGORIA PT";
+        modificarRegistro($subfamilia, $descripcion , $gestion);
+
+        Session::flash('success','Sub categoria modificada.');
         return redirect()->route('almacenes.subfamilia.index')->with('modificar', 'success');
     }
 
@@ -102,7 +114,12 @@ class SubFamiliaController extends Controller
         $subfamilia->estado = 'ANULADO';
         $subfamilia->update();
 
-        Session::flash('success','Sub Familia eliminado.');
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA SUB CATEGORIA CON EL NOMBRE: ". $subfamilia->descripcion;
+        $gestion = "SUB CATEGORIA PT";
+        eliminarRegistro($subfamilia, $descripcion , $gestion);
+
+        Session::flash('success','Sub categoria eliminada.');
         return redirect()->route('almacenes.subfamilia.index')->with('eliminar', 'success');
 
     }
@@ -149,6 +166,32 @@ class SubFamiliaController extends Controller
     {
         $sub = SubFamilia::where('familia_id',$id)->where('estado','!=','ANULADO')->get();
         return $sub;
+    }
+
+
+    public function exist(Request $request)
+    {
+        // dd($request);
+        $data = $request->all();
+        $familia = $data['familia'];
+        $familia2 = $data['familia_2'];
+        $id = $data['id'];
+        $categoria = null;
+
+        if ($familia && $id && $familia2) { // edit
+            $categoria = SubFamilia::where([
+                                    ['descripcion', $data['familia']],
+                                    ['familia_id', $data['familia_2']],
+                                    ['id', '<>', $data['id']]
+                                ])->where('estado','!=','ANULADO')->first();
+        } else if ($familia && $familia2  && !$id) { // create
+            $categoria = SubFamilia::where('descripcion', $data['familia'])->where('familia_id', $data['familia_2'])->where('estado','!=','ANULADO')->first();
+        }
+
+        $result = ['existe' => ($categoria) ? true : false];
+
+        return response()->json($result);
+
     }
 
 }

@@ -48,7 +48,7 @@
                                         
                                         <label class="required">Empleado: </label> 
                                     
-                                        <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required>
+                                        <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required onchange="obtenerEmpleado(this)">
                                            
                                         </select>
 
@@ -105,7 +105,7 @@
                                                 Contraseña:
                                             </label>
                                             <input type="password" id="password"
-                                                    class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                                    class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"
                                                     name="password" value="{{ old('password')}}">
                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
@@ -118,7 +118,7 @@
                                                 Confirmar contraseña:
                                             </label>
                                             <input type="password" id="password_confirmation"
-                                                    class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"
+                                                    class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" onkeyup="return mayus(this)"
                                                     name="password_confirmation"
                                                     value="{{ old('password_confirmation')}}">
                                         </div>
@@ -262,30 +262,30 @@
         width: '100%',
     });
 
-    var id = "{{$usuario->empleado_id}}"
-    $.get('/seguridad/usuarios/getEmployeeedit/'+ id, function (data) {
-            
-        if(data.length > 0){
-            
-            var select = '<option value="" selected disabled >SELECCIONAR</option>'
-            for (var i = 0; i < data.length; i++)
-                if (data[i].id == "{{$usuario->empleado_id}}") {
-                    select += '<option value="' + data[i].id + '" selected >' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
-                }else{
-                    select += '<option value="' + data[i].id + '">' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
-                }
-  
+    $(document).ready(function() {
+        var id = "{{$usuario->empleado_id}}"
+        $.get('/seguridad/usuarios/getEmployeeedit/'+ id, function (data) {
+                
+            if(data.length > 0){
+                
+                var select = '<option value="" selected disabled >SELECCIONAR</option>'
+                for (var i = 0; i < data.length; i++)
+                    if (data[i].id == "{{$usuario->empleado_id}}") {
+                        select += '<option value="' + data[i].id + '" selected >' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
+                    }else{
+                        select += '<option value="' + data[i].id + '">' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
+                    }
+            }else{
+                toastr.error('Empleados no registrados.','Error');
+            }
 
-        }else{
-            toastr.error('Empleados no registrados.','Error');
-        }
+            $("#empleado_id").html(select);
+            $("#empleado_id").val("{{$usuario->empleado_id}}").trigger("change");
+        
 
-        $("#empleado_id").html(select);
-        $("#empleado_id").val("{{$usuario->empleado_id}}").trigger("change");
+        });
 
-    });
-
-
+    })
 
     $('#enviar_usuario').submit(function(e){
         e.preventDefault();
@@ -360,6 +360,22 @@
             $('#container_cambiar_contraseña').hide();
         }
     })
+
+    function obtenerEmpleado(id) {
+        
+        var url = '{{ route("seguridad.usuario.getEmployee.edit", ":id")}}';
+        url = url.replace(':id', id.value);
+
+        $.get(url, function(data, status){
+            for (var i = 0; i < data.length; i++){
+                if (data[i].id == $("#empleado_id").val() ) {
+                    var usuario =  String(data[i].nombres).charAt(0) +''+ data[i].apellido_paterno;
+                    $('#usuario').val(usuario)
+                }
+            }
+
+        });
+    }
 </script>
 
 @endpush

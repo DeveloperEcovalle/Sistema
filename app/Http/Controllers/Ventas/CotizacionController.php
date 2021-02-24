@@ -66,7 +66,6 @@ class CotizacionController extends Controller
             'cliente' => 'required',
             'fecha_documento' => 'required|date_format:d/m/Y',
             'fecha_atencion_campo' => 'nullable|date_format:d/m/Y',
-            // 'productos_tabla' => 'required|string'
         ];
 
         $message = [
@@ -76,8 +75,6 @@ class CotizacionController extends Controller
             'fecha_documento.required' => 'El campo Fecha de Documento es obligatorio',
             'fecha_documento.date_format:d/m/Y' => 'El formato de la Fecha de Documento es incorrecto',
             'fecha_atencion_campo.date_format:d/m/Y' => 'El formato de la Fecha de Atención es incorrecto',
-            // 'productos_tabla.required' => 'Debe exitir al menos un detalle de la cotización',
-            // 'productos_tabla.string' => 'El formato de texto de los detalles es incorrecto',
         ];
 
         Validator::make($data, $rules, $message)->validate();
@@ -118,6 +115,11 @@ class CotizacionController extends Controller
                 'importe' => $producto->total,
             ]);
         }
+
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA COTIZACION CON LA FECHA: ". Carbon::parse($cotizacion->fecha_documento)->format('d/m/y');
+        $gestion = "COTIZACION";
+        crearRegistro($cotizacion, $descripcion , $gestion);
         
         Session::flash('success','Cotización creada.');
         return redirect()->route('ventas.cotizacion.index')->with('guardar', 'success');
@@ -132,8 +134,7 @@ class CotizacionController extends Controller
         $productos = Producto::where('estado', 'ACTIVO')->get();
 
         $detalles = CotizacionDetalle::where('cotizacion_id',$id)->where('estado', 'ACTIVO')->get(); 
-        
-        // dd($detalles);
+    
         return view('ventas.cotizaciones.edit', [
             'cotizacion' => $cotizacion,
             'empresas' => $empresas,
@@ -147,7 +148,6 @@ class CotizacionController extends Controller
     public function update(Request $request,$id)
     {
         
-        // dd($request);
         $data = $request->all();
 
         $rules = [
@@ -222,6 +222,11 @@ class CotizacionController extends Controller
                 
             }
 
+        //Registro de actividad
+        $descripcion = "SE MODIFICÓ LA COTIZACION CON LA FECHA: ". Carbon::parse($cotizacion->fecha_documento)->format('d/m/y');;
+        $gestion = "COTIZACION";
+        modificarRegistro($cotizacion, $descripcion , $gestion);
+
         //ELIMINAR DOCUMENTO DE ORDEN DE COMPRA SI EXISTE
         $documento = Documento::where('cotizacion_venta',$id)->where('estado','!=','ANULADO')->first();
         if ($documento) {
@@ -271,6 +276,12 @@ class CotizacionController extends Controller
             $detalle->update();
 
         }
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA COTIZACION CON LA FECHA: ". Carbon::parse($cotizacion->fecha_documento)->format('d/m/y');
+        $gestion = "COTIZACION";
+        eliminarRegistro($cotizacion, $descripcion , $gestion);
+        
         Session::flash('success','Cotización eliminada.');
         return redirect()->route('ventas.cotizacion.index')->with('eliminar', 'success');
     }
@@ -291,11 +302,6 @@ class CotizacionController extends Controller
             'cotizacion' => $cotizacion,
             'nombre_completo' => $nombre_completo,
             'detalles' => $detalles,
-            // 'presentaciones' => $presentaciones,
-            // 'subtotal' => $decimal_subtotal,
-            // 'moneda' => $tipo_moneda,
-            // 'igv' => $decimal_igv,
-            // 'total' => $decimal_total,
             ])->setPaper('a4')->setWarnings(false);
         
         Mail::send('email.cotizacion',compact("cotizacion"), function ($mail) use ($pdf,$cotizacion) {
@@ -312,28 +318,18 @@ class CotizacionController extends Controller
     {
         $cotizacion = Cotizacion::findOrFail($id);
         $nombre_completo = $cotizacion->user->empleado->persona->apellido_paterno.' '.$cotizacion->user->empleado->persona->apellido_materno.' '.$cotizacion->user->empleado->persona->nombres;
-        // $detalles = Detalle::where('orden_id',$id)->get();
-        
+
         $igv = '';
         $tipo_moneda = '';
         $detalles = $cotizacion->detalles->where('estado', 'ACTIVO');
 
-        // $presentaciones = presentaciones();  
         $paper_size = array(0,0,360,360);
         $pdf = PDF::loadview('ventas.cotizaciones.reportes.detalle',[
             'cotizacion' => $cotizacion,
             'nombre_completo' => $nombre_completo,
             'detalles' => $detalles,
-            // 'presentaciones' => $presentaciones,
-     
-            // 'moneda' => $tipo_moneda,
-            // 'igv' => $decimal_igv,
-            // 'total' => $decimal_total,
             ])->setPaper('a4')->setWarnings(false);
         return $pdf->stream();
-        
-
-
 
     }
 

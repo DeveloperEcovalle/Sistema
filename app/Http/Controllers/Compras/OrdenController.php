@@ -212,7 +212,6 @@ class OrdenController extends Controller
         $rules = [
             'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
-            // 'empresa_id'=> 'required',
             'proveedor_id'=> 'required',
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
@@ -224,7 +223,6 @@ class OrdenController extends Controller
         $message = [
             'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
-            // 'empresa_id.required' => 'El campo Empresa es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
             'modo_compra.required' => 'El campo Modo de Compra es obligatorio.',
             'moneda.required' => 'El campo Moneda es obligatorio.',
@@ -271,6 +269,11 @@ class OrdenController extends Controller
             ]);
         }
 
+        //Registro de actividad
+        $descripcion = "SE AGREGÓ LA ORDEN DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($orden->fecha_emision)->format('d/m/y');
+        $gestion = "ORDEN DE COMPRA";
+        crearRegistro($orden, $descripcion , $gestion);
+
         Session::flash('success','Orden de Compra creada.');
         return redirect()->route('compras.orden.index')->with('guardar', 'success');
     }
@@ -280,7 +283,6 @@ class OrdenController extends Controller
         $rules = [
             'fecha_emision'=> 'required',
             'fecha_entrega'=> 'required',
-            // 'empresa_id'=> 'required',
             'proveedor_id'=> 'required',
             'modo_compra'=> 'required',
             'observacion' => 'nullable',
@@ -290,7 +292,6 @@ class OrdenController extends Controller
         $message = [
             'fecha_emision.required' => 'El campo Fecha de Emisión es obligatorio.',
             'fecha_entrega.required' => 'El campo Fecha de Entrega es obligatorio.',
-            // 'empresa_id.required' => 'El campo Empresa es obligatorio.',
             'proveedor_id.required' => 'El campo Proveedor es obligatorio.',
             'modo_compra.required' => 'El campo Modo de Compra es obligatorio.',
             'moneda.required' => 'El campo Moneda es obligatorio.',
@@ -351,9 +352,19 @@ class OrdenController extends Controller
             $documento->estado = 'ANULADO';
             $documento->update();
 
+            //Registro de actividad
+            $descripcion = "SE ELIMINÓ EL DOCUMENTO DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($documento->fecha_emision)->format('d/m/y');
+            $gestion = "DOCUMENTO DE COMPRA";
+            eliminarRegistro($documento, $descripcion , $gestion);
+
             Session::flash('success','Orden de Compra modificada y documento eliminado.');
             return redirect()->route('compras.orden.index')->with('modificar', 'success');
         }else{
+
+            //Registro de actividad
+            $descripcion = "SE MODIFICÓ LA ORDEN DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($orden->fecha_emision)->format('d/m/y');
+            $gestion = "ORDEN DE COMPRA";
+            modificarRegistro($orden, $descripcion , $gestion);
 
             Session::flash('success','Orden de Compra modificada.');
             return redirect()->route('compras.orden.index')->with('modificar', 'success');
@@ -379,6 +390,11 @@ class OrdenController extends Controller
             $orden->estado = 'ANULADO';
             $orden->update();
 
+            //Registro de actividad
+            $descripcion = "SE ELIMINÓ LA ORDEN DE COMPRA CON LA FECHA DE EMISION: ". Carbon::parse($orden->fecha_emision)->format('d/m/y');
+            $gestion = "ORDEN DE COMPRA";
+            eliminarRegistro($orden, $descripcion , $gestion);
+
             Session::flash('success','Orden de compra eliminado.');
             return redirect()->route('compras.orden.index')->with('eliminar', 'success');
     
@@ -398,6 +414,11 @@ class OrdenController extends Controller
             $orden->estado = 'ANULADO';
             $orden->update();
         }
+
+        //Registro de actividad
+        $descripcion = "SE ELIMINÓ LA ORDEN DE COMPRA CON LA FECHA DE EMISION: ". $orden->fecha_emision;
+        $gestion = "ORDEN DE COMPRA";
+        eliminarRegistro($orden, $descripcion , $gestion);
 
         Session::flash('success','Orden y Documento de compra eliminado.');
         return redirect()->route('compras.orden.index')->with('eliminar', 'success');
