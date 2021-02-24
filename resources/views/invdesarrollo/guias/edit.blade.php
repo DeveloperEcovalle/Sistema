@@ -625,7 +625,6 @@ function limpiarErrores() {
 }
 
 function agregarTabla($detalle) {
-
     var t = $('.dataTables-guia-detalle').DataTable();
     t.row.add([
         '',
@@ -636,7 +635,6 @@ function agregarTabla($detalle) {
         $detalle.cantidad_devuelta,
         $detalle.observacion,
     ]).draw(false);
-    console.log('Paso0')
     cargarArticulos()
 }
 
@@ -689,7 +687,7 @@ function cargarArticulos() {
     var data = table.rows().data();
     data.each(function(value, index) {
         let fila = {
-            articulo_id: value[1],
+            articulo_id: value[0],
             descripcion: value[2],
             cantidad_solicitada: value[3],
             cantidad_entregada: value[4],
@@ -718,7 +716,5 @@ function articuloPresentacion(articulo) {
     @endforeach
     return presentacion
 }
-
-
 </script>
 @endpush

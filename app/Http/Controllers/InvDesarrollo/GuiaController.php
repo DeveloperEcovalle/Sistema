@@ -76,7 +76,7 @@ class GuiaController extends Controller
     
     public function edit($id)
     {
-        $detalles = Detalle_guia::where('Guia_id',$id)->get();        
+        $detalles = Detalle_guia::where('Guia_id',$id)->get();     
         $guia = Guia::findOrFail($id);
         $prototipos = Prototipo::where('estado','ACTIVO')->get();
         $articulos = Articulo::where('estado','ACTIVO')->get();
@@ -179,7 +179,6 @@ class GuiaController extends Controller
         $articulosJSON = $request->get('articulos_tabla');
         $articulotabla = json_decode($articulosJSON[0]);
 
-        
         if ($articulotabla) {
             $Detalle_guias = Detalle_guia::where('Guia_id', $guia->id)->get();
             foreach ($Detalle_guias as $Detalle_guia) {
