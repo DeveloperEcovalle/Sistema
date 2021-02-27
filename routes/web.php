@@ -348,6 +348,13 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('reporte/{id}','Ventas\DocumentoController@report')->name('ventas.documento.reporte');
     Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente');
     Route::get('comprobante/{id}','Ventas\DocumentoController@voucher')->name('ventas.documento.comprobante');
+    Route::get('sunat/comprobante/{id}','Ventas\DocumentoController@sunat')->name('ventas.documento.sunat');
+    
+    //Comprobantes Electronicos
+    Route::get('index/comprobantes', 'Ventas\DocumentoController@indexVouchers')->name('ventas.comprobantes');
+    Route::get('getVouchers','Ventas\DocumentoController@getVouchers')->name('ventas.getVouchers');
+
+
 
     //Pagos
     Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');

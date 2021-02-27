@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.5",
         "luecano/numero-a-letras": "^2.2",
+        "mtownsend/xml-to-array": "^1.0",
         "spatie/laravel-activitylog": "^3.16",
         "yajra/laravel-datatables-oracle": "^9.15"
     },

@@ -51,6 +51,7 @@
                                     <th class="text-center">OTROS</th>
                                     <th class="text-center">SALDO</th>
                                     <th class="text-center">ESTADO</th>
+                                    <th class="text-center">SUNAT</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -195,19 +196,32 @@ $(document).ready(function() {
                 data: null,
                 className: "text-center",
                 render: function(data) {
+                    switch (data.sunat) {
+                        case 1:
+                            return "<span class='badge badge-warning' d-block>ACEPTADO</span>";
+                            break;
+                        default:
+                            return "<span class='badge badge-success' d-block>REGISTRADO</span>";
+                    }
+                },
+            },
+
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
                     //Ruta Detalle
                     var url_detalle = '{{ route("ventas.documento.show", ":id")}}';
                     url_detalle = url_detalle.replace(':id', data.id);
 
-
-
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
                     
-                        "<li><a class='dropdown-item' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
-                        "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
-                        ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
+                        // "<li><a class='dropdown-item' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                        "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='eliminar(" + data.id + ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
-                        "<li><a class='dropdown-item' onclick='pagar(" +data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>"
+                        "<li><a class='dropdown-item' onclick='pagar(" +data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='enviarSunat(" +data.id+ ")'  title='Enviar Sunat'><b><i class='fa fa-file'></i> Enviar Sunat</a></b></li>"
                         
                     "</ul></div>"
                 }
@@ -463,6 +477,82 @@ function comprobanteElectronico(id) {
     })
 
 }
+
+
+function enviarSunat(id , sunat) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+    Swal.fire({
+        title: "Opción Enviar a Sunat",
+        text: "¿Seguro que desea enviar documento de venta a Sunat?",
+        showCancelButton: true,
+        icon: 'info',
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+        // showLoaderOnConfirm: true,
+    }).then((result) => {
+        if (result.value) {
+            
+            var url = '{{ route("ventas.documento.sunat", ":id")}}';
+            url = url.replace(':id',id);
+
+            window.location.href = url
+
+            Swal.fire({
+                title: '¡Cargando!',
+                type: 'info',
+                text: 'Enviando documento de venta a Sunat',
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+
+}
+
+
+@if(!empty($sunat_exito))
+    Swal.fire({
+        icon: 'success',
+        title: '{{$id_sunat}}',
+        text: '{{$descripcion_sunat}}',
+        showConfirmButton: false,
+        timer: 2500
+    })
+@endif
+
+
+
+@if(!empty($sunat_error))
+    Swal.fire({
+        icon: 'success',
+        title: '{{$id_sunat}}',
+        text: '{{$descripcion_sunat}}',
+        showConfirmButton: false,
+        timer: 2500
+    })
+@endif
+
+
 
 
 

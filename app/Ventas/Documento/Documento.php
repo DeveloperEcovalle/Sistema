@@ -21,7 +21,10 @@ class Documento extends Model
         'igv',
         'igv_check',
         'tipo_venta',
-        'cotizacion_venta'
+        'cotizacion_venta',
+        'sunat',
+        'ruta_comprobante_archivo',
+        'nombre_comprobante_archivo'
     ];
 
     public function empresa()

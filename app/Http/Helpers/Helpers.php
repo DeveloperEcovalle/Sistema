@@ -640,9 +640,9 @@ if (!function_exists('modificarEmpresaapi')) {
 }
 
 //ENVIAR FACTURA O BOLETA
-
-if (!function_exists('agregarComprobanteapi')) {
-    function agregarComprobanteapi($comprobante)
+//GENERAR PDF
+if (!function_exists('generarComprobanteapi')) {
+    function generarComprobanteapi($comprobante)
     {
         $url = "https://facturacion.apisperu.com/api/v1/invoice/pdf";
         $client = new \GuzzleHttp\Client();
@@ -663,6 +663,73 @@ if (!function_exists('agregarComprobanteapi')) {
 
         
         dd( $response->getBody()->getContents());
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+//GENERAR XML
+if (!function_exists('generarXmlapi')) {
+    function generarXmlapi($comprobante)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/invoice/xml";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $comprobante
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        return $response->getBody()->getContents();
+
+
+        
+        // dd( $response->getBody()->getContents());
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+
+//ENVIAR A  SUNAT
+if (!function_exists('enviarComprobanteapi')) {
+    function enviarComprobanteapi($comprobante)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/invoice/send";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $comprobante
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        // return $response->getBody()->getContents();
+
+
+        
+        // dd( $response->getBody()->getContents());
         if ($estado=='200'){
 
             $resultado = $response->getBody()->getContents();  

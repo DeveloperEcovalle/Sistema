@@ -224,6 +224,19 @@
     })
     @endif
 
+    @if(session('sunat_existe') == 'error')
+    Swal.fire({
+        icon: 'error',
+        title: 'Documento de Venta',
+        text: 'Existe un comprobante electronico',
+        showConfirmButton: false,
+        timer: 2500
+    })
+    @endif
+
+
+
+
 
 
     

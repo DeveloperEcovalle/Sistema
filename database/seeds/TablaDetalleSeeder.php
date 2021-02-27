@@ -976,7 +976,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "FACTURA";
         $detalle->simbolo = '01';
         $detalle->parametro = 'F';
-        $detalle->operacion = '10';
+        $detalle->operacion = '0101';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
@@ -985,7 +985,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "BOLETA DE VENTA";
         $detalle->simbolo = '03';
         $detalle->parametro = 'B';
-        $detalle->operacion = '12';
+        $detalle->operacion = '0101';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->save();
