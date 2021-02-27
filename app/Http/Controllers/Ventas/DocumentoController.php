@@ -65,7 +65,7 @@ class DocumentoController extends Controller
                 'cotizacion_venta' =>  $documento->cotizacion_venta,
                 'fecha_documento' =>  Carbon::parse($documento->fecha_documento)->format( 'd/m/Y'),
                 'estado' => $documento->estado,
-                
+                'sunat' => $documento->sunat,
                 'otros' => 'S/. '.number_format($otros, 2, '.', ''),
                 'saldo' => 'S/. '.number_format($saldo, 2, '.', ''),
                 'transferencia' => 'S/. '.number_format($acuenta, 2, '.', ''),
@@ -481,21 +481,24 @@ class DocumentoController extends Controller
 
         $arrayDetalle = Array();
         for($i = 0; $i < count($detalles); $i++){
+    
             $arrayDetalle[] = array(
                 "codProducto" => $detalles[$i]->producto->codigo,
                 "unidad" => $detalles[$i]->producto->getMedida(),
                 "descripcion"=> $detalles[$i]->producto->nombre,
                 "cantidad" => $detalles[$i]->cantidad,
-                "mtoValorUnitario" => $detalles[$i]->precio,
-                "mtoValorVenta" => $detalles[$i]->importe,
-                "mtoBaseIgv" => $detalles[$i]->importe,
+                "mtoValorUnitario" => $detalles[$i]->precio / 1.18,
+                "mtoValorVenta" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
+                "mtoBaseIgv" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad, 
                 "porcentajeIgv" => 18,
-                "igv" => 18,
+                "igv" => ($detalles[$i]->precio - ($detalles[$i]->precio / 1.18 )) * $detalles[$i]->cantidad,
                 "tipAfeIgv" => 10,
-                "totalImpuestos" => 18,
-                "mtoPrecioUnitario" => $detalles[$i]->precio + 18
+                "totalImpuestos" =>  ($detalles[$i]->precio - ($detalles[$i]->precio / 1.18 )) * $detalles[$i]->cantidad,
+                "mtoPrecioUnitario" => $detalles[$i]->precio
+
             );
         }
+
 
         //Leyenda
         $arrayLeyenda = Array();
@@ -509,6 +512,7 @@ class DocumentoController extends Controller
         $hora_emision = date('H:i:s', $date); 
         $fecha = $fecha_emision.'T'.$hora_emision.'-05:00';
 
+
         //ARREGLO COMPROBANTE
         $arreglo_comprobante = array(
             "tipoOperacion" => $documento->tipoOperacion(),
@@ -516,6 +520,7 @@ class DocumentoController extends Controller
             "serie" => $documento->serie()."00".$documento->id,
             "correlativo" => "123",
             "fechaEmision" => $fecha,
+            "observacion" => $documento->observacion,
             "tipoMoneda" => $documento->simboloMoneda(),
             "client" => array(
                 "tipoDoc" => "6",
@@ -531,11 +536,12 @@ class DocumentoController extends Controller
                     "direccion" => $documento->empresa->direccion_fiscal,
                 )),
             "mtoOperGravadas" => $documento->sub_total,
-            "mtoOperExoneradas" => 0, //(PREGUNTAR)
+            "mtoOperExoneradas" => 0,
             "mtoIGV" => $documento->total_igv,
+            
             "valorVenta" => $documento->sub_total,
-            "totalImpuestos" =>  $documento->total_igv,
-            "mtoImpVenta" => $documento->total,
+            "totalImpuestos" => $documento->total_igv,
+            "mtoImpVenta" => $documento->total ,
             "ublVersion" => "2.1",
             "details" => $arrayDetalle ,
             "legends" =>  $arrayLeyenda,
@@ -577,8 +583,7 @@ class DocumentoController extends Controller
                     "cantidad" => $detalles[$i]->cantidad,
                     "mtoValorUnitario" => $detalles[$i]->precio / 1.18,
                     "mtoValorVenta" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
-                    "mtoBaseIgv" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
-                    // "mtoBaseIgv" => ((($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad) * 1.18) - (($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad), 
+                    "mtoBaseIgv" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad, 
                     "porcentajeIgv" => 18,
                     "igv" => ($detalles[$i]->precio - ($detalles[$i]->precio / 1.18 )) * $detalles[$i]->cantidad,
                     "tipAfeIgv" => 10,
@@ -681,7 +686,8 @@ class DocumentoController extends Controller
                 ])->with('sunat_error', 'error');
             }
         }else{
-
+            $documento->sunat = '1';
+            $documento->update();
             Session::flash('error','Documento de venta fue enviado a Sunat.');
             return redirect()->route('ventas.documento.index')->with('sunat_existe', 'error');
         }
@@ -710,9 +716,9 @@ class DocumentoController extends Controller
                 'total' => 'S/. '.number_format($documento->total, 2, '.', ''),
                 'ruta_comprobante_archivo' => $documento->ruta_comprobante_archivo,
                 'nombre_comprobante_archivo' => $documento->nombre_comprobante_archivo,
+                'sunat' => $documento->sunat,
             ]);
         }
-  
         return DataTables::of($coleccion)->toJson();
     }
 

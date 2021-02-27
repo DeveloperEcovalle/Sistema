@@ -36,7 +36,7 @@
                                     <th colspan="3" class="text-center"></th>
                                     <th colspan="4" class="text-center">DOCUMENTO DE VENTA</th>
                                     <th colspan="2" class="text-center">FORMAS DE PAGO</th>
-                                    <th colspan="3" class="text-center"></th>
+                                    <th colspan="4" class="text-center"></th>
 
                                 </tr>
                                 <tr>
@@ -197,8 +197,11 @@ $(document).ready(function() {
                 className: "text-center",
                 render: function(data) {
                     switch (data.sunat) {
-                        case 1:
+                        case "1":
                             return "<span class='badge badge-warning' d-block>ACEPTADO</span>";
+                            break;
+                        case "2":
+                            return "<span class='badge badge-danger' d-block>NULA</span>";
                             break;
                         default:
                             return "<span class='badge badge-success' d-block>REGISTRADO</span>";
@@ -216,8 +219,8 @@ $(document).ready(function() {
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
                     
-                        // "<li><a class='dropdown-item' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
-                        "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                        //"<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id + ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
                         "<li><a class='dropdown-item' onclick='pagar(" +data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>" +
