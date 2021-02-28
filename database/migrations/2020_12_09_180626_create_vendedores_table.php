@@ -15,8 +15,8 @@ class CreateVendedoresTable extends Migration
     {
         Schema::create('vendedores', function (Blueprint $table) {
             $table->Increments('id');
-            $table->unsignedInteger('empleado_id');
-            $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
+            $table->unsignedInteger('colaborador_id');
+            $table->foreign('colaborador_id')->references('id')->on('colaboradores')->onDelete('cascade');
             $table->string('zona');
             $table->unsignedDecimal('comision', 15,2);
             $table->string('moneda_comision');

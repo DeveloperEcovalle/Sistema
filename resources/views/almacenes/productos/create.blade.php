@@ -70,7 +70,7 @@
 
                                     <div class="col-lg-6 col-xs-12">
                                         <label class="required">Peso (KG)</label>
-                                        <input type="number" id="peso_producto" placeholder="0.00" step="0.001" min="0"  onkeypress="return filterFloat(event, this);"  class="form-control {{ $errors->has('peso_producto') ? ' is-invalid' : '' }}" name="peso_producto" value="{{ old('peso_producto')}}">
+                                        <input type="number" id="peso_producto" placeholder="0.00" step="0.001" min="0"  required onkeypress="return filterFloat(event, this);"  class="form-control {{ $errors->has('peso_producto') ? ' is-invalid' : '' }}" name="peso_producto" value="{{ old('peso_producto')}}">
                                         @if ($errors->has('peso_producto'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('peso_producto') }}</strong>

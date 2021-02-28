@@ -14,10 +14,8 @@ use DB;
 use App\Mantenimiento\Empresa\Empresa;
 use App\Almacenes\Producto;
 use App\Ventas\Cliente;
-
 use App\Ventas\Cotizacion;
 use App\Ventas\CotizacionDetalle;
-
 use App\ventas\Documento\Documento;
 use App\ventas\Documento\Detalle;
 
@@ -162,53 +160,7 @@ class DocumentoController extends Controller
         if ($request->get('igv_check') == "on") {
             $documento->igv_check = "1";
         };
-        
-
-
- 
-
-        // $arrayLeyenda = Array();
-        // $arrayLeyenda[] = array(  
-        //     "code" => "1000",
-        //     "value" => "SON TRESCIENTOS TREINTA Y SEIS CON OO/100 SOLES"
-        // );
     
-        // //ARREGLO COMPROBANTE
-        // $arreglo_comprobante = array(
-        //     "tipoOperacion" => "10",
-        //     "tipoDoc"=> "01",
-        //     "serie" => "F001",
-        //     "correlativo" => "123",
-        //     "fechaEmision" => "2019-10-27T00:00:00-05:00",
-        //     "tipoMoneda" => "PEN",
-        //     "client" => array(
-        //         "tipoDoc" => "6",
-        //         "numDoc" => $documento->cliente->documento,
-        //         "rznSocial" => $documento->cliente->nombre,
-        //         "address" => array(
-        //             "direccion" => $documento->cliente->direccion,
-        //         )),
-        //     "company" => array(
-        //         "ruc" =>  $documento->empresa->ruc,
-        //         "razonSocial" => $documento->empresa->razon_social,
-        //         "address" => array(
-        //             "direccion" => $documento->empresa->direccion_fiscal,
-        //         )),
-        //     "mtoOperGravadas" => 200,
-        //     "mtoOperExoneradas" => 100,
-        //     "mtoIGV" => 36,
-        //     "valorVenta" => 300,
-        //     "totalImpuestos" => 36,
-        //     "mtoImpVenta" => 336,
-        //     "ublVersion" => "2.1",
-        //     "details" => $arrayDetalle ,
-        //     "legends" =>  $arrayLeyenda,
-        // );
-        
-        // dd(json_encode($arreglo_comprobante));
-        // agregarComprobanteapi($empresa);
-
-
         $documento->cotizacion_venta = $request->get('cotizacion_id');
         $documento->save();
 
@@ -639,12 +591,9 @@ class DocumentoController extends Controller
                 "legends" =>  $arrayLeyenda,
             );
 
-            // dd(json_encode($arreglo_comprobante));
             $data = enviarComprobanteapi(json_encode($arreglo_comprobante));
             $json_sunat = json_decode($data);
 
-            // dd($json_sunat);
-            
             if ($json_sunat->sunatResponse->success == true) {
 
                 $documento->sunat = '1';
@@ -664,7 +613,13 @@ class DocumentoController extends Controller
                 $documento->nombre_comprobante_archivo = $name;
                 $documento->ruta_comprobante_archivo = 'public/sunat/'.$name;
                 $documento->update(); 
-                // dd($json_sunat->sunatResponse->cdrResponse->id);
+
+
+                //Registro de actividad
+                $descripcion = "SE AGREGÓ EL COMPROBANTE ELECTRONICO: ". $documento->serie()."00".$documento->id;
+                $gestion = "COMPROBANTES ELECTRONICOS";
+                crearRegistro($documento , $descripcion , $gestion);
+                
                 Session::flash('success','Documento de Venta enviada a Sunat con exito.');
                 return view('ventas.documentos.index',[
                     
@@ -676,12 +631,25 @@ class DocumentoController extends Controller
                 ])->with('sunat_exito', 'success');
 
             }else{
+
+                
+                if ($json_sunat->sunatResponse->error) {
+                    $id_sunat = $json_sunat->sunatResponse->error->code;
+                    $descripcion_sunat = $json_sunat->sunatResponse->error->message;
+
+                   
+                }else {
+                    $id_sunat = $json_sunat->sunatResponse->cdrResponse->id;
+                    $descripcion_sunat = $json_sunat->sunatResponse->cdrResponse->description;
+                    
+                };
+
+
                 Session::flash('error','Documento de Venta sin exito en el envio a sunat.');
                 return view('ventas.documentos.index',[
-                    'id_sunat' => $json_sunat->sunatResponse->cdrResponse->id,
-                    'descripcion_sunat' => $json_sunat->sunatResponse->cdrResponse->description,
-                    'notas_sunat' => $json_sunat->sunatResponse->cdrResponse->notes,
-                    'sunat_error' => true
+                    'id_sunat' =>  $id_sunat,
+                    'descripcion_sunat' =>  $descripcion_sunat,
+                    'sunat_error' => true,
 
                 ])->with('sunat_error', 'error');
             }

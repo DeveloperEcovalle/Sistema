@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Mantenimiento\Vendedor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Mantenimiento\Vendedor\Vendedor;
-use App\Mantenimiento\Empleado\Empleado;
+use App\Mantenimiento\Colaborador\Colaborador;
 use App\Mantenimiento\Persona\Persona;
 use Carbon\Carbon;
 use DataTables;
@@ -69,44 +69,44 @@ class VendedorController extends Controller
             $persona->estado_documento = $request->get('estado_documento');
             $persona->save();
 
-            $empleado = new Empleado();
-            $empleado->persona_id = $persona->id;
-            $empleado->area = $request->get('area');
-            $empleado->profesion = $request->get('profesion');
-            $empleado->cargo = $request->get('cargo');
-            $empleado->telefono_referencia = $request->get('telefono_referencia');
-            $empleado->contacto_referencia = $request->get('contacto_referencia');
-            $empleado->grupo_sanguineo = $request->get('grupo_sanguineo');
-            $empleado->alergias = $request->get('alergias');
-            $empleado->numero_hijos = $request->get('numero_hijos');
-            $empleado->sueldo = $request->get('sueldo');
-            $empleado->sueldo_bruto = $request->get('sueldo_bruto');
-            $empleado->sueldo_neto = $request->get('sueldo_neto');
-            $empleado->moneda_sueldo = $request->get('moneda_sueldo');
-            $empleado->tipo_banco = $request->get('tipo_banco');
-            $empleado->numero_cuenta = $request->get('numero_cuenta');
+            $Colaborador= new Colaborador();
+            $Colaborador->persona_id = $persona->id;
+            $Colaborador->area = $request->get('area');
+            $Colaborador->profesion = $request->get('profesion');
+            $Colaborador->cargo = $request->get('cargo');
+            $Colaborador->telefono_referencia = $request->get('telefono_referencia');
+            $Colaborador->contacto_referencia = $request->get('contacto_referencia');
+            $Colaborador->grupo_sanguineo = $request->get('grupo_sanguineo');
+            $Colaborador->alergias = $request->get('alergias');
+            $Colaborador->numero_hijos = $request->get('numero_hijos');
+            $Colaborador->sueldo = $request->get('sueldo');
+            $Colaborador->sueldo_bruto = $request->get('sueldo_bruto');
+            $Colaborador->sueldo_neto = $request->get('sueldo_neto');
+            $Colaborador->moneda_sueldo = $request->get('moneda_sueldo');
+            $Colaborador->tipo_banco = $request->get('tipo_banco');
+            $Colaborador->numero_cuenta = $request->get('numero_cuenta');
 
             if($request->hasFile('imagen')){
                 $file = $request->file('imagen');
                 $name = $file->getClientOriginalName();
-                $empleado->nombre_imagen = $name;
-                $empleado->ruta_imagen = $request->file('imagen')->store('public/vendedores/imagenes');
+                $Colaborador->nombre_imagen = $name;
+                $Colaborador->ruta_imagen = $request->file('imagen')->store('public/vendedores/imagenes');
             }
 
-            $empleado->fecha_inicio_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_actividad'))->format('Y-m-d') ;
+            $Colaborador->fecha_inicio_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_actividad'))->format('Y-m-d') ;
             if (!is_null($request->get('fecha_fin_actividad'))) {
-                $empleado->fecha_fin_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_actividad'))->format('Y-m-d') ;
+                $Colaborador->fecha_fin_actividad = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_actividad'))->format('Y-m-d') ;
             }
             if (!is_null($request->get('fecha_inicio_planilla'))) {
-                $empleado->fecha_inicio_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_planilla'))->format('Y-m-d') ;
+                $Colaborador->fecha_inicio_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_inicio_planilla'))->format('Y-m-d') ;
             }
             if (!is_null($request->get('fecha_fin_planilla'))) {
-                $empleado->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
+                $Colaborador->fecha_fin_planilla = Carbon::createFromFormat('d/m/Y', $request->get('fecha_fin_planilla'))->format('Y-m-d') ;
             }
-            $empleado->save();
+            $Colaborador->save();
 
             $vendedor = new Vendedor();
-            $vendedor->empleado_id = $empleado->id;
+            $vendedor->colaborador_id = $Colaborador->id;
             $vendedor->zona = $request->get('zona');
             $vendedor->comision = $request->get('comision');
             $vendedor->moneda_comision = $request->get('moneda_comision');
@@ -206,7 +206,7 @@ class VendedorController extends Controller
             }
             $empleado->update();
 
-            $vendedor->empleado_id = $vendedor->empleado->id;
+            $vendedor->colaborador_id = $vendedor->empleado->id;
             $vendedor->zona = $request->get('zona');
             $vendedor->comision = $request->get('comision');
             $vendedor->moneda_comision = $request->get('moneda_comision');

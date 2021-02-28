@@ -885,6 +885,7 @@
             }
 
             agregarTabla(detalle);
+            console.log(detalle);
         }
 
         function cargarProductos() {
@@ -1042,10 +1043,11 @@
                         "{{$detalle->producto->id}}",
                         '',
                         "{{$detalle->cantidad}}",
-                        "{{$detalle->producto->presentacion}}",
+                        "{{$detalle->producto->getMedida()}}",
                         "{{$detalle->producto->nombre}}",
                         "{{$detalle->precio}}",
-                        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2)
+                        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2),
+                        "{{$detalle->producto->medida}}",
                     ]).draw(false);
                 @endforeach
             @endif

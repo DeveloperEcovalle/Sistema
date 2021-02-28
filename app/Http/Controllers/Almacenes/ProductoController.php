@@ -44,7 +44,6 @@ class ProductoController extends Controller
     {
         $familias = Familia::where('estado', 'ACTIVO')->get();
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
-
         return view('almacenes.productos.create', compact('familias', 'articulos'));
     }
 
@@ -60,7 +59,6 @@ class ProductoController extends Controller
                 $query->whereIn('estado',["ACTIVO"]);
             })],
             'nombre' => 'required',
-            // 'moneda' => 'required',
             'linea_comercial' => 'required',
             'familia' => 'required',
             'sub_familia' => 'required',
@@ -69,14 +67,15 @@ class ProductoController extends Controller
             'stock_minimo' => 'required|numeric',
             'precio_venta_minimo' => 'required|numeric',
             'precio_venta_maximo' => 'required|numeric',
+            'peso_producto' => 'required|numeric',
             'igv' => 'required|boolean',
-            //'detalles' => 'required|string'
         ];
 
         $message = [
             'codigo.required' => 'El campo Código es obligatorio',
             'codigo_barra.unique' => 'El campo Código de Barra debe de ser único.',
-            // 'moneda.required' => 'El campo Moneda es obligatorio',
+            'peso_producto.required' => 'El campo Peso es obligatorio',
+            'peso_producto.numeric' => 'El campo Peso debe ser numérico',
             'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'codigo.unique' => 'El campo Código debe ser único',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
@@ -114,11 +113,11 @@ class ProductoController extends Controller
             $producto->stock_minimo = $request->get('stock_minimo');
             $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
             $producto->precio_venta_maximo = $request->get('precio_venta_maximo');
+            $producto->peso_producto = $request->get('peso_producto');
             $producto->igv = $request->get('igv');
             $producto->save();
 
             //Llenado de los Clientes
-
             $clientesJSON = $request->get('clientes_tabla');
             $clientetabla = json_decode($clientesJSON[0]);
 
@@ -179,7 +178,6 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-
         $rules = [
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
@@ -197,12 +195,14 @@ class ProductoController extends Controller
             'precio_venta_minimo' => 'required|numeric',
             'precio_venta_maximo' => 'required|numeric',
             'igv' => 'required|boolean',
-            // 'detalles' => 'required|string'
+            'peso_producto' => 'required|numeric',
         ];
 
         $message = [
             'codigo.required' => 'El campo Código es obligatorio',
             'codigo.unique' => 'El campo Código debe ser único',
+            'peso_producto.required' => 'El campo Peso es obligatorio',
+            'peso_producto.numeric' => 'El campo Peso debe ser numérico',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
             'nombre.required' => 'El campo Nombre es obligatorio',
             'familia.required' => 'El campo Categoria es obligatorio',
@@ -236,6 +236,7 @@ class ProductoController extends Controller
         $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
         $producto->precio_venta_maximo = $request->get('precio_venta_maximo');
         $producto->igv = $request->get('igv');
+        $producto->peso_producto = $request->get('peso_producto');
         $producto->codigo_barra = $request->get('codigo_barra');
         $producto->update();
 

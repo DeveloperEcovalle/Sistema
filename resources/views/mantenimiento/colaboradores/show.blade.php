@@ -3,17 +3,17 @@
 @section('content')
 
 @section('mantenimiento-active', 'active')
-@section('empleados-active', 'active')
+@section('colaboradores-active', 'active')
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Datos del Empleado: {{ $empleado->persona->getApellidosYNombres() }}</b></h2>
+       <h2  style="text-transform:uppercase"><b>Datos del Colaborador: {{ $empleado->persona->getApellidosYNombres() }}</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a>
+                <a href="{{ route('mantenimiento.colaborador.index') }}">Colaboradores</a>
             </li>
             <li class="breadcrumb-item active">
                 <strong>Datos</strong>
@@ -202,7 +202,7 @@
         </div>
         <div class="col-lg-4 col-xs-12">
             <div class="container m-b-xl">
-                <a href="{{route('mantenimiento.empleado.edit',$empleado->id)}}" class="btn btn-block btn-warning btn-xs float-right"><i class='fa fa-edit'></i>EDITAR EMPRESA</a>
+                <a href="{{route('mantenimiento.colaborador.edit',$empleado->id)}}" class="btn btn-block btn-warning btn-xs float-right"><i class='fa fa-edit'></i>EDITAR COLABORADOR</a>
             </div>
             <div class="container"  onkeyup="return mayus(this)">
                 <div class="text-center">

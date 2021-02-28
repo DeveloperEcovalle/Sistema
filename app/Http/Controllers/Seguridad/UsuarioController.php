@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use DataTables;
 use Carbon\Carbon;
-use App\Mantenimiento\Empleado\Empleado;
+use App\Mantenimiento\Colaborador\Colaborador;
 use Session;
 use Illuminate\Support\Facades\Validator;
 use App\User;
@@ -22,8 +22,8 @@ class UsuarioController extends Controller
 
     public function getUsers(){
         $usuarios = DB::table('users')
-        ->join('empleados','users.empleado_id','=','empleados.id')
-        ->join('personas','empleados.persona_id','=','personas.id')
+        ->join('colaboradores','users.colaborador_id','=','colaboradores.id')
+        ->join('personas','colaboradores.persona_id','=','personas.id')
         ->select('users.*','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_materno,\' \',personas.apellido_paterno,\' \',personas.nombres) AS nombre_completo'))
         ->where('users.estado','!=',"ANULADO")
         ->orderBy('users.id','DESC')
@@ -44,21 +44,21 @@ class UsuarioController extends Controller
 
     public function getEmployee(){
 
-        $empleados = DB::table('empleados')
-        ->join('personas','empleados.id','=','personas.id')
-        ->select('empleados.id as empleado_id', 'personas.*')
-        ->where('empleados.estado','!=',"ANULADO")
+        $colaboradores = DB::table('colaboradores')
+        ->join('personas','colaboradores.id','=','personas.id')
+        ->select('colaboradores.id as colaborador_id', 'personas.*')
+        ->where('colaboradores.estado','!=',"ANULADO")
         ->get();
 
  
         $coleccion = collect([]);
-        foreach($empleados as $empleado){
-            if (DB::table('users')->where('empleado_id', $empleado->empleado_id)->where('estado','ACTIVO')->exists() == false) {
+        foreach($colaboradores as $colaborador){
+            if (DB::table('users')->where('colaborador_id', $colaborador->colaborador_id)->where('estado','ACTIVO')->exists() == false) {
                 $coleccion->push([
-                    'id' => $empleado->empleado_id,
-                    'apellido_materno' => $empleado->apellido_materno,
-                    'apellido_paterno' => $empleado->apellido_paterno,
-                    'nombres' => $empleado->nombres,
+                    'id' => $colaborador->colaborador_id,
+                    'apellido_materno' => $colaborador->apellido_materno,
+                    'apellido_paterno' => $colaborador->apellido_paterno,
+                    'nombres' => $colaborador->nombres,
                 ]);
 
              }
@@ -69,31 +69,32 @@ class UsuarioController extends Controller
 
     public function getEmployeeedit($id){
 
-        $empleados = DB::table('empleados')
-        ->join('personas','empleados.id','=','personas.id')
-        ->select('empleados.id as empleado_id', 'personas.*')
-        ->where('empleados.estado','!=',"ANULADO")
+        $colaboradores = DB::table('colaboradores')
+        ->join('personas','colaboradores.id','=','personas.id')
+        ->select('colaboradores.id as colaborador_id', 'personas.*')
+        ->where('colaboradores.estado','!=',"ANULADO")
         ->get();
 
  
         $coleccion = collect([]);
-        foreach($empleados as $empleado){
+        foreach($colaboradores as $colaborador){
             if (
                 DB::table('users')
-                    ->where('empleado_id', $empleado->empleado_id)
+                    ->where('colaborador_id', $colaborador->colaborador_id)
                     ->where('estado','ACTIVO')
                     ->exists() == false || 
-                    $empleado->id == $id) {
+                    $colaborador->id == $id) {
                 $coleccion->push([
-                    'id' => $empleado->empleado_id,
-                    'apellido_materno' => $empleado->apellido_materno,
-                    'apellido_paterno' => $empleado->apellido_paterno,
-                    'nombres' => $empleado->nombres,
+                    'id' => $colaborador->colaborador_id,
+                    'apellido_materno' => $colaborador->apellido_materno,
+                    'apellido_paterno' => $colaborador->apellido_paterno,
+                    'nombres' => $colaborador->nombres,
                 ]);
 
              }
 
         };
+    
 
         return $coleccion;
     }
@@ -111,7 +112,7 @@ class UsuarioController extends Controller
         ];
 
         $message = [
-            'empleado_id.required' => 'El campo Empleado es obligatorio.',
+            'empleado_id.required' => 'El campo Colaborador es obligatorio.',
 
             'logo.image' => 'El campo Imagen no contiene el formato imagen.',
             'logo.max' => 'El tamaño máximo del Imagen para cargar es de 40 MB.',
@@ -128,7 +129,7 @@ class UsuarioController extends Controller
 
         $usuario = new User();
         $usuario->usuario = $data['usuario'];
-        $usuario->empleado_id = $data['empleado_id'];
+        $usuario->colaborador_id = $data['empleado_id'];
         $usuario->email = $data['correo'];
         $usuario->password = bcrypt($data['password']);
 
@@ -174,11 +175,9 @@ class UsuarioController extends Controller
 
         Validator::make($data, $rules, $message)->validate();
 
-
-
         $usuario = User::findOrFail($id);
         $usuario->usuario = $data['usuario'];
-        $usuario->empleado_id = $data['empleado_id'];
+        $usuario->colaborador_id = $data['empleado_id'];
         $usuario->email = $data['correo'];
         // $usuario->password = bcrypt($data['password']);
 
@@ -225,7 +224,6 @@ class UsuarioController extends Controller
             return redirect()->route('seguridad.usuario.index')->with('eliminar', 'success');
             
         }else{
-            // Session::flash('usuario_anulado','Usuario ha sido eliminado.');
             return redirect()->route('logout')->with('usuario_eliminado','error');
         }
 

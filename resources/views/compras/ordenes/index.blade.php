@@ -270,7 +270,10 @@ $(document).ready(function() {
 $.fn.DataTable.ext.errMode = 'throw';
 
 
-const swalWithBootstrapButtons = Swal.mixin({
+
+
+function eliminar(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
         confirmButton: 'btn btn-success',
         cancelButton: 'btn btn-danger',
@@ -278,8 +281,6 @@ const swalWithBootstrapButtons = Swal.mixin({
     buttonsStyling: false
 })
 
-
-function eliminar(id) {
     Swal.fire({
         title: 'Opción Eliminar',
         text: "¿Seguro que desea guardar cambios?",
@@ -309,6 +310,14 @@ function eliminar(id) {
 }
 
 function concretada(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false
+})
+
     Swal.fire({
         title: 'Opción Concretada',
         text: "¿Seguro que desea concretar orden de compra?",
@@ -356,6 +365,14 @@ function enviado(id) {
 }
 
 function documento(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false
+})
+
     Swal.fire({
         title: 'Opción Documento de compra',
         text: "¿Seguro que desea crear un documento de compra?",

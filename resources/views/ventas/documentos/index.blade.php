@@ -547,11 +547,11 @@ function enviarSunat(id , sunat) {
 
 @if(!empty($sunat_error))
     Swal.fire({
-        icon: 'success',
+        icon: 'error',
         title: '{{$id_sunat}}',
         text: '{{$descripcion_sunat}}',
         showConfirmButton: false,
-        timer: 2500
+        timer: 5500
     })
 @endif
 

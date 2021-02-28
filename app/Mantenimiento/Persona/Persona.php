@@ -31,7 +31,7 @@ class Persona extends Model
 
     public function empleado()
     {
-        return $this->hasOne('App\Mantenimiento\Empleado\Empleado');
+        return $this->hasOne('App\Mantenimiento\Colaborador\Colaborador');
     }
 
     public function getDocumento(): string

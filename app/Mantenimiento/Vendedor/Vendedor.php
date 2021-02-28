@@ -10,6 +10,6 @@ class Vendedor extends Model
 
     public function empleado()
     {
-        return $this->belongsTo('App\Mantenimiento\Empleado\Empleado');
+        return $this->belongsTo('App\Mantenimiento\Colaborador\Colaborador','colaborador_id');
     }
 }

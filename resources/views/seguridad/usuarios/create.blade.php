@@ -46,7 +46,7 @@
                                     
                                     <div class="form-group" >
                                         
-                                        <label class="required">Empleado: </label> 
+                                        <label class="required">Colaborador: </label> 
                                     
                                         <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required onchange="obtenerEmpleado(this)">
                                             <option></option>

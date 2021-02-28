@@ -5,13 +5,13 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Mantenimiento de Empleados</b></h2>
+       <h2  style="text-transform:uppercase"><b>Mantenimiento de Colaboradores</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Empleados</strong>
+                <strong>Colaboradores</strong>
             </li>
         </ol>
     </div>
@@ -94,7 +94,7 @@
             "bInfo": true,
             "bAutoWidth": false,
             "processing":true,
-            "ajax": "{{ route('mantenimiento.empleado.getTable')}}",
+            "ajax": "{{ route('mantenimiento.colaborador.getTable')}}",
             "columns": [
                 {data: 'documento', className:"text-center"},
                 {data: 'apellidos_nombres', className:"text-left"},
@@ -106,11 +106,11 @@
                     className:"text-center",
                     render: function(data) {
                         //Ruta Detalle
-                        var url_detalle = '{{ route("mantenimiento.empleado.show", ":id")}}';
+                        var url_detalle = '{{ route("mantenimiento.colaborador.show", ":id")}}';
                         url_detalle = url_detalle.replace(':id',data.id);
 
                         //Ruta Modificar
-                        var url_editar = '{{ route("mantenimiento.empleado.edit", ":id")}}';
+                        var url_editar = '{{ route("mantenimiento.colaborador.edit", ":id")}}';
                         url_editar = url_editar.replace(':id',data.id);
 
                         return "<div class='btn-group'>" +
@@ -146,7 +146,7 @@
 
     // Funciones de Eventos
     function añadirEmpleado() {
-        window.location = "{{ route('mantenimiento.empleado.create')  }}";
+        window.location = "{{ route('mantenimiento.colaborador.create')  }}";
     }
 
     function editarEmpleado(url) {
@@ -165,7 +165,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 //Ruta Eliminar
-                var url_eliminar = '{{ route("mantenimiento.empleado.destroy", ":id")}}';
+                var url_eliminar = '{{ route("mantenimiento.colaborador.destroy", ":id")}}';
                 url_eliminar = url_eliminar.replace(':id',id);
                 $(location).attr('href',url_eliminar);
 

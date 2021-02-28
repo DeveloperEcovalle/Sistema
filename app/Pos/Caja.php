@@ -11,13 +11,13 @@ class Caja extends Model
     'estado',
     'num_referencia',
     'saldo_inicial',
-    'empleado_id',
+    'colaborador_id',
     'moneda',
     ];
     public $timestamps = true;
 
     public function empleado()
     {
-        return $this->belongsTo('App\Mantenimiento\Empleado\Empleado');
+        return $this->belongsTo('App\Mantenimiento\Colaborador\Colaborador','colaborador_id');
     }
 }
