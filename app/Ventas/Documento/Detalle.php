@@ -9,7 +9,7 @@ class Detalle extends Model
     protected $table = 'cotizacion_documento_detalles';
     protected $fillable = [
         'documento_id',
-        'producto_id',
+        'lote_id',
         'cantidad',
         'precio',
         'importe',
@@ -21,8 +21,8 @@ class Detalle extends Model
         return $this->belongsTo('App\Ventas\Documento\Documento');
     }
 
-    public function producto()
+    public function lote()
     {
-        return $this->belongsTo('App\Almacenes\Producto');
+        return $this->belongsTo('App\Almacenes\LoteProducto','lote_id');
     }
 }

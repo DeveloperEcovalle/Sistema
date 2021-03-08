@@ -28,9 +28,10 @@
                             <thead>
                                 <tr>
                                     <th style="display:none;"></th>
-                                    <th style="display:none;"></th>
-                                    <th class="text-center">FEC.DOCUMENTO</th>
+                                    <th class="text-center">N°</th>
                                     <th class="text-center">TIPO</th>
+                                    <th class="text-center">FEC.DOCUMENTO</th>
+                                    <th class="text-center">EMPRESA</th>
                                     <th class="text-center">CLIENTE</th>
                                     <th class="text-center">MONTO</th>
                                     <th class="text-center">COMPROBANTE</th>
@@ -97,19 +98,22 @@ $(document).ready(function() {
                 className: "text-center",
                 visible: false
             },
-            {
-                data: 'cotizacion_venta',
-                className: "text-center",
-                visible: false
-            },
 
+            {
+                data: 'numero',
+                className: "text-center",
+            },
+            {
+                data: 'tipo_venta',
+                className: "text-center",
+            },
             {
                 data: 'fecha_documento',
                 className: "text-center"
             },
             {
-                data: 'tipo_venta',
-                className: "text-center",
+                data: 'empresa',
+                className: "text-left"
             },
             {
                 data: 'cliente',

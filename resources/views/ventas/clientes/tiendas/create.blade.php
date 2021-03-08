@@ -148,19 +148,31 @@
 
 
 
-                                                            <div class="form-group">
-                                                                <label class="">Correo: </label>
+                                                            <div class="form-group row">
+                                                                    <div class="col-lg-4 col-xs-12">
+                                                                        <label id="ubigeo_texto">Ubigeo: </label>
+                                                                        <input type="text" id="ubigeo" class="form-control {{ $errors->has('ubigeo') ? ' is-invalid' : '' }}" name="ubigeo" value="{{ old('ubigeo')}}">
+                                                                        
+                                                                    </div>
 
-                                                                <input type="email"
-                                                                    class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}"
-                                                                    name="correo" value="{{ old('correo')}}" id="correo"
-                                                                    onkeyup="return mayus(this)">
+                                                                    <div class="col-lg-8 col-xs-12">
 
-                                                                @if ($errors->has('correo'))
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $errors->first('correo') }}</strong>
-                                                                </span>
-                                                                @endif
+                                                                        <label class="">Correo: </label>
+
+                                                                        <input type="email"
+                                                                            class="form-control {{ $errors->has('correo') ? ' is-invalid' : '' }}"
+                                                                            name="correo" value="{{ old('correo')}}" id="correo"
+                                                                            onkeyup="return mayus(this)">
+
+                                                                        @if ($errors->has('correo'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('correo') }}</strong>
+                                                                        </span>
+                                                                        @endif
+                                                                    
+                                                                    </div>
+
+
                                                             </div>
 
                                                             <div class="form-group row">
@@ -359,7 +371,42 @@
                                                                     
                                                                 </div>
 
-                                                               
+                                                                <div class="form-group row">
+
+                                                                    <div class="col-md-7">
+                                                                        <label class="required">Ruc</label>
+
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control {{ $errors->has('ruc_transporte_oficina') ? ' is-invalid' : '' }}" name="ruc_transporte_oficina" maxlength="11" value="{{ old('ruc_transporte_oficina')}}" id="ruc_transporte_oficina" onkeyup="return mayus(this)" disabled> 
+                                                                            <span class="input-group-append"><a style="color:white" onclick="consultarRucoficina()" class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
+
+                                                                            @if ($errors->has('ruc_transporte_oficina'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('ruc_transporte_oficina') }}</strong>
+                                                                            </span>
+                                                                            @endif
+                                                                            <div class="invalid-feedback"><b><span id="error-ruc_transporte_oficina"></span></b></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-5">
+                                                                        <label class="">Estado</label>
+
+                                                                        <input type="text" class="form-control  text-center {{ $errors->has('estado_transporte_oficina') ? ' is-invalid' : '' }}"
+                                                                        name="estado_transporte_oficina" value="{{ old('estado_transporte_oficina','SIN VERIFICAR')}}" id="estado_transporte_oficina"
+                                                                        onkeyup="return mayus(this)" readonly>
+
+                                                                            @if ($errors->has('estado_transporte_oficina'))
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $errors->first('estado_transporte_oficina') }}</strong>
+                                                                            </span>
+                                                                            @endif
+
+                                                                        <div class="invalid-feedback"><b><span id="error-estado_transporte_oficina"></span></b></div>
+                                                                    </div>
+
+                                                                </div>
+
 
                                                                 <div class="form-group">
                                                                     <label class="required">Nombre </label>
@@ -1320,6 +1367,12 @@ $(".select2_form").select2({
     width: '100%',
 });
 
+
+// Solo campos numericos
+$('#ubigeo').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
 $("#nombre_responsable_recoger").keyup(function() {
     if ($('#estado_responsable_recoger').val('ACTIVO')) {
         $('#estado_responsable_recoger').val('SIN VERIFICAR');
@@ -1350,6 +1403,10 @@ $('#dni_contacto_recoger').on('input', function() {
 });
 
 $('#ruc_transporte_domicilio').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('#ruc_transporte_oficina').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
@@ -1413,6 +1470,11 @@ function validarCampos() {
   } 
 
   if ($("#condicion_reparto").val() == '6') {
+    
+    if ($('#ruc_transporte_oficina').val() == ''){
+      campos = false
+      $('#envios').click()
+    }
 
     if ($('#nombre_transporte_oficina').val() == ''){
       campos = false
@@ -1499,9 +1561,6 @@ $('#enviar_empresa').submit(function(e) {
                   
                 }
                 
-
-
-
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
@@ -1590,6 +1649,14 @@ $('.tabs-container .nav-tabs #contactos').click(function() {
     switch($("#condicion_reparto").val()) {
         
         case "6":
+
+            if ($('#ruc_transporte_oficina').val() == '') {
+                enviar = false
+                $('#ruc_transporte_oficina').addClass("is-invalid")
+                toastr.error("Ingrese Ruc del Transportista.", 'Error');
+                $('#error-ruc_transporte_oficina').text("El campo Ruc del Transporte es obligatorio.")
+            }
+
             if ($('#nombre_transporte_oficina').val() == '') {
                 enviar = false
                 $('#nombre_transporte_oficina').addClass("is-invalid")
@@ -1684,6 +1751,8 @@ function limpiarErrores() {
     $('#error-direccion').text("")
 
     //CONDICION DE ENVIO
+    $('#ruc_transporte_oficina').removeClass("is-invalid")
+    $('#error-ruc_transporte_oficina').text("")
 
     $('#nombre_transporte_oficina').removeClass("is-invalid")
     $('#error-nombre_transporte_oficina').text("")
@@ -1729,6 +1798,7 @@ $(document).ready(function() {
             $('#reparto_domicilio').css("display","none")
             $('#reparto_oficina').css("display","")
 
+            $('#ruc_transporte_oficina').prop('disabled', false)
             $('#nombre_transporte_oficina').prop('disabled', false)
             $('#direccion_transporte_oficina').prop('disabled', false)
             $('#responsable_pago_flete').prop('disabled', false)
@@ -1754,6 +1824,8 @@ $(document).ready(function() {
             $('#observacion_domicilio').prop('disabled', false)
         break;
     default:
+
+            $('#ruc_transporte_oficina').prop('disabled', true)
             $('#nombre_transporte_oficina').prop('disabled', true)
             $('#direccion_transporte_oficina').prop('disabled', true)
             $('#responsable_pago_flete').prop('disabled', true)
@@ -1791,6 +1863,8 @@ function limpiarDomicilio(){
 }
 
 function limpiarOficina(){
+        $('#ruc_transporte_oficina').val('')
+        $('#estado_transporte_oficina').val('SIN VERIFICAR')
         $('#nombre_transporte_oficina').val('')
         $('#direccion_transporte_oficina').val('')
         $('#responsable_pago_flete').val('')
@@ -1844,6 +1918,10 @@ $("#condicion_reparto").on('change',function(e){
             $('#reparto_domicilio').css("display","none")
             $('#reparto_oficina').css("display","")
 
+
+            $('#estado_transporte_domicilio').val("SIN VERIFICAR")
+            $('#ruc_transporte_oficina').prop('disabled', false)
+            
             $('#nombre_transporte_oficina').prop('disabled', false)
             $('#direccion_transporte_oficina').prop('disabled', false)
             $('#responsable_pago_flete').prop('disabled', false)
@@ -1874,6 +1952,7 @@ $("#condicion_reparto").on('change',function(e){
             limpiarOficina()        
         break;
     default:
+            $('#ruc_transporte_oficina').prop('disabled', true)
             $('#nombre_transporte_oficina').prop('disabled', true)
             $('#direccion_transporte_oficina').prop('disabled', true)
             $('#responsable_pago_flete').prop('disabled', true)
@@ -2102,6 +2181,73 @@ function camposRuc(objeto) {
 
     if (direccion != '-' && direccion != "NULL") {
         $('#direccion_domicilio').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
+    }
+}
+
+function consultarRucoficina() {
+    // limpiarErrores()
+    var ruc = $('#ruc_transporte_oficina').val()
+    if (ruc.length == 11) {
+
+        Swal.fire({
+            title: 'Consultar',
+            text: "¿Desea consultar Ruc a Sunat?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                var url = '{{ route("getApiruc", ":ruc")}}';
+                url = url.replace(':ruc', ruc);
+                return fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $('#estado_transporte_oficina').val('SIN VERIFICAR')
+                        Swal.showValidationMessage(
+                            `Ruc Inválido`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            console.log(result)
+           
+            camposRucoficina(result)
+            consultaExitosa()
+        })
+    } else {
+        toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
+    }
+}
+
+function camposRucoficina(objeto) {
+    var razonsocial = objeto.value.razonSocial;
+    var direccion = objeto.value.direccion;
+    var departamento = objeto.value.departamento;
+    var provincia = objeto.value.provincia;
+    var distrito = objeto.value.distrito;
+    var estado = objeto.value.estado;
+
+    if (razonsocial != '-' && razonsocial != "NULL") {
+        $('#nombre_transporte_oficina').val(razonsocial)
+    }
+
+    if (estado == "ACTIVO") {
+        $('#estado_transporte_oficina').val(estado)
+    } else {
+        $('#estado_transporte_oficina').val('INACTIVO')
+    }
+
+    if (direccion != '-' && direccion != "NULL") {
+        $('#direccion_transporte_oficina').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
     }
 }
 

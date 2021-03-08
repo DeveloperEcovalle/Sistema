@@ -307,4 +307,13 @@ class ClienteController extends Controller
 
         return response()->json($result);
     }
+
+    public function getCustomer(Request $request)
+    {
+        $data = $request->all();
+        $cliente_id = $data['cliente_id'];
+
+        $cliente = Cliente::findOrFail($cliente_id);
+        return $cliente;
+    }
 }

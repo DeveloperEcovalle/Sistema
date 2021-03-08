@@ -25,4 +25,6 @@ class ProductoDetalle extends Model
     {
         return $this->belongsTo('App\Compras\Articulo');
     }
+
+
 }

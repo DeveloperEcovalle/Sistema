@@ -12,6 +12,7 @@ use Session;
 use PDF;
 use DB;
 use App\Mantenimiento\Empresa\Empresa;
+use App\Mantenimiento\Empresa\Numeracion;
 use App\Almacenes\Producto;
 use App\Ventas\Cliente;
 use App\Ventas\Cotizacion;
@@ -22,6 +23,11 @@ use App\ventas\Documento\Detalle;
 use App\Ventas\Documento\Pago\PagoDetalle as PivotPago;
 use App\Ventas\Documento\Pago\Pago as PagoOtros;
 use App\Ventas\Documento\Pago\Transferencia;
+
+use App\Events\VentaRegistrada;
+use App\Events\DocumentoNumeracion;
+use App\Events\ComprobanteRegistrado;
+use App\Mantenimiento\Tabla\Detalle as TablaDetalle;
 
 //CONVERTIR DE NUMEROS A LETRAS
 use Luecano\NumeroALetras\NumeroALetras;
@@ -57,9 +63,10 @@ class DocumentoController extends Controller
 
             $coleccion->push([
                 'id' => $documento->id,
-                'tipo_venta' => $documento->tipo_venta,
+                'tipo_venta' => $documento->nombreTipo(),
                 'tipo_pago' => $documento->tipo_pago,
-                'cliente' => $documento->cliente->nombre,
+                'cliente' => $documento->cliente->tipo_documento.': '.$documento->cliente->documento.' - '.$documento->cliente->nombre,
+                'empresa' => $documento->empresa->razon_social,
                 'cotizacion_venta' =>  $documento->cotizacion_venta,
                 'fecha_documento' =>  Carbon::parse($documento->fecha_documento)->format( 'd/m/Y'),
                 'estado' => $documento->estado,
@@ -95,7 +102,6 @@ class DocumentoController extends Controller
                 'empresas' => $empresas,
                 'clientes' => $clientes,
                 'productos' => $productos, 
-
                 'fecha_hoy' => $fecha_hoy,
             ]);
 
@@ -171,12 +177,14 @@ class DocumentoController extends Controller
         foreach ($productotabla as $producto) {
             Detalle::create([
                 'documento_id' => $documento->id,
-                'producto_id' => $producto->producto_id,
+                'lote_id' => $producto->producto_id, //LOTE
                 'cantidad' => $producto->cantidad,
                 'precio' => $producto->precio,
                 'importe' => $producto->total,
             ]);
         }
+
+        event(new VentaRegistrada($documento));
 
 
         //Registro de actividad
@@ -422,22 +430,30 @@ class DocumentoController extends Controller
         return redirect()->route('ventas.documento.index')->with('exitosa', 'success');
     }
 
-    public function voucher($id)
+    public function obtenerLeyenda($documento)
     {
-        $documento = Documento::findOrFail($id);
-        $nombre_completo = $documento->user->empleado->persona->apellido_paterno.' '.$documento->user->empleado->persona->apellido_materno.' '.$documento->user->empleado->persona->nombres;
-        $detalles = Detalle::where('documento_id',$id)->get();
-        //TOTAL EN LETRAS
         $formatter = new NumeroALetras();
         $convertir = $formatter->toInvoice($documento->total, 2, 'SOLES');
 
-        $arrayDetalle = Array();
+        //CREAR LEYENDA DEL COMPROBANTE
+        $arrayLeyenda = Array();
+        $arrayLeyenda[] = array(  
+            "code" => "1000",
+            "value" => $convertir
+        );
+        return $arrayLeyenda;
+    }
+
+    public function obtenerProductos($id)
+    {
+        $detalles = Detalle::where('documento_id',$id)->get();
+        $arrayProductos = Array();
         for($i = 0; $i < count($detalles); $i++){
-    
-            $arrayDetalle[] = array(
-                "codProducto" => $detalles[$i]->producto->codigo,
-                "unidad" => $detalles[$i]->producto->getMedida(),
-                "descripcion"=> $detalles[$i]->producto->nombre,
+
+            $arrayProductos[] = array(
+                "codProducto" => $detalles[$i]->lote->producto->codigo,
+                "unidad" => $detalles[$i]->lote->producto->getMedida(),
+                "descripcion"=> $detalles[$i]->lote->producto->nombre.' - '.$detalles[$i]->lote->codigo,
                 "cantidad" => $detalles[$i]->cantidad,
                 "mtoValorUnitario" => $detalles[$i]->precio / 1.18,
                 "mtoValorVenta" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
@@ -451,123 +467,35 @@ class DocumentoController extends Controller
             );
         }
 
+        return $arrayProductos;
+    }
 
-        //Leyenda
-        $arrayLeyenda = Array();
-        $arrayLeyenda[] = array(  
-            "code" => "1000",
-            "value" => $convertir
-        );
-        
+    public function obtenerFecha($documento)
+    {
         $date = strtotime($documento->fecha_documento);
         $fecha_emision = date('Y-m-d', $date); 
         $hora_emision = date('H:i:s', $date); 
         $fecha = $fecha_emision.'T'.$hora_emision.'-05:00';
 
-
-        //ARREGLO COMPROBANTE
-        $arreglo_comprobante = array(
-            "tipoOperacion" => $documento->tipoOperacion(),
-            "tipoDoc"=> $documento->tipoDocumento(),
-            "serie" => $documento->serie()."00".$documento->id,
-            "correlativo" => "123",
-            "fechaEmision" => $fecha,
-            "observacion" => $documento->observacion,
-            "tipoMoneda" => $documento->simboloMoneda(),
-            "client" => array(
-                "tipoDoc" => "6",
-                "numDoc" => $documento->cliente->documento,
-                "rznSocial" => $documento->cliente->nombre,
-                "address" => array(
-                    "direccion" => $documento->cliente->direccion,
-                )),
-            "company" => array(
-                "ruc" =>  $documento->empresa->ruc,
-                "razonSocial" => $documento->empresa->razon_social,
-                "address" => array(
-                    "direccion" => $documento->empresa->direccion_fiscal,
-                )),
-            "mtoOperGravadas" => $documento->sub_total,
-            "mtoOperExoneradas" => 0,
-            "mtoIGV" => $documento->total_igv,
-            
-            "valorVenta" => $documento->sub_total,
-            "totalImpuestos" => $documento->total_igv,
-            "mtoImpVenta" => $documento->total ,
-            "ublVersion" => "2.1",
-            "details" => $arrayDetalle ,
-            "legends" =>  $arrayLeyenda,
-        );
-
-        // dd(json_encode($arreglo_comprobante));
-        $data = generarComprobanteapi(json_encode($arreglo_comprobante));
-        $name = $documento->id.'.pdf';
-        $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'.DIRECTORY_SEPARATOR.$name);
-        
-        if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'))) {
-            mkdir(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'));
-        }
-        file_put_contents($pathToFile, $data);
-        return response()->file($pathToFile);
+        return $fecha;
     }
 
-    public function sunat($id)
+    public function voucher($id)
     {
- 
         $documento = Documento::findOrFail($id);
-        // dd($documento);
-        if ($documento->sunat != '1') {
-
-            $nombre_completo = $documento->user->empleado->persona->apellido_paterno.' '.$documento->user->empleado->persona->apellido_materno.' '.$documento->user->empleado->persona->nombres;
-            $detalles = Detalle::where('documento_id',$id)->get();
-           
-            //TOTAL EN LETRAS
-            $formatter = new NumeroALetras();
-            $convertir = $formatter->toInvoice($documento->total, 2, 'SOLES');
-
-            $arrayDetalle = Array();
-            for($i = 0; $i < count($detalles); $i++){
-    
-                $arrayDetalle[] = array(
-                    "codProducto" => $detalles[$i]->producto->codigo,
-                    "unidad" => $detalles[$i]->producto->getMedida(),
-                    "descripcion"=> $detalles[$i]->producto->nombre,
-                    "cantidad" => $detalles[$i]->cantidad,
-                    "mtoValorUnitario" => $detalles[$i]->precio / 1.18,
-                    "mtoValorVenta" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
-                    "mtoBaseIgv" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad, 
-                    "porcentajeIgv" => 18,
-                    "igv" => ($detalles[$i]->precio - ($detalles[$i]->precio / 1.18 )) * $detalles[$i]->cantidad,
-                    "tipAfeIgv" => 10,
-                    "totalImpuestos" =>  ($detalles[$i]->precio - ($detalles[$i]->precio / 1.18 )) * $detalles[$i]->cantidad,
-                    "mtoPrecioUnitario" => $detalles[$i]->precio
-
-                );
-            }
-
-            //Leyenda
-            $arrayLeyenda = Array();
-            $arrayLeyenda[] = array(  
-                "code" => "1000",
-                "value" => $convertir
-            );
-            
-            $date = strtotime($documento->fecha_documento);
-            $fecha_emision = date('Y-m-d', $date); 
-            $hora_emision = date('H:i:s', $date); 
-            $fecha = $fecha_emision.'T'.$hora_emision.'-05:00';
+        if ($documento->sunat == '0' || $documento->sunat == '2' ) {
 
             //ARREGLO COMPROBANTE
             $arreglo_comprobante = array(
                 "tipoOperacion" => $documento->tipoOperacion(),
                 "tipoDoc"=> $documento->tipoDocumento(),
-                "serie" => $documento->serie()."00".$documento->id,
-                "correlativo" => "123",
-                "fechaEmision" => $fecha,
+                "serie" => '000',
+                "correlativo" => '000',
+                "fechaEmision" => self::obtenerFecha($documento),
                 "observacion" => $documento->observacion,
                 "tipoMoneda" => $documento->simboloMoneda(),
                 "client" => array(
-                    "tipoDoc" => "6",
+                    "tipoDoc" => $documento->cliente->tipoDocumento(),
                     "numDoc" => $documento->cliente->documento,
                     "rznSocial" => $documento->cliente->nombre,
                     "address" => array(
@@ -587,80 +515,129 @@ class DocumentoController extends Controller
                 "totalImpuestos" => $documento->total_igv,
                 "mtoImpVenta" => $documento->total ,
                 "ublVersion" => "2.1",
-                "details" => $arrayDetalle ,
-                "legends" =>  $arrayLeyenda,
+                "details" => self::obtenerProductos($documento->id),
+                "legends" =>  self::obtenerLeyenda($documento),
             );
 
-            $data = enviarComprobanteapi(json_encode($arreglo_comprobante));
-            $json_sunat = json_decode($data);
-
-            if ($json_sunat->sunatResponse->success == true) {
-
-                $documento->sunat = '1';
-
-                $data = generarComprobanteapi(json_encode($arreglo_comprobante));
-                $name = $documento->serie()."00".$documento->id.'.pdf';
-                // $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'.DIRECTORY_SEPARATOR.$name);
-                $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'.DIRECTORY_SEPARATOR.$name);
-
-                if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'))) {
-                    mkdir(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'));
-                }
-
-                // $pathToFile = 'public/sunat/'.$name;
-
-                file_put_contents($pathToFile, $data);
-                $documento->nombre_comprobante_archivo = $name;
-                $documento->ruta_comprobante_archivo = 'public/sunat/'.$name;
-                $documento->update(); 
-
-
-                //Registro de actividad
-                $descripcion = "SE AGREGÓ EL COMPROBANTE ELECTRONICO: ". $documento->serie()."00".$documento->id;
-                $gestion = "COMPROBANTES ELECTRONICOS";
-                crearRegistro($documento , $descripcion , $gestion);
-                
-                Session::flash('success','Documento de Venta enviada a Sunat con exito.');
-                return view('ventas.documentos.index',[
-                    
-                    'id_sunat' => $json_sunat->sunatResponse->cdrResponse->id,
-                    'descripcion_sunat' => $json_sunat->sunatResponse->cdrResponse->description,
-                    'notas_sunat' => $json_sunat->sunatResponse->cdrResponse->notes,
-                    'sunat_exito' => true
-
-                ])->with('sunat_exito', 'success');
-
-            }else{
-
-                
-                if ($json_sunat->sunatResponse->error) {
-                    $id_sunat = $json_sunat->sunatResponse->error->code;
-                    $descripcion_sunat = $json_sunat->sunatResponse->error->message;
-
-                   
-                }else {
-                    $id_sunat = $json_sunat->sunatResponse->cdrResponse->id;
-                    $descripcion_sunat = $json_sunat->sunatResponse->cdrResponse->description;
-                    
-                };
-
-
-                Session::flash('error','Documento de Venta sin exito en el envio a sunat.');
-                return view('ventas.documentos.index',[
-                    'id_sunat' =>  $id_sunat,
-                    'descripcion_sunat' =>  $descripcion_sunat,
-                    'sunat_error' => true,
-
-                ])->with('sunat_error', 'error');
+            $comprobante= json_encode($arreglo_comprobante);
+            $data = generarComprobanteapi($comprobante);
+            $name = $documento->id.'.pdf';
+            $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'.DIRECTORY_SEPARATOR.$name);
+            if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'))) {
+                mkdir(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'));
             }
+            file_put_contents($pathToFile, $data);
+            return response()->file($pathToFile);
+
         }else{
-            $documento->sunat = '1';
-            $documento->update();
-            Session::flash('error','Documento de venta fue enviado a Sunat.');
-            return redirect()->route('ventas.documento.index')->with('sunat_existe', 'error');
+            //OBTENER CORRELATIVO DEL COMPROBANTE ELECTRONICO
+            $comprobante = event(new ComprobanteRegistrado($documento,$documento->serie));
+            //ENVIAR COMPROBANTE PARA LUEGO GENERAR PDF
+            $data = generarComprobanteapi($comprobante[0]);
+            $name = $documento->id.'.pdf';
+            $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'.DIRECTORY_SEPARATOR.$name);
+            if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'))) {
+                mkdir(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'));
+            }
+            file_put_contents($pathToFile, $data);
+            return response()->file($pathToFile);
         }
 
 
+
+    }
+
+    public function sunat($id)
+    {
+      
+        $documento = Documento::findOrFail($id);
+        //OBTENER CORRELATIVO DEL COMPROBANTE ELECTRONICO
+        $existe = event(new DocumentoNumeracion($documento));
+        if($existe[0]){
+            if ($existe[0]->get('existe') == true) {
+                if ($documento->sunat != '1') {
+                    //OBTENER JSON DEL COMPROBANTE EL CUAL SE ENVIARA A SUNAT
+                    $comprobante = event(new ComprobanteRegistrado($documento, $existe[0]->get('numeracion')->serie));
+                    $data = enviarComprobanteapi($comprobante[0]);
+                    //RESPUESTA DE LA SUNAT EN JSON
+                    $json_sunat = json_decode($data);
+                    if ($json_sunat->sunatResponse->success == true) {
+        
+                        $documento->sunat = '1';
+        
+                        $data = generarComprobanteapi($comprobante[0]);
+                        $name = $existe[0]->get('numeracion')->serie."-".$documento->correlativo.'.pdf';
+                        
+                        $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'.DIRECTORY_SEPARATOR.$name);
+        
+                        if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'))) {
+                            mkdir(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'));
+                        }
+        
+                        file_put_contents($pathToFile, $data);
+                        $documento->nombre_comprobante_archivo = $name;
+                        $documento->ruta_comprobante_archivo = 'public/sunat/'.$name;
+                        $documento->update(); 
+        
+        
+                        //Registro de actividad
+                        $descripcion = "SE AGREGÓ EL COMPROBANTE ELECTRONICO: ". $existe[0]->get('numeracion')->serie."-".$documento->correlativo;
+                        $gestion = "COMPROBANTES ELECTRONICOS";
+                        crearRegistro($documento , $descripcion , $gestion);
+                        
+                        Session::flash('success','Documento de Venta enviada a Sunat con exito.');
+                        return view('ventas.documentos.index',[
+                            
+                            'id_sunat' => $json_sunat->sunatResponse->cdrResponse->id,
+                            'descripcion_sunat' => $json_sunat->sunatResponse->cdrResponse->description,
+                            'notas_sunat' => $json_sunat->sunatResponse->cdrResponse->notes,
+                            'sunat_exito' => true
+        
+                        ])->with('sunat_exito', 'success');
+        
+                    }else{
+
+                        //COMO SUNAT NO LO ADMITE VUELVE A SER 0 
+                        $documento->correlativo = null;
+                        $documento->serie = null;
+                        $documento->sunat = '2';
+                        $documento->update(); 
+                        
+                        if ($json_sunat->sunatResponse->error) {
+                            $id_sunat = $json_sunat->sunatResponse->error->code;
+                            $descripcion_sunat = $json_sunat->sunatResponse->error->message;
+        
+                        
+                        }else {
+                            $id_sunat = $json_sunat->sunatResponse->cdrResponse->id;
+                            $descripcion_sunat = $json_sunat->sunatResponse->cdrResponse->description;
+                            
+                        };
+        
+        
+                        Session::flash('error','Documento de Venta sin exito en el envio a sunat.');
+                        return view('ventas.documentos.index',[
+                            'id_sunat' =>  $id_sunat,
+                            'descripcion_sunat' =>  $descripcion_sunat,
+                            'sunat_error' => true,
+        
+                        ])->with('sunat_error', 'error');
+                    }
+                }else{
+                    $documento->sunat = '1';
+                    $documento->update();
+                    Session::flash('error','Documento de venta fue enviado a Sunat.');
+                    return redirect()->route('ventas.documento.index')->with('sunat_existe', 'error');
+                }
+            }else{
+                Session::flash('error','Tipo de Comprobante no registrado en la empresa.');
+                return redirect()->route('ventas.documento.index')->with('sunat_existe', 'error');
+            }
+        }else{
+            Session::flash('error','Empresa sin parametros para emitir comprobantes electronicos');
+            return redirect()->route('ventas.documento.index');
+        }
+        
     }
 
     public function indexVouchers()
@@ -670,16 +647,17 @@ class DocumentoController extends Controller
 
     public function getVouchers(){
 
-        $documentos = Documento::where('estado','!=','ANULADO')->where('sunat','1')->orderBy('id','DESC')->get();
+        $documentos = Documento::where('sunat',"1")->where('estado','!=','ANULADO')->orderBy('id','DESC')->get();
+
         $coleccion = collect([]);
         foreach($documentos as $documento){
 
             $coleccion->push([
                 'id' => $documento->id,
-                'tipo_venta' => $documento->tipo_venta,
-                'tipo_pago' => $documento->tipo_pago,
-                'cliente' => $documento->cliente->nombre,
-                'cotizacion_venta' =>  $documento->cotizacion_venta,
+                'numero' => $documento->serie.'-'.$documento->correlativo,
+                'tipo_venta' => $documento->descripcionTipo(),
+                'cliente' => $documento->cliente->tipo_documento.': '.$documento->cliente->documento.' - '.$documento->cliente->nombre,
+                'empresa' => $documento->empresa->razon_social,
                 'fecha_documento' =>  Carbon::parse($documento->fecha_documento)->format( 'd/m/Y'),
                 'total' => 'S/. '.number_format($documento->total, 2, '.', ''),
                 'ruta_comprobante_archivo' => $documento->ruta_comprobante_archivo,
@@ -690,6 +668,75 @@ class DocumentoController extends Controller
         return DataTables::of($coleccion)->toJson();
     }
 
+    public function vouchersAvaible(Request $request)
+    {
+        $data = $request->all();
+        $empresa_id = $data['empresa_id'];
+        $tipo = $data['tipo_id'];
+        $detalle = TablaDetalle::findOrFail($tipo);
+        $empresa = Empresa::findOrFail($empresa_id);
+        $resultado = (Numeracion::where('empresa_id',$empresa_id)->where('estado','ACTIVO')->where('tipo_comprobante',$tipo))->exists();
+      
+        $enviar = [
+                    'existe' => ($resultado == true) ? true : false,
+                    'comprobante' => $detalle->descripcion,
+                    'empresa' => $empresa->razon_social,
+                ];
+
+        return  response()->json($enviar); 
+        
+        
+    }
+
+    public function customers(Request $request)
+    {
+        $data = $request->all();
+        $tipo = $data['tipo_id'];
+        $pun_tipo = '';
+        
+        if ($tipo=='131') {
+            $clientes = Cliente::where('estado','!=','ANULADO')
+            ->where('tipo_documento','RUC')
+            ->get();
+            $pun_tipo = '1';
+        }else{
+            $clientes = Cliente::where('estado','!=','ANULADO')
+            ->where('tipo_documento','!=','RUC')
+            ->get();
+            $pun_tipo = '0';
+        }
+      
+        $enviar = [
+                    'clientes' => $clientes,
+                    'tipo' => $pun_tipo,
+                ];
+
+        return  response()->json($enviar); 
+        
+        
+    }
+
+    //LOTES PARA BUSQUEDA
+    public function getLot($tipo_cliente)
+    {
+        return datatables()->query(
+            DB::table('lote_productos')
+            ->join('productos_clientes','productos_clientes.producto_id','=','lote_productos.producto_id')
+            ->join('productos','productos.id','=','lote_productos.producto_id') 
+            ->join('familias','familias.id','=','productos.familia_id')
+            ->join('tabladetalles','tabladetalles.id','=','productos.medida')
+            ->select('lote_productos.*','productos.nombre','productos_clientes.cliente','productos_clientes.moneda','tabladetalles.simbolo as unidad_producto',
+                    'productos_clientes.monto as precio_venta','familias.familia', DB::raw('DATE_FORMAT(lote_productos.fecha_vencimiento, "%d/%m/%Y") as fecha_venci'))
+            ->where('lote_productos.cantidad','>',0) 
+            ->where('lote_productos.estado','1') 
+            ->where('productos_clientes.cliente','29') //TIPO DE CLIENTE CONSUMIDOR TABLA DETALLE (29)
+            ->where('productos_clientes.moneda','4') // TABLA DETALLE SOLES(4)
+            ->orderBy('lote_productos.id','ASC')  
+            ->where('productos_clientes.estado','ACTIVO')
+        )->toJson();
+
+
+    }
 
 
 }

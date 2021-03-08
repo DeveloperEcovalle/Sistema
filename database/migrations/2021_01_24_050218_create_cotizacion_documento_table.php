@@ -38,10 +38,15 @@ class CreateCotizacionDocumentoTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->mediumText('observacion')->nullable();
             $table->enum('estado',['VIGENTE','PENDIENTE','ADELANTO','CONCRETADA','ANULADO','PAGADA'])->default('VIGENTE');
+
             $table->enum('sunat',['0','1','2'])->default('0');
+            $table->BigInteger('correlativo')->nullable();
+            $table->string('serie')->nullable();
 
             $table->string('ruta_comprobante_archivo')->nullable();
             $table->string('nombre_comprobante_archivo')->nullable();
+
+
 
 
             $table->timestamps();

@@ -17,8 +17,8 @@ class CreateCotizacionDocumentoDetallesTable extends Migration
             $table->Increments('id');
             $table->unsignedInteger('documento_id');
             $table->foreign('documento_id')->references('id')->on('cotizacion_documento')->onDelete('cascade');
-            $table->unsignedInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
+            $table->unsignedInteger('lote_id');
+            $table->foreign('lote_id')->references('id')->on('lote_productos')->onDelete('cascade');
             $table->unsignedInteger('cantidad');
             $table->unsignedDecimal('precio', 15, 2);
             $table->unsignedDecimal('importe', 15, 2);

@@ -47,6 +47,7 @@ Route::prefix('mantenimiento/tablas/detalles')->group(function() {
     Route::get('destroy/{id}', 'Mantenimiento\Tabla\DetalleController@destroy')->name('mantenimiento.tabla.detalle.destroy');
     Route::post('store', 'Mantenimiento\Tabla\DetalleController@store')->name('mantenimiento.tabla.detalle.store');
     Route::put('update', 'Mantenimiento\Tabla\DetalleController@update')->name('mantenimiento.tabla.detalle.update');
+    Route::get('getDetail/{id}','Mantenimiento\Tabla\DetalleController@getDetail')->name('mantenimiento.tabla.detalle.getDetail');
 });
 
 //Empresas
@@ -59,8 +60,9 @@ Route::prefix('mantenimiento/empresas')->group(function() {
     Route::get('show/{id}', 'Mantenimiento\Empresa\EmpresaController@show')->name('mantenimiento.empresas.show');
     Route::get('edit/{id}', 'Mantenimiento\Empresa\EmpresaController@edit')->name('mantenimiento.empresas.edit');
     Route::put('update/{id}', 'Mantenimiento\Empresa\EmpresaController@update')->name('mantenimiento.empresas.update');
-
+    Route::get('serie/{id}', 'Mantenimiento\Empresa\EmpresaController@serie')->name('serie.empresa.facturacion');
     Route::post('certificate', 'Mantenimiento\Empresa\EmpresaController@certificate')->name('mantenimiento.empresas.certificado');
+    Route::get('obtenerNumeracion/{id}','Mantenimiento\Empresa\EmpresaController@obtenerNumeracion')->name('mantenimiento.empresas.obtenerNumeracion');
 });
 //Compras
 //Categoria
@@ -110,7 +112,6 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
     Route::get('documento/{id}','Compras\OrdenController@document')->name('compras.orden.documento');
     Route::get('nuevodocumento/{id}','Compras\OrdenController@newdocument')->name('compras.orden.nuevodocumento');
-
     Route::get('confirmarEliminar/{id}','Compras\OrdenController@confirmDestroy')->name('compras.orden.confirmDestroy');
 
     //Pagos
@@ -303,7 +304,7 @@ Route::prefix('ventas/clientes')->group(function() {
     Route::get('/datos/{id}', 'Ventas\ClienteController@show')->name('ventas.cliente.show');
     Route::get('/destroy/{id}', 'Ventas\ClienteController@destroy')->name('ventas.cliente.destroy');
     Route::post('/getDocumento', 'Ventas\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
-
+    Route::post('/getCustomer', 'Ventas\ClienteController@getCustomer')->name('ventas.cliente.getcustomer');
     //Tiendas
     Route::get('tiendas/index/{id}', 'Ventas\TiendaController@index')->name('clientes.tienda.index');
     Route::get('tiendas/getShop/{id}','Ventas\TiendaController@getShop')->name('clientes.tienda.shop');
@@ -353,6 +354,9 @@ Route::prefix('ventas/documentos')->group(function(){
     //Comprobantes Electronicos
     Route::get('index/comprobantes', 'Ventas\DocumentoController@indexVouchers')->name('ventas.comprobantes');
     Route::get('getVouchers','Ventas\DocumentoController@getVouchers')->name('ventas.getVouchers');
+    Route::post('vouchersAvaible','Ventas\DocumentoController@vouchersAvaible')->name('ventas.vouchersAvaible');
+    Route::post('customers','Ventas\DocumentoController@customers')->name('ventas.customers');
+    Route::get('getLot/{id}','Ventas\DocumentoController@getLot')->name('ventas.getLot');
 
 
 
@@ -373,9 +377,25 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('transferencia/pagos/destroy/', 'Ventas\Documentos\TransferenciaController@destroy')->name('ventas.documentos.transferencia.pago.destroy');
     Route::get('transferencia/pagos/show/', 'Ventas\Documentos\TransferenciaController@show')->name('ventas.documentos.transferencia.pago.show');
 
+});
 
+//GUIAS DE REMISION
 
+Route::prefix('guiasremision/')->group(function(){
 
+    Route::get('index', 'Ventas\GuiaController@index')->name('ventas.guiasremision.index');
+    Route::get('getGuia','Ventas\GuiaController@getGuias')->name('ventas.getGuia');
+    Route::get('create/{id}', 'Ventas\GuiaController@create')->name('ventas.guiasremision.create');
+    Route::post('store', 'Ventas\GuiaController@store')->name('ventas.guiasremision.store');
+    Route::put('update/{id}', 'Ventas\GuiaController@update')->name('ventas.guiasremision.update');
+    Route::get('destroy/{id}', 'Ventas\GuiaController@destroy')->name('ventas.guiasremision.destroy');
+    Route::get('show/{id}','Ventas\GuiaController@show')->name('ventas.guiasremision.show');
+    Route::get('reporte/{id}','Ventas\GuiaController@report')->name('ventas.guiasremision.reporte');
+    Route::get('tiendaDireccion/{id}', 'Ventas\GuiaController@tiendaDireccion')->name('ventas.guiasremision.tienda_direccion');
+    Route::get('sunat/guia/{id}','Ventas\GuiaController@sunat')->name('ventas.guiasremision.sunat');
+    // Route::get('tipoPago/{id}','Ventas\GuiaController@TypePay')->name('ventas.documento.tipo_pago.existente');
+    // Route::get('comprobante/{id}','Ventas\GuiaController@voucher')->name('ventas.documento.comprobante');
+    // Route::get('sunat/comprobante/{id}','Ventas\GuiaController@sunat')->name('ventas.documento.sunat');
 
 });
 

@@ -17,6 +17,7 @@ class CreateTablaDetallesTable extends Migration
             $table->engine = 'InnoDB';
             $table->Increments('id');
             $table->string('descripcion');
+            $table->string('nombre')->nullable();
             $table->string('simbolo')->nullable();
             $table->string('parametro')->nullable();
             $table->string('operacion')->nullable();
@@ -24,6 +25,7 @@ class CreateTablaDetallesTable extends Migration
             $table->foreign('tabla_id')
                   ->references('id')->on('tablas')
                   ->onDelete('cascade');
+            $table->string('tipo')->nullable();
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

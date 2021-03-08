@@ -34,7 +34,7 @@
                                 <tr>
                                     
                                     <th colspan="3" class="text-center"></th>
-                                    <th colspan="4" class="text-center">DOCUMENTO DE VENTA</th>
+                                    <th colspan="5" class="text-center">DOCUMENTO DE VENTA</th>
                                     <th colspan="2" class="text-center">FORMAS DE PAGO</th>
                                     <th colspan="4" class="text-center"></th>
 
@@ -43,9 +43,10 @@
                                     <th style="display:none;"></th>
                                     <th style="display:none;"></th>
                                     <th class="text-center">C.O</th>
-                                    <th class="text-center">FEC.DOCUMENTO</th>
+                                    <th class="text-center">FECHA DOC.</th>
                                     <th class="text-center">TIPO</th>
                                     <th class="text-center">CLIENTE</th>
+                                    <th class="text-center">EMPRESA</th>
                                     <th class="text-center">MONTO</th>
                                     <th class="text-center">TRANSFERENCIA</th>
                                     <th class="text-center">OTROS</th>
@@ -146,6 +147,10 @@ $(document).ready(function() {
                 data: 'cliente',
                 className: "text-left"
             },
+            {
+                data: 'empresa',
+                className: "text-left"
+            },
 
 
 
@@ -219,12 +224,12 @@ $(document).ready(function() {
 
                     return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
                     
-                        "<li><a class='dropdown-item' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
-                        //"<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                        "<li><a class='dropdown-item' target='_blank' onclick='comprobanteElectronico(" +data.id+ ")' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                         "<li><a class='dropdown-item' onclick='eliminar(" + data.id + ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "<li class='dropdown-divider'></li>" +
                         "<li><a class='dropdown-item' onclick='pagar(" +data.id+","+data.tipo_pago+  ")'  title='Pagar'><b><i class='fa fa-money'></i> Pagar</a></b></li>" +
-                        "<li><a class='dropdown-item' onclick='enviarSunat(" +data.id+ ")'  title='Enviar Sunat'><b><i class='fa fa-file'></i> Enviar Sunat</a></b></li>"
+                        "<li><a class='dropdown-item' onclick='enviarSunat(" +data.id+ ")'  title='Enviar Sunat'><b><i class='fa fa-file'></i> Enviar Sunat</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='guia(" +data.id+ ")'  title='Enviar Sunat'><b><i class='fa fa-file'></i> Guia Remision</a></b></li>"
                         
                     "</ul></div>"
                 }
@@ -481,6 +486,35 @@ function comprobanteElectronico(id) {
 
 }
 
+function  guia(id) {
+    Swal.fire({
+        title: 'Opción Guia de Remision',
+        text: "¿Seguro que desea crear una guia de remision?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Guia
+            var url = '{{ route("ventas.guiasremision.create", ":id")}}';
+            url = url.replace(':id', id);
+            $(location).attr('href', url);
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+            
+        }
+    })
+}
 
 function enviarSunat(id , sunat) {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -531,7 +565,6 @@ function enviarSunat(id , sunat) {
     })
 
 }
-
 
 @if(!empty($sunat_exito))
     Swal.fire({

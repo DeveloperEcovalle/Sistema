@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use App\Mantenimiento\Empresa\Banco;
 use App\Mantenimiento\Empresa\Facturacion;
+use App\Mantenimiento\Empresa\Numeracion;
 
 use App\Facturacion\Helpers\Certificate\GenerateCertificate;
+
+use App\Events\FacturacionEmpresa;
+use App\Events\EmpresaModificada;
 
 
 class EmpresaController extends Controller
@@ -35,6 +39,23 @@ class EmpresaController extends Controller
         )->toJson();
     }
 
+    public function obtenerNumeracion($id){
+
+        $numeraciones = Numeracion::where('empresa_id',$id)->where('estado','!=','ANULADO')->get();
+        $coleccion = collect([]);
+        foreach($numeraciones as $numeracion){
+            $coleccion->push([
+                'id' => $numeracion->id,
+                'tipo_id' => $numeracion->tipo_comprobante,
+                'serie' => $numeracion->serie,
+                'tipo_comprobante' => $numeracion->comprobanteDescripcion(),
+                'numero_iniciar' => $numeracion->numero_iniciar,
+                'emision' => $numeracion->emision_iniciada,
+            ]);
+        }
+        return DataTables::of($coleccion)->toJson();
+    }
+
     public function create()
     {
         $departamentos = Departamento::all();
@@ -42,6 +63,7 @@ class EmpresaController extends Controller
         $distritos = Distrito::all();
         $bancos = bancos();
         $monedas = tipos_moneda();
+
         return view('mantenimiento.empresas.create',[
             'departamentos' => $departamentos,
             'provincias' => $provincias,
@@ -52,7 +74,6 @@ class EmpresaController extends Controller
     }
 
     public function store(Request $request){
-
         $data = $request->all();
 
         $rules = [
@@ -112,6 +133,7 @@ class EmpresaController extends Controller
         $empresa->direccion_llegada = $request->get('direccion_llegada');
         $empresa->telefono = $request->get('telefono');
         $empresa->celular = $request->get('celular');
+        $empresa->ubigeo = $request->get('ubigeo_empresa');
 
         if($request->hasFile('logo')){                
             $file = $request->file('logo');
@@ -139,6 +161,8 @@ class EmpresaController extends Controller
         }
 
         $empresa->save();
+
+
 
         if ($request->get('estado_fe') == 'on'){
 
@@ -168,14 +192,17 @@ class EmpresaController extends Controller
             $facturacion->sol_pass = $facturado->sol_pass;
             $facturacion->plan = $facturado->plan->nombre;
             $facturacion->ambiente = $facturado->environment->nombre;
-            // $facturacion->logo =  base64_encode($contenidoImagen);
             $facturacion->ruta_certificado_pem = $facturado->certificado;
             $facturacion->certificado =  $request->get('certificado_base');
             $facturacion->save();
 
+            //REGISTRAR NUMERACION DE FACTURACION DE LA EMPRESA
+            event(new FacturacionEmpresa(
+                $empresa,
+                $data['numeracion_tabla'])
+            );
+
         }
-
-
 
         //Llenado de Bancos
         $entidadesJSON = $request->get('entidades_tabla');
@@ -278,11 +305,9 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         $empresa = Empresa::findOrFail($id);
+        $numeraciones = Numeracion::where('empresa_id',$id)->where('estado','ACTIVO')->get();
         $facturacion = Facturacion::where('empresa_id',$empresa->id)->where('estado','ACTIVO')->first();
-        // dd($facturacion);
-        $banco = Banco::where('empresa_id',$id)
-        ->where('estado','ACTIVO')
-        ->get();
+        $banco = Banco::where('empresa_id',$id)->where('estado','ACTIVO')->get();
         $bancos = bancos();
         $monedas = tipos_moneda();
         return view('mantenimiento.empresas.edit', [
@@ -291,12 +316,12 @@ class EmpresaController extends Controller
             'monedas' => $monedas,
             'banco' => $banco,
             'facturacion' => $facturacion,
+            'numeraciones' => $numeraciones,
         ]);
 
     }
 
     public function update(Request $request, $id){
-     
         $data = $request->all();
         $rules = [
             'ruc' => ['required','numeric','min:11', Rule::unique('empresas','ruc')->where(function ($query) {
@@ -386,6 +411,7 @@ class EmpresaController extends Controller
         $empresa->web = $request->get('web');
         $empresa->facebook = $request->get('facebook');
         $empresa->instagram = $request->get('instagram');
+        $empresa->ubigeo = $request->get('ubigeo_empresa');
 
         if ($request->get('estado_fe') == '1'){
             $empresa->estado_fe = '1';
@@ -476,7 +502,9 @@ class EmpresaController extends Controller
                 $nueva_factura->certificado =  $request->get('certificado_base');
                 $nueva_factura->save();
             }
-            
+
+
+
         }else{
 
             
@@ -493,6 +521,12 @@ class EmpresaController extends Controller
             }
 
         }
+
+        //MODIFICAR NUMERACION DE FACTURACION DE LA EMPRESA
+        event(new EmpresaModificada(
+            $empresa,
+            $data['numeracion_tabla'])
+        );
 
         $entidadesJSON = $request->get('entidades_tabla');
         $entidadtabla = json_decode($entidadesJSON[0]);
@@ -559,6 +593,18 @@ class EmpresaController extends Controller
             'success' => false,
             'message' =>  'Error',
         ];
+    }
+    
+    public function serie($id)
+    {
+        $tipos = tipos_venta();
+        $empresas_facturacion = Facturacion::where('estado','ACTIVO')->get();
+        foreach ($tipos as $tipo) {
+            if ($tipo->id == $id ) {
+                $serie = $tipo->parametro.'00'.(count($empresas_facturacion)+1);
+                return $serie;
+            }
+        }
     }
 
 }

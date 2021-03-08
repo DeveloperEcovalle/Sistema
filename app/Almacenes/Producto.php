@@ -52,6 +52,7 @@ class Producto extends Model
     {
         return $this->belongsTo('App\Mantenimiento\Tabla\detalle','medida');
     }
+    
     public function getMedida(): string
     {
         $medida = unidad_medida()->where('id', $this->medida)->first();

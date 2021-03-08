@@ -21,6 +21,7 @@ class CreateClienteTiendasTable extends Migration
             $table->string('tipo_tienda');
             $table->string('tipo_negocio');
             $table->mediumText('direccion')->nullable();
+            $table->string('ubigeo')->nullable();
 
             $table->string('facebook')->nullable();
             $table->string('web')->nullable();            
@@ -75,8 +76,11 @@ class CreateClienteTiendasTable extends Migration
 
             $table->string('condicion_reparto')->nullable();
 
+            $table->string('ruc_transporte_oficina')->nullable();
+            $table->string('estado_transporte_oficina')->default('SIN VERIFICAR');
             $table->string('nombre_transporte_oficina')->nullable();
             $table->string('direccion_transporte_oficina')->nullable();
+            
             $table->string('responsable_pago_flete')->nullable();
             $table->string('responsable_pago')->nullable();
 

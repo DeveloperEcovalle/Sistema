@@ -148,8 +148,8 @@
                                 <h4><b>Cantidades y Precios</b></h4>
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Stock</label>
-                                        <input type="text" id="stock" name="stock" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{ old('stock', $producto->stock) }}" maxlength="10" onkeypress="return isNumber(event);" required>
+                                        <label class="">Stock</label>
+                                        <input type="text" id="stock" name="stock" readonly class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{ old('stock', $producto->stock) }}" maxlength="10" onkeypress="return isNumber(event);" required>
                                         @if ($errors->has('stock'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('stock') }}</strong>
@@ -347,10 +347,6 @@
     <script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
     <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
     <script>
-        var table;
-        var detalles = [];
-        var objectRowDelete, objectRowEdit;
-
         //Modal Eliminar
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -367,91 +363,13 @@
                 height: '200px',
                 width: '100%',
             });
-
-            table = $('.dataTables-detalle-producto').DataTable({
-                "dom": '<"html5buttons"B>lTfgitp',
-                "buttons": [{
-                    extend: 'excelHtml5',
-                    text: '<i class="fa fa-file-excel-o"></i> Excel',
-                    titleAttr: 'Excel',
-                    title: 'Detalle de Orden de Compra'
-                },
-                    {
-                        titleAttr: 'Imprimir',
-                        extend: 'print',
-                        text: '<i class="fa fa-print"></i> Imprimir',
-                        customize: function(win) {
-                            $(win.document.body).addClass('white-bg');
-                            $(win.document.body).css('font-size', '10px');
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        }
-                    }
-                ],
-                "bPaginate": true,
-                "bLengthChange": true,
-                "responsive": true,
-                "bFilter": true,
-                "bInfo": false,
-                "columnDefs": [
-                    {
-                        "targets": [0, 1],
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        searchable: false,
-                        targets: -1,
-                        data: null,
-                        defaultContent: "<button type='button' class='btn btn-sm btn-warning mr-1 btn-edit'>" +
-                            "<i class='fa fa-pencil'></i>" +
-                            "</button>" +
-                            "<button type='button' class='btn btn-sm btn-danger mr-1 btn-delete'>" +
-                            "<i class='fa fa-trash'></i>" +
-                            "</button>"
-                    }
-                ],
-                'bAutoWidth': false,
-                'aoColumns': [
-                    { sWidth: '0%' },
-                    { sWidth: '0%' },
-                    { sWidth: '40%', sClass: 'text-left' },
-                    { sWidth: '10%', sClass: 'text-center' },
-                    { sWidth: '10%', sClass: 'text-center' },
-                    { sWidth: '30%', sClass: 'text-left' },
-                    { sWidth: '10%', sClass: 'text-center' },
-                ],
-                "data": getData(),
-                "language": {
-                    url: "{{asset('Spanish.json')}}"
-                },
-                "order": [[ 0, "desc" ]],
-            });
-
             //Controlar Error
             $.fn.DataTable.ext.errMode = 'throw';
 
             $("#codigo").on("change", validarCodigo);
-
             $("#familia").on("change", obtenerSubFamilias);
-
-            $("#btn_agregar_detalle").on("click", agregarDetalle);
-
-            $("#btn_editar_detalle").on("click", editarDetalle);
-
-            $('.dataTables-detalle-producto tbody').on('click', 'button.btn-edit', cargarDetalle);
-
-            $('.dataTables-detalle-producto tbody').on('click', 'button.btn-delete', eliminarDetalle);
-
             $('#form_actualizar_producto').submit(function(e) {
                 e.preventDefault();
-                if (detalles !== undefined && detalles.length <= 0) {
-                    // toastr.error('Debe ingresar los detalles del producto');
-                    // return false;
-                }
-                //$("#detalles").val(JSON.stringify(detalles));
-
                 Swal.fire({
                     title: 'Opción Guardar',
                     text: "¿Seguro que desea guardar cambios?",
@@ -462,39 +380,13 @@
                     cancelButtonText: "No, Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var existe = cantidadTipo()
-            
-                        if (existe == false) {
-                            
-                            Swal.fire({
-                                title: 'Tipo de clientes',
-                                text: "¿Seguro que desea agregar Producto sin ningun tipo de cliente?",
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: "#1ab394",
-                                confirmButtonText: 'Si, Confirmar',
-                                cancelButtonText: "No, Cancelar",
-                            }).then((result) => {
-                                
-                                if (result.isConfirmed) {
-                                    cargarClientes();
-                                    this.submit();
-                                } else if (
-                                    /* Read more about handling dismissals below */
-                                    result.dismiss === Swal.DismissReason.cancel
-                                ) {
-                                    swalWithBootstrapButtons.fire(
-                                        'Ingresar tipo de cliente',
-                                        'La Solicitud se ha cancelado.',
-                                        'error'
-                                    )
-                                }
-                            })
-                        }else{
+                        var existe = buscarConsumidor() 
+                        if (existe == true) {
                             cargarClientes();
                             this.submit();
+                        }else{
+                            toastr.error('Es obligatorio el ingreso del Cliente Consumidor y la moneda Soles.', 'Error');      
                         }
-
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire(
                             'Cancelado',
@@ -536,23 +428,6 @@
             
 
         });
-
-
-        function getData() {
-            detalles = ($("#detalles").val() === undefined || $("#detalles").val() === "") ? [] : JSON.parse($("#detalles").val());
-            var data = [];
-            detalles.forEach(obj => {
-                data.push([
-                    String(obj.id),
-                    String(obj.articulo_id),
-                    String(obj.articulo),
-                    parseInt(obj.cantidad),
-                    parseFloat(obj.peso),
-                    String(obj.observacion)
-                ]);
-            });
-            return data;
-        }
 
         function validarCodigo() {
             // Consultamos nuestra BBDD
@@ -614,175 +489,6 @@
                 }
             });
         }
-
-
-
-
-        function agregarDetalle() {
-
-            var detalle = {
-                id: null,
-                articulo_id: $("#articulo").val(),
-                articulo: $("#articulo").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad").val()),
-                peso: parseFloat($("#peso").val()),
-                observacion: $("#observacion").val()
-            };
-
-            if (validarDetalle(detalle)) {
-                table.row.add([
-                    detalle.id,
-                    detalle.articulo_id,
-                    detalle.articulo,
-                    detalle.cantidad,
-                    detalle.peso,
-                    detalle.observacion
-                ]).draw(false);
-                detalles.push(detalle);
-                limpiarCamposDetalle();
-            }
-        }
-
-        function cargarDetalle() {
-            //console.log(table.row($(this).parents("tr")).data());
-            var dataRow = table.row($(this).parents("tr")).data();
-            objectRowEdit = table.row($(this).parents("tr"));
-            $("#id_editar").val(dataRow[0]);
-            $("#articulo_editar").val(dataRow[1]).trigger("change");
-            $("#cantidad_editar").val(dataRow[3]);
-            $("#peso_editar").val(dataRow[4]);
-            $("#observacion_editar").val(dataRow[5]);
-
-            $('#modal_editar_detalle').modal('show');
-        }
-
-        function editarDetalle() {
-            var id = ($("#id_editar").val() === undefined || ($("#id_editar").val() === "")) ? null : $("#id_editar").val();
-            var detalle = {
-                id: id,
-                articulo_id: $("#articulo_editar").val(),
-                articulo: $("#articulo_editar").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad_editar").val()),
-                peso: parseFloat($("#peso_editar").val()),
-                observacion: $("#observacion_editar").val()
-            };
-
-            if (validarDetalle(detalle, true)) {
-                var indexRow = objectRowEdit.index();
-                detalles.forEach((element, index) => {
-                    if(element.articulo_id === detalle.articulo_id) {
-                        detalles[index] = detalle;
-                    }
-                });
-                objectRowEdit.cell(indexRow, 1).data(detalle.articulo_id).draw(false);
-                objectRowEdit.cell(indexRow, 2).data(detalle.articulo).draw(false);
-                objectRowEdit.cell(indexRow, 3).data(detalle.cantidad).draw(false);
-                objectRowEdit.cell(indexRow, 4).data(detalle.peso).draw(false);
-                objectRowEdit.cell(indexRow, 5).data(detalle.observacion).draw(false);
-
-                $('#modal_editar_detalle').modal('hide');
-            }
-        }
-
-        function eliminarDetalle() {
-            //console.log(table.row($(this).parents("tr")).data());
-            Swal.fire({
-                title: 'Opción Eliminar',
-                text: "¿Seguro que desea eliminar registro?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: "#1ab394",
-                confirmButtonText: 'Si, Confirmar',
-                cancelButtonText: "No, Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    var dataRow = table.row($(this).parents("tr")).data();
-                    objectRowDelete = table.row($(this).parents("tr"));
-                    table.row($(this).parents("tr")).remove().draw();
-
-                    if (dataRow[0] !== undefined && dataRow[0] !== "") {
-                        $.ajax({
-                            dataType : 'json',
-                            type : 'post',
-                            url : '{{ route('almacenes.producto.destroyDetalle') }}',
-                            data : {
-                                '_token' : $('input[name=_token]').val(),
-                                'id': dataRow[0]
-                            }
-                        }).done(function (result){
-                            if (result.exito) {
-                                var removeIndex = detalles.map(function(item) { return item.articulo_id; }).indexOf(dataRow[1]);
-                                detalles.splice(removeIndex, 1);
-                            }
-                        });
-                    } else {
-                        var removeIndex = detalles.map(function(item) { return item.articulo_id; }).indexOf(dataRow[1]);
-                        detalles.splice(removeIndex, 1);
-                    }
-
-                }else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelado',
-                        'La Solicitud se ha cancelado.',
-                        'error'
-                    )
-
-                }
-            })
-
-        }
-
-        function validarDetalle(detalle, isEditar = false) {
-
-            if (!isEditar) {
-                if (detalle.articulo_id === undefined || detalle.articulo_id === null || detalle.articulo_id.length === 0
-                    || detalle.articulo === undefined || detalle.articulo === null || detalle.articulo.length === 0) {
-                    toastr.error('El campo Artículo es obligatorio');
-                    return false;
-                }
-                if (detalles.find(d => parseInt(d.articulo_id) === parseInt(detalle.articulo_id)) !== undefined) {
-                    toastr.error('El artículo seleccionado ya existe en el detalle del producto');
-                    return false;
-                }
-            }
-
-            if (detalle.cantidad === undefined || detalle.cantidad === null || Number.isNaN(detalle.cantidad)) {
-                toastr.error('El campo Cantidad es obligatorio');
-                return false;
-            }
-            if (detalle.cantidad <= 0) {
-                toastr.error('La cantidad ingresada debe ser mayor a cero');
-                return false;
-            }
-            if (detalle.peso === undefined || detalle.peso === null || Number.isNaN(detalle.peso)) {
-                toastr.error('El campo Peso es obligatorio');
-                return false;
-            }
-            // if (detalle.peso <= 0) {
-            //     toastr.error('El peso ingresado debe ser mayor a cero');
-            //     return false;
-            // }
-
-            return true;
-        }
-
-        function limpiarCamposDetalle() {
-            $("#articulo").val("").trigger("change");
-            $("#cantidad").val("");
-            $("#peso").val("");
-            $("#observacion").val("");
-        }
-
-        $('#modal_editar_detalle').on('hidden.bs.modal', function(e) {
-            $("#articulo_editar").val("").trigger("change");
-            $("#cantidad_editar").val("");
-            $("#peso_editar").val("");
-            $("#observacion_editar_editar").val("");
-        });
 
 
     </script>
@@ -972,14 +678,11 @@
                         var detalle = {
                             cliente: $('#cliente').val(),
                             monto: $('#monto').val(),
-                            // moneda: cargarMoneda($('#moneda_cliente').val()),
                             moneda: $('#moneda_cliente').val(),
                             id_moneda: $('#moneda_cliente').val(),
                         }
                         limpiarDetalle()
                         agregarTabla(detalle);
-                        // sumaTotal()
-
 
                     } else if (
                         /* Read more about handling dismissals below */
@@ -1081,7 +784,7 @@
             @foreach($clientes as $cliente)
             t.row.add([
                 '',
-                "{{$cliente->cliente}}",
+                "{{$cliente->tipocliente()}}",
                 cargarMoneda("{{$cliente->moneda}}"),
                 "{{$cliente->monto}}",
                 "{{$cliente->moneda}}",
@@ -1090,15 +793,15 @@
             @endforeach
         }
 
-        //Consultar si existe tipos de clientes
-        function cantidadTipo() {
-            var existe = true
+        //CONSULTAR SI EXISTE EL CLIENTE TIPO CONSUMIDOR
+        function buscarConsumidor() {
+            var existe = false
             var table = $('.dataTables-clientes').DataTable();
-            var registros = table.rows().data().length;
-
-            if (registros == 0) {
-                existe = false
-            }
+            table.rows().data().each(function(el, index) {
+                if (el[1] == 'CLIENTE CONSUMIDOR' && el[4] == '4' ) {
+                    existe = true
+                }
+            });
             return existe
         }
 

@@ -250,8 +250,69 @@
     </div>
 </div>
 
+<div class="modal inmodal" id="modal_numeracion_facturacion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="limpiar()" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <i class="fa fa-cogs modal-icon"></i>
+                <h4 class="modal-title">Numeración de facturación</h4>
+                <small class="font-bold">Registrar Numeración de facturación de la Empresa.</small>
+            </div>
+            <form role="form" id="formulario_comprobante_numero" method="post" name="formulario_comprobante_numero">
+                {{ csrf_field() }} {{method_field('POST')}}
+                <div class="modal-body">
+                
+                       
+                        <div class="form-group">
+                            <label class="required">Tipo de Comprobante:</label> 
+                            <select class="select2_form form-control" style="text-transform: uppercase; width:100%" name="tipo_comprobante" id="tipo_comprobante" required>
+                                <option></option>
+                                @foreach (tipos_venta() as $venta)
+                                    <option value="{{$venta->id}}">{{$venta->descripcion}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="required">Serie:</label>
+                                <input type="text" name="serie_comprobante" id="serie_comprobante" class="form-control" readonly>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="required">Número a Iniciar :</label>
+                                <input type="number" name="numero_iniciar" id="numero_iniciar" class="form-control" required>
+                            </div>
+                            
+                        </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <div class="col-md-6 text-left" style="color:#fcbc6c">
+                        <i class="fa fa-exclamation-circle"></i> <small>Los campos marcados con asterisco (<label class="required"></label>) son obligatorios.</small>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-primary btn-sm" type="submit" ><i class="fa fa-save"></i>
+                            Guardar</button>
+                        <button type="button" onclick="" class="btn btn-danger btn-sm" data-dismiss="modal"><i
+                                class="fa fa-times"></i>
+                            Cancelar</button>
+                    </div>
+                </div>
+
+            </form>
+            
+        </div>
+    </div>
+</div>
+
 
 @push('scripts')
+
 <script>
 
 //Editar Registro
@@ -316,7 +377,6 @@ $(".modificarEntidad").click(function() {
         $('#error-modificar-entidad-itf').text('El campo N° ITF es obligatorio.')
     }
 
-
     if (enviar != true) {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -368,7 +428,6 @@ $(".modificarEntidad").click(function() {
 })
 
 function actualizarTabla(i) {
-    console.log(i)
     var table = $('.dataTables-bancos').DataTable();
     table.row(i).remove().draw();
 
@@ -674,6 +733,8 @@ $(document).on('click', '#borrar_entidad', function(event) {
 });
 
 
+
+
 function agregarTabla($entidad) {
     var t = $('.dataTables-bancos').DataTable();
     t.row.add([
@@ -710,8 +771,7 @@ function cargarEntidades() {
     $('#entidades_tabla').val(JSON.stringify(entidades));
 }
 
-
-
+//CERTIFICADO
 $(function(){
     $('.consultarCertificado').on('click', function(){
 
@@ -780,6 +840,177 @@ function limpiarmodalCertificado() {
 $('#modal_certificado').on('hidden.bs.modal', function(e) {
     limpiarmodalCertificado()
 });
+
+//NUMERACION
+$(document).ready(function(){
+    $("#tipo_comprobante").on('change', function () {
+        $("#tipo_comprobante option:selected").each(function () {
+            seleccionado = $(this).val();
+            var url = '{{ route("serie.empresa.facturacion", ":id")}}';
+            url = url.replace(':id',seleccionado);
+            $.ajax({
+                url: url,
+                type:'get',
+                success:  function (response) {
+                    $('#serie_comprobante').val(response);
+                },              
+            });
+        });
+   });
+});
+
+
+$('#formulario_comprobante_numero').submit(function(e) {
+
+    e.preventDefault();
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+    if (buscarNumeracion() == false) {
+        Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Opción Agregar',
+            text: "¿Seguro que desea Agregar Numeración de facturación?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#1ab394",
+            confirmButtonText: 'Si, Confirmar',
+            cancelButtonText: "No, Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                
+                agregarNumeracion();
+               
+                
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                )
+            }
+        })
+    }
+
+
+})
+
+function agregarNumeracion(){
+    var t = $('.dataTables-numeracion').DataTable();
+        t.row.add(
+                {
+                emision: "0",
+                tipo_comprobante: $('#tipo_comprobante option:selected').text(),
+                serie: $('#serie_comprobante').val(),
+                numero_iniciar: $('#numero_iniciar').val(),
+                emision: '0',
+                tipo_id: $('#tipo_comprobante').val() ,
+        }).draw();
+        limpiar();
+}
+
+function buscarNumeracion() {
+    var existe = false;
+    var t = $('.dataTables-numeracion').DataTable();
+    t.rows().data().each(function(el, index) {
+        if (el.tipo_id == $('#tipo_comprobante').val()) {
+            existe = true
+            toastr.error('Numeración de facturación ya ingresado.', 'Error');
+        }
+    });
+    return existe
+}
+
+function limpiar() {
+    $("#modal_numeracion_facturacion select").val("").trigger("change");
+    $("#modal_numeracion_facturacion input[type=text] , #modal_numeracion_facturacion input[type=number]").each(function() { this.value = '' });
+    $('#modal_numeracion_facturacion ').modal('hide');
+}
+
+$('#modal_numeracion_facturacion').on('hidden.bs.modal', function(e) {
+    limpiar()
+});
+
+function cargarNumeracion() {
+
+    var entidades = [];
+    var table = $('.dataTables-numeracion').DataTable();
+    var data = table.rows().data();
+    data.each(function(value, index) {
+      console.log(value);
+        let fila = {
+            tipo_nombre: value.tipo_comprobante,
+            serie: value.serie,
+            numero_iniciar: value.numero_iniciar,
+            emision: value.emision,
+            tipo_id: value.tipo_id,
+        };
+
+        entidades.push(fila);
+
+    });
+
+
+    $('#numeracion_tabla').val(JSON.stringify(entidades));
+}
+
+$(document).on('click', '#borrar_numeracion', function(event) {
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+    Swal.fire({
+        title: 'Opción Eliminar',
+        text: "¿Seguro que desea eliminar Entidad Bancaria?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var table = $('.dataTables-numeracion').DataTable();
+            table.row($(this).parents('tr')).remove().draw();
+            cargarNumeracion()
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+
+
+
+});
+
+
+
+
+
+
+
+
 
 
 

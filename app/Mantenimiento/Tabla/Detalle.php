@@ -8,10 +8,24 @@ class Detalle extends Model
 {
     protected $table = 'tabladetalles';
     public $timestamps = true;
-    protected $fillable = ['tabla_id','descripcion','simbolo','estado'];
+    protected $fillable = [
+                        'tabla_id',
+                        'nombre',
+                        'descripcion',
+                        'simbolo',
+                        'estado'];
 
     public function tabla()
     {
         return $this->belongsTo('App\Mantenimiento\Tabla\General','tabla_id');
+    }
+
+    public function descripcion(): int
+    {
+        $detalle = tipo_clientes()->where('id', $this->id)->first();
+        if (is_null($detalle))
+            return "-";
+        else
+            return $detalle->descripcion;
     }
 }

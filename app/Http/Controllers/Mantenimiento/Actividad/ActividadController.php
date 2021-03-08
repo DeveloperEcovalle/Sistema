@@ -26,7 +26,6 @@ class ActividadController extends Controller
             $coleccion->push([
                 
                 'usuario' => $actividad->causer->empleado->persona->nombres.' '.$actividad->causer->empleado->persona->apellido_paterno.' '.$actividad->causer->empleado->persona->apellido_materno,
-
                 'propiedades' => $actividad->properties,
                 'descripcion' => $actividad->description,
                 'fecha_creacion' =>  Carbon::parse($actividad->created_at)->format( 'd/m/Y - H:i:s'),

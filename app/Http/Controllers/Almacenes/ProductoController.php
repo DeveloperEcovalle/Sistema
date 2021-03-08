@@ -49,6 +49,7 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
+        
         $data = $request->all();
 
         $rules = [
@@ -63,7 +64,6 @@ class ProductoController extends Controller
             'familia' => 'required',
             'sub_familia' => 'required',
             'medida' => 'required',
-            'stock' => 'required|numeric',
             'stock_minimo' => 'required|numeric',
             'precio_venta_minimo' => 'required|numeric',
             'precio_venta_maximo' => 'required|numeric',
@@ -83,8 +83,6 @@ class ProductoController extends Controller
             'familia.required' => 'El campo Categoria es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
             'medida.required' => 'El campo Unidad de medida es obligatorio',
-            'stock.required' => 'El campo Stock es obligatorio',
-            'stock.numeric' => 'El campo Stock debe ser numérico',
             'stock_minimo.required' => 'El campo Stock mínimo es obligatorio',
             'stock_minimo.numeric' => 'El campo Stock mínimo debe ser numérico',
             'precio_venta_minimo.required' => 'El campo Precio de venta mínimo es obligatorio',
@@ -109,7 +107,6 @@ class ProductoController extends Controller
             $producto->sub_familia_id = $request->get('sub_familia');
             $producto->medida = $request->get('medida');
             $producto->linea_comercial = $request->get('linea_comercial');
-            $producto->stock = $request->get('stock');
             $producto->stock_minimo = $request->get('stock_minimo');
             $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
             $producto->precio_venta_maximo = $request->get('precio_venta_maximo');
@@ -146,7 +143,7 @@ class ProductoController extends Controller
 
     public function edit($id)
     {
-        $producto = Producto::findOrFail($id);
+        $producto = Producto::findOrFail($id);   
         $familias = Familia::where('estado', 'ACTIVO')->get();
         $sub_familias = SubFamilia::where('id', $producto->familia_id)->get();
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
@@ -177,6 +174,7 @@ class ProductoController extends Controller
 
     public function update(Request $request, $id)
     {
+       
         $data = $request->all();
         $rules = [
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
@@ -190,8 +188,6 @@ class ProductoController extends Controller
             'linea_comercial' => 'required',
             'sub_familia' => 'required',
             'medida' => 'required',
-            'stock' => 'required|numeric',
-            'stock_minimo' => 'required|numeric',
             'precio_venta_minimo' => 'required|numeric',
             'precio_venta_maximo' => 'required|numeric',
             'igv' => 'required|boolean',
@@ -209,8 +205,6 @@ class ProductoController extends Controller
             'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
             'medida.required' => 'El campo Unidad de Medida es obligatorio',
-            'stock.required' => 'El campo Stock es obligatorio',
-            'stock.numeric' => 'El campo Stock debe ser numérico',
             'stock_minimo.required' => 'El campo Stock mínimo es obligatorio',
             'stock_minimo.numeric' => 'El campo Stock mínimo debe ser numérico',
             'precio_venta_minimo.required' => 'El campo Precio de venta mínimo es obligatorio',
@@ -230,7 +224,6 @@ class ProductoController extends Controller
         $producto->familia_id = $request->get('familia');
         $producto->sub_familia_id = $request->get('sub_familia');
         $producto->medida = $request->get('medida');
-        $producto->stock = $request->get('stock');
         $producto->linea_comercial = $request->get('linea_comercial');
         $producto->stock_minimo = $request->get('stock_minimo');
         $producto->precio_venta_minimo = $request->get('precio_venta_minimo');
@@ -247,15 +240,28 @@ class ProductoController extends Controller
         if ($clientetabla) {
             $clientes = TipoCliente::where('producto_id', $id)->get();
             foreach ($clientes as $cliente) {
-                $cliente->delete();
+                $cliente->estado= "ANULADO";
+                $cliente->update();
             }
             foreach ($clientetabla as $cliente) {
+                foreach (tipo_clientes() as $tipo) {
+                    if ($tipo->descripcion == $cliente->cliente) {
+                        $clientetipo = $tipo->id;
+                    }
+                }
+
                 TipoCliente::create([
                     'producto_id' => $producto->id,
-                    'cliente' => $cliente->cliente,
+                    'cliente' => $clientetipo,
                     'monto' => $cliente->monto_igv,
                     'moneda' => $cliente->id_moneda,
                 ]);
+            }
+        }else{
+            $clientes = TipoCliente::where('producto_id', $id)->get();
+            foreach ($clientes as $cliente) {
+                $cliente->estado= "ANULADO";
+                $cliente->update();
             }
         }
 
@@ -333,14 +339,19 @@ class ProductoController extends Controller
 
     public function obtenerProducto($id)
     {
-        $productos = DB::table('productos_clientes')
+        $cliente_producto = DB::table('productos_clientes')
                     ->join('productos', 'productos_clientes.producto_id', '=', 'productos.id')
                     ->where('productos_clientes.estado','ACTIVO')
                     ->where('productos_clientes.producto_id',$id)
                     ->get();
 
-
-        return $productos;
+        $producto = Producto::where('id',$id)->where('estado','ACTIVO')->first();
+        
+        $resultado = [
+                'cliente_producto' => $cliente_producto,
+                'producto' => $producto,
+            ];
+        return $resultado;
     }
 
     public function productoDescripcion($id)

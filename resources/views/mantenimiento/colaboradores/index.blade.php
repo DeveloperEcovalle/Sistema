@@ -92,6 +92,7 @@
             "bLengthChange": true,
             "bFilter": true,
             "bInfo": true,
+            "serverSide":true,
             "bAutoWidth": false,
             "processing":true,
             "ajax": "{{ route('mantenimiento.colaborador.getTable')}}",

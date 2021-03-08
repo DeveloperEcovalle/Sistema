@@ -123,18 +123,28 @@
                                                                 <div class="invalid-feedback"><b><span id="error-razon_social"></span></b></div>
                                                             </div>
 
-                                                            <div class="form-group">
-                                                                <label>Razón Social Abreviada: </label>
-                                                                <input type="text" id="razon_social_abreviada"
-                                                                    class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}"
-                                                                    name="razon_social_abreviada" value="{{ old('razon_social_abreviada')}}"
-                                                                    onkeyup="return mayus(this)">
+                                                            <div class="form-group row">
+                                                                    <div class="col-lg-8 col-xs-12">
+                                                                        <label>Razón Social Abreviada: </label>
+                                                                        <input type="text" id="razon_social_abreviada"
+                                                                            class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}"
+                                                                            name="razon_social_abreviada" value="{{ old('razon_social_abreviada')}}"
+                                                                            onkeyup="return mayus(this)">
 
-                                                                @if ($errors->has('razon_social_abreviada'))
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $errors->first('razon_social_abreviada') }}</strong>
-                                                                </span>
-                                                                @endif
+                                                                        @if ($errors->has('razon_social_abreviada'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('razon_social_abreviada') }}</strong>
+                                                                        </span>
+                                                                        @endif
+
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-xs-12">
+                                                                        <label id="ubigeo_texto">Ubigeo: </label>
+                                                                        <input type="text" id="ubigeo_empresa" class="form-control {{ $errors->has('ubigeo_empresa') ? ' is-invalid' : '' }}" name="ubigeo_empresa" value="{{ old('ubigeo_empresa')}}">
+                                                                        <div class="invalid-feedback"><b><span id="error-empresa_ubigeo"></span></b></div>
+                                                                    </div>
+
+
                                                             </div>
 
                                                             <div class="form-group row">
@@ -570,6 +580,46 @@
 
                                                     </div>
 
+                                                    <hr>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-md-9">
+                                                            <h4><b>Numeración de facturación</b></h4>
+                                                            <p>Registrar Numeración de facturación de la Empresa:</p>
+                                                            <input type="hidden" id="numeracion_tabla" name="numeracion_tabla[]">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <a class="btn btn-block btn-primary m-t-md"
+                                                                style="color:white;" data-toggle="modal" data-target="#modal_numeracion_facturacion">
+                                                                <i class="fa fa-plus-square"></i> Añadir
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <table class="table dataTables-numeracion table-striped table-bordered table-hover"
+                                                            style="text-transform:uppercase">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">ACCIONES</th>
+                                                                        <th class="text-center">TIPO DE COMPROBANTE</th>
+                                                                        <th class="text-center">SERIE</th>
+                                                                        <th class="text-center">NÚMERO A INICIAR</th>
+                                                                        <th class="text-center">EMISIÓN INICIALIZADA</th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+
 
                                                 
                                                 </div>
@@ -649,6 +699,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 <script src="{{asset('Inspinia/js/plugins/iCheck/icheck.min.js')}}"></script>
 
 <script>
+
 $(document).ready(function() {
     //Iniciar I-Checks
     $('.i-checks').iCheck({
@@ -660,6 +711,9 @@ $(document).ready(function() {
         document.getElementById("facturacion_tab").style.display = "";
         $('#logo_label').addClass("required")
         $('#logo').prop("required",true)
+
+        $('#ubigeo_texto').addClass("required")
+        $('#ubigeo_empresa').prop("required",true)
     });
 
     $('#estado_fe').on('ifUnchecked', function(event) {
@@ -668,6 +722,9 @@ $(document).ready(function() {
         $('#certificado_base').val('')
         $('#estado_certificado').val('SIN VERIFICAR')
         $('#logo').prop("required",false)
+
+        $('#ubigeo_texto').removeClass("required")
+        $('#ubigeo_empresa').prop("required",false)
 
 
     });
@@ -725,6 +782,75 @@ $(document).ready(function() {
 
     });
 
+    $('.dataTables-numeracion').DataTable({
+        "dom": 'Tftp',
+        "bPaginate": true,
+        "bFilter": true,
+        "bInfo": true,
+        "bAutoWidth": false,
+        "language": {
+            "url": "{{asset('Spanish.json')}}"
+        },
+
+        "columnDefs": [
+            {
+
+                "targets": [0],
+                data: null,
+                className: "text-center",
+                render: function(data, type, row) {
+                    if (data.emision == 1) {
+                        return  '-';
+                    }else{
+                        return "<div class='btn-group'>" +
+                        "<a class='btn btn-danger btn-sm' id='borrar_numeracion' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                        "</div>";
+                    }
+
+                }
+            },
+            {
+                "targets": [1],
+                data: 'tipo_comprobante',
+            },
+            {
+                "targets": [2],
+                data: 'serie',
+                className: "text-center",
+              
+            },
+            {
+                "targets": [3],
+                data: 'numero_iniciar',
+                className: "text-center",
+               
+            },
+            {
+                "targets": [4],
+                data: null,
+                className: "text-center",
+                render: function(data, type, row) {
+                    
+                    if (data.emsion == 1) {
+                        return  'SI';
+                    }else{
+                        return "NO";
+                    }
+
+                }
+               
+            },
+            {
+                "targets": [5],
+                data: 'tipo_id',
+                visible: false,
+               
+            },
+
+        ],
+
+    });
+
 })
 
 //Añadir Entidad Financiera
@@ -742,6 +868,10 @@ $(".select2_form").select2({
 });
 
 // Solo campos numericos
+$('#ubigeo_empresa').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
 $('#ruc').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
@@ -785,7 +915,6 @@ $('#logo').on('change', function() {
         $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
     }
 });
-
 
 $('#certificado').on('change', function() {
     var fileInput = document.getElementById('certificado');
@@ -835,7 +964,16 @@ function validarCertificado() {
         $('#soap_password').val('')
     }
 
+    var table = $('.dataTables-numeracion').DataTable();
+    var registros = table.rows().data().length;
 
+    if (registros == 0) {
+        correcto = false
+        toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
+        $('#facturacion_link').click();
+    }
+
+    
     return correcto
 }
 
@@ -894,6 +1032,7 @@ $('#enviar_empresa').submit(function(e) {
                                     $("#estado_dni_representante").prop('disabled', false)
                                     //Cargar Entidades en modal
                                     cargarEntidades()
+                                    cargarNumeracion()
                                     this.submit();
                                     
                                     Swal.fire({
@@ -990,9 +1129,6 @@ $("#direccion_fiscal").keyup(function() {
     }
 })
 
-
-
-
 $("#dni_representante").keyup(function() {
     if ($('#estado_dni_representante').val('ACTIVO')) {
         $('#estado_dni_representante').val('SIN VERIFICAR');
@@ -1005,8 +1141,6 @@ $("#nombre_representante").keyup(function() {
     }
 })
 
-
-
 function camposRuc(objeto) {
     var razonsocial = objeto.value.razonSocial;
     var nombrecorto = objeto.value.nombreComercial;
@@ -1015,6 +1149,7 @@ function camposRuc(objeto) {
     var provincia = objeto.value.provincia;
     var distrito = objeto.value.distrito;
     var estado = objeto.value.estado;
+    var ubigeo = objeto.value.ubigeo;
 
     if (razonsocial != '-' && razonsocial != "NULL") {
         $('#razon_social').val(razonsocial)
@@ -1039,8 +1174,11 @@ function camposRuc(objeto) {
             " - " + distrito)
     }
 
-}
+    if (razonsocial != '-' && razonsocial != "NULL") {
+        $('#ubigeo_empresa').val(ubigeo)
+    }
 
+}
 
 // Consulta Dni
 function consultarDni() {
@@ -1127,7 +1265,7 @@ $('.modal_certificado').click(function(){
     $('#modal_certificado').modal('show');
 })
 
-$('.tabs-container .nav-tabs #bancos_link').click(function() {
+$('.tabs-container .nav-tabs #bancos_link , .tabs-container .nav-tabs #facturacion_link ').click(function() {
     limpiarErrores()
     var enviar = true;
 
@@ -1139,87 +1277,11 @@ $('.tabs-container .nav-tabs #bancos_link').click(function() {
             $('#error-logo_empresa').text("El campo Logo es obligatorio.")
         }
 
-
-
-    }else{
-        enviar = true
-        $('#logo').removeClass("is-invalid")
-        $('#error-logo_empresa').text("")
-    }
-
-
-
-    if ($('#ruc').val() == '') {
-        enviar = false
-        $('#ruc').addClass("is-invalid")
-        toastr.error("Ingrese Ruc de la empresa.", 'Error');
-        $('#error-ruc').text("El campo Ruc es obligatorio.")
-    }
-
-    if ($('#razon_social').val() == '') {
-        enviar = false
-        $('#razon_social').addClass("is-invalid")
-        toastr.error("Ingrese Razón Social de la empresa.", 'Error');
-        $('#error-razon_social').text("El campo Razón Social es obligatorio.")
-    }
-
-    if ($('#direccion_fiscal').val() == '') {
-        enviar = false
-        $('#direccion_fiscal').addClass("is-invalid")
-        toastr.error("Ingrese la Dirección Fiscal de la Empresa.", 'Error');
-        $('#error-direccion_fiscal').text("El campo Dirección Fiscal es obligatorio.")
-    }
-
-    
-    if ($('#direccion_llegada').val() == '') {
-        enviar = false
-        $('#direccion_llegada').addClass("is-invalid")
-        toastr.error("Ingrese la Dirección de Llegada de la Empresa.", 'Error');
-        $('#error-direccion_llegada').text("El campo Dirección de Llegada es obligatorio.")
-    }
-
-    if ($('#dni_representante').val() == '') {
-        enviar = false
-        $('#dni_representante').addClass("is-invalid")
-        toastr.error("Ingrese el Dni del Representante de la Empresa.", 'Error');
-        $('#error-dni_representante').text("El campo Dni es obligatorio.")
-    }
-
-    if ($('#nombre_representante').val() == '') {
-        enviar = false
-        $('#nombre_representante').addClass("is-invalid")
-        toastr.error("Ingrese el Nombre Completo del Representante de la Empresa.", 'Error');
-        $('#error-nombre_representante').text("El campo Nombre Completo es obligatorio.")
-    }
-
-    if ($('#num_asiento').val() == '') {
-        enviar = false
-        $('#num_asiento').addClass("is-invalid")
-        toastr.error("Ingrese el N° de Asiento de la Empresa.", 'Error');
-        $('#error-num_asiento').text("El campo N° de Asiento es obligatorio.")
-    }
-
-    if ($('#num_partida').val() == '') {
-        enviar = false
-        $('#num_partida').addClass("is-invalid")
-        toastr.error("Ingrese el N° de Partida de la Empresa.", 'Error');
-        $('#error-num_partida').text("El campo N° de Partida es obligatorio.")
-    }
-
-    return enviar
-
-})
-
-$('.tabs-container .nav-tabs #facturacion_link').click(function() {
-    limpiarErrores()
-    var enviar = true;
-
-    if ( $('#estado_fe').prop("checked") ) {
-        if (!$('#logo').val()) {
+        if (!$('#ubigeo_empresa').val()) {
             enviar = false
-            $('#logo').addClass("is-invalid")
-            toastr.error("Ingrese Logo de la empresa.", 'Error');
-            $('#error-logo_empresa').text("El campo Logo es obligatorio.")
+            $('#ubigeo_empresa').addClass("is-invalid")
+            toastr.error("Ingrese el ubigeo de la dirección fiscal de la empresa.", 'Error');
+            $('#error-empresa_ubigeo').text("El campo Ubigeo es obligatorio.")
         }
 
     }else{
@@ -1290,7 +1352,6 @@ $('.tabs-container .nav-tabs #facturacion_link').click(function() {
     return enviar
 
 })
-
 
 function limpiarErrores() {
     $('#ruc').removeClass("is-invalid")
@@ -1319,6 +1380,9 @@ function limpiarErrores() {
 
     $('#logo').removeClass("is-invalid")
     $('#error-logo_empresa').text("")
+
+    $('#ubigeo_empresa').removeClass("is-invalid")
+    $('#error-empresa_ubigeo').text("")
 
 
 }

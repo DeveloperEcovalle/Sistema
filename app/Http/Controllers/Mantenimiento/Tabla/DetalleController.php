@@ -117,4 +117,10 @@ class DetalleController extends Controller
         return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('modificar', 'success');
     }
 
+    public function getDetail($descripcion)
+    {
+        $descripcion = Detalle::where('descripcion',$descripcion)->first();
+        return $descripcion;
+    }
+
 }
