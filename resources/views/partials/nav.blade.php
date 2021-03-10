@@ -28,13 +28,6 @@
         <a href="{{route('home')}}"><i class="fa fa-th-large"></i> <span class="nav-label">Panel de control</span></a>
     </li>
 
-
-
-    <li>
-        <a href="layouts.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Estadisticas</span></a>
-    </li>
-
-
     <li class="@yield('pos-active')">
         <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Pos</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">

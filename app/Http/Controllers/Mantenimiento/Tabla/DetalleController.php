@@ -30,7 +30,7 @@ class DetalleController extends Controller
                 'fecha_creacion' =>  Carbon::parse($tabla->created_at)->format( 'd/m/Y - H:i:s'),
                 'fecha_actualizacion' =>   Carbon::parse($tabla->updated_at)->format( 'd/m/Y - H:i:s'),
                 'estado' => $tabla->estado,
-                'editable' => $tabla->tabla->editable
+                'editable' => $tabla->editable,
             ]);
         }
         return DataTables::of($coleccion)->toJson();

@@ -176,7 +176,6 @@ class GuiaController extends Controller
         return $arrayProductos;
     }
 
-
     public function condicionReparto($guia)
     {
         if ($guia->tienda->condicion_reparto == '6') {
@@ -211,7 +210,6 @@ class GuiaController extends Controller
         
         return $cadena;
     }
-
 
     public function show($id)
     {
@@ -294,6 +292,7 @@ class GuiaController extends Controller
 
 
     }
+    
     public function sunat($id)
     {
         $guia = Guia::findOrFail($id);
@@ -302,17 +301,63 @@ class GuiaController extends Controller
         if($existe[0]){
             if ($existe[0]->get('existe') == true) {
                 if ($guia->sunat != '1') {
-                    //OBTENER JSON DE LA GUIA DE REMISION
-                    $guia_remision = event(new GuiaRegistrado($guia, $existe[0]->get('numeracion')->serie));
-                
-                    $data = enviarGuiaapi($guia_remision[0]);
+                    //ARREGLO GUIA
+                    $arreglo_guia = array(
+                            "tipoDoc" => "09",
+                            "serie" => $existe[0]->get('numeracion')->serie,
+                            "correlativo"=> $guia->correlativo,
+                            "fechaEmision" => self::obtenerFecha($guia),
+
+                            "company" => array(  
+                                "ruc" => $guia->documento->empresa->ruc,
+                                "razonSocial" => $guia->documento->empresa->razon_social,
+                                "address" => array(
+                                    "direccion" => $guia->documento->empresa->direccion_fiscal,
+                                )),
+
+
+                            "destinatario" => array(  
+                                "tipoDoc" =>  $guia->documento->cliente->tipoDocumento(),
+                                "numDoc" => $guia->documento->cliente->documento,
+                                "rznSocial" => $guia->documento->cliente->nombre,
+                                "address" => array(
+                                    "direccion" => $guia->documento->cliente->direccion,
+                                )
+                            ),
+
+                            "observacion" => $guia->observacion,
+                            
+                            "envio" => array(
+                                "modTraslado" =>  "01",
+                                "codTraslado" =>  "01",
+                                "desTraslado" =>  "VENTA",
+                                "fecTraslado" =>  self::obtenerFecha($guia),//FECHA DEL TRANSLADO
+                                "codPuerto" => "123",
+                                "indTransbordo"=> false,
+                                "pesoTotal" => $guia->peso_productos,
+                                "undPesoTotal"=> "KGM",
+                                "numBultos" => $guia->cantidad_productos,
+                                "llegada" => array(
+                                    "ubigueo" =>  $guia->ubigeo_llegada,
+                                    "direccion" => self::limitarDireccion($guia->tienda->direccion,50,"..."),
+                                ),
+                                "partida" => array(
+                                    "ubigueo" => $guia->ubigeo_partida,
+                                    "direccion" => self::limitarDireccion($guia->documento->empresa->direccion_fiscal,50,"..."),
+                                ),
+                                "transportista"=> self::condicionReparto($guia)
+                            ),
+
+                            "details" =>  self::obtenerProductos($guia),
+                    );
+                    $data = enviarGuiaapi(json_encode($arreglo_guia));
                     //RESPUESTA DE LA SUNAT EN JSON
                     $json_sunat = json_decode($data);
 
                     if ($json_sunat->sunatResponse->success == true) {
                 
                         $guia->sunat = '1';
-                        $data = pdfGuiaapi($guia_remision[0]);
+                        $data = pdfGuiaapi(json_encode($arreglo_guia));
                         $name = $existe[0]->get('numeracion')->serie."-".$guia->correlativo.'.pdf';
                         $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'.DIRECTORY_SEPARATOR.'guia'.DIRECTORY_SEPARATOR.$name);
                         if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'.DIRECTORY_SEPARATOR.'guia'))) {

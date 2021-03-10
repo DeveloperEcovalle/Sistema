@@ -113,7 +113,6 @@ class TablaSeeder extends Seeder
         $tabla = new General();
         $tabla->descripcion = 'TIPO DE CLIENTE';
         $tabla->sigla = 'TIPO DE CLIENTE';
-        $tabla->editable = '1';
         $tabla->save();
 
         //18

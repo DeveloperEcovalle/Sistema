@@ -26,6 +26,7 @@ class CreateTablaDetallesTable extends Migration
                   ->references('id')->on('tablas')
                   ->onDelete('cascade');
             $table->string('tipo')->nullable();
+            $table->boolean('editable')->default(0);
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();
         });

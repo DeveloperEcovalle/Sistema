@@ -373,7 +373,7 @@
                             cargarClientes();
                             this.submit();
                         }else{
-                            toastr.error('Es obligatorio el ingreso del Cliente Consumidor y la moneda Soles.', 'Error');      
+                            toastr.error('Es obligatorio el ingreso del Cliente Consumidor Final y la moneda Soles.', 'Error');      
                         }
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire(
@@ -754,7 +754,7 @@
             var existe = false
             var table = $('.dataTables-clientes').DataTable();
             table.rows().data().each(function(el, index) {
-                if (el[1] == 'CLIENTE CONSUMIDOR' && el[4] == '4' ) {
+                if (el[1] == 'CONSUMIDOR FINAL' && el[4] == '4' ) {
                     existe = true
                 }
             });

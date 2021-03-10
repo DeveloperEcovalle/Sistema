@@ -13,6 +13,7 @@ class Detalle extends Model
                         'nombre',
                         'descripcion',
                         'simbolo',
+                        'editable',
                         'estado'];
 
     public function tabla()
