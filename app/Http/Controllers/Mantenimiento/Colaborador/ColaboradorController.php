@@ -24,6 +24,7 @@ class ColaboradorController extends Controller
     public function getTable()
     {
         $colaboradores = Colaborador::where('estado','ACTIVO')->orderBy('id','DESC')->get();
+        dd($colaboradores);
         $coleccion = collect([]);
         foreach($colaboradores as $colaborador) {
             if ($colaborador->vendedor)

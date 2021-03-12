@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TablaDetalleSeeder::class);
         $this->call(ParametroSeeder::class);
         $this->call(EmpresaSeeder::class);
-       
+        $this->call(PermissionsSeeder::class);
 
 
     }
