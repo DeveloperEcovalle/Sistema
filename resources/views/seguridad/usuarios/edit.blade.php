@@ -46,7 +46,7 @@
                                     
                                     <div class="form-group" >
                                         
-                                        <label class="required">Empleado: </label> 
+                                        <label class="required">Colaborador: </label> 
                                     
                                         <select class="form-control {{ $errors->has('empleado_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id')}}" name="empleado_id" id="empleado_id" required onchange="obtenerEmpleado(this)">
                                            
@@ -283,14 +283,14 @@
     });
 
     $(document).ready(function() {
-        var id = "{{$usuario->empleado_id}}"
+        var id = "{{$usuario->colaborador_id}}"
         $.get('/seguridad/usuarios/getEmployeeedit/'+ id, function (data) {
                 
             if(data.length > 0){
                 
                 var select = '<option value="" selected disabled >SELECCIONAR</option>'
                 for (var i = 0; i < data.length; i++)
-                    if (data[i].id == "{{$usuario->empleado_id}}") {
+                    if (data[i].id == "{{$usuario->colaborador_id}}") {
                         select += '<option value="' + data[i].id + '" selected >' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
                     }else{
                         select += '<option value="' + data[i].id + '">' + data[i].apellido_paterno+' '+data[i].apellido_materno+' '+data[i].nombres + '</option>';
@@ -300,7 +300,7 @@
             }
 
             $("#empleado_id").html(select);
-            $("#empleado_id").val("{{$usuario->empleado_id}}").trigger("change");
+            $("#empleado_id").val("{{$usuario->colaborador_id}}").trigger("change");
         
 
         });
@@ -382,7 +382,6 @@
     })
 
     function obtenerEmpleado(id) {
-        
         var url = '{{ route("seguridad.usuario.getEmployee.edit", ":id")}}';
         url = url.replace(':id', id.value);
 

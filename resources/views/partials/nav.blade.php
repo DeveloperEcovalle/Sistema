@@ -28,13 +28,6 @@
         <a href="{{route('home')}}"><i class="fa fa-th-large"></i> <span class="nav-label">Panel de control</span></a>
     </li>
 
-
-
-    <li>
-        <a href="layouts.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Estadisticas</span></a>
-    </li>
-
-
     <li class="@yield('pos-active')">
         <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Pos</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -78,6 +71,9 @@
             @can('crud_docventa')
             <li class="@yield('documentos-active')"><a href="{{route('ventas.documento.index')}}">Doc. Venta</a></li>
             @endcan
+            <li class="@yield('comprobantes-active')"><a href="{{route('ventas.comprobantes')}}">Comprobantes</a></li>
+            <li class="@yield('guias-remision-active')"><a href="{{route('ventas.guiasremision.index')}}">Guias de Remision</a></li>
+
         </ul>
     </li>
 
@@ -192,6 +188,7 @@
             <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
             @endcan
             @can('crud_empresa')
+            <li class="@yield('colaboradores-active')"><a href="{{ route('mantenimiento.colaborador.index') }}">Colaboradores</a></li>
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             @endcan
             @can('crud_vendedor')

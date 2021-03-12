@@ -20,9 +20,9 @@ class CajaController extends Controller
     public function getBox(){
 
         $cajas = DB::table('pos_caja_chica')
-        ->join('empleados','pos_caja_chica.empleado_id','=','empleados.id')
-        ->join('personas','empleados.persona_id','=','personas.id')
-        ->select('pos_caja_chica.*','empleados.id as empleado_id','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_paterno,\' \',personas.apellido_materno,\' \',personas.nombres) AS nombre_completo'),DB::raw('DATE_FORMAT(pos_caja_chica.created_at, "%d/%m/%Y %h:%i:%s ") as creado'), DB::raw('DATE_FORMAT(cierre, "%d/%m/%Y %h:%i:%s") as cierre'))
+        ->join('colaboradores','pos_caja_chica.colaborador_id','=','colaboradores.id')
+        ->join('personas','colaboradores.persona_id','=','personas.id')
+        ->select('pos_caja_chica.*','colaboradores.id as empleado_id','personas.apellido_materno','personas.apellido_paterno','personas.nombres',DB::raw('CONCAT(personas.apellido_paterno,\' \',personas.apellido_materno,\' \',personas.nombres) AS nombre_completo'),DB::raw('DATE_FORMAT(pos_caja_chica.created_at, "%d/%m/%Y %h:%i:%s ") as creado'), DB::raw('DATE_FORMAT(cierre, "%d/%m/%Y %h:%i:%s") as cierre'))
         ->where('pos_caja_chica.estado','!=',"ANULADO")
         ->get();
 
@@ -84,14 +84,14 @@ class CajaController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $caja = new Caja();
-        $caja->empleado_id = $request->get('empleado_id');
+        $caja->colaborador_id = $request->get('empleado_id');
         $caja->saldo_inicial = $request->get('saldo_inicial');
         $caja->num_referencia = $request->get('num_referencia');
         $caja->moneda = $request->get('moneda');
         $caja->save();
 
         //Registro de actividad
-        $descripcion = "SE AGREGÓ LA CAJA CHICA DEL EMPLEADO CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
+        $descripcion = "SE AGREGÓ LA CAJA CHICA DEL COLABORADOR CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
         $gestion = "CAJA CHICA";
         crearRegistro($caja, $descripcion , $gestion);
 
@@ -117,13 +117,13 @@ class CajaController extends Controller
         Validator::make($data, $rules, $message)->validate();
         
         $caja = Caja::findOrFail($request->get('caja_id'));
-        $caja->empleado_id = $request->get('empleado_id_editar');
+        $caja->colaborador_id = $request->get('empleado_id_editar');
         $caja->saldo_inicial = $request->get('saldo_inicial_editar');
         $caja->num_referencia = $request->get('num_referencia_editar');
         $caja->update();
 
         //Registro de actividad
-        $descripcion = "SE MODIFICÓ LA CAJA CHICA DEL EMPLEADO CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
+        $descripcion = "SE MODIFICÓ LA CAJA CHICA DEL COLABORADOR CON EL NOMBRE: ". $caja->empleado->persona->nombres.' '.$caja->empleado->persona->apellido_paterno.' '.$caja->empleado->persona->apellido_materno;
         $gestion = "CAJA CHICA";
         modificarRegistro($caja, $descripcion , $gestion);
 
@@ -177,12 +177,12 @@ class CajaController extends Controller
 
     public function getEmployee(){
 
-        $empleados = DB::table('empleados')
-        ->join('personas','empleados.id','=','personas.id')
-        ->select('empleados.id as empleado_id', 'personas.*')
-        ->where('empleados.estado','!=',"ANULADO")
+        $colaboradores = DB::table('colaboradores')
+        ->join('personas','colaboradores.id','=','personas.id')
+        ->select('colaboradores.id as empleado_id', 'personas.*')
+        ->where('colaboradores.estado','!=',"ANULADO")
         ->get();
 
-        return $empleados;
+        return $colaboradores;
     }
 }

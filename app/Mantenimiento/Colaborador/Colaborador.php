@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Mantenimiento\Empleado;
+namespace App\Mantenimiento\Colaborador;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Empleado extends Model
+class Colaborador extends Model
 {
-    protected $table = 'empleados';
+    protected $table = 'colaboradores';
     protected $fillable =[
         'persona_id',
         'area',

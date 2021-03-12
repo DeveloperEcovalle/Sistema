@@ -30,7 +30,7 @@ class DetalleController extends Controller
                 'fecha_creacion' =>  Carbon::parse($tabla->created_at)->format( 'd/m/Y - H:i:s'),
                 'fecha_actualizacion' =>   Carbon::parse($tabla->updated_at)->format( 'd/m/Y - H:i:s'),
                 'estado' => $tabla->estado,
-                'editable' => $tabla->tabla->editable
+                'editable' => $tabla->editable,
             ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -115,6 +115,38 @@ class DetalleController extends Controller
 
         Session::flash('success','Detalle modificado.');
         return redirect()->route('mantenimiento.tabla.detalle.index',$detalle->tabla_id)->with('modificar', 'success');
+    }
+
+    public function getDetail($descripcion)
+    {
+        $descripcion = Detalle::where('descripcion',$descripcion)->first();
+        return $descripcion;
+    }
+
+    public function exist(Request $request)
+    {
+        $data = $request->all();
+        $descripcion = $data['descripcion'];
+        $id = $data['id'];
+        $id_general = $data['id_general'];
+        $detalle = null;
+
+        if ($descripcion && $id) { // edit
+            $detalle = Detalle::where([
+                                    [ 'descripcion', $data['descripcion']],
+                                    [ 'tabla_id', $data['id_general']],
+                                    [ 'id', '<>', $data['id']]
+                                ])->where('estado','!=','ANULADO')->first();
+        
+        } else if ($descripcion && !$id) { // create
+            $detalle = Detalle::where([
+                                        [ 'descripcion', $data['descripcion']],
+                                        [ 'tabla_id', $data['id_general']]
+                                    ])->where('estado','!=','ANULADO')->first();
+        }
+
+        $result = ['existe' => ($detalle) ? true : false];
+        return response()->json($result);
     }
 
 }

@@ -11,6 +11,7 @@
                 <small class="font-bold">Editar detalle</small>
             </div>
             <div class="modal-body">
+                
                 <input type="hidden" id="id_editar" name="id_editar">
                 <input type="hidden" id="medida_editar" name="medida_editar">
                 <input type="hidden" id="indice" name="indice">
@@ -33,7 +34,7 @@
 
                     <div class="col-lg-6 col-xs-12">
                         <label class="required">Cantidad</label>
-                        <input type="text" id="cantidad_editar" name="cantidad_editar" class="form-control" maxlength="10" onkeypress="return isNumber(event);" required>
+                        <input type="number" id="cantidad_editar" name="cantidad_editar" class="form-control" maxlength="10" onkeypress="return isNumber(event);" readonly>
                     </div>
                     <div class="col-lg-6 col-xs-12">
                         <label class="required">Precio</label>
@@ -58,6 +59,16 @@
 
 @push('scripts')
 <script>
+
+$('#cantidad_editar').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    let max= parseInt(this.max);
+    let valor = parseInt(this.value);
+    if(valor>max){
+        toastr.error('La cantidad ingresada supera al stock del producto Max('+max+').', 'Error');
+        this.value = max;
+    }
+});
 //Validacion al ingresar tablas
 $("#btn_editar_detalle").click(function() {
     // limpiarErrores()
@@ -137,7 +148,6 @@ function actualizarTabla(i) {
     agregarTabla(detalle);
 
 }
-
 
 function limpiar() {
 

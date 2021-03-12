@@ -53,7 +53,7 @@
 
                                 <div class="form-group row">
 
-                                    <div class="col-lg-12 col-xs-12">
+                                    <div class="col-lg-6 col-xs-12">
                                         <label class="required">Unidad de Medida</label>
                                         <select id="medida" name="medida" class="select2_form form-control {{ $errors->has('medida') ? ' is-invalid' : '' }}">
                                             <option></option>
@@ -67,6 +67,17 @@
                                             </span>
                                         @endif
                                     </div>
+
+                                    <div class="col-lg-6 col-xs-12">
+                                        <label class="required">Peso (KG)</label>
+                                        <input type="number" id="peso_producto" placeholder="0.00" step="0.001" min="0"  required onkeypress="return filterFloat(event, this);"  class="form-control {{ $errors->has('peso_producto') ? ' is-invalid' : '' }}" name="peso_producto" value="{{ old('peso_producto')}}">
+                                        @if ($errors->has('peso_producto'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('peso_producto') }}</strong>
+                                            </span>
+                                        @endif 
+                                    </div>
+
                                 </div>
 
 
@@ -135,8 +146,8 @@
                                 <h4><b>Cantidades y Precios</b></h4>
                                 <div class="form-group row">
                                     <div class="col-lg-6 col-xs-12">
-                                        <label class="required">Stock</label>
-                                        <input type="text" id="stock" name="stock" class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{old('stock')}}" maxlength="10" onkeypress="return isNumber(event);" required>
+                                        <label class="">Stock</label>
+                                        <input type="text" id="stock" name="stock" readonly class="form-control {{ $errors->has('stock') ? ' is-invalid' : '' }}" value="{{old('stock')}}" maxlength="10" onkeypress="return isNumber(event);" required>
                                         @if ($errors->has('stock'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('stock') }}</strong>
@@ -321,9 +332,7 @@
     <script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
     <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
     <script>
-        var table;
-        var detalles = [];
-        var objectRowDelete, objectRowEdit;
+
 
         //Modal Eliminar
         const swalWithBootstrapButtons = Swal.mixin({
@@ -342,70 +351,13 @@
                 width: '100%',
             });
 
-            table = $('.dataTables-detalle-producto').DataTable({
-                "dom": 'lTfgitp',
-                "bPaginate": true,
-                "bLengthChange": true,
-                "responsive": true,
-                "bFilter": true,
-                "bInfo": false,
-                "columnDefs": [
-                    {
-                        "targets": 0,
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        searchable: false,
-                        targets: -1,
-                        data: null,
-                        defaultContent: "<button type='button' class='btn btn-sm btn-warning mr-1 btn-edit'>" +
-                                                "<i class='fa fa-pencil'></i>" +
-                                            "</button>" +
-                                            "<button type='button' class='btn btn-sm btn-danger mr-1 btn-delete'>" +
-                                                "<i class='fa fa-trash'></i>" +
-                                            "</button>"
-                    }
-                ],
-                'bAutoWidth': false,
-                'aoColumns': [
-                    { sWidth: '0%' },
-                    { sWidth: '40%', sClass: 'text-left' },
-                    { sWidth: '10%', sClass: 'text-center' },
-                    { sWidth: '10%', sClass: 'text-center' },
-                    { sWidth: '30%', sClass: 'text-left' },
-                    { sWidth: '10%', sClass: 'text-center' },
-                ],
-                'data': getData(),
-                "language": {
-                    url: "{{asset('Spanish.json')}}"
-                },
-                "order": [[ 0, "desc" ]],
-            });
-
             //Controlar Error
             $.fn.DataTable.ext.errMode = 'throw';
 
             $("#codigo").on("change", validarCodigo);
-
             $("#familia").on("change", obtenerSubFamilias);
-
-            $("#btn_agregar_detalle").on("click", agregarDetalle);
-
-            $("#btn_editar_detalle").on("click", editarDetalle);
-
-            $('.dataTables-detalle-producto tbody').on('click', 'button.btn-edit', cargarDetalle);
-
-            $('.dataTables-detalle-producto tbody').on('click', 'button.btn-delete', eliminarDetalle);
-
             $('#form_registrar_producto').submit(function(e) {
                 e.preventDefault();
-                if (detalles !== undefined && detalles.length <= 0) {
-                    //.error('Debe ingresar los detalles del producto');
-                    //return false;
-                }
-                //$("#detalles").val(JSON.stringify(detalles));
-
                 Swal.fire({
                     title: 'Opción Guardar',
                     text: "¿Seguro que desea guardar cambios?",
@@ -416,42 +368,13 @@
                     cancelButtonText: "No, Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-
-
-                        var existe = cantidadTipo()
-            
-                        if (existe == false) {
-                            
-                            Swal.fire({
-                                title: 'Tipo de clientes',
-                                text: "¿Seguro que desea agregar Producto sin ningun tipo de cliente?",
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: "#1ab394",
-                                confirmButtonText: 'Si, Confirmar',
-                                cancelButtonText: "No, Cancelar",
-                            }).then((result) => {
-                                
-                                if (result.isConfirmed) {
-                                    cargarClientes();
-                                    this.submit();
-                                } else if (
-                                    /* Read more about handling dismissals below */
-                                    result.dismiss === Swal.DismissReason.cancel
-                                ) {
-                                    swalWithBootstrapButtons.fire(
-                                        'Ingresar tipo de cliente',
-                                        'La Solicitud se ha cancelado.',
-                                        'error'
-                                    )
-                                }
-                            })
-                        }else{
+                        var existe = buscarConsumidor() 
+                        if (existe == true) {
                             cargarClientes();
                             this.submit();
+                        }else{
+                            toastr.error('Es obligatorio el ingreso del Cliente Consumidor Final y la moneda Soles.', 'Error');      
                         }
-
-
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire(
                             'Cancelado',
@@ -463,21 +386,6 @@
             });
 
         });
-
-        function getData() {
-            detalles = ($("#detalles").val() === undefined || $("#detalles").val() === "") ? [] : JSON.parse($("#detalles").val());
-            var data = [];
-            detalles.forEach(obj => {
-                data.push([
-                    String(obj.articulo_id),
-                    String(obj.articulo),
-                    parseInt(obj.cantidad),
-                    parseFloat(obj.peso),
-                    String(obj.observacion)
-                ]);
-            });
-            return data;
-        }
 
         function validarCodigo() {
             // Consultamos nuestra BBDD
@@ -541,148 +449,8 @@
             });
         }
 
-        function agregarDetalle() {
 
-            var detalle = {
-                articulo_id: $("#articulo").val(),
-                articulo: $("#articulo").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad").val()),
-                peso: parseFloat($("#peso").val()),
-                observacion: $("#observacion").val()
-            };
 
-            if (validarDetalle(detalle)) {
-                table.row.add([
-                    detalle.articulo_id,
-                    detalle.articulo,
-                    detalle.cantidad,
-                    detalle.peso,
-                    detalle.observacion
-                ]).draw(false);
-                detalles.push(detalle);
-                limpiarCamposDetalle();
-            }
-        }
-
-        function cargarDetalle() {
-            //console.log(table.row($(this).parents("tr")).data());
-            var dataRow = table.row($(this).parents("tr")).data();
-            objectRowEdit = table.row($(this).parents("tr"));
-            $("#articulo_editar").val(dataRow[0]).trigger("change");
-            $("#cantidad_editar").val(dataRow[2]);
-            $("#peso_editar").val(dataRow[3]);
-            $("#observacion_editar").val(dataRow[4]);
-
-            $('#modal_editar_detalle').modal('show');
-        }
-
-        function editarDetalle() {
-            var detalle = {
-                articulo_id: $("#articulo_editar").val(),
-                articulo: $("#articulo_editar").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad_editar").val()),
-                peso: parseFloat($("#peso_editar").val()),
-                observacion: $("#observacion_editar").val()
-            };
-
-            if (validarDetalle(detalle, true)) {
-                var indexRow = objectRowEdit.index();
-                detalles.forEach((element, index) => {
-                    if(element.articulo_id === detalle.articulo_id) {
-                        detalles[index] = detalle;
-                    }
-                });
-                objectRowEdit.cell(indexRow, 0).data(detalle.articulo_id).draw(false);
-                objectRowEdit.cell(indexRow, 1).data(detalle.articulo).draw(false);
-                objectRowEdit.cell(indexRow, 2).data(detalle.cantidad).draw(false);
-                objectRowEdit.cell(indexRow, 3).data(detalle.peso).draw(false);
-                objectRowEdit.cell(indexRow, 4).data(detalle.observacion).draw(false);
-
-                $('#modal_editar_detalle').modal('hide');
-            }
-        }
-
-        function eliminarDetalle() {
-            //console.log(table.row($(this).parents("tr")).data());
-            Swal.fire({
-                title: 'Opción Eliminar',
-                text: "¿Seguro que desea eliminar registro?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: "#1ab394",
-                confirmButtonText: 'Si, Confirmar',
-                cancelButtonText: "No, Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    var dataRow = table.row($(this).parents("tr")).data();
-                    objectRowDelete = table.row($(this).parents("tr"));
-                    table.row($(this).parents("tr")).remove().draw();
-                    var removeIndex = detalles.map(function(item) { return item.articulo_id; }).indexOf(dataRow[0]);
-                    detalles.splice(removeIndex, 1);
-
-                }else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelado',
-                        'La Solicitud se ha cancelado.',
-                        'error'
-                    )
-
-                }
-            })
-
-        }
-
-        function validarDetalle(detalle, isEditar = false) {
-
-            if (!isEditar) {
-                if (detalle.articulo_id === undefined || detalle.articulo_id === null || detalle.articulo_id.length === 0
-                    || detalle.articulo === undefined || detalle.articulo === null || detalle.articulo.length === 0) {
-                    toastr.error('El campo Artículo es obligatorio');
-                    return false;
-                }
-                if (detalles.find(d => d.articulo_id === detalle.articulo_id) !== undefined) {
-                    toastr.error('El artículo seleccionado ya existe en el detalle del producto');
-                    return false;
-                }
-            }
-
-            if (detalle.cantidad === undefined || detalle.cantidad === null || Number.isNaN(detalle.cantidad)) {
-                toastr.error('El campo Cantidad es obligatorio');
-                return false;
-            }
-            if (detalle.cantidad <= 0) {
-                toastr.error('La cantidad ingresada debe ser mayor a cero');
-                return false;
-            }
-            if (detalle.peso === undefined || detalle.peso === null || Number.isNaN(detalle.peso)) {
-                toastr.error('El campo Peso es obligatorio');
-                return false;
-            }
-            if (detalle.peso <= 0) {
-                toastr.error('El peso ingresado debe ser mayor a cero');
-                return false;
-            }
-
-            return true;
-        }
-
-        function limpiarCamposDetalle() {
-            $("#articulo").val("").trigger("change");
-            $("#cantidad").val("");
-            $("#peso").val("");
-            $("#observacion").val("");
-        }
-
-        $('#modal_editar_detalle').on('hidden.bs.modal', function(e) {
-            $("#articulo_editar").val("").trigger("change");
-            $("#cantidad_editar").val("");
-            $("#peso_editar").val("");
-            $("#observacion_editar").val("");
-        });
 
 
     </script>
@@ -870,16 +638,12 @@
                         var detalle = {
                             cliente: $('#cliente').val(),
                             monto: $('#monto').val(),
-                            // moneda: cargarMoneda($('#moneda_cliente').val()),
                             moneda: $('#moneda_cliente').val(),
                             id_moneda: $('#moneda_cliente').val(),
-
-
                         }
+                     
                         limpiarDetalle()
                         agregarTabla(detalle);
-                        // sumaTotal()
-
 
                     } else if (
                         /* Read more about handling dismissals below */
@@ -922,7 +686,6 @@
             ]).draw(false);
 
             cargarClientes()
-
         }
 
         function cargarMoneda(id) {
@@ -943,19 +706,28 @@
             var clientes = [];
             var table = $('.dataTables-clientes').DataTable();
             var data = table.rows().data();
-            data.each(function(value, index) {
-                let fila = {
-                    cliente: value[1],
-                    monto_igv: value[3],
-                    moneda: value[2],
-                    id_moneda: value[4],
-                };
 
-                clientes.push(fila);
+            data.each(function(value, index) {
+
+                var url = '{{ route("mantenimiento.tabla.detalle.getDetail", ":descripcion")}}';
+                url = url.replace(':descripcion', value[1]);
+                
+                $.ajax({
+                    url: url,
+                    type:'get',
+                    success : function(tabladetalle){
+                        let fila = {
+                            cliente: tabladetalle.id,
+                            monto_igv: value[3],
+                            moneda: value[2],
+                            id_moneda: value[4],
+                        };
+                        clientes.push(fila);
+                        $('#clientes_tabla').val(JSON.stringify(clientes));
+                    },            
+                })
 
             });
-
-            $('#clientes_tabla').val(JSON.stringify(clientes));
         }
 
         function limpiarDetalle() {
@@ -976,19 +748,18 @@
             $('#error-moneda').text('')
         }
 
-        //Consultar si existe tipos de clientes
-        function cantidadTipo() {
-            var existe = true
-            var table = $('.dataTables-clientes').DataTable();
-            var registros = table.rows().data().length;
 
-            if (registros == 0) {
-                existe = false
-            }
+        //CONSULTAR SI EXISTE EL CLIENTE TIPO CONSUMIDOR
+        function buscarConsumidor() {
+            var existe = false
+            var table = $('.dataTables-clientes').DataTable();
+            table.rows().data().each(function(el, index) {
+                if (el[1] == 'CONSUMIDOR FINAL' && el[4] == '4' ) {
+                    existe = true
+                }
+            });
             return existe
         }
-
-
-
+        
     </script>
 @endpush

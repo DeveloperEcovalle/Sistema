@@ -42,11 +42,14 @@ Route::prefix('mantenimiento/tablas/generales')->group(function() {
 
 //Tabla Detalle
 Route::prefix('mantenimiento/tablas/detalles')->group(function() {
-    Route::get('index/{id}', 'Mantenimiento\Tabla\DetalleController@index')->name('mantenimiento.tabla.detalle.index')->middleware('permission:crud_detalle');
+    Route::get('index/{id}', 'Mantenimiento\Tabla\DetalleController@index')->name('mantenimiento.tabla.detalle.index');
     Route::get('getTable/{id}','Mantenimiento\Tabla\DetalleController@getTable')->name('getTableDetalle');
-    Route::get('destroy/{id}', 'Mantenimiento\Tabla\DetalleController@destroy')->name('mantenimiento.tabla.detalle.destroy')->middleware('permission:crud_detalle');
-    Route::post('store', 'Mantenimiento\Tabla\DetalleController@store')->name('mantenimiento.tabla.detalle.store')->middleware('permission:crud_detalle');
-    Route::put('update', 'Mantenimiento\Tabla\DetalleController@update')->name('mantenimiento.tabla.detalle.update')->middleware('permission:crud_detalle');
+    Route::get('destroy/{id}', 'Mantenimiento\Tabla\DetalleController@destroy')->name('mantenimiento.tabla.detalle.destroy');
+    Route::post('store', 'Mantenimiento\Tabla\DetalleController@store')->name('mantenimiento.tabla.detalle.store');
+    Route::put('update', 'Mantenimiento\Tabla\DetalleController@update')->name('mantenimiento.tabla.detalle.update');
+    Route::get('getDetail/{id}','Mantenimiento\Tabla\DetalleController@getDetail')->name('mantenimiento.tabla.detalle.getDetail');
+    Route::post('/exist', 'Mantenimiento\Tabla\DetalleController@exist')->name('mantenimiento.tabla.detalle.exist');
+
 });
 
 //Empresas
@@ -59,8 +62,10 @@ Route::prefix('mantenimiento/empresas')->group(function() {
     Route::get('show/{id}', 'Mantenimiento\Empresa\EmpresaController@show')->name('mantenimiento.empresas.show')->middleware('permission:crud_empresa');
     Route::get('edit/{id}', 'Mantenimiento\Empresa\EmpresaController@edit')->name('mantenimiento.empresas.edit')->middleware('permission:crud_empresa');
     Route::put('update/{id}', 'Mantenimiento\Empresa\EmpresaController@update')->name('mantenimiento.empresas.update')->middleware('permission:crud_empresa');
-
+    Route::get('serie/{id}', 'Mantenimiento\Empresa\EmpresaController@serie')->name('serie.empresa.facturacion')->middleware('permission:crud_empresa');
     Route::post('certificate', 'Mantenimiento\Empresa\EmpresaController@certificate')->name('mantenimiento.empresas.certificado')->middleware('permission:crud_empresa');
+    Route::get('obtenerNumeracion/{id}','Mantenimiento\Empresa\EmpresaController@obtenerNumeracion')->name('mantenimiento.empresas.obtenerNumeracion')->middleware('permission:crud_empresa');
+
 });
 //Compras
 //Categoria
@@ -98,20 +103,19 @@ Route::prefix('compras/proveedores')->group(function() {
 Route::prefix('compras/ordenes')->group(function() {
     Route::get('index', 'Compras\OrdenController@index')->name('compras.orden.index')->middleware('permission:crud_orden');
     Route::get('getOrder','Compras\OrdenController@getOrder')->name('getOrder');
-    Route::get('create','Compras\OrdenController@create')->name('compras.orden.create')->middleware('permission:crud_orden');
-    Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store')->middleware('permission:crud_orden');
-    Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit')->middleware('permission:crud_orden');
-    Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show')->middleware('permission:crud_orden');
-    Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update')->middleware('permission:crud_orden');
-    Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy')->middleware('permission:crud_orden');
-    Route::get('reporte/{id}','Compras\OrdenController@report')->name('compras.orden.reporte')->middleware('permission:crud_orden');
-    Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email')->middleware('permission:crud_orden');
-    Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada')->middleware('permission:crud_orden');
-    Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios')->middleware('permission:crud_orden');
-    Route::get('documento/{id}','Compras\OrdenController@document')->name('compras.orden.documento')->middleware('permission:crud_orden');
-    Route::get('nuevodocumento/{id}','Compras\OrdenController@newdocument')->name('compras.orden.nuevodocumento')->middleware('permission:crud_orden');
-
-    Route::get('confirmarEliminar/{id}','Compras\OrdenController@confirmDestroy')->name('compras.orden.confirmDestroy')->middleware('permission:crud_orden');
+    Route::get('create','Compras\OrdenController@create')->name('compras.orden.create');
+    Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store');
+    Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit');
+    Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show');
+    Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update');
+    Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy');
+    Route::get('reporte/{id}','Compras\OrdenController@report')->name('compras.orden.reporte');
+    Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email');
+    Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada');
+    Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
+    Route::get('documento/{id}','Compras\OrdenController@document')->name('compras.orden.documento');
+    Route::get('nuevodocumento/{id}','Compras\OrdenController@newdocument')->name('compras.orden.nuevodocumento');
+    Route::get('confirmarEliminar/{id}','Compras\OrdenController@confirmDestroy')->name('compras.orden.confirmDestroy');
 
     //Pagos
     Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index')->middleware('permission:crud_orden');
@@ -265,17 +269,17 @@ Route::prefix('mantenimiento/ubigeo')->group(function() {
     Route::post('/api_ruc', 'Mantenimiento\Ubigeo\UbigeoController@api_ruc')->name('mantenimiento.ubigeo.api_ruc');
 });
 
-// Empleados
-Route::prefix('mantenimiento/empleados')->group(function() {
-    Route::get('/', 'Mantenimiento\Empleado\EmpleadoController@index')->name('mantenimiento.empleado.index')->middleware('permission:crud_empleado');
-    Route::get('/getTable', 'Mantenimiento\Empleado\EmpleadoController@getTable')->name('mantenimiento.empleado.getTable');
-    Route::get('/registrar', 'Mantenimiento\Empleado\EmpleadoController@create')->name('mantenimiento.empleado.create')->middleware('permission:crud_empleado');
-    Route::post('/registrar', 'Mantenimiento\Empleado\EmpleadoController@store')->name('mantenimiento.empleado.store')->middleware('permission:crud_empleado');
-    Route::get('/actualizar/{id}', 'Mantenimiento\Empleado\EmpleadoController@edit')->name('mantenimiento.empleado.edit')->middleware('permission:crud_empleado');
-    Route::put('/actualizar/{id}', 'Mantenimiento\Empleado\EmpleadoController@update')->name('mantenimiento.empleado.update')->middleware('permission:crud_empleado');
-    Route::get('/datos/{id}', 'Mantenimiento\Empleado\EmpleadoController@show')->name('mantenimiento.empleado.show')->middleware('permission:crud_empleado');
-    Route::get('/destroy/{id}', 'Mantenimiento\Empleado\EmpleadoController@destroy')->name('mantenimiento.empleado.destroy')->middleware('permission:crud_empleado');
-    Route::post('/getDNI', 'Mantenimiento\Empleado\EmpleadoController@getDNI')->name('mantenimiento.empleado.getDni');
+// Colaboradores
+Route::prefix('mantenimiento/colaboradores')->group(function() {
+    Route::get('/', 'Mantenimiento\Colaborador\ColaboradorController@index')->name('mantenimiento.colaborador.index');
+    Route::get('/getTable', 'Mantenimiento\Colaborador\ColaboradorController@getTable')->name('mantenimiento.colaborador.getTable');
+    Route::get('/registrar', 'Mantenimiento\Colaborador\ColaboradorController@create')->name('mantenimiento.colaborador.create');
+    Route::post('/registrar', 'Mantenimiento\Colaborador\ColaboradorController@store')->name('mantenimiento.colaborador.store');
+    Route::get('/actualizar/{id}', 'Mantenimiento\Colaborador\ColaboradorController@edit')->name('mantenimiento.colaborador.edit');
+    Route::put('/actualizar/{id}', 'Mantenimiento\Colaborador\ColaboradorController@update')->name('mantenimiento.colaborador.update');
+    Route::get('/datos/{id}', 'Mantenimiento\Colaborador\ColaboradorController@show')->name('mantenimiento.colaborador.show');
+    Route::get('/destroy/{id}', 'Mantenimiento\Colaborador\ColaboradorController@destroy')->name('mantenimiento.colaborador.destroy');
+    Route::post('/getDNI', 'Mantenimiento\Colaborador\ColaboradorController@getDNI')->name('mantenimiento.colaborador.getDni');
 });
 
 // Vendedores
@@ -303,7 +307,7 @@ Route::prefix('ventas/clientes')->group(function() {
     Route::get('/datos/{id}', 'Ventas\ClienteController@show')->name('ventas.cliente.show')->middleware('permission:crud_cliente');
     Route::get('/destroy/{id}', 'Ventas\ClienteController@destroy')->name('ventas.cliente.destroy')->middleware('permission:crud_cliente');
     Route::post('/getDocumento', 'Ventas\ClienteController@getDocumento')->name('ventas.cliente.getDocumento');
-
+    Route::post('/getCustomer', 'Ventas\ClienteController@getCustomer')->name('ventas.cliente.getcustomer');
     //Tiendas
     Route::get('tiendas/index/{id}', 'Ventas\TiendaController@index')->name('clientes.tienda.index');
     Route::get('tiendas/getShop/{id}','Ventas\TiendaController@getShop')->name('clientes.tienda.shop');
@@ -339,15 +343,25 @@ Route::prefix('ventas/documentos')->group(function(){
 
     Route::get('index', 'Ventas\DocumentoController@index')->name('ventas.documento.index')->middleware('permission:crud_docventa');
     Route::get('getDocument','Ventas\DocumentoController@getDocument')->name('ventas.getDocument');
-    Route::get('create', 'Ventas\DocumentoController@create')->name('ventas.documento.create')->middleware('permission:crud_docventa');
-    Route::post('store', 'Ventas\DocumentoController@store')->name('ventas.documento.store')->middleware('permission:crud_docventa');
-    Route::get('edit/{id}','Ventas\DocumentoController@edit')->name('ventas.documento.edit')->middleware('permission:crud_docventa');
-    Route::put('update/{id}', 'Ventas\DocumentoController@update')->name('ventas.documento.update')->middleware('permission:crud_docventa');
-    Route::get('destroy/{id}', 'Ventas\DocumentoController@destroy')->name('ventas.documento.destroy')->middleware('permission:crud_docventa');
-    Route::get('show/{id}','Ventas\DocumentoController@show')->name('ventas.documento.show')->middleware('permission:crud_docventa');
-    Route::get('reporte/{id}','Ventas\DocumentoController@report')->name('ventas.documento.reporte')->middleware('permission:crud_docventa');
-    Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente')->middleware('permission:crud_docventa');
-    Route::get('comprobante/{id}','Ventas\DocumentoController@voucher')->name('ventas.documento.comprobante')->middleware('permission:crud_docventa');
+    Route::get('create', 'Ventas\DocumentoController@create')->name('ventas.documento.create');
+    Route::post('store', 'Ventas\DocumentoController@store')->name('ventas.documento.store');
+    Route::get('edit/{id}','Ventas\DocumentoController@edit')->name('ventas.documento.edit');
+    Route::put('update/{id}', 'Ventas\DocumentoController@update')->name('ventas.documento.update');
+    Route::get('destroy/{id}', 'Ventas\DocumentoController@destroy')->name('ventas.documento.destroy');
+    Route::get('show/{id}','Ventas\DocumentoController@show')->name('ventas.documento.show');
+    Route::get('reporte/{id}','Ventas\DocumentoController@report')->name('ventas.documento.reporte');
+    Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente');
+    Route::get('comprobante/{id}','Ventas\DocumentoController@voucher')->name('ventas.documento.comprobante');
+    Route::get('sunat/comprobante/{id}','Ventas\DocumentoController@sunat')->name('ventas.documento.sunat');
+    
+    //Comprobantes Electronicos
+    Route::get('index/comprobantes', 'Ventas\DocumentoController@indexVouchers')->name('ventas.comprobantes');
+    Route::get('getVouchers','Ventas\DocumentoController@getVouchers')->name('ventas.getVouchers');
+    Route::post('vouchersAvaible','Ventas\DocumentoController@vouchersAvaible')->name('ventas.vouchersAvaible');
+    Route::post('customers','Ventas\DocumentoController@customers')->name('ventas.customers');
+    Route::get('getLot/{id}','Ventas\DocumentoController@getLot')->name('ventas.getLot');
+
+
 
     //Pagos
     Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
@@ -366,9 +380,25 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('transferencia/pagos/destroy/', 'Ventas\Documentos\TransferenciaController@destroy')->name('ventas.documentos.transferencia.pago.destroy');
     Route::get('transferencia/pagos/show/', 'Ventas\Documentos\TransferenciaController@show')->name('ventas.documentos.transferencia.pago.show');
 
+});
 
+//GUIAS DE REMISION
 
+Route::prefix('guiasremision/')->group(function(){
 
+    Route::get('index', 'Ventas\GuiaController@index')->name('ventas.guiasremision.index');
+    Route::get('getGuia','Ventas\GuiaController@getGuias')->name('ventas.getGuia');
+    Route::get('create/{id}', 'Ventas\GuiaController@create')->name('ventas.guiasremision.create');
+    Route::post('store', 'Ventas\GuiaController@store')->name('ventas.guiasremision.store');
+    Route::put('update/{id}', 'Ventas\GuiaController@update')->name('ventas.guiasremision.update');
+    Route::get('destroy/{id}', 'Ventas\GuiaController@destroy')->name('ventas.guiasremision.destroy');
+    Route::get('show/{id}','Ventas\GuiaController@show')->name('ventas.guiasremision.show');
+    Route::get('reporte/{id}','Ventas\GuiaController@report')->name('ventas.guiasremision.reporte');
+    Route::get('tiendaDireccion/{id}', 'Ventas\GuiaController@tiendaDireccion')->name('ventas.guiasremision.tienda_direccion');
+    Route::get('sunat/guia/{id}','Ventas\GuiaController@sunat')->name('ventas.guiasremision.sunat');
+    // Route::get('tipoPago/{id}','Ventas\GuiaController@TypePay')->name('ventas.documento.tipo_pago.existente');
+    // Route::get('comprobante/{id}','Ventas\GuiaController@voucher')->name('ventas.documento.comprobante');
+    // Route::get('sunat/comprobante/{id}','Ventas\GuiaController@sunat')->name('ventas.documento.sunat');
 
 });
 

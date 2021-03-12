@@ -22,6 +22,7 @@ class Producto extends Model
         'estado',
         'codigo_barra',
         'linea_comercial',
+        'peso_producto'
     ];
     protected $casts = [
         'igv' => 'boolean'
@@ -51,6 +52,7 @@ class Producto extends Model
     {
         return $this->belongsTo('App\Mantenimiento\Tabla\detalle','medida');
     }
+    
     public function getMedida(): string
     {
         $medida = unidad_medida()->where('id', $this->medida)->first();

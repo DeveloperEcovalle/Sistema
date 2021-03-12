@@ -19,4 +19,14 @@ class TipoCliente extends Model
     {
         return $this->belongsTo('App\Almacenes\Producto');
     }
+
+    public function tipocliente(): string
+    {
+        $cliente = tipo_clientes()->where('id', $this->cliente)->first();
+        if (is_null($cliente))
+            return "-";
+        else
+            return $cliente->descripcion;
+    }
+
 }

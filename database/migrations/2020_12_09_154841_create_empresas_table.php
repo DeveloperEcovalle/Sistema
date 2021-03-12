@@ -24,6 +24,7 @@ class CreateEmpresasTable extends Migration
             $table->longText('base64_logo')->nullable();
 
             $table->mediumText('direccion_fiscal');
+            $table->string('ubigeo')->nullable();
             $table->string('telefono')->nullable();
             $table->string('celular')->nullable();
             $table->string('correo')->nullable();

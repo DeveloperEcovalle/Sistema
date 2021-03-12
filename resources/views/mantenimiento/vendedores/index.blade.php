@@ -93,6 +93,7 @@
                 "bFilter": true,
                 "bInfo": true,
                 "bAutoWidth": false,
+                "serverSide":true,
                 "processing":true,
                 "ajax": "{{ route('mantenimiento.vendedor.getTable')}}",
                 "columns": [

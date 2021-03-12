@@ -21,7 +21,12 @@ class Documento extends Model
         'igv',
         'igv_check',
         'tipo_venta',
-        'cotizacion_venta'
+        'cotizacion_venta',
+        'sunat',
+        'correlativo',
+        'serie',
+        'ruta_comprobante_archivo',
+        'nombre_comprobante_archivo'
     ];
 
     public function empresa()
@@ -44,31 +49,40 @@ class Documento extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function tipoOperacion(): string
+    public function nombreTipo(): string
     {
-        $venta = tipos_venta()->where('descripcion', $this->tipo_venta)->first();
+        $venta = tipos_venta()->where('id', $this->tipo_venta)->first();
         if (is_null($venta))
             return "-";
         else
-            return $venta->operacion;
+            return strval($venta->nombre);
+    }
+
+    public function descripcionTipo(): string
+    {
+        $venta = tipos_venta()->where('id', $this->tipo_venta)->first();
+        if (is_null($venta))
+            return "-";
+        else
+            return strval($venta->descripcion);
+    }
+
+    public function tipoOperacion(): string
+    {
+        $venta = tipos_venta()->where('id', $this->tipo_venta)->first();
+        if (is_null($venta))
+            return "-";
+        else
+            return strval($venta->operacion);
     }
 
     public function tipoDocumento(): string
     {
-        $venta = tipos_venta()->where('descripcion', $this->tipo_venta)->first();
+        $venta = tipos_venta()->where('id', $this->tipo_venta)->first();
         if (is_null($venta))
             return "-";
         else
-            return $venta->simbolo;
-    }
-
-    public function serie(): string
-    {
-        $venta = tipos_venta()->where('descripcion', $this->tipo_venta)->first();
-        if (is_null($venta))
-            return "-";
-        else
-            return $venta->parametro;
+            return strval($venta->simbolo);
     }
 
     public function simboloMoneda(): string

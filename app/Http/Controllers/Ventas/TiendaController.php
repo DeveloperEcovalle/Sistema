@@ -94,7 +94,7 @@ class TiendaController extends Controller
         $tienda->facebook = $request->get('facebook');
         $tienda->instagram = $request->get('instagram');
         $tienda->web = $request->get('web');
-
+        $tienda->ubigeo = $request->get('ubigeo');
         $tienda->correo = $request->get('correo');
         $tienda->telefono = $request->get('telefono');
         $tienda->celular = $request->get('celular');
@@ -139,7 +139,9 @@ class TiendaController extends Controller
 
         $tienda->condicion_reparto = $request->get('condicion_reparto');
 
-        
+        $tienda->ruc_transporte_oficina = $request->get('ruc_transporte_oficina');
+        $tienda->estado_transporte_oficina = $request->get('estado_transporte_oficina');
+
         $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
         $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');
         $tienda->responsable_pago_flete = $request->get('responsable_pago_flete');
@@ -231,7 +233,7 @@ class TiendaController extends Controller
         $tienda->facebook = $request->get('facebook');
         $tienda->instagram = $request->get('instagram');
         $tienda->web = $request->get('web');
-
+        $tienda->ubigeo = $request->get('ubigeo');
         $tienda->correo = $request->get('correo');
         $tienda->telefono = $request->get('telefono');
         $tienda->celular = $request->get('celular');
@@ -273,7 +275,9 @@ class TiendaController extends Controller
 
 
         $tienda->condicion_reparto = $request->get('condicion_reparto');
-
+        
+        $tienda->ruc_transporte_oficina = $request->get('ruc_transporte_oficina');
+        $tienda->estado_transporte_oficina = $request->get('estado_transporte_oficina');
         
         $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
         $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');

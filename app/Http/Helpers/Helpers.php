@@ -640,9 +640,9 @@ if (!function_exists('modificarEmpresaapi')) {
 }
 
 //ENVIAR FACTURA O BOLETA
-
-if (!function_exists('agregarComprobanteapi')) {
-    function agregarComprobanteapi($comprobante)
+//GENERAR PDF
+if (!function_exists('generarComprobanteapi')) {
+    function generarComprobanteapi($comprobante)
     {
         $url = "https://facturacion.apisperu.com/api/v1/invoice/pdf";
         $client = new \GuzzleHttp\Client();
@@ -660,8 +660,6 @@ if (!function_exists('agregarComprobanteapi')) {
 
         return $response->getBody()->getContents();
 
-
-        
         dd( $response->getBody()->getContents());
         if ($estado=='200'){
 
@@ -672,6 +670,130 @@ if (!function_exists('agregarComprobanteapi')) {
         }
     }
 }
+
+//GENERAR XML
+if (!function_exists('generarXmlapi')) {
+    function generarXmlapi($comprobante)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/invoice/xml";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $comprobante
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        return $response->getBody()->getContents();
+
+
+        
+        // dd( $response->getBody()->getContents());
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+//ENVIAR A  SUNAT
+if (!function_exists('enviarComprobanteapi')) {
+    function enviarComprobanteapi($comprobante)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/invoice/send";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $comprobante
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+////////////////////////////////////////////////
+//GUIA DE REMISION
+//GENERAR PDF DE GUIA DE REMISION
+if (!function_exists('pdfGuiaapi')) {
+    function pdfGuiaapi($guia)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/despatch/pdf";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $guia
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        // dd($estado);
+
+        // return $response->getBody()->getContents();
+
+        if ($estado=='200'){
+
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+//ENVIAR A  SUNAT
+if (!function_exists('enviarGuiaapi')) {
+    function enviarGuiaapi($guia)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/despatch/send";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $guia
+        ]); 
+
+        $estado = $response->getStatusCode();
+
+        if ($estado=='200'){
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+
+        }
+    }
+}
+
+
 
 
 

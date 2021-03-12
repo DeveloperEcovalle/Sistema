@@ -16,6 +16,7 @@ class Empresa extends Model
         'nombre_logo',
         'base64_logo',
         'direccion_fiscal',
+        'ubigeo',
         'telefono',
         'celular',
         'correo',
@@ -38,6 +39,11 @@ class Empresa extends Model
     ];
 
     public function cotizaciones()
+    {
+        return $this->hasMany('App\Ventas\Cotizacion');
+    }
+
+    public function numeraciones()
     {
         return $this->hasMany('App\Ventas\Cotizacion');
     }

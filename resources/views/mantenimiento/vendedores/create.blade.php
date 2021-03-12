@@ -597,7 +597,7 @@
             $.ajax({
                 dataType : 'json',
                 type : 'post',
-                url : '{{ route('mantenimiento.empleado.getDni') }}',
+                url : '{{ route('mantenimiento.colaborador.getDni') }}',
                 data : {
                     '_token' : $('input[name=_token]').val(),
                     'tipo_documento' : tipo_documento,

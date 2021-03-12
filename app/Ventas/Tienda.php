@@ -13,6 +13,7 @@ class Tienda extends Model
         'tipo_tienda',
         'tipo_negocio',
         'direccion',
+        'ubigeo',
 
         'facebook',
         'web',
@@ -59,6 +60,9 @@ class Tienda extends Model
 
         'condicion_reparto',
 
+
+        'ruc_transporte_oficina',
+        'estado_transporte_oficina',
         'nombre_transporte_oficina',
         'direccion_transporte_oficina',
         'responsable_pago_flete',

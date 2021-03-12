@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->unsignedInteger('empleado_id');
-            $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
+            $table->unsignedInteger('colaborador_id');
+            $table->foreign('colaborador_id')->references('id')->on('colaboradores')->onDelete('cascade');
             $table->string('ruta_imagen')->nullable();
             $table->string('nombre_imagen')->nullable();
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');

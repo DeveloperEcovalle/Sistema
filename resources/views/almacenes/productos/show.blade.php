@@ -51,14 +51,21 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                
+                            <div class="form-group row">
+                                <div class="col-lg-6 col-xs-12">
                                     <label><strong>UNIDA DE MEDIDA: </strong></label>
                                     @foreach(unidad_medida() as $medida)
                                         @if ($medida->id == $producto->medida)
                                             <p>{{ $medida->simbolo.' - '.$medida->descripcion }}</p>
                                         @endif
                                     @endforeach
+                                </div>
+
+                                <div class="col-lg-6 col-xs-12">
+                                    <label><strong>PESO (KG): </strong></label>
+                                    <p>{{$producto->peso_producto}}</p>
+
+                                </div>
                                
                                 
                                 

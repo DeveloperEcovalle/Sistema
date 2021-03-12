@@ -17,6 +17,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "BANCO DE LA NACION";
         $detalle->simbolo = "BN";
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 2;
         $detalle->save();
 
@@ -25,12 +26,14 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = "INTERCONTINENTAL";
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 2;
+        $detalle->editable = 1;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "MI BANCO";
         $detalle->simbolo = "MI BANCO";
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 2;
         $detalle->save();
 
@@ -41,6 +44,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'S/.';
         $detalle->parametro = 'PEN';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 1;
         $detalle->save();
 
@@ -49,6 +53,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = '$';
         $detalle->parametro = 'USD';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 1;
         $detalle->save();
 
@@ -58,6 +63,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "OFICINA";
         $detalle->simbolo = 'OFICINA';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 18;
         $detalle->save();
 
@@ -65,6 +71,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "DOMICILIO";
         $detalle->simbolo = 'DOMICILIO';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 18;
         $detalle->save();
 
@@ -74,6 +81,8 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "DOCUMENTO NACIONAL DE IDENTIDAD";
         $detalle->simbolo = 'DNI';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
+        $detalle->parametro = 1; //TIPO DE DOCUMENTO SUNAT POR CLIENTE
         $detalle->tabla_id = 3;
         $detalle->save();
 
@@ -81,6 +90,8 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "CARNET DE EXTRANJERIA";
         $detalle->simbolo = 'CARNET EXT.';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
+        $detalle->parametro = 4; //TIPO DE DOCUMENTO SUNAT POR CLIENTE
         $detalle->tabla_id = 3;
         $detalle->save();
 
@@ -88,6 +99,8 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "REGISTRO UNICO DE CONTRIBUYENTES";
         $detalle->simbolo = 'RUC';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
+        $detalle->parametro = 6; //TIPO DE DOCUMENTO SUNAT POR CLIENTE
         $detalle->tabla_id = 3;
         $detalle->save();
 
@@ -95,13 +108,17 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "PASAPORTE";
         $detalle->simbolo = 'PASAPORTE';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
+        $detalle->parametro = 7; //TIPO DE DOCUMENTO SUNAT POR CLIENTE
         $detalle->tabla_id = 3;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "PARTIDA DE NACIMIENTO";
+        $detalle->parametro = 0; //TIPO DE DOCUMENTO SUNAT POR CLIENTE
         $detalle->simbolo = 'P. NAC.';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 3;
         $detalle->save();
 
@@ -191,6 +208,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'free';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 26;
+        $detalle->editable = 1;
         $detalle->save();
 
         $detalle = new Detalle();
@@ -198,6 +216,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'premium';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 26;
+        $detalle->editable = 1;
         $detalle->save();
 
         //Ambiente de produccion facturacion electronica
@@ -205,6 +224,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "beta";
         $detalle->simbolo = 'beta';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 27;
         $detalle->save();
 
@@ -213,8 +233,24 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'produccion';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 27;
+        $detalle->editable = 1;
         $detalle->save();
 
+        //TIPO DE CLIENTE
+        $detalle = new Detalle();
+        $detalle->descripcion = "SOCIO ECOVALLE";
+        $detalle->simbolo = 'SOCIO ECOVALLE';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->save();
+
+        $detalle = new Detalle();
+        $detalle->descripcion = "CONSUMIDOR FINAL"; // REVISAR PRODUCTO EL TIPO DE CLIENTE CONSUMIDOR FINAL CAMBIAR NOMBRE
+        $detalle->simbolo = 'CONSUMIDOR FINAL';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 17;
+        $detalle->editable = 1;
+        $detalle->save();
 
 // --------------------------NO MODIFICABLE-------------------------------------------------
         // AREAS
@@ -404,8 +440,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 12;
         $detalle->save();
-
-
 
         // UNIDAD DE MEDIDA
         $detalle = new Detalle();
@@ -848,10 +882,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->save();
 
 
-
-
-
-
         //MODO DE COMPRA
         $detalle = new Detalle();
         $detalle->descripcion = "CONTADO 30 DÍAS";
@@ -932,27 +962,6 @@ class TablaDetalleSeeder extends Seeder
         $detalle->tabla_id = 16;
         $detalle->save();
 
-        //TIPO DE CLIENTE
-        $detalle = new Detalle();
-        $detalle->descripcion = "CLIENTE SOCIO";
-        $detalle->simbolo = 'CLIENTE SOCIO';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 17;
-        $detalle->save();
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "CLIENTE";
-        $detalle->simbolo = 'CLIENTE';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 17;
-        $detalle->save();
-
-        $detalle = new Detalle();
-        $detalle->descripcion = "CLIENTE FINAL";
-        $detalle->simbolo = 'CLIENTE FINAL';
-        $detalle->estado = 'ACTIVO';
-        $detalle->tabla_id = 17;
-        $detalle->save();
 
 
         //TIPO DE PAGO CAJA CHICA
@@ -961,50 +970,70 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'EFEC.';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 19;
+        $detalle->editable = 1;
         $detalle->save();
 
         $detalle = new Detalle();
         $detalle->descripcion = "DEPOSITO";
         $detalle->simbolo = 'DEP.';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 19;
         $detalle->save();
 
         //TIPO DE DOCUMENTO (VENTA)
 
         $detalle = new Detalle();
-        $detalle->descripcion = "FACTURA";
+        $detalle->descripcion = "FACTURA ELECTRÓNICA";
+        $detalle->nombre = "FACTURA";
         $detalle->simbolo = '01';
         $detalle->parametro = 'F';
-        $detalle->operacion = '10';
+        $detalle->operacion = '0101';
         $detalle->estado = 'ACTIVO';
+        $detalle->tipo = 'VENTA';
         $detalle->tabla_id = 21;
+        $detalle->editable = 1;
         $detalle->save();
 
         $detalle = new Detalle();
-        $detalle->descripcion = "BOLETA DE VENTA";
+        $detalle->descripcion = "BOLETA DE VENTA ELECTRÓNICA";
+        $detalle->nombre = "BOLETA DE VENTA";
         $detalle->simbolo = '03';
         $detalle->parametro = 'B';
-        $detalle->operacion = '12';
+        $detalle->operacion = '0101';
         $detalle->estado = 'ACTIVO';
+        $detalle->tipo = 'VENTA';
         $detalle->tabla_id = 21;
+        $detalle->editable = 1;
         $detalle->save();
 
-        // $detalle = new Detalle();
-        // $detalle->descripcion = "NOTA DE CREDITO";
-        // $detalle->simbolo = '07';
-        // $detalle->estado = 'ACTIVO';
-        // $detalle->tabla_id = 21;
-        // $detalle->save();
+        $detalle = new Detalle();
+        $detalle->descripcion = "NOTA DE CRÉDITO";
+        $detalle->simbolo = '07';
+        $detalle->parametro = 'FC';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 21;
+        $detalle->editable = 1;
+        $detalle->save();
 
-        // $detalle = new Detalle();
-        // $detalle->descripcion = "NOTA DE DEBITO";
-        // $detalle->simbolo = '08';
-        // $detalle->estado = 'ACTIVO';
-        // $detalle->tabla_id = 21;
-        // $detalle->save();
+        $detalle = new Detalle();
+        $detalle->descripcion = "NOTA DE DÉBITO";
+        $detalle->simbolo = '08';
+        $detalle->parametro = 'FD';
+        $detalle->estado = 'ACTIVO';
+        $detalle->tabla_id = 21;
+        $detalle->editable = 1;
+        $detalle->save();
 
-
+        $detalle = new Detalle();
+        $detalle->descripcion = "GUIA DE REMISIÓN REMITENTE ELECTRÓNICA";
+        $detalle->nombre = "GUIA DE REMISIÓN";
+        $detalle->simbolo = '09';
+        $detalle->parametro = 'T';
+        $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
+        $detalle->tabla_id = 21;
+        $detalle->save();
 
         // TIPO DE TIENDA
 
@@ -1013,6 +1042,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'FISICA';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 22;
+        $detalle->editable = 1;
         $detalle->save();
 
         $detalle = new Detalle();
@@ -1020,6 +1050,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->simbolo = 'VIRTUAL';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 22;
+        $detalle->editable = 1;
         $detalle->save();
 
         // TIPO DE NEGOCIO
@@ -1057,6 +1088,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "CANCELA SOCIO";
         $detalle->simbolo = 'CANCELA SOCIO';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 24;
         $detalle->save();
 
@@ -1064,6 +1096,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle->descripcion = "CANCELA ECOVALLE";
         $detalle->simbolo = 'CANCELA ECOVALLE';
         $detalle->estado = 'ACTIVO';
+        $detalle->editable = 1;
         $detalle->tabla_id = 24;
         $detalle->save();
 

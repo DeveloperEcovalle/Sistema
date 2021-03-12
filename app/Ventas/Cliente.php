@@ -22,9 +22,6 @@ class Cliente extends Model
         'telefono_movil',
         'telefono_fijo',
         'moneda_credito',
-
-
-
         'direccion_negocio',
         'fecha_aniversario',
         'observaciones',
@@ -41,10 +38,6 @@ class Cliente extends Model
         'fecha_nacimiento_prop',
         'celular_propietario',
         'correo_propietario',
-
-
-
-       
         'activo',
         'estado'
     ];
@@ -83,4 +76,15 @@ class Cliente extends Model
     {
         return distritos($this->distrito_id)->first()->nombre;
     }
+
+    public function tipoDocumento(): string
+    {
+        $documento = tipos_documento()->where('simbolo', $this->tipo_documento)->first();
+        if (is_null($documento))
+            return "-";
+        else
+            return $documento->parametro;
+    }
+
+
 }
