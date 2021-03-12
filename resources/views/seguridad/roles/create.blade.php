@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                             	
-                                <div class="col-md-4">
+                                <div class="col-md-8">
                                     <label class="required">Name(*) :</label>
                                     <input type="text" id="name" name="name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{old('name')}}" >
                                     @if ($errors->has('name'))
@@ -213,6 +213,7 @@ $('#enviar_roles').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
+                cargarPermisos();
                 this.submit();
             } else if (
                 /* Read more about handling dismissals below */
@@ -288,6 +289,43 @@ $(".enviar_permiso").click(function() {
     }
 })
 
+//Borrar registro de permisos
+$(document).on('click', '#borrar_permiso', function(event) {
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: false
+    })
+
+    Swal.fire({
+        title: 'Opción Eliminar',
+        text: "¿Seguro que desea eliminar Artículo?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var table = $('.dataTables-rol-detalle').DataTable();
+            table.row($(this).parents('tr')).remove().draw();
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+});
+
 function limpiarErrores() {
     $('#permiso_id').removeClass("is-invalid")
 
@@ -301,7 +339,7 @@ function limpiarDetalle() {
 function agregarTabla($detalle) {
     var t = $('.dataTables-rol-detalle').DataTable();
     t.row.add([
-        '',
+        "<a class='btn btn-danger btn-sm' id='borrar_permiso' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>",
         $detalle.permiso_id,
         $detalle.name,
     ]).draw(false);

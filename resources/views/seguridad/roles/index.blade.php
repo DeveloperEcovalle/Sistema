@@ -94,7 +94,7 @@ $(document).ready(function() {
         "processing": true,
         "ajax": "{{ route('getRoles')}}",
         "columns": [
-            //rolesx INTERNA
+            //rolesx 
             { data: 'id',className: "text-center"},
             { data: 'name',className: "text-center"},
             {

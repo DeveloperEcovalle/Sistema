@@ -218,7 +218,7 @@ Route::prefix('almacenes/subcategoria/pt')->group(function() {
 
     Route::get('getBySubFamilia/{id}', 'Almacenes\SubFamiliaController@getBySubFamilia')->name('almacenes.subfamilia.getBySubFamilia')->middleware('permission:crud_subfamilia');
 
-    Route::get('subfamilia/familia', 'Almacenes\SubFamiliaController@getFamilia')->name('subfamilia.familia')->middleware('permission:crud_subfamilia');
+    Route::get('subfamilia/familia', 'Almacenes\SubFamiliaController@getFamilia')->name('subfamilia.familia');
 
     Route::post('subfamilia/exist', 'Almacenes\SubFamiliaController@exist')->name('almacenes.subfamilia.exist');
 });
@@ -351,7 +351,7 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('sunat/comprobante/{id}','Ventas\DocumentoController@sunat')->name('ventas.documento.sunat');
     
     //Comprobantes Electronicos
-    Route::get('index/comprobantes', 'Ventas\DocumentoController@indexVouchers')->name('ventas.comprobantes');
+    Route::get('index/comprobantes', 'Ventas\DocumentoController@indexVouchers')->name('ventas.comprobantes')->middleware('permission:crud_comprobante');
     Route::get('getVouchers','Ventas\DocumentoController@getVouchers')->name('ventas.getVouchers');
     Route::post('vouchersAvaible','Ventas\DocumentoController@vouchersAvaible')->name('ventas.vouchersAvaible');
     Route::post('customers','Ventas\DocumentoController@customers')->name('ventas.customers');
@@ -382,14 +382,14 @@ Route::prefix('ventas/documentos')->group(function(){
 
 Route::prefix('guiasremision/')->group(function(){
 
-    Route::get('index', 'Ventas\GuiaController@index')->name('ventas.guiasremision.index');
+    Route::get('index', 'Ventas\GuiaController@index')->name('ventas.guiasremision.index')->middleware('permission:crud_guia_remision');
     Route::get('getGuia','Ventas\GuiaController@getGuias')->name('ventas.getGuia');
-    Route::get('create/{id}', 'Ventas\GuiaController@create')->name('ventas.guiasremision.create');
-    Route::post('store', 'Ventas\GuiaController@store')->name('ventas.guiasremision.store');
-    Route::put('update/{id}', 'Ventas\GuiaController@update')->name('ventas.guiasremision.update');
-    Route::get('destroy/{id}', 'Ventas\GuiaController@destroy')->name('ventas.guiasremision.destroy');
-    Route::get('show/{id}','Ventas\GuiaController@show')->name('ventas.guiasremision.show');
-    Route::get('reporte/{id}','Ventas\GuiaController@report')->name('ventas.guiasremision.reporte');
+    Route::get('create/{id}', 'Ventas\GuiaController@create')->name('ventas.guiasremision.create')->middleware('permission:crud_guia_remision');
+    Route::post('store', 'Ventas\GuiaController@store')->name('ventas.guiasremision.store')->middleware('permission:crud_guia_remision');
+    Route::put('update/{id}', 'Ventas\GuiaController@update')->name('ventas.guiasremision.update')->middleware('permission:crud_guia_remision');
+    Route::get('destroy/{id}', 'Ventas\GuiaController@destroy')->name('ventas.guiasremision.destroy')->middleware('permission:crud_guia_remision');
+    Route::get('show/{id}','Ventas\GuiaController@show')->name('ventas.guiasremision.show')->middleware('permission:crud_guia_remision');
+    Route::get('reporte/{id}','Ventas\GuiaController@report')->name('ventas.guiasremision.reporte')->middleware('permission:crud_guia_remision');
     Route::get('tiendaDireccion/{id}', 'Ventas\GuiaController@tiendaDireccion')->name('ventas.guiasremision.tienda_direccion');
     Route::get('sunat/guia/{id}','Ventas\GuiaController@sunat')->name('ventas.guiasremision.sunat');
     // Route::get('tipoPago/{id}','Ventas\GuiaController@TypePay')->name('ventas.documento.tipo_pago.existente');

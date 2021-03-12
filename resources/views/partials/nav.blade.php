@@ -71,9 +71,12 @@
             @can('crud_docventa')
             <li class="@yield('documentos-active')"><a href="{{route('ventas.documento.index')}}">Doc. Venta</a></li>
             @endcan
+            @can('crud_comprobante')
             <li class="@yield('comprobantes-active')"><a href="{{route('ventas.comprobantes')}}">Comprobantes</a></li>
+            @endcan
+            @can('crud_guia_remision')
             <li class="@yield('guias-remision-active')"><a href="{{route('ventas.guiasremision.index')}}">Guias de Remision</a></li>
-
+            @endcan
         </ul>
     </li>
 

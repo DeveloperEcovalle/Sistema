@@ -41,7 +41,7 @@
 
 
                     <div class="form-group">
-                        <div class="input-group date clase">
+                        <div class="input-group date">
                           <input data-format="dd/MM/yyyy" type="text"></input>
                           <span class="input-group-addon"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
                         </div>
