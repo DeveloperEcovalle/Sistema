@@ -19,6 +19,7 @@ class PermissionsSeeder extends Seeder
 		$permission = Permission::create(['name' => 'crud_almacen']);
 		$permission = Permission::create(['name' => 'crud_articulo']);
 		$permission = Permission::create(['name' => 'crud_categoria']);
+		$permission = Permission::create(['name' => 'crud_categoriapt']);
 		$permission = Permission::create(['name' => 'crud_cliente']);
 		$permission = Permission::create(['name' => 'crud_composicion_producto']);
 		$permission = Permission::create(['name' => 'crud_cotizacion']);
@@ -28,6 +29,7 @@ class PermissionsSeeder extends Seeder
 		$permission = Permission::create(['name' => 'crud_empresa']);
 		$permission = Permission::create(['name' => 'crud_familia']);
 		$permission = Permission::create(['name' => 'crud_guia_interna']);
+		$permission = Permission::create(['name' => 'crud_ingreso_mercaderia']);
 		$permission = Permission::create(['name' => 'crud_linea_produccion']);
 		$permission = Permission::create(['name' => 'crud_maquinaria_equipo']);
 		$permission = Permission::create(['name' => 'crud_orden']);
@@ -44,7 +46,7 @@ class PermissionsSeeder extends Seeder
 		$permission = Permission::create(['name' => 'crud_usuario']);
 		$permission = Permission::create(['name' => 'crud_vendedor']);
 		$permission = Permission::create(['name' => 'crud_permiso']);
-
+		$permission = Permission::create(['name' => 'crud_subcategoriapt']);
 		// Lista de roles
 		$admin = Role::create(['name' => 'Admin']);
 
