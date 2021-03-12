@@ -1422,7 +1422,6 @@ $('#celular').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
-
 $('#telefono_administrador').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
@@ -1791,7 +1790,6 @@ function limpiarErrores() {
 }
 
 //ENVIOS TAB
-
 $(document).ready(function() {
     switch($('#condicion_reparto').val()) {
     case "6":
@@ -2402,7 +2400,6 @@ function camposDnicontactoCredito(objeto) {
 
 }
 
-
 $("#dni_contacto_credito").keyup(function() {
     if ($('#estado_dni_contacto_credito').val('ACTIVO')) {
         $('#estado_dni_contacto_credito').val('SIN VERIFICAR')
@@ -2414,7 +2411,6 @@ $("#nombre_credito").keyup(function() {
         $('#estado_dni_contacto_credito').val('SIN VERIFICAR')
     }
 })
-
 
 //Contacto Vendedor
 function consultarDniVendedor() {

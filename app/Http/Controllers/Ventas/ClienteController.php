@@ -27,13 +27,13 @@ class ClienteController extends Controller
             $coleccion->push([
                 'id' => $cliente->id,
                 'documento' => $cliente->getDocumento(),
-                'nombre' => $cliente->nombre,
+                'nombre' => ($cliente->tipo_documento == 'RUC') ? '-' : $cliente->nombre ,
+                'razon_social' => ($cliente->tipo_documento == 'RUC') ? $cliente->nombre : '-',
                 'telefono_movil' => $cliente->telefono_movil,
                 'departamento' => $cliente->getDepartamento(),
                 'provincia' => $cliente->getProvincia(),
                 'distrito' => $cliente->getDistrito(),
-                'zona' => $cliente->getDepartamentoZona(),
-                // 'limite_credito' => ($cliente->limite_credito) ? $cliente->moneda_credito.' '.$cliente->limite_credito : 'No tiene'            
+                'zona' => $cliente->getDepartamentoZona(),         
                 ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -48,7 +48,6 @@ class ClienteController extends Controller
 
     public function store(Request $request)
     {
-        // dd( $request->get('fecha_nacimiento_prop'));
         $data = $request->all();
 
         $rules = [

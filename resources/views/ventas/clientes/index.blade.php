@@ -32,13 +32,14 @@
                             <thead>
                             <tr>
                                     
-                                <th colspan="3" class="text-center">CLIENTES</th>
+                                <th colspan="4" class="text-center">CLIENTES</th>
                                 <th colspan="4" class="text-center">UBICACIONES</th>
                                 <th colspan="1" class="text-center"></th>
 
                             </tr>
                             <tr>
                                 <th class="text-center">DOCUMENTO</th>
+                                <th class="text-center">RAZON SOCIAL</th>
                                 <th class="text-center">NOMBRE</th>
                                 <th class="text-center">TELÉFONO MÓVIL</th>
                                 <th class="text-center">DEPARTAMENTOS</th>
@@ -106,6 +107,7 @@
                 "ajax": "{{ route('ventas.cliente.getTable')}}",
                 "columns": [
                     {data: 'documento', className:"text-center"},
+                    {data: 'razon_social', className:"text-left"},
                     {data: 'nombre', className:"text-left"},
                     {data: 'telefono_movil', className:"text-center"},
                     {data: 'departamento', className:"text-center"},

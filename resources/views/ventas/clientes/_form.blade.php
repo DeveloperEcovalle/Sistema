@@ -38,14 +38,8 @@
                                     </span>
                                 @endif
 
-
-                                <!-- <div class="invalid-feedback"><b><span id="error-ruc"></span></b></div> -->
                             </div>
                             
-                            
-                           
-
-
                         </div>
                     
                     </div>
@@ -103,7 +97,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="required" id="lblNombre">Nombre</label>
+                        <label class="required" id="lblNombre">{{old('documento',$cliente->documento) == 'RUC' ? 'Razón social' : 'Nombre'}}</label>
                         <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')?old('nombre'):$cliente->nombre}}" maxlength="191" onkeyup="return mayus(this)" required>
                         @if ($errors->has('nombre'))
                             <span class="invalid-feedback" role="alert">
@@ -379,8 +373,6 @@
 
             </div>
 
-
-
             <div class="row">
                 <div class="m-t-md col-lg-8">
                     <i class="fa fa-exclamation-circle leyenda-required"></i> <small class="leyenda-required">Los campos marcados con asterisco (*) son obligatorios.</small>
@@ -524,8 +516,6 @@
 
             $("#tipo_documento").on("change", cambiarTipoDocumento);
 
-            // $("#documento").on('change', consultarDocumento);
-
             $("#departamento").on("change", cargarProvincias);
 
             $('#provincia').on("change", cargarDistritos);
@@ -573,6 +563,7 @@
                 switch (tipo_documento) {
                     case 'DNI':
                         $('#entidad').text('Reniec')
+                        $('#lblNombre').text('Nombre')
                         $("#documento").attr('maxlength', 8);
                         @if(!$cliente)
                             $("#activo").val("SIN VERIFICAR");
@@ -581,6 +572,7 @@
 
                     case 'RUC':
                         $('#entidad').text('Sunat')
+                        $('#lblNombre').text('Razón social')
                         $("#documento").attr('maxlength', 11);
                         @if(!$cliente)
                             $("#activo").val("SIN VERIFICAR");
@@ -589,6 +581,7 @@
 
                     case 'CARNET EXT.':
                         $("#documento").attr('maxlength', 20);
+                        $('#lblNombre').text('Nombre')
                         $("#activo").val("SIN VERIFICAR");
                         @if(!$cliente)
                             $("#activo").val("SIN VERIFICAR");
@@ -597,6 +590,7 @@
 
                     case 'PASAPORTE':
                         $("#documento").attr('maxlength', 20);
+                        $('#lblNombre').text('Nombre')
                         $("#activo").val("SIN VERIFICAR");
                         @if(!$cliente)
                             $("#activo").val("SIN VERIFICAR");
@@ -605,6 +599,7 @@
 
                     case 'P. NAC.':
                         $("#documento").attr('maxlength', 25);
+                        $('#lblNombre').text('Nombre')
                         @if(!$cliente)
                             $("#activo").val("SIN VERIFICAR");
                         @endif
@@ -618,9 +613,6 @@
             var tipo_documento = $('#tipo_documento').val();
             var documento = $('#documento').val();
 
-            // alert(tipo_documento)
-
-            // alert(documento)
             // Consultamos nuestra BBDD
             $.ajax({
                 dataType : 'json',

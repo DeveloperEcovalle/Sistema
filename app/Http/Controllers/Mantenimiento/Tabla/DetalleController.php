@@ -123,4 +123,30 @@ class DetalleController extends Controller
         return $descripcion;
     }
 
+    public function exist(Request $request)
+    {
+        $data = $request->all();
+        $descripcion = $data['descripcion'];
+        $id = $data['id'];
+        $id_general = $data['id_general'];
+        $detalle = null;
+
+        if ($descripcion && $id) { // edit
+            $detalle = Detalle::where([
+                                    [ 'descripcion', $data['descripcion']],
+                                    [ 'tabla_id', $data['id_general']],
+                                    [ 'id', '<>', $data['id']]
+                                ])->where('estado','!=','ANULADO')->first();
+        
+        } else if ($descripcion && !$id) { // create
+            $detalle = Detalle::where([
+                                        [ 'descripcion', $data['descripcion']],
+                                        [ 'tabla_id', $data['id_general']]
+                                    ])->where('estado','!=','ANULADO')->first();
+        }
+
+        $result = ['existe' => ($detalle) ? true : false];
+        return response()->json($result);
+    }
+
 }
