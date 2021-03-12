@@ -221,6 +221,7 @@ $('#enviar_roles').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
+                cargarPermisos();
                 this.submit();
             } else if (
                 /* Read more about handling dismissals below */
