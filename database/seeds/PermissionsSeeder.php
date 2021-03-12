@@ -20,6 +20,7 @@ class PermissionsSeeder extends Seeder
 		$permission = Permission::create(['name' => 'crud_articulo']);
 		$permission = Permission::create(['name' => 'crud_categoria']);
 		$permission = Permission::create(['name' => 'crud_cliente']);
+		$permission = Permission::create(['name' => 'crud_composicion_producto']);
 		$permission = Permission::create(['name' => 'crud_cotizacion']);
 		$permission = Permission::create(['name' => 'crud_doccompra']);
 		$permission = Permission::create(['name' => 'crud_docventa']);
