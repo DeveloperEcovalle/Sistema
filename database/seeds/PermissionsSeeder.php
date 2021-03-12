@@ -53,7 +53,7 @@ class PermissionsSeeder extends Seeder
 			 'crud_almacen',
 			 'crud_articulo',
 			 'crud_categoria',
-			 'crud_categoriapt'
+			 'crud_categoriapt',
 			 'crud_cliente',
 			 'crud_composicion_producto',
 			 'crud_cotizacion',
