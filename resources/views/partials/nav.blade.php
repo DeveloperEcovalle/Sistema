@@ -184,11 +184,10 @@
             @can('crud_actividad')
             <li class="@yield('actividades-active')"><a href="{{ route('mantenimiento.actividad.index') }}">Actividades</a></li>
             @endcan
-            @can('crud_empleado')
-            <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
+            @can('crud_colaborador')
+            <li class="@yield('colaboradores-active')"><a href="{{ route('mantenimiento.colaborador.index') }}">Colaboradores</a></li>
             @endcan
             @can('crud_empresa')
-            <li class="@yield('colaboradores-active')"><a href="{{ route('mantenimiento.colaborador.index') }}">Colaboradores</a></li>
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
             @endcan
             @can('crud_vendedor')

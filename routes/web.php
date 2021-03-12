@@ -103,14 +103,14 @@ Route::prefix('compras/proveedores')->group(function() {
 Route::prefix('compras/ordenes')->group(function() {
     Route::get('index', 'Compras\OrdenController@index')->name('compras.orden.index')->middleware('permission:crud_orden');
     Route::get('getOrder','Compras\OrdenController@getOrder')->name('getOrder');
-    Route::get('create','Compras\OrdenController@create')->name('compras.orden.create');
-    Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store');
-    Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit');
-    Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show');
-    Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update');
-    Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy');
-    Route::get('reporte/{id}','Compras\OrdenController@report')->name('compras.orden.reporte');
-    Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email');
+    Route::get('create','Compras\OrdenController@create')->name('compras.orden.create')->middleware('permission:crud_orden');
+    Route::post('store', 'Compras\OrdenController@store')->name('compras.orden.store')->middleware('permission:crud_orden');
+    Route::get('edit/{id}','Compras\OrdenController@edit')->name('compras.orden.edit')->middleware('permission:crud_orden');
+    Route::get('show/{id}','Compras\OrdenController@show')->name('compras.orden.show')->middleware('permission:crud_orden');
+    Route::put('update/{id}', 'Compras\OrdenController@update')->name('compras.orden.update')->middleware('permission:crud_orden');
+    Route::get('destroy/{id}', 'Compras\OrdenController@destroy')->name('compras.orden.destroy')->middleware('permission:crud_orden');
+    Route::get('reporte/{id}','Compras\OrdenController@report')->name('compras.orden.reporte')->middleware('permission:crud_orden');
+    Route::get('email/{id}','Compras\OrdenController@email')->name('compras.orden.email')->middleware('permission:crud_orden');
     Route::get('concretada/{id}','Compras\OrdenController@concretized')->name('compras.orden.concretada');
     Route::get('consultaEnvios/{id}','Compras\OrdenController@send')->name('compras.orden.envios');
     Route::get('documento/{id}','Compras\OrdenController@document')->name('compras.orden.documento');
@@ -118,12 +118,12 @@ Route::prefix('compras/ordenes')->group(function() {
     Route::get('confirmarEliminar/{id}','Compras\OrdenController@confirmDestroy')->name('compras.orden.confirmDestroy');
 
     //Pagos
-    Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index')->middleware('permission:crud_orden');
+    Route::get('pagos/index/{id}', 'Compras\PagoController@index')->name('compras.pago.index');
     Route::get('getPay/{id}','Compras\PagoController@getPay')->name('getPay');
-    Route::get('pagos/create/{id}', 'Compras\PagoController@create')->name('compras.pago.create')->middleware('permission:crud_orden');
-    Route::post('pagos/store/', 'Compras\PagoController@store')->name('compras.pago.store')->middleware('permission:crud_orden');
-    Route::get('pagos/destroy/', 'Compras\PagoController@destroy')->name('compras.pago.destroy')->middleware('permission:crud_orden');
-    Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show')->middleware('permission:crud_orden');
+    Route::get('pagos/create/{id}', 'Compras\PagoController@create')->name('compras.pago.create');
+    Route::post('pagos/store/', 'Compras\PagoController@store')->name('compras.pago.store');
+    Route::get('pagos/destroy/', 'Compras\PagoController@destroy')->name('compras.pago.destroy');
+    Route::get('pagos/show/', 'Compras\PagoController@show')->name('compras.pago.show');
 });
 
 Route::prefix('compras/documentos')->group(function(){
@@ -174,9 +174,7 @@ Route::prefix('seguridad/usuarios')->group(function() {
     Route::get('destroy/{id}', 'Seguridad\UsuarioController@destroy')->name('seguridad.usuario.destroy')->middleware('permission:crud_usuario');
 });
 
-//POS
 //Caja Chica Pos
-//Almacen
 Route::prefix('pos/')->group(function() {
     Route::get('cajachica/index', 'Pos\CajaController@index')->name('pos.caja.index')->middleware('permission:crud_caja_chica');
     Route::get('getBox','Pos\CajaController@getBox')->name('getBox');
@@ -187,8 +185,6 @@ Route::prefix('pos/')->group(function() {
     Route::get('getEmployee/caja_chica', 'Pos\CajaController@getEmployee')->name('pos.caja.getEmployee');
 });
 
-
-//Almacenes
 //Almacen
 Route::prefix('almacenes/almacen')->group(function() {
     Route::get('index', 'Almacenes\AlmacenController@index')->name('almacenes.almacen.index')->middleware('permission:crud_almacen');
@@ -271,14 +267,14 @@ Route::prefix('mantenimiento/ubigeo')->group(function() {
 
 // Colaboradores
 Route::prefix('mantenimiento/colaboradores')->group(function() {
-    Route::get('/', 'Mantenimiento\Colaborador\ColaboradorController@index')->name('mantenimiento.colaborador.index');
+    Route::get('/', 'Mantenimiento\Colaborador\ColaboradorController@index')->name('mantenimiento.colaborador.index')->middleware('permission:crud_colaborador');
     Route::get('/getTable', 'Mantenimiento\Colaborador\ColaboradorController@getTable')->name('mantenimiento.colaborador.getTable');
-    Route::get('/registrar', 'Mantenimiento\Colaborador\ColaboradorController@create')->name('mantenimiento.colaborador.create');
-    Route::post('/registrar', 'Mantenimiento\Colaborador\ColaboradorController@store')->name('mantenimiento.colaborador.store');
-    Route::get('/actualizar/{id}', 'Mantenimiento\Colaborador\ColaboradorController@edit')->name('mantenimiento.colaborador.edit');
-    Route::put('/actualizar/{id}', 'Mantenimiento\Colaborador\ColaboradorController@update')->name('mantenimiento.colaborador.update');
-    Route::get('/datos/{id}', 'Mantenimiento\Colaborador\ColaboradorController@show')->name('mantenimiento.colaborador.show');
-    Route::get('/destroy/{id}', 'Mantenimiento\Colaborador\ColaboradorController@destroy')->name('mantenimiento.colaborador.destroy');
+    Route::get('/registrar', 'Mantenimiento\Colaborador\ColaboradorController@create')->name('mantenimiento.colaborador.create')->middleware('permission:crud_colaborador');
+    Route::post('/registrar', 'Mantenimiento\Colaborador\ColaboradorController@store')->name('mantenimiento.colaborador.store')->middleware('permission:crud_colaborador');
+    Route::get('/actualizar/{id}', 'Mantenimiento\Colaborador\ColaboradorController@edit')->name('mantenimiento.colaborador.edit')->middleware('permission:crud_colaborador');
+    Route::put('/actualizar/{id}', 'Mantenimiento\Colaborador\ColaboradorController@update')->name('mantenimiento.colaborador.update')->middleware('permission:crud_colaborador');
+    Route::get('/datos/{id}', 'Mantenimiento\Colaborador\ColaboradorController@show')->name('mantenimiento.colaborador.show')->middleware('permission:crud_colaborador');
+    Route::get('/destroy/{id}', 'Mantenimiento\Colaborador\ColaboradorController@destroy')->name('mantenimiento.colaborador.destroy')->middleware('permission:crud_colaborador');
     Route::post('/getDNI', 'Mantenimiento\Colaborador\ColaboradorController@getDNI')->name('mantenimiento.colaborador.getDni');
 });
 
