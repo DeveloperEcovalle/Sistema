@@ -120,7 +120,7 @@
              @can('crud_subcategoriapt')
             <li class="@yield('subfamilia-active')"><a href="{{route('almacenes.subfamilia.index')}}">Sub Categorias PT</a></li>
              @endcan
-             @can('crud_producto_terminado')
+             @can('crud_producto')
             <li class="@yield('productos-active')"><a href="{{ route('almacenes.producto.index') }}">Producto Terminado</a></li>
              @endcan
             <li><a href="search_results.html">Transferencias</a></li>
