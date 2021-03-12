@@ -53,6 +53,7 @@ class PermissionsSeeder extends Seeder
 			 'crud_almacen',
 			 'crud_articulo',
 			 'crud_categoria',
+			 'crud_categoriapt'
 			 'crud_cliente',
 			 'crud_composicion_producto',
 			 'crud_cotizacion',
@@ -62,6 +63,7 @@ class PermissionsSeeder extends Seeder
 			 'crud_empresa',
 			 'crud_familia',
 			 'crud_guia_interna',
+			 'crud_ingreso_mercaderia',
 			 'crud_linea_produccion',
 			 'crud_maquinaria_equipo',
 			 'crud_orden',
@@ -78,6 +80,7 @@ class PermissionsSeeder extends Seeder
 			 'crud_usuario',
 			 'crud_vendedor',
 			 'crud_permiso',
+			 'crud_subcategoriapt',
 		]);
 
 		// Asignamos roles a los usuarios
