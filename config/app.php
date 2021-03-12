@@ -177,6 +177,9 @@ return [
         //Yajra Datatable
         Yajra\Datatables\DatatablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+
+        Spatie\Permission\PermissionServiceProvider::class,
+
     ],
 
     /*

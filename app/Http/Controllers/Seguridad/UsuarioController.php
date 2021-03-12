@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 
+use App\Seguridad\Roles;
+
 class UsuarioController extends Controller
 {
     public function index()
@@ -32,13 +34,25 @@ class UsuarioController extends Controller
     }
 
     public function create(){
-        return view('seguridad.usuarios.create');
+        $roles = DB::table('roles')->get();
+        return view('seguridad.usuarios.create',[
+            'roles' => $roles
+        ]);
     }
 
     public function edit($id){
+        $roles = DB::table('roles')->get();
+        $rol_usuario=DB::table('model_has_roles')
+            ->where('model_id', $id)
+            ->where('model_type','App\User')
+            ->pluck('role_id')
+            ->first();
         $usuario = User::findOrFail($id);
+        //dd($rol_usuario);
         return view('seguridad.usuarios.edit',[
-            'usuario' => $usuario
+            'usuario' => $usuario,
+            'roles' => $roles,
+            'rol_usuario' => $rol_usuario
         ]);
     }
 
@@ -141,6 +155,13 @@ class UsuarioController extends Controller
 
         $usuario->save();
 
+        // Asignación de Rol
+        // Elmina roles anteriores
+        DB::table('model_has_roles')->where('model_id', $usuario->id)->where('model_type','App\User')->delete();
+        $rol=$request->get('rol_id');
+        if($rol)
+            $usuario->assignRole($rol);
+
         //Registro de actividad
         $descripcion = "SE AGREGÓ EL USUARIO CON EL CORREO: ". $usuario->email;
         $gestion = "USUARIOS";
@@ -196,6 +217,14 @@ class UsuarioController extends Controller
             $usuario->ruta_imagen = $request->file('logo')->store('public/usuarios');
         }
         $usuario->update();
+
+
+        // Asignación de Rol
+        // Elmina roles anteriores
+        DB::table('model_has_roles')->where('model_id', $usuario->id)->where('model_type','App\User')->delete();
+        $rol=$request->get('rol_id');
+        if($rol)
+            $usuario->assignRole($rol);
 
         //Registro de actividad
         $descripcion = "SE MODIFICÓ EL USUARIO CON EL CORREO: ". $usuario->email;

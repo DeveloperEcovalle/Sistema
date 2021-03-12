@@ -38,7 +38,9 @@
     <li class="@yield('pos-active')">
         <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Pos</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_caja_chica')
             <li class="@yield('caja_chica-active')"><a href="{{route('pos.caja.index')}}">Caja Chica Pos</a></li>
+            @endcan
         </ul>
     </li>
 
@@ -46,21 +48,36 @@
     <li class="@yield('compras-active')">
         <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Compras</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_articulo')
             <li class="@yield('articulo-active')"><a href="{{route('compras.articulo.index')}}">Artículos</a></li>
+            @endcan
+            @can('crud_categoria')
             <li class="@yield('categoria-active')"><a href="{{route('compras.categoria.index')}}">Categorias</a></li>
+            @endcan
+            @can('crud_proveedor')
             <li class="@yield('proveedor-active')"><a href="{{route('compras.proveedor.index')}}">Proveedores</a></li>
+            @endcan
+            @can('crud_orden')
             <li class="@yield('orden-compra-active')"><a href="{{route('compras.orden.index')}}">Ordenes</a></li>
+            @endcan
+            @can('crud_doccompra')
             <li class="@yield('documento-active')"><a href="{{route('compras.documento.index')}}">Doc. Compra</a></li>
+            @endcan
         </ul>
     </li>
 
     <li class="@yield('ventas-active')">
         <a href="#"><i class="fa fa-signal"></i> <span class="nav-label">Ventas</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_cliente')
             <li class="@yield('clientes-active')"><a href="{{ route('ventas.cliente.index') }}">Clientes</a></li>
+            @endcan
+            @can('crud_cotizacion')
             <li class="@yield('cotizaciones-active')"><a href="{{ route('ventas.cotizacion.index') }}">Cotizaciones</a></li>
+            @endcan
+            @can('crud_docventa')
             <li class="@yield('documentos-active')"><a href="{{route('ventas.documento.index')}}">Doc. Venta</a></li>
-
+            @endcan
         </ul>
     </li>
 
@@ -68,43 +85,62 @@
     <li class="@yield('produccion-active')">
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_composicion_producto')
             <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composicion de Productos Terminados</a></li>
+            @endcan
+            @can('crud_linea_produccion')
             <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Produccion</a></li>
+            @endcan
+            @can('crud_programacion_produccion')
             <li class="@yield('programacion_produccion-active')"><a href="{{route('produccion.programacion_produccion.index')}}">Programación de la Produccion</a></li>
+            @endcan
         </ul>
     </li>
 
     <li class="@yield('invdesarrollo-active')">
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Inv + Desarrollo </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_registro_sanitario')
             <li class="@yield('registro_sanitario-active')"><a href="{{route('invdesarrollo.registro_sanitario.index')}}">Registro Sanitario</a></li>
+             @endcan
+            @can('crud_prototipo')
            <li class="@yield('prototipo-active')"><a href="{{route('invdesarrollo.prototipo.index')}}">Prototipos</a></li>
+            @endcan
+           @can('crud_guia_interna')
            <li class="@yield('guia-active')"><a href="{{route('invdesarrollo.guia.index')}}">Guias Internas</a></li>
+            @endcan
         </ul>
     </li>
     
     <li class="@yield('almacenes-active')">
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_almacen')
             <li class="@yield('almacen-active')"><a href="{{route('almacenes.almacen.index')}}">Almacen</a></li>
+             @endcan
+             @can('crud_categoriapt')
             <li class="@yield('familia-active')"><a href="{{route('almacenes.familias.index')}}">Categoria PT</a></li>
+             @endcan
+             @can('crud_subcategoriapt')
             <li class="@yield('subfamilia-active')"><a href="{{route('almacenes.subfamilia.index')}}">Sub Categorias PT</a></li>
+             @endcan
+             @can('crud_producto_terminado')
             <li class="@yield('productos-active')"><a href="{{ route('almacenes.producto.index') }}">Producto Terminado</a></li>
+             @endcan
             <li><a href="search_results.html">Transferencias</a></li>
             <li>
                 <a href="#">Consultas <span class="fa arrow"></span></a>
                 <ul class="nav nav-third-level">
-                    <li>
-                        <a href="#">Stock</a>
-                    </li>
-                    <li>
-                        <a href="#">Valorizada</a>
-                    </li>
-
-                </ul>
+                    <li><a href="#">Stock</a></li>
+                    <li><a href="#">Valorizada</a></li>
+                 </ul>
             </li>
+            @can('crud_maquinaria_equipo')
             <li class="@yield('maquinaria_equipo-active')"><a href="{{route('almacenes.maquinaria_equipo.index')}}">Maquinarias-Equipos</a></li>
+             @endcan
+             @can('crud_ingreso_mercaderia')
             <li class="@yield('ingreso_mercaderia-active')"><a href="{{route('almacenes.ingreso_mercaderia.index')}}">Ingreso de Mercaderia</a></li>
+             @endcan
         </ul>
     </li>
 
@@ -149,21 +185,39 @@
     <li class="@yield('mantenimiento-active')">
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_actividad')
             <li class="@yield('actividades-active')"><a href="{{ route('mantenimiento.actividad.index') }}">Actividades</a></li>
+            @endcan
+            @can('crud_empleado')
             <li class="@yield('empleados-active')"><a href="{{ route('mantenimiento.empleado.index') }}">Empleados</a></li>
+            @endcan
+            @can('crud_empresa')
             <li class="@yield('empresas-active')"><a href="{{route('mantenimiento.empresas.index')}}">Empresas</a></li>
+            @endcan
+            @can('crud_vendedor')
             <li class="@yield('vendedores-active')"><a href="{{ route('mantenimiento.vendedor.index') }}">Vendedores</a></li>
+            @endcan
+            @can('crud_talonario')
             <li class="@yield('talonarios-active')"><a href="{{ route('mantenimiento.talonario.index') }}">Talonarios</a></li>
+            @endcan
+            @can('crud_general')
             <li class="@yield('tablas-active')"><a href="{{route('mantenimiento.tabla.general.index')}}">Tablas Generales</a></li>
-
+            @endcan
         </ul>
     </li>
 
     <li class="@yield('seguridad-active')">
         <a href="#"><i class="fa fa-shield"></i> <span class="nav-label">Seguridad</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            @can('crud_usuario')
             <li class="@yield('usuarios-active')"><a href="{{route('seguridad.usuario.index')}}">Usuarios</a></li>
-            <li><a href="lockscreen.html">Roles</a></li>
+            @endcan
+            @can('crud_rol')
+            <li class="@yield('roles-active')"><a href="{{route('seguridad.roles.index')}}">Roles</a></li>
+            @endcan
+            @can('crud_permiso')
+            <li class="@yield('permissions-active')"><a href="{{route('seguridad.permissions.index')}}">Permisos</a></li>
+            @endcan
         </ul>
     </li>
 

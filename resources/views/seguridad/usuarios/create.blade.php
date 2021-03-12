@@ -87,6 +87,26 @@
                                         </div>   
                                         
                                     </div>
+                                    <div class="form-group" >
+                                        
+                                        <label> Rol: </label> 
+                                    
+                                        <select class="select2_form form-control {{ $errors->has('rol_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('rol_id')}}" name="rol_id" id="rol_id">
+                                        <option></option>
+                                            @foreach ($roles as $rol)
+                                            <option value="{{$rol->id}}" @if(old('rol_id')==$rol->id )
+                                                 @endif >{{$rol->name}}</option>
+                                            @endforeach
+
+                                        </select>
+
+                                        @if ($errors->has('rol_id'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('rol_id') }}</strong>
+                                            </span>
+                                        @endif
+                                     
+                                    </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
@@ -112,6 +132,7 @@
                                                     value="{{ old('password_confirmation')}}">
                                         </div>
                                     </div>
+
 
                             
                                             

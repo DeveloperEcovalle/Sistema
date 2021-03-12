@@ -39,6 +39,15 @@
                         @endif
                     </div>
 
+
+                    <div class="form-group">
+                        <div class="input-group date clase">
+                          <input data-format="dd/MM/yyyy" type="text"></input>
+                          <span class="input-group-addon"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                        </div>
+                     </div>
+
+
                    <div class="form-group">
                         <label>Fecha Fin:</label> 
                         <input type="date" class="form-control {{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" id="fecha_fin" value="{{old('fecha_fin')}}" onkeyup="return mayus(this)">
@@ -90,6 +99,11 @@
 <link href="{{ asset('Inspinia/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 @push('scripts')
 <script src="{{ asset('Inspinia/js/plugins/select2/select2.full.min.js') }}"></script>
+<style>
+    .datepicker {
+      z-index: 1600 !important; /* has to be larger than 1050 */
+    }
+</style>
 <script>
 //Select2
 $(".select2_form").select2({
@@ -97,5 +111,14 @@ $(".select2_form").select2({
     allowClear: true,
     width: '100%',
 });
+$(function() {
+  $('#datetimepicker21').datetimepicker({
+    language: 'pt-BR'
+  });
+});
+//.input-group.date
+$('.clase').datepicker({
+    format: "dd/mm/yyyy",
+})
 </script>
 @endpush
