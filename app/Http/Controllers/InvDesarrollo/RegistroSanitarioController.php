@@ -11,6 +11,7 @@ use DataTables;
 use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 class RegistroSanitarioController extends Controller
