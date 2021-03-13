@@ -19,15 +19,22 @@ class Programacion_produccionController extends Controller
     {
         return view('produccion.programacion_produccion.index');
     }
+
     public function getProgramacionProduccion(){
-        return datatables()->query(
-            DB::table('programacion_produccion')
-            ->join('productos','productos.id','=','programacion_produccion.producto_id')
-            ->select('programacion_produccion.*','productos.nombre', 
-            DB::raw('DATE_FORMAT(programacion_produccion.created_at, "%d/%m/%Y") as creado'),
-            DB::raw('DATE_FORMAT(programacion_produccion.updated_at, "%d/%m/%Y") as actualizado')
-            )
-        )->toJson();
+        $produccion = Programacion_produccion::select('programacion_produccion.*')->orderBy('id', 'desc')->get();
+        $coleccion = collect([]);
+        foreach($produccion as $producto) {
+            $coleccion->push([
+                'id' => $producto->id,
+                'producto' => $producto->producto->nombre,
+                'fecha_termino'=> ($producto->fecha_termino)?Carbon::parse($producto->fecha_termino)->format( 'd/m/Y'):'-',
+                'fecha_programada'=> Carbon::parse($producto->fecha_produccion)->format( 'd/m/Y'),
+                'cantidad_programada' => $producto->cantidad_programada,
+                'observacion' => $producto->observacion,
+                'estado' => $producto->estado,
+            ]);
+        }
+        return DataTables::of($coleccion)->toJson();
     }
 
     public function create()
@@ -65,47 +72,45 @@ class Programacion_produccionController extends Controller
         ]);
     }
     public function store(Request $request){
-        
+    
         $data = $request->all();
         $rules = [
-            'producto_id'=>'',
-            'fecha_creacion'=>'',
-            'fecha_produccion'=>'',
-            'fecha_termino'=>'',
-            'cantidad_programada'=>'',
-            'cantidad_producida'=>'',
-            'observacion'=>'',
-            'usuario_id'=>'',
-            'estado'=>'',
+            'producto_id' => 'required',
+            // 'fecha_creacion'=>'',
+            'fecha_produccion' => 'required',
+            // 'fecha_termino'=>'',
+            // 'cantidad_programada'=>'',
+            'cantidad_programada'=>'required',
+            'observacion' => 'nullable',
+            // // 'usuario_id'=>'',
+            // 'estado'=>'',
             
         ];
         
         $message = [
-            'producto_id'=>'El campo producto_id es ...',
-            'fecha_creacion'=>'El campo fecha_creacion es ...',
-            'fecha_produccion'=>'El campo fecha_produccion es ...',
-            'fecha_termino'=>'El campo fecha_termino es ...',
-            'cantidad_programada'=>'El campo cantidad_programada es ...',
-            'cantidad_producida'=>'El campo cantidad_producida es ...',
-            'observacion'=>'El campo observacion es ...',
-            'usuario_id'=>'El campo usuario_id es ...',
-            'estado'=>'El campo estado es ...',
+            'required.producto_id'=>'El campo Producto es obligatorio',
+            // 'fecha_creacion'=>'El campo fecha_creacion es ...',
+            'required.fecha_produccion'=>'El campo Fecha de Producción es obligatorio',
+            // 'fecha_termino'=>'El campo fecha_termino es ...',
+            // 'cantidad_programada'=>'El campo cantidad_programada es ...',
+            'cantidad_programada'=>'El campo Cantidad Producir es obligatorio',
+            // 'observacion'=>'El campo observacion es ...',
+            // 'usuario_id'=>'El campo usuario_id es ...',
+            // 'estado'=>'El campo estado es ...',
             
         ];
 
         Validator::make($data, $rules, $message)->validate();
-        
-        //$registro_sanitario = new RegistroSanitario();
+    
         $programacion_produccion=new Programacion_produccion;
-        $programacion_produccion->producto_id=$request->get('producto_id');
-        $programacion_produccion->fecha_creacion=Carbon::createFromFormat('d/m/Y', $request->get('fecha_creacion'))->format('Y-m-d');
-        $programacion_produccion->fecha_produccion=Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
-        $programacion_produccion->fecha_termino=Carbon::createFromFormat('d/m/Y', $request->get('fecha_termino'))->format('Y-m-d');
+        $programacion_produccion->producto_id = $request->get('producto_id');
+        // $programacion_produccion->fecha_creacion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_creacion'))->format('Y-m-d');
+        $programacion_produccion->fecha_produccion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
+        $programacion_produccion->fecha_termino = ($request->get('fecha_termino')=='-') ? null : Carbon::createFromFormat('d/m/Y', $request->get('fecha_termino'))->format('Y-m-d');
         $programacion_produccion->cantidad_programada=$request->get('cantidad_programada');
-        $programacion_produccion->cantidad_producida=$request->get('cantidad_producida');
+        // $programacion_produccion->cantidad_producida=$request->get('cantidad_producida');
         $programacion_produccion->observacion=$request->get('observacion');
-        $programacion_produccion->usuario_id = auth()->user()->id;
-        //$programacion_produccion->estado=$request->get('estado');
+        // $programacion_produccion->usuario_id = auth()->user()->id;
         $programacion_produccion->save();
 
         //Registro de actividad
@@ -118,31 +123,30 @@ class Programacion_produccionController extends Controller
     }
 
     public function update(Request $request, $id){
-        
         $data = $request->all();
         $rules = [
-            'producto_id' =>'',
-            'fecha_creacion' =>'',
-            'fecha_produccion' =>'',
-            'fecha_termino' =>'',
-            'cantidad_programada' =>'',
-            'cantidad_producida' =>'',
-            'observacion' =>'',
-            'usuario_id' =>'',
-            'estado' =>'',
+            'producto_id' => 'required',
+            // 'fecha_creacion'=>'',
+            'fecha_produccion' => 'required',
+            // 'fecha_termino'=>'',
+            // 'cantidad_programada'=>'',
+            'cantidad_programada'=>'required',
+            'observacion' => 'nullable',
+            // // 'usuario_id'=>'',
+            // 'estado'=>'',
             
         ];
         
         $message = [
-            'producto_id' =>'El campo producto_id es ...',
-            'fecha_creacion' =>'El campo fecha_creacion es ...',
-            'fecha_produccion' =>'El campo fecha_produccion es ...',
-            'fecha_termino' =>'El campo fecha_termino es ...',
-            'cantidad_programada' =>'El campo cantidad_programada es ...',
-            'cantidad_producida' =>'El campo cantidad_producida es ...',
-            'observacion' =>'El campo observacion es ...',
-            'usuario_id' =>'El campo usuario_id es ...',
-            'estado' =>'El campo estado es ...',
+            'required.producto_id'=>'El campo Producto es obligatorio',
+            // 'fecha_creacion'=>'El campo fecha_creacion es ...',
+            'required.fecha_produccion'=>'El campo Fecha de Producción es obligatorio',
+            // 'fecha_termino'=>'El campo fecha_termino es ...',
+            // 'cantidad_programada'=>'El campo cantidad_programada es ...',
+            'cantidad_programada'=>'El campo Cantidad Producir es obligatorio',
+            // 'observacion'=>'El campo observacion es ...',
+            // 'usuario_id'=>'El campo usuario_id es ...',
+            // 'estado'=>'El campo estado es ...',
             
         ];
 
@@ -150,10 +154,11 @@ class Programacion_produccionController extends Controller
 
         $programacion_produccion = Programacion_produccion::findOrFail($id);
         $programacion_produccion->producto_id = $request->get('producto_id');
-        $programacion_produccion->cantidad_programada = $request->get('cantidad_programada');
-        $programacion_produccion->cantidad_producida = $request->get('cantidad_producida');
+        $programacion_produccion->fecha_produccion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
+        $programacion_produccion->fecha_termino = ($request->get('fecha_termino')=='-') ? null : Carbon::createFromFormat('d/m/Y', $request->get('fecha_termino'))->format('Y-m-d');
+        $programacion_produccion->cantidad_programada=$request->get('cantidad_programada');
         $programacion_produccion->observacion = $request->get('observacion');
-        $programacion_produccion->usuario_id = auth()->user()->id;
+        // $programacion_produccion->usuario_id = auth()->user()->id;
 
         $programacion_produccion->update();
 

@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Programacion Produccion</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Programacion de Produccion</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
@@ -32,15 +32,15 @@
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
-
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">Productos</th>
-                                    <th class="text-center" style="display:none">Fecha Creacion</th>
-                                    <th class="text-center">Fecha Produccion</th>
-                                    <th class="text-center" style="display:none">Fecha Termino</th>
-                                    <th class="text-center">Cantidad Programada</th>
-                                    <th class="text-center">Cantidad Producida</th>
+                                    <!-- <th class="text-center" style="display:none">Fecha Creacion</th> -->
+                                    <th class="text-center">Cantidad Producir</th>
+                                    <th class="text-center">Fecha Producción</th>
+                                    <th class="text-center">Fecha Termino</th>
+                                    <!-- <th class="text-center">Cantidad Programada</th> -->
                                     <th class="text-center">Observacion</th>
-                                    <th class="text-center" style="display:none">Usuario Id</th>
+                                    <!-- <th class="text-center" style="display:none">Usuario Id</th> -->
                                     <th class="text-center">Estado</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
@@ -102,16 +102,14 @@ $(document).ready(function() {
         "ajax": "{{ route('getProgramacionProduccion')}}",
         "columns": [
             //programacion_produccion INTERNA
-            //{ data: 'id',className: "text-center"},
-            
-            { data: 'nombre',className: "text-center"},
-            { data: 'fecha_creacion',className: "text-center","visible":false},
-            { data: 'fecha_produccion',className: "text-center"},
-            { data: 'fecha_termino',className: "text-center"},
+            { data: 'id',className: "text-center", sWidth: '5%',},
+            { data: 'producto',className: "text-left", sWidth: '30%'},
+            // { data: 'fecha_creacion',className: "text-center", "visible":false},
+            // { data: 'fecha_produccion',className: "text-center"},
             { data: 'cantidad_programada',className: "text-center"},
-            { data: 'cantidad_producida',className: "text-center"},
+            { data: 'fecha_programada',className: "text-center"},
+            { data: 'fecha_termino',className: "text-center"},
             { data: 'observacion',className: "text-center"},
-            { data: 'usuario_id',className: "text-center","visible":false},
             { data: 'estado',className: "text-center"},
             {
                 data: null,

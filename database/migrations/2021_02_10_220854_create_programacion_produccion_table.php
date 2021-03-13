@@ -19,13 +19,14 @@ class CreateProgramacionProduccionTable extends Migration
             $table->foreign('producto_id')
                   ->references('id')->on('productos')
                   ->onDelete('cascade');
-            $table->date('fecha_creacion');
+            // $table->date('fecha_creacion');
             $table->date('fecha_produccion');
-            $table->date('fecha_termino');            
+            $table->date('fecha_termino')->nullable();            
+            // $table->unsignedInteger('cantidad_programada');
+            // $table->unsignedInteger('cantidad_producida')->nullable();
             $table->unsignedInteger('cantidad_programada');
-            $table->unsignedInteger('cantidad_producida')->nullable();
             $table->mediumText('observacion')->nullable();
-            $table->BigInteger('usuario_id');
+            // $table->BigInteger('usuario_id');
             $table->enum('estado',['VIGENTE','PRODUCCION','TERMINADO','ANULADO'])->default('VIGENTE');
             $table->timestamps();
         });
