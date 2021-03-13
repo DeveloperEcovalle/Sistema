@@ -53,25 +53,29 @@
                     </div>
 
                    <div class="form-group">
+                        <div class="custom1-file">
                         <label>Archivo Word:</label> 
-                        <input type="file" class="form-control {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word_editar" value="{{old('archivo_word')}}" onkeyup="return mayus(this)">
+                        <input type="file" class="form-control custom1-file-input {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word_editar" value="{{old('archivo_word')}}" onkeyup="return mayus(this)" accept=".doc,.docx">
                         
                         @if ($errors->has('archivo_word'))
                         <span class="invalid-feedback" role="alert">
                             <strong id="error-archivo_word">{{ $errors->first('archivo_word') }}</strong>
                         </span>
                         @endif
+                        </div>
                     </div>
 
                    <div class="form-group">
+                        <div class="custom2-file">
                         <label>Archivo Pdf:</label> 
-                        <input type="file" class="form-control {{ $errors->has('archivo_pdf') ? ' is-invalid' : '' }}" name="archivo_pdf" id="archivo_pdf_editar" value="{{old('archivo_pdf')}}" onkeyup="return mayus(this)">
+                        <input type="file" class="form-control custom2-file-input {{ $errors->has('archivo_pdf') ? ' is-invalid' : '' }}" name="archivo_pdf" id="archivo_pdf_editar" value="{{old('archivo_pdf')}}" onkeyup="return mayus(this)" accept=".pdf">
                         
                         @if ($errors->has('archivo_pdf'))
                         <span class="invalid-feedback" role="alert">
                             <strong id="error-archivo_pdf">{{ $errors->first('archivo_pdf') }}</strong>
                         </span>
                         @endif
+                        </div>
                     </div>
 
             </div>
@@ -90,3 +94,46 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script src="{{ asset('Inspinia/js/plugins/select2/select2.full.min.js') }}"></script>
+<style>
+    .datepicker {
+      z-index: 1600 !important; /* has to be larger than 1050 */
+    }
+</style>
+<script>
+$(document).ready(function() {
+    $(".select2_form").select2({
+        placeholder: "SELECCIONAR",
+        allowClear: true,
+        width: '100%',
+    });
+
+    //.input-group.date
+    $('.clase').datepicker({
+        format: "dd/mm/yyyy",
+    })
+
+    // $('.custom1-file-input').on('change', function() {
+    //         var fileInput = document.getElementById('archivo_word');
+    //         console.log(fileInput);
+    //         var filePath = fileInput.value;
+    //         var allowedExtensions = /(.doc|.docx)$/i;
+
+    //         if(!allowedExtensions.exec(filePath)){
+    //             toastr.error('Extensión inválida, formatos admitidos (.doc .docx)','Error');
+    //         }
+    // });
+    // $('.custom2-file-input').on('change', function() {
+    //         var fileInput = document.getElementById('archivo_pdf');
+    //         console.log(fileInput);
+    //         var filePath = fileInput.value;
+    //         var allowedExtensions = /(.pdf)$/i;
+
+    //         if(!allowedExtensions.exec(filePath)){
+    //             toastr.error('Extensión inválida, formatos admitidos (.pdf)','Error');
+    //         }
+    // });
+ });
+</script>
+@endpush

@@ -118,26 +118,30 @@
                                     </div>
 
                                    <div class="form-group">
+                                      <div class="custom1-file">  
                                         <label>Imagen:</label> 
-                                        <input type="file" class="form-control {{ $errors->has('imagen') ? ' is-invalid' : '' }}" name="imagen" id="imagen" value="{{old('imagen',$prototipo->imagen)}}" onkeyup="return mayus(this)">
+                                        <input type="file" class="form-control custom1-file-input {{ $errors->has('imagen') ? ' is-invalid' : '' }}" name="imagen" id="imagen" value="{{old('imagen',$prototipo->imagen)}}" onkeyup="return mayus(this)" accept="image/*">
 
                                         @if ($errors->has('imagen'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('imagen') }}</strong>
                                         </span>
                                         @endif
+                                      </div>
                                     </div>
 
                               
                                      <div class="form-group">
-                                          <label>Archivo Word:</label> 
-                                        <input type="file" class="form-control {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word" value="{{old('ruta_archivo_word',$prototipo->ruta_archivo_word)}}" onkeyup="return mayus(this)">
+                                        <div class="custom2-file">
+                                        <label>Archivo Word:</label> 
+                                        <input type="file" class="form-control custom2-file-input {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word" value="{{old('ruta_archivo_word',$prototipo->ruta_archivo_word)}}" onkeyup="return mayus(this)" accept=".doc,.docx">
 
                                         @if ($errors->has('archivo_word'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong id="error-archivo_word-guardar">{{ $errors->first('archivo_word') }}</strong>
                                         </span>
                                         @endif
+                                        </div>
                                     </div>
                                     <input type="hidden" id="articulos_tabla" name="articulos_tabla[]">
                                   </div>
@@ -316,6 +320,27 @@ $('#fecha_fin .input-group.date').datepicker({
     language: 'es',
     format: "dd/mm/yyyy"
 });
+
+$('.custom1-file-input').on('change', function() {
+        var fileInput = document.getElementById('imagen');
+        console.log(fileInput);
+        var filePath = fileInput.value;
+        var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
+
+        if(!allowedExtensions.exec(filePath)){
+            toastr.error('Extensión inválida, formatos admitidos (.jpg . jpeg . png)','Error');
+        }
+});
+
+$('.custom2-file-input').on('change', function() {
+        var fileInput = document.getElementById('archivo_word');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(.doc|.docx)$/i;
+
+        if(!allowedExtensions.exec(filePath)){
+            toastr.error('Extensión inválida, formatos admitidos (.doc .docx)','Error');
+        }
+});
 function validarFecha() {
     var enviar = false
     var articulos = registrosArticulos()
@@ -371,6 +396,8 @@ $('#enviar_prototipo').submit(function(e) {
             }
         })
     }
+
+
 
 })
 

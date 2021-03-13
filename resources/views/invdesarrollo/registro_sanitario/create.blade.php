@@ -40,14 +40,6 @@
                     </div>
 
 
-                    <div class="form-group">
-                        <div class="input-group date">
-                          <input data-format="dd/MM/yyyy" type="text"></input>
-                          <span class="input-group-addon"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
-                        </div>
-                     </div>
-
-
                    <div class="form-group">
                         <label>Fecha Fin:</label> 
                         <input type="date" class="form-control {{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" id="fecha_fin" value="{{old('fecha_fin')}}" onkeyup="return mayus(this)">
@@ -60,25 +52,29 @@
                     </div>
 
                    <div class="form-group">
+                        <div class="custom1-file">
                         <label>Archivo Word:</label> 
-                        <input type="file" class="form-control {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word" value="{{old('archivo_word')}}" onkeyup="return mayus(this)">
+                        <input type="file" class="form-control custom1-file-input {{ $errors->has('archivo_word') ? ' is-invalid' : '' }}" name="archivo_word" id="archivo_word" value="{{old('archivo_word')}}" onkeyup="return mayus(this)" accept=".doc,.docx">
 
                         @if ($errors->has('archivo_word'))
                         <span class="invalid-feedback" role="alert">
                             <strong id="error-archivo_word-guardar">{{ $errors->first('archivo_word') }}</strong>
                         </span>
                         @endif
+                        </div>
                     </div>
 
                    <div class="form-group">
+                        <div class="custom2-file">
                         <label>Archivo Pdf:</label> 
-                        <input type="file" class="form-control {{ $errors->has('archivo_pdf') ? ' is-invalid' : '' }}" name="archivo_pdf" id="archivo_pdf" value="{{old('archivo_pdf')}}" onkeyup="return mayus(this)">
+                        <input type="file" class="form-control custom2-file-input {{ $errors->has('archivo_pdf') ? ' is-invalid' : '' }}" name="archivo_pdf" id="archivo_pdf" value="{{old('archivo_pdf')}}" onkeyup="return mayus(this)" accept=".pdf">
 
                         @if ($errors->has('archivo_pdf'))
                         <span class="invalid-feedback" role="alert">
                             <strong id="error-archivo_pdf-guardar">{{ $errors->first('archivo_pdf') }}</strong>
                         </span>
                         @endif
+                        </div>
                     </div>
 
             </div>    
@@ -105,20 +101,38 @@
     }
 </style>
 <script>
-//Select2
-$(".select2_form").select2({
-    placeholder: "SELECCIONAR",
-    allowClear: true,
-    width: '100%',
-});
-$(function() {
-  $('#datetimepicker21').datetimepicker({
-    language: 'pt-BR'
-  });
-});
-//.input-group.date
-$('.clase').datepicker({
-    format: "dd/mm/yyyy",
-})
+$(document).ready(function() {
+    $(".select2_form").select2({
+        placeholder: "SELECCIONAR",
+        allowClear: true,
+        width: '100%',
+    });
+
+    //.input-group.date
+    $('.clase').datepicker({
+        format: "dd/mm/yyyy",
+    })
+
+    $('.custom1-file-input').on('change', function() {
+            var fileInput = document.getElementById('archivo_word');
+            console.log(fileInput);
+            var filePath = fileInput.value;
+            var allowedExtensions = /(.doc|.docx)$/i;
+
+            if(!allowedExtensions.exec(filePath)){
+                toastr.error('Extensión inválida, formatos admitidos (.doc .docx)','Error');
+            }
+    });
+    $('.custom2-file-input').on('change', function() {
+            var fileInput = document.getElementById('archivo_pdf');
+            console.log(fileInput);
+            var filePath = fileInput.value;
+            var allowedExtensions = /(.pdf)$/i;
+
+            if(!allowedExtensions.exec(filePath)){
+                toastr.error('Extensión inválida, formatos admitidos (.pdf)','Error');
+            }
+    });
+ });
 </script>
 @endpush
