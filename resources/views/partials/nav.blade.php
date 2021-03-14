@@ -37,7 +37,7 @@
         </ul>
     </li>
 
-
+    @if(auth()->user()->can('crud_articulo') or auth()->user()->can('crud_categoria') or auth()->user()->can('crud_proveedor') or auth()->user()->can('crud_orden') or auth()->user()->can('crud_doccompra'))
     <li class="@yield('compras-active')">
         <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Compras</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -58,7 +58,7 @@
             @endcan
         </ul>
     </li>
-
+    @endif
     <li class="@yield('ventas-active')">
         <a href="#"><i class="fa fa-signal"></i> <span class="nav-label">Ventas</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">

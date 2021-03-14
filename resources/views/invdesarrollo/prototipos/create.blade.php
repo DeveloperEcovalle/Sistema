@@ -429,26 +429,25 @@ $(document).ready(function() {
 
     });
 
-
     $('.custom1-file-input').on('change', function() {
-            var fileInput = document.getElementById('imagen');
-            console.log(fileInput);
-            var filePath = fileInput.value;
-            var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
+        var fileInput = document.getElementById('imagen');
+        console.log(fileInput);
+        var filePath = fileInput.value;
+        var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
 
-            if(!allowedExtensions.exec(filePath)){
-                toastr.error('Extensión inválida, formatos admitidos (.jpg . jpeg . png)','Error');
-            }
+        if(!allowedExtensions.exec(filePath)){
+            toastr.error('Extensión inválida, formatos admitidos (.jpg . jpeg . png)','Error');
+        }
     });
 
     $('.custom2-file-input').on('change', function() {
-            var fileInput = document.getElementById('archivo_word');
-            var filePath = fileInput.value;
-            var allowedExtensions = /(.doc|.docx)$/i;
+        var fileInput = document.getElementById('archivo_word');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(.doc|.docx)$/i;
 
-            if(!allowedExtensions.exec(filePath)){
-                toastr.error('Extensión inválida, formatos admitidos (.doc .docx)','Error');
-            }
+        if(!allowedExtensions.exec(filePath)){
+            toastr.error('Extensión inválida, formatos admitidos (.doc .docx)','Error');
+        }
     });
 })
 
