@@ -27,7 +27,7 @@
     <li>
         <a href="{{route('home')}}"><i class="fa fa-th-large"></i> <span class="nav-label">Panel de control</span></a>
     </li>
-
+    @if(auth()->user()->can('crud_caja_chica'))
     <li class="@yield('pos-active')">
         <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Pos</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -36,6 +36,7 @@
             @endcan
         </ul>
     </li>
+    @endif
 
     @if(auth()->user()->can('crud_articulo') or auth()->user()->can('crud_categoria') or auth()->user()->can('crud_proveedor') or auth()->user()->can('crud_orden') or auth()->user()->can('crud_doccompra'))
     <li class="@yield('compras-active')">
@@ -59,6 +60,7 @@
         </ul>
     </li>
     @endif
+    @if(auth()->user()->can('crud_cliente') OR auth()->user()->can('crud_cotizacion') or auth()->user()->can('crud_docventa') or auth()->user()->can('crud_comprobante') or auth()->user()->can('crud_guia_remision'))
     <li class="@yield('ventas-active')">
         <a href="#"><i class="fa fa-signal"></i> <span class="nav-label">Ventas</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -79,8 +81,8 @@
             @endcan
         </ul>
     </li>
-
-
+    @endif
+    @if(auth()->user()->can('crud_composicion_producto') OR auth()->user()->can('crud_linea_produccion') or auth()->user()->can('crud_programacion_produccion'))
     <li class="@yield('produccion-active')">
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -95,7 +97,8 @@
             @endcan
         </ul>
     </li>
-
+    @endif
+    @if(auth()->user()->can('crud_registro_sanitario') OR auth()->user()->can('crud_prototipo') or auth()->user()->can('crud_guia_interna'))
     <li class="@yield('invdesarrollo-active')">
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Inv + Desarrollo </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -110,7 +113,7 @@
             @endcan
         </ul>
     </li>
-    
+    @endif
     <li class="@yield('almacenes-active')">
         <a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Almacenes </span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -180,7 +183,7 @@
 
         </ul>
     </li>
-
+     @if(auth()->user()->can('crud_actividad') OR auth()->user()->can('crud_colaborador') or auth()->user()->can('crud_empresa') or auth()->user()->can('crud_talonario') or auth()->user()->can('crud_general'))
     <li class="@yield('mantenimiento-active')">
         <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Mantenimiento</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -204,7 +207,9 @@
             @endcan
         </ul>
     </li>
+    @endif
 
+    @if(auth()->user()->can('crud_usuario') OR auth()->user()->can('crud_rol') or auth()->user()->can('crud_permiso'))
     <li class="@yield('seguridad-active')">
         <a href="#"><i class="fa fa-shield"></i> <span class="nav-label">Seguridad</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -219,4 +224,4 @@
             @endcan
         </ul>
     </li>
-
+    @endif
