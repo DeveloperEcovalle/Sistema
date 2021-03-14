@@ -490,7 +490,7 @@ Route::prefix('almacenes/ingresos_mercaderia')->group(function() {
     Route::get('email/{id}','Almacenes\Ingreso_mercaderiaController@email')->name('almacenes.ingreso_mercaderia.email')->middleware('permission:crud_ingreso_mercaderia');
 });
 
-// Programacion de la ProducciónProduccion
+// Programacion de la Produccion
 Route::prefix('produccion/programacion_produccion')->group(function() {
     Route::get('index', 'Produccion\Programacion_produccionController@index')->name('produccion.programacion_produccion.index')->middleware('permission:crud_programacion_produccion');
     Route::get('getProgramacionProduccion','Produccion\Programacion_produccionController@getProgramacionProduccion')->name('getProgramacionProduccion');
@@ -499,7 +499,7 @@ Route::prefix('produccion/programacion_produccion')->group(function() {
     Route::get('edit/{id}','Produccion\Programacion_produccionController@edit')->name('produccion.programacion_produccion.edit')->middleware('permission:crud_programacion_produccion');
     Route::get('show/{id}','Produccion\Programacion_produccionController@show')->name('produccion.programacion_produccion.show')->middleware('permission:crud_programacion_produccion');
     Route::put('update/{id}', 'Produccion\Programacion_produccionController@update')->name('produccion.programacion_produccion.update')->middleware('permission:crud_programacion_produccion');
-    Route::get('destroy/{id}', 'Produccion\Programacion_produccionController@destroy')->name('produccion.programacion_produccion.destroy')->middleware('permission:crud_programacion_produccion');
+    Route::post('destroy', 'Produccion\Programacion_produccionController@destroy')->name('produccion.programacion_produccion.destroy')->middleware('permission:crud_programacion_produccion');
     Route::get('reporte/{id}','Produccion\Programacion_produccionController@report')->name('produccion.programacion_produccion.reporte')->middleware('permission:crud_programacion_produccion');
     Route::get('email/{id}','Produccion\Programacion_produccionController@email')->name('produccion.programacion_produccion.email')->middleware('permission:crud_programacion_produccion');
 });

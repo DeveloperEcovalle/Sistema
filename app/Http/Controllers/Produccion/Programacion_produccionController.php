@@ -172,11 +172,11 @@ class Programacion_produccionController extends Controller
     }
 
     
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        
-        $programacion_produccion = Programacion_produccion::findOrFail($id);
+        $programacion_produccion = Programacion_produccion::findOrFail($request->get('programacion_id'));
         $programacion_produccion->estado = 'ANULADO';
+        $programacion_produccion->observacion = $request->get('observacion');
         $programacion_produccion->update();
 
         //Registro de actividad

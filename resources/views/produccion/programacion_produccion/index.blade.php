@@ -56,7 +56,7 @@
     </div>
 </div>
 
-
+@include('produccion.programacion_produccion.modal')
 @stop
 @push('styles')
 <!-- DataTable -->
@@ -110,7 +110,29 @@ $(document).ready(function() {
             { data: 'fecha_programada',className: "text-center"},
             { data: 'fecha_termino',className: "text-center"},
             { data: 'observacion',className: "text-center"},
-            { data: 'estado',className: "text-center"},
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    switch (data.estado) {
+                        case "VIGENTE":
+                            return "<span class='badge badge-warning' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        case "ANULADO":
+                            return "<span class='badge badge-danger' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        case "PRODUCCION":
+                            return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                            break;
+                        default:
+                            return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                    }
+                },
+            },
             {
                 data: null,
                 className: "text-center",
@@ -160,33 +182,12 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 
 function eliminar(id) {
-    Swal.fire({
-        title: 'Opción Eliminar',
-        text: "¿Seguro que desea guardar cambios?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: "#1ab394",
-        confirmButtonText: 'Si, Confirmar',
-        cancelButtonText: "No, Cancelar",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            //Ruta Eliminar
-            var url_eliminar = '{{ route("produccion.programacion_produccion.destroy", ":id")}}';
-            url_eliminar = url_eliminar.replace(':id', id);
-            $(location).attr('href', url_eliminar);
+    $('#programacion_id').val(id)
+    $('#modal_observacion_anular').modal('show');
 
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-            )
-        }
-    })
 }
+
+
 
 </script>
 @endpush
