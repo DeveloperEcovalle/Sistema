@@ -233,12 +233,6 @@
         timer: 2500
     })
     @endif
-
-
-
-
-
-
     
     </script>
 

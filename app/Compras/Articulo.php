@@ -17,7 +17,9 @@ class Articulo extends Model
         'stock_min',
         'precio_compra',
         'codigo_barra',
-        'estado'];
+        'estado',
+        'unidad_medida',
+    ];
     public $timestamps = true;
 
     public function categoria()
@@ -39,5 +41,14 @@ class Articulo extends Model
     function getDescripcionCompleta()
     {
         return $this->codigo_fabrica.' - '.$this->descripcion;
+    }
+
+    public function getMedida(): string
+    {
+        $medida = unidad_medida()->where('id', $this->unidad_medida)->first();
+        if (is_null($medida))
+            return "-";
+        else
+            return $medida->simbolo;
     }
 }

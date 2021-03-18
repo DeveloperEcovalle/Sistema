@@ -90,6 +90,8 @@
                                                 </span>
                                                 @endif
                                             </div>
+
+                                            
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
 

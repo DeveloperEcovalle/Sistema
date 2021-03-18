@@ -77,6 +77,7 @@ class ArticuloController extends Controller
             'stock' => 'nullable|integer',
             'stock_min' => 'required|integer',
             'precio_compra' => 'required|numeric',
+            'unidad' => 'required',
 
         ];
         
@@ -89,6 +90,7 @@ class ArticuloController extends Controller
             'presentacion.required'=> 'El campo Presentación es obligatorio.',
             'almacen.required'=>'El campo Almacen es obligatorio.',
             'stock.integer' => 'El campo Stock debe ser Entero.',
+            'unidad.integer' => 'El campo Unidad de Medida es obligatorio.',
 
             'stock_min.integer' => 'El campo Stock Min. debe ser Entero.',
             'stock_min.required' => 'El campo Stock Min. es obligatorio.',
@@ -110,6 +112,7 @@ class ArticuloController extends Controller
         $articulo->stock_min = $request->get('stock_min');
         $articulo->precio_compra = $request->get('precio_compra');
         $articulo->codigo_barra = $request->get('codigo_barra');
+        $articulo->unidad_medida = $request->get('unidad');
         $articulo->save();
 
         //Registro de actividad
@@ -138,6 +141,7 @@ class ArticuloController extends Controller
             'stock' => 'nullable|integer',
             'stock_min' => 'required|integer',
             'precio_compra' => 'required|numeric',
+            'unidad' => 'required',
 
         ];
         
@@ -153,8 +157,11 @@ class ArticuloController extends Controller
             'almacen.required'=>'El campo Almacen es obligatorio.',
             'stock.integer' => 'El campo Stock debe ser Entero.',
 
+            'unidad.integer' => 'El campo Unidad de Medida es obligatorio.',
+
             'stock_min.integer' => 'El campo Stock Min. debe ser Entero.',
             'stock_min.required' => 'El campo Stock Min. es obligatorio.',
+            
 
             'precio_compra.required' => 'El campo Precio de Compra es obligatorio.',
             'precio_compra.numeric' => 'El campo Precio de Compra debe ser Numeric.',
@@ -172,6 +179,7 @@ class ArticuloController extends Controller
         $articulo->stock_min = $request->get('stock_min');
         $articulo->precio_compra = $request->get('precio_compra');
         $articulo->codigo_barra = $request->get('codigo_barra');
+        $articulo->unidad_medida = $request->get('unidad');
         $articulo->update();
 
         //Registro de actividad

@@ -65,6 +65,9 @@
                                                             <div class="col-lg-6 col-xs-12">
                                                                 <p>Modificar datos de empresa:</p>
                                                             </div>
+
+                                                            @if(!$empresa->estado_fe)
+
                                                             <div class="col-lg-6 col-xs-12">
                                                                 <label> Facturación Electrónica: &nbsp
                                                                 @if(old('estado_fe',$empresa->estado_fe) == '1')
@@ -73,6 +76,9 @@
                                                                     <input type="checkbox" class="i-checks" id="estado_fe" name="estado_fe" value="{{old('estado_fe',$empresa->estado_fe)}}" ></label>
                                                                 @endif
                                                             </div>
+
+                                                            @endif
+
                                                         </div>
 
                                                         <div class="form-group row">
@@ -80,8 +86,8 @@
                                                             <div class="col-md-6">
                                                                 <label class="required">Ruc: </label>
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"  name="ruc" id="ruc" maxlength="11" value="{{old('ruc',$empresa->ruc)}}" required> 
-                                                                    <span class="input-group-append"><a style="color:white" onclick="consultarRuc()" class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
+                                                                    <input type="text" class="form-control {{ $errors->has('ruc') ? ' is-invalid' : '' }}"  name="ruc" id="ruc" maxlength="11"  @if($empresa->estado_fe) readonly @else '' @endif value="{{old('ruc',$empresa->ruc)}}" required> 
+                                                                    <span class="input-group-append"><a style="color:white"  @if($empresa->estado_fe) '' @else onclick="consultarRuc()" @endif class="btn btn-primary"><i class="fa fa-search"></i> Sunat</a></span>
                                                                     @if ($errors->has('ruc'))
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $errors->first('ruc') }}</strong>
@@ -121,7 +127,7 @@
                                                             <input type="text"
                                                                 class="form-control {{ $errors->has('razon_social') ? ' is-invalid' : '' }}"
                                                                 name="razon_social" value="{{ old('razon_social', $empresa->razon_social)}}"
-                                                                id="razon_social"  onkeyup="return mayus(this)">
+                                                                id="razon_social"  onkeyup="return mayus(this)"  @if($empresa->estado_fe) readonly @else '' @endif >
 
                                                             @if ($errors->has('razon_social'))
                                                             <span class="invalid-feedback" role="alert">
@@ -137,7 +143,7 @@
                                                                 <label>Razón Social Abreviada: </label>
                                                                 <input type="text" id="razon_social_abreviada"
                                                                     class="form-control {{ $errors->has('razon_social_abreviada') ? ' is-invalid' : '' }}"
-                                                                    name="razon_social_abreviada"
+                                                                    name="razon_social_abreviada"  @if($empresa->estado_fe) readonly @else '' @endif 
                                                                     value="{{ old('razon_social_abreviada',$empresa->razon_social_abreviada)}}"
                                                                     onkeyup="return mayus(this)">
 
@@ -150,7 +156,7 @@
                                                             </div>
                                                             <div class="col-lg-4 col-xs-12">
                                                                 <label id="ubigeo_texto">Ubigeo: </label>
-                                                                <input type="text" id="ubigeo_empresa" class="form-control {{ $errors->has('ubigeo_empresa') ? ' is-invalid' : '' }}" name="ubigeo_empresa" value="{{ old('ubigeo_empresa',$empresa->ubigeo)}}">
+                                                                <input type="text" id="ubigeo_empresa" class="form-control {{ $errors->has('ubigeo_empresa') ? ' is-invalid' : '' }}"  @if($empresa->estado_fe) readonly @else '' @endif  name="ubigeo_empresa" value="{{ old('ubigeo_empresa',$empresa->ubigeo)}}">
                                                                 <div class="invalid-feedback"><b><span id="error-empresa_ubigeo"></span></b></div>
                                                             </div>
                                                         </div>
@@ -160,7 +166,7 @@
                                                                 <label class="required">Dirección Fiscal:</label>
                                                                 <textarea type="text" id="direccion_fiscal" name="direccion_fiscal"
                                                                     class="form-control {{ $errors->has('direccion_fiscal') ? ' is-invalid' : '' }}"
-                                                                    value="{{old('direccion_fiscal',$empresa->direccion_fiscal)}}"
+                                                                    value="{{old('direccion_fiscal',$empresa->direccion_fiscal)}}"  @if($empresa->estado_fe) readonly @else '' @endif 
                                                                     onkeyup="return mayus(this)">{{old('direccion_fiscal',$empresa->direccion_fiscal)}}</textarea>
                                                                 @if ($errors->has('direccion_fiscal'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -178,7 +184,7 @@
                                                                 <label class="required">Dirección de Planta:</label>
                                                                 <textarea type="text" id="direccion_llegada" name="direccion_llegada"
                                                                     class="form-control {{ $errors->has('direccion_llegada') ? ' is-invalid' : '' }}"
-                                                                    value="{{old('direccion_llegada', $empresa->direccion_llegada)}}"
+                                                                    value="{{old('direccion_llegada', $empresa->direccion_llegada)}}"  @if($empresa->estado_fe) readonly @else '' @endif 
                                                                     onkeyup="return mayus(this)">{{old('direccion_llegada',$empresa->direccion_llegada)}}</textarea>
                                                                 @if ($errors->has('direccion_llegada'))
                                                                 <span class="invalid-feedback" role="alert">
@@ -234,7 +240,7 @@
                                                                 <div class="custom-file">
                                                                     <input id="logo" type="file" name="logo" id="logo"
                                                                         class="custom-file-input {{ $errors->has('logo') ? ' is-invalid' : '' }}"
-                                                                        accept="image/*" src="{{ Storage::url($empresa->ruta_logo)}}">
+                                                                        accept="image/*" src="{{ Storage::url($empresa->ruta_logo)}}" @if($empresa->estado_fe) disabled @else '' @endif >
 
 
                                                                     <label for="logo" id="logo_txt"
@@ -258,9 +264,11 @@
                                                         <div class="form-group row justify-content-center">
                                                             <div class="col-6 align-content-center">
                                                                 <div class="row justify-content-end">
-                                                                    <a href="javascript:void(0);" id="limpiar_logo">
-                                                                        <span class="badge badge-danger">x</span>
-                                                                    </a>
+                                                                    @if(!$empresa->estado_fe)
+                                                                        <a href="javascript:void(0);" id="limpiar_logo">
+                                                                            <span class="badge badge-danger">x</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </div>
                                                                 <div class="row justify-content-center">
                                                                     <p>
@@ -539,7 +547,7 @@
                                                         <div class="form-group row">
                                                             <div class="col-lg-6 col-xs-12">
                                                                 <label for="">Certificado</label>
-                                                                <a class="btn btn-primary btn-block modal_certificado" style="color:white"><i class="fa fa-upload"></i> Subir Certificado (.pfx)</a>
+                                                                <a class="btn btn-primary btn-block  @if(!$empresa->estado_fe) modal_certificado @endif " @if($empresa->estado_fe) disabled @else '' @endif  style="color:white"><i class="fa fa-upload"></i> Subir Certificado (.pfx)</a>
                                                             </div>
                                                             <div class="col-lg-6 col-xs-12">
                                                                 <label for="">Estado</label>
@@ -557,13 +565,13 @@
                                                         <div class="form-group row">
                                                             <div class="col-md-6 col-xs-12">
                                                                 <label class="required">Soap Usuario:</label>
-                                                                <input type="text" class="form-control {{ $errors->has('soap_usuario') ? ' is-invalid' : '' }}" name="soap_usuario" id="soap_usuario" value="{{old('soap_usuario', $facturacion ? $facturacion->sol_user : '' )}}">
+                                                                <input type="text" class="form-control {{ $errors->has('soap_usuario') ? ' is-invalid' : '' }}" @if($empresa->estado_fe) readonly @else '' @endif  name="soap_usuario" id="soap_usuario"  value="{{old('soap_usuario', $facturacion ? $facturacion->sol_user : '' )}}">
                                                                 <div class="invalid-feedback"><b><span id="error-soap_usuario"></span></b></div>
                                                             </div>
 
                                                             <div class="col-md-6 col-xs-12">
                                                                 <label class="required">Soap Contraseña:</label>
-                                                                <input type="text" class="form-control {{ $errors->has('soap_password') ? ' is-invalid' : '' }}" name="soap_password" id="soap_password" value="{{old('soap_password', $facturacion ? $facturacion->sol_pass : '' )}}">
+                                                                <input type="text" class="form-control {{ $errors->has('soap_password') ? ' is-invalid' : '' }}" @if($empresa->estado_fe) readonly @else '' @endif  name="soap_password" id="soap_password" value="{{old('soap_password', $facturacion ? $facturacion->sol_pass : '' )}}">
                                                                 <div class="invalid-feedback"><b><span id="error-soap_password"></span></b></div>
                                                             </div>
 
@@ -1481,11 +1489,12 @@ function validarCertificado() {
 
     var table = $('.dataTables-numeracion').DataTable();
     var registros = table.rows().data().length;
-
-    if (registros == 0) {
-        correcto = false
-        toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
-        $('#facturacion_link').click();
+    if ( $('#estado_fe').prop("checked") ) {
+        if (registros == 0) {
+            correcto = false
+            toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
+            $('#facturacion_link').click();
+        }
     }
 
     return correcto

@@ -966,11 +966,13 @@ function validarCertificado() {
 
     var table = $('.dataTables-numeracion').DataTable();
     var registros = table.rows().data().length;
-
-    if (registros == 0) {
-        correcto = false
-        toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
-        $('#facturacion_link').click();
+    
+    if ( $('#estado_fe').prop("checked") ) {
+        if (registros == 0) {
+            correcto = false
+            toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
+            $('#facturacion_link').click();
+        }
     }
 
     

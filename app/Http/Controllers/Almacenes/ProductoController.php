@@ -49,9 +49,6 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        
-        $data = $request->all();
-
         $rules = [
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);

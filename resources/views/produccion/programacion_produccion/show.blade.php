@@ -5,28 +5,28 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
 
-    <div class="col-lg-12">
-       <h2  style="text-transform:uppercase"><b>DETALLE PROGRAMACION DE PRODUCCIÓN</b></h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{route('home')}}">Panel de Control</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{route('produccion.programacion_produccion.index')}}">Programacion de Produccion</a>
-            </li>
-            <li class="breadcrumb-item active">
-                <strong>Detalle</strong>
-            </li>
+    
+            <div class="col-lg-9">
+                <h2  style="text-transform:uppercase"><b>DETALLE PROGRAMACION DE PRODUCCIÓN</b></h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{route('home')}}">Panel de Control</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{route('produccion.programacion_produccion.index')}}">Programacion de Produccion</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>Detalle</strong>
+                    </li>
 
-        </ol>
-    </div>
-    <div class="col-lg-4">
-        <div class="title-action">
-            <a href="{{route('produccion.programacion_produccion.edit', $programacion_produccion->id)}}" class="btn btn-warning btn-sm"><i
-                    class="fa fa-edit"></i> Editar</a>
-           
-        </div>
-    </div>
+                </ol>
+            
+            </div>
+        
+
+
+
+
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -45,10 +45,11 @@
                                 </div>
                             </div>
                         <div class="row">
-                                      
-                      		<div class="col-md-6">
-                      			<div class="form-group">
-                      				<label class="required">Productos</label>
+
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                      				<label >Productos</label>
                       				<select name="producto_id" class="form-control" disabled>
                                           <option value="">Seleccionar Productos</option>
                       					@foreach ($productos as $producto)
@@ -61,91 +62,83 @@
                       					@endforeach
                       				</select>
                       			</div>
-                      		</div>
 
-                          <div class="col-md-4" id="fecha_creacion" style="display:none">
-                            <label>Fecha Creacion</label>
-                            <div class="input-group date">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                                <input type="text" id="fecha_creacion" name="fecha_creacion"
-                                    class="form-control {{ $errors->has('fecha_creacion') ? ' is-invalid' : '' }}"
-                                    value="{{old('fecha_creacion',$programacion_produccion->fecha_creacion)}}"
-                                    autocomplete="off" disabled>
-                                @if ($errors->has('fecha_creacion'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('fecha_creacion') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                          </div>
-                          <div class="col-md-4" id="fecha_produccion">
-                            <label>Fecha Produccion</label>
-                            <div class="input-group date">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                                <input type="text" id="fecha_produccion" name="fecha_produccion"
-                                    class="form-control {{ $errors->has('fecha_produccion') ? ' is-invalid' : '' }}"
-                                    value="{{old('fecha_produccion',$programacion_produccion->fecha_produccion)}}"
-                                    autocomplete="off" disabled>
-                                @if ($errors->has('fecha_produccion'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('fecha_produccion') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                          </div>
-                          <div class="col-md-4" id="fecha_termino" style="display:none">
-                              <label>Fecha Termino</label>
-                              <div class="input-group date">
-                                  <span class="input-group-addon">
-                                      <i class="fa fa-calendar"></i>
-                                  </span>
-                                  <input type="text" id="fecha_termino" name="fecha_termino"
-                                      class="form-control {{ $errors->has('fecha_termino') ? ' is-invalid' : '' }}"
-                                      value="{{old('fecha_termino',$programacion_produccion->fecha_termino)}}"
-                                      autocomplete="off" disabled>
-                                  @if ($errors->has('fecha_termino'))
-                                  <span class="invalid-feedback" role="alert">
-                                      <strong>{{ $errors->first('fecha_termino') }}</strong>
-                                  </span>
-                                  @endif
-                              </div>
-                          </div>
-                          <div class="col-md-4">
-                              <label class="required">Cantidad Programada :</label>
-                              <input type="text" id="cantidad_programada" name="cantidad_programada" class="form-control {{ $errors->has('cantidad_programada') ? ' is-invalid' : '' }}" value="{{old('cantidad_programada',$programacion_produccion->cantidad_programada)}}" disabled>
-                              @if ($errors->has('cantidad_programada'))
-                              <span class="invalid-feedback" role="alert">
-                                  <strong>{{ $errors->first('cantidad_programada') }}</strong>
-                              </span>
-                              @endif
-                          </div>
+                                <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label class="required">Cantidad Programada :</label>
+                                            <input type="text" id="cantidad_programada" name="cantidad_programada" class="form-control {{ $errors->has('cantidad_programada') ? ' is-invalid' : '' }}" value="{{old('cantidad_programada',$programacion_produccion->cantidad_programada)}}" disabled>
+                                            @if ($errors->has('cantidad_programada'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('cantidad_programada') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
                           
-                          <div class="col-md-4" style="display:none">
-                              <label>Cantidad Producida :</label>
-                              <input type="text" id="cantidad_producida" name="cantidad_producida" class="form-control {{ $errors->has('cantidad_producida') ? ' is-invalid' : '' }}" value="{{old('cantidad_producida',$programacion_produccion->cantidad_producida)}}" disabled>
-                              @if ($errors->has('cantidad_producida'))
-                              <span class="invalid-feedback" role="alert">
-                                  <strong>{{ $errors->first('cantidad_producida') }}</strong>
-                              </span>
-                              @endif
-                          </div>
-                              
-                          <div class="col-md-8">
-                            <label>Observación:</label>
-                            <textarea type="text" placeholder="Observacion"
-                                class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
-                                name="observacion" id="observacion"  onkeyup="return mayus(this)"
-                                value="{{old('observacion',$programacion_produccion->observacion)}}" disabled>{{old('observacion',$programacion_produccion->observacion)}}</textarea>
-                            @if ($errors->has('observacion'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('observacion') }}</strong>
-                            </span>
-                            @endif
-                          </div>  
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                                <div class="form-group row">
+
+                                        <div class="col-md-6" id="fecha_produccion">
+                                            <label>Fecha Produccion</label>
+                                            <div class="input-group date">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                                <input type="text" id="fecha_produccion" name="fecha_produccion"
+                                                    class="form-control {{ $errors->has('fecha_produccion') ? ' is-invalid' : '' }}"
+                                                    value="{{old('fecha_produccion',$programacion_produccion->fecha_produccion)}}"
+                                                    autocomplete="off" disabled>
+                                                @if ($errors->has('fecha_produccion'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('fecha_produccion') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6" id="fecha_termino">
+                                            <label>Fecha Termino</label>
+                                            <div class="input-group date">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                                <input type="text" id="fecha_termino" name="fecha_termino"
+                                                    class="form-control {{ $errors->has('fecha_termino') ? ' is-invalid' : '' }}"
+                                                    value="{{old('fecha_termino', getFechaFormato($programacion_produccion->fecha_termino, 'd/m/Y'))}}"
+                                                    autocomplete="off" disabled>
+                                                @if ($errors->has('fecha_termino'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('fecha_termino') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Observación:</label>
+                                    <textarea type="text" placeholder="Observacion"
+                                        class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
+                                        name="observacion" id="observacion"  onkeyup="return mayus(this)"
+                                        value="{{old('observacion',$programacion_produccion->observacion)}}" disabled>{{old('observacion',$programacion_produccion->observacion)}}</textarea>
+                                    @if ($errors->has('observacion'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('observacion') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>  
+
+
+                            </div>
+                                      
 
                         </div>
                 </div>

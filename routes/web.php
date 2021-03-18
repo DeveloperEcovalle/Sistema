@@ -357,8 +357,6 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::post('customers','Ventas\DocumentoController@customers')->name('ventas.customers');
     Route::get('getLot/{id}','Ventas\DocumentoController@getLot')->name('ventas.getLot');
 
-
-
     //Pagos
     Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
     Route::get('pagos/getPay/{id}','Ventas\Documentos\PagoController@getPayDocument')->name('ventas.getPay.documentos');
@@ -502,6 +500,29 @@ Route::prefix('produccion/programacion_produccion')->group(function() {
     Route::post('destroy', 'Produccion\Programacion_produccionController@destroy')->name('produccion.programacion_produccion.destroy')->middleware('permission:crud_programacion_produccion');
     Route::get('reporte/{id}','Produccion\Programacion_produccionController@report')->name('produccion.programacion_produccion.reporte')->middleware('permission:crud_programacion_produccion');
     Route::get('email/{id}','Produccion\Programacion_produccionController@email')->name('produccion.programacion_produccion.email')->middleware('permission:crud_programacion_produccion');
+    Route::get('produccion/{id}','Produccion\Programacion_produccionController@production')->name('produccion.programacion_produccion.produccion')->middleware('permission:crud_programacion_produccion');
+});
+
+// Producciones aprobados
+Route::prefix('produccion/aprobados')->group(function() {
+    Route::get('index','Produccion\Programacion_produccionController@approved')->name('produccion.programacion_produccion.orden.approved');
+    Route::get('getApproved','Produccion\Programacion_produccionController@getApproved')->name('produccion.programacion_produccion.getApproved');
+});
+
+// Ordenes de Produccion
+Route::prefix('produccion/ordenes')->group(function() {
+    Route::get('/','Produccion\OrdenController@index')->name('produccion.orden.index');
+    Route::get('getOrdenes','Produccion\OrdenController@getOrdenes')->name('produccion.aprobado.getOrdenes');
+    Route::get('create/{id}','Produccion\OrdenController@create')->name('produccion.orden.create');
+    Route::post('store','Produccion\OrdenController@store')->name('produccion.orden.store');
+    Route::get('productoDetalle/{id}','Produccion\OrdenController@getArticles')->name('produccion.orden.articulos');
+    // Route::post('store', 'Produccion\Programacion_produccionController@store')->name('produccion.programacion_produccion.store');
+    // Route::get('edit/{id}','Produccion\Programacion_produccionController@edit')->name('produccion.programacion_produccion.edit');
+    Route::get('show/{id}','Produccion\OrdenController@show')->name('produccion.orden.show');
+    // Route::put('update/{id}', 'Produccion\Programacion_produccionController@update')->name('produccion.programacion_produccion.update');
+    Route::post('destroy', 'Produccion\OrdenController@destroy')->name('produccion.orden.destroy');
+    // Route::get('reporte/{id}','Produccion\Programacion_produccionController@report')->name('produccion.programacion_produccion.reporte');
+    // Route::get('produccion/{id}','Produccion\Programacion_produccionController@production')->name('produccion.programacion_produccion.produccion');
 });
 
 // Roles

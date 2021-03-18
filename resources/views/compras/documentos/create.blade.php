@@ -680,9 +680,6 @@
 <script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
 <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
 
-
-
-
 <script>
 //Select2
 $(".select2_form").select2({

@@ -126,6 +126,28 @@
                                         
                                     </div>
 
+                                    <div class="form-group row" >
+                                        <div class="col-lg-6 col-xs-12">
+                                            <label class="required">Unidad de Medida: </label> 
+                                        
+                                            <select class="select2_form form-control {{ $errors->has('unidad') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('unidad')}}" name="unidad" id="unidad" required>
+                                                <option></option>
+                                                @foreach (unidad_medida() as $medida)   
+                                                    <option value="{{$medida->id}}" @if(old('unidad') == $medida->id ) {{'selected'}} @endif style="text-transform: uppercase;">{{$medida->simbolo.' - '.$medida->descripcion}}</option>
+                                                @endforeach
+                                            </select>
+
+                                            @if ($errors->has('unidad'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('unidad') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                      
+
+                                        
+                                    </div>
+
 
                                             
                                 

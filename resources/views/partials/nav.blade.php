@@ -87,14 +87,17 @@
         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Producción</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             @can('crud_composicion_producto')
-            <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composicion de Productos Terminados</a></li>
+            <li class="@yield('composicion-active')"><a href="{{ route('produccion.composicion.index') }}">Composición de Productos Terminados</a></li>
             @endcan
             @can('crud_linea_produccion')
-            <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Produccion</a></li>
+            <li class="@yield('linea_produccion-active')"><a href="{{route('produccion.linea_produccion.index')}}">Lineas de Producción</a></li>
             @endcan
             @can('crud_programacion_produccion')
-            <li class="@yield('programacion_produccion-active')"><a href="{{route('produccion.programacion_produccion.index')}}">Programación de la Produccion</a></li>
+            <li class="@yield('programacion_produccion-active')"><a href="{{route('produccion.programacion_produccion.index')}}">Programación de la Producción</a></li>
             @endcan
+            <li class="@yield('produccion_aprobada-active')"><a href="{{route('produccion.programacion_produccion.orden.approved')}}">Producciones Aprobadas</a></li>
+            <li class="@yield('ordenes_produccion-active')"><a href="{{route('produccion.orden.index')}}">Ordenes de Producción</a></li>
+
         </ul>
     </li>
     @endif

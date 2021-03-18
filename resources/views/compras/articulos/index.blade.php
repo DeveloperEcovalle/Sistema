@@ -40,6 +40,7 @@
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">CATEGORIA</th>
                             <th class="text-center">PRESENTACION</th>
+                            <th class="text-center">STOCK</th>
                             <th class="text-center">STOCK MIN.</th>
                             <th class="text-center">PREC. COMPRA</th>
                             <th class="text-center">ACCIONES</th>
@@ -115,6 +116,7 @@
                 {data: 'descripcion', className:"text-center" , name:'articulos.descripcion'},
                 {data: 'categoria' , className:"text-center" , name:'categorias.descripcion'},
                 {data: 'presentacion', className:"text-center", name:'articulos.presentacion'},
+                {data: 'stock', className:"text-center", name:'articulos.stock'},
                 {data: 'stock_min', className:"text-center", name:'articulos.stock_min'},
                 {data: 'precio_compra', className:"text-center", name:'articulos.precio_compra'},
                 {

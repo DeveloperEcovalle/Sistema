@@ -188,4 +188,46 @@ class Programacion_produccionController extends Controller
         return redirect()->route('produccion.programacion_produccion.index')->with('eliminar', 'success');
 
     }
+    
+    public function approved()
+    {
+        return view('produccion.aprobada.index');
+    }
+    public function getApproved(){
+        $produccion = Programacion_produccion::select('programacion_produccion.*')
+                    ->where('estado','PRODUCCION')
+                    ->orWhere('estado','ANULADO')
+                    ->orderBy('id', 'desc')->get();
+        $coleccion = collect([]);
+        foreach($produccion as $producto) {
+            $coleccion->push([
+                'id' => $producto->id,
+                'producto' => $producto->producto->nombre,
+                'fecha_termino'=> ($producto->fecha_termino)?Carbon::parse($producto->fecha_termino)->format( 'd/m/Y'):'-',
+                'fecha_programada'=> Carbon::parse($producto->fecha_produccion)->format( 'd/m/Y'),
+                'cantidad_programada' => $producto->cantidad_programada,
+                'observacion' => $producto->observacion,
+                'estado' => $producto->estado,
+                'produccion' => $producto->produccion,
+            ]);
+        }
+        return DataTables::of($coleccion)->toJson();
+    }
+
+
+    public function production($id)
+    {
+        $programacion_produccion = Programacion_produccion::findOrFail($id);
+        $programacion_produccion->estado = 'PRODUCCION';
+        $programacion_produccion->update();
+
+        //Registro de actividad
+        $descripcion = "SE ENVIÓ A ORDENES DE PRODUCCION LA PROGRAMACION DE PRODUCCION DEL PRODUCTO CON EL NOMBRE: ". $programacion_produccion->producto->nombre;
+        $gestion = "PROGRAMACION DE PRODUCCION - ORDENES DE PRODUCCION";
+        crearRegistro($programacion_produccion, $descripcion , $gestion);
+
+        Session::flash('success','Programacion de Produccion enviado a Producciones aprobadas.');
+        return redirect()->route('produccion.programacion_produccion.index');
+
+    }
 }

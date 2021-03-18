@@ -18,6 +18,7 @@ class Programacion_produccion extends Model
                 'observacion',
                 // 'usuario_id',
                 'estado',
+                'produccion',
                 // 'created_at',
                 // 'updated_at'
             ];

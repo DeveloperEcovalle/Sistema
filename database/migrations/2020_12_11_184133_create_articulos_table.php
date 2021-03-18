@@ -32,6 +32,8 @@ class CreateArticulosTable extends Migration
             $table->foreign('almacen_id')
                 ->references('id')->on('almacenes')
                 ->onDelete('cascade');
+            
+            $table->string('unidad_medida');
 
             $table->string('codigo_barra')->nullable();
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');

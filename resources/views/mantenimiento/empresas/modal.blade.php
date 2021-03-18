@@ -315,15 +315,22 @@
 
 <script>
 
+
+const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false
+})
+
 //Editar Registro
 $(document).on('click', '#editar_entidad', function(event) {
     var table = $('.dataTables-bancos').DataTable();
     var data = table.row($(this).parents('tr')).data();
-
     var tr = $(this).closest("tr");
     var rowindex = tr.index();
     $('#modificar_id_banco').val(rowindex);
-
     $("#modificar_entidad_descripcion option:contains("+data[1]+")").attr('selected', true).change();
     $("#modificar_entidad_moneda option:contains("+data[2]+")").attr('selected', true).change();
     $('#modificar_entidad_cuenta').val(data[3]);
@@ -378,15 +385,6 @@ $(".modificarEntidad").click(function() {
     }
 
     if (enviar != true) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-                container: 'my-swal',
-            },
-            buttonsStyling: false
-        })
-
         Swal.fire({
             customClass: {
                 container: 'my-swal'
@@ -442,34 +440,12 @@ function actualizarTabla(i) {
 
 }
 
-$('#entidad_cci').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#modificar_entidad_cci').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#entidad_cuenta').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#modificar_entidad_cuenta').on('input', function() {
+$('#entidad_cci , #modificar_entidad_cci , #entidad_cuenta , #modificar_entidad_cuenta').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
 
-$('#entidad_itf').keyup(function(){
-    var val = $(this).val();
-    if(isNaN(val)){
-        val = val.replace(/[^0-9\.]/g,'');
-        if(val.split('.').length>2) 
-            val =val.replace(/\.+$/,"");
-    }
-    $(this).val(val); 
-});
-
-$('#modificar_entidad_itf').keyup(function(){
+$('#entidad_itf , #modificar_entidad_itf').keyup(function(){
     var val = $(this).val();
     if(isNaN(val)){
         val = val.replace(/[^0-9\.]/g,'');
@@ -596,6 +572,7 @@ $(".agregarEntidad").click(function() {
                 if (existe == false) {
                     limpiar()
                     agregarTabla(entidad)
+                    $('#modal_agregar_entidad').modal('hide');
                 }
                 cargarEntidades()
 
@@ -694,14 +671,6 @@ $('#modal_editar_entidad').on('hidden.bs.modal', function(e) {
 //Borrar registro de articulos
 $(document).on('click', '#borrar_entidad', function(event) {
 
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
-
     Swal.fire({
         title: 'Opción Eliminar',
         text: "¿Seguro que desea eliminar Entidad Bancaria?",
@@ -731,9 +700,6 @@ $(document).on('click', '#borrar_entidad', function(event) {
 
 
 });
-
-
-
 
 function agregarTabla($entidad) {
     var t = $('.dataTables-bancos').DataTable();
@@ -861,16 +827,7 @@ $(document).ready(function(){
 
 
 $('#formulario_comprobante_numero').submit(function(e) {
-
     e.preventDefault();
-
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
     if (buscarNumeracion() == false) {
         Swal.fire({
             customClass: {
@@ -885,10 +842,7 @@ $('#formulario_comprobante_numero').submit(function(e) {
             cancelButtonText: "No, Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                
                 agregarNumeracion();
-               
-                
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
@@ -965,15 +919,6 @@ function cargarNumeracion() {
 }
 
 $(document).on('click', '#borrar_numeracion', function(event) {
-
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
-
     Swal.fire({
         title: 'Opción Eliminar',
         text: "¿Seguro que desea eliminar Entidad Bancaria?",

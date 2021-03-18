@@ -23,7 +23,7 @@ class CreateProductoDetallesTable extends Migration
             $table->foreign('articulo_id')->references('id')->on('articulos')->onDelete('cascade');
             
             $table->unsignedInteger('cantidad');
-            $table->unsignedDecimal('peso', 15, 6)->nullable();;
+            $table->unsignedDecimal('peso', 15, 6)->nullable();
             $table->mediumText('observacion')->nullable();
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();

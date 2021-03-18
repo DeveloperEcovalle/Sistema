@@ -1,24 +1,17 @@
 @extends('layout') @section('content')
-
 @section('produccion-active', 'active')
-@section('programacion_produccion-active', 'active')
-
+@section('produccion_aprobada-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Programacion de Produccion</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Producciones Aprobadas</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Programacion Produccion</strong>
+                <strong>Producciones Aprobadas</strong>
             </li>
         </ol>
-    </div>
-    <div class="col-lg-2 col-md-2">
-        <a class="btn btn-block btn-w-m btn-primary m-t-md" href="{{route('produccion.programacion_produccion.create')}}">
-            <i class="fa fa-plus-square"></i> Añadir nuevo
-        </a>
     </div>
 </div>
 
@@ -28,8 +21,7 @@
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="table-responsive">
-                    
-                        <table class="table dataTables-programacion_produccion table-striped table-bordered table-hover"
+                        <table class="table dataTables-aprobadas table-striped table-bordered table-hover"
                         style="text-transform:uppercase">
                             <thead>
                                 <tr>
@@ -43,6 +35,7 @@
                                     <th class="text-center">Observacion</th>
                                     <!-- <th class="text-center" style="display:none">Usuario Id</th> -->
                                     <th class="text-center">Estado</th>
+                                    <th class="text-center">produccion</th>
                                     <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -50,16 +43,14 @@
 
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@include('produccion.programacion_produccion.modal')
 @stop
+
 @push('styles')
 <!-- DataTable -->
 <link href="{{asset('Inspinia/css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
@@ -74,7 +65,7 @@
 $(document).ready(function() {
 
     // DataTables
-    $('.dataTables-programacion_produccion').DataTable({
+    $('.dataTables-aprobadas').DataTable({
         "dom": '<"html5buttons"B>lTfgitp',
         "buttons": [{
                 extend: 'excelHtml5',
@@ -101,13 +92,11 @@ $(document).ready(function() {
         "bInfo": true,
         "bAutoWidth": false,
         "processing": true,
-        "ajax": "{{ route('getProgramacionProduccion')}}",
+        "ajax": "{{ route('produccion.programacion_produccion.getApproved')}}",
         "columns": [
             //programacion_produccion INTERNA
             { data: 'id',className: "text-center", sWidth: '5%',},
             { data: 'producto',className: "text-left", sWidth: '30%'},
-            // { data: 'fecha_creacion',className: "text-center", "visible":false},
-            // { data: 'fecha_produccion',className: "text-center"},
             { data: 'cantidad_programada',className: "text-center"},
             { data: 'fecha_programada',className: "text-center"},
             { data: 'fecha_termino',className: "text-center"},
@@ -117,10 +106,6 @@ $(document).ready(function() {
                 className: "text-center",
                 render: function(data) {
                     switch (data.estado) {
-                        case "VIGENTE":
-                            return "<span class='badge badge-warning' d-block>" + data.estado +
-                                "</span>";
-                            break;
                         case "ANULADO":
                             return "<span class='badge badge-danger' d-block>" + data.estado +
                                 "</span>";
@@ -131,6 +116,26 @@ $(document).ready(function() {
                             break;
                         default:
                             return "<span class='badge badge-success' d-block>" + data.estado +
+                                "</span>";
+                    }
+                },
+            },
+
+            {
+                data: null,
+                className: "text-center",
+                render: function(data) {
+                    switch (data.produccion) {
+                        case "PENDIENTE":
+                            return "<span class='badge badge-warning' d-block>" + data.produccion +
+                                "</span>";
+                            break;
+                        case "ATENDIDO":
+                            return "<span class='badge badge-primary' d-block>" + data.produccion +
+                                "</span>";
+                            break;
+                        default:
+                            return "<span class='badge badge-success' d-block>" + data.produccion +
                                 "</span>";
                     }
                 },
@@ -147,31 +152,19 @@ $(document).ready(function() {
                     var url_editar = '{{ route("produccion.programacion_produccion.edit", ":id")}}';
                     url_editar = url_editar.replace(':id', data.id);
 
-                    if (data.estado == 'VIGENTE') {
-                        
+                    if (data.produccion == 'PENDIENTE') {
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +                        
-                            "<li><a class='dropdown-item' href='" + url_editar +
-                            "' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +    
-                            "<li><a class='dropdown-item' href='" + url_detalle +
-                            "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
-                            "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
-                            ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
-                            "<li class='dropdown-divider'></li>" +
-                            "<li><a class='dropdown-item' onclick='produccion(" + data.id +
-                            ")' title='Producir'><b><i class='fa fa-line-chart'></i> Producción</a></b></li>" +
-
+                        "<li><a class='dropdown-item' onclick='orden(" + data.id +
+                        ")' title='Generar una orden de produccion' ><b><i class='fa fa-line-chart'></i> Orden de produccion</a></b></li>" +
+                        "<li><a class='dropdown-item' href='" + url_detalle +
+                        "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                         "</ul></div>"
-
                     }else{
-                        return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +                        
-                         
-                            "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
-                            "<li><a class='dropdown-item' onclick='eliminar(" + data.id + ")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
-
+                        return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+                        "<li><a class='dropdown-item' href='" + url_detalle +
+                        "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                         "</ul></div>"
                     }
-
-
 
 
                 }
@@ -181,9 +174,7 @@ $(document).ready(function() {
         "language": {
             "url": "{{asset('Spanish.json')}}"
         },
-        "order": [
-            [0, "desc"]
-        ],
+        "order": [],
     });
 
 });
@@ -192,26 +183,21 @@ $(document).ready(function() {
 $.fn.DataTable.ext.errMode = 'throw';
 
 const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false
+})
 
 
-function eliminar(id) {
-    $('#programacion_id').val(id)
-    $('#modal_observacion_anular').modal('show');
-}
-
-function produccion(id){
+function orden(id){
     Swal.fire({
         customClass: {
             container: 'my-swal'
         },
-        title: 'Opción Producción',
-        text: "¿Seguro que desea enviar el registro a producción?",
+        title: 'Opción Orden de Producción',
+        text: "¿Seguro que desea generar una orden de producción?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",
@@ -219,8 +205,8 @@ function produccion(id){
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            //Ruta a produccion
-            var url = '{{ route("produccion.programacion_produccion.produccion", ":id")}}';
+            //Ruta a orden
+            var url = '{{ route("produccion.orden.create", ":id")}}';
             url = url.replace(':id', id);
             $(location).attr('href',url);
         } else if (
@@ -236,8 +222,5 @@ function produccion(id){
     })
 
 }
-
-
-
 </script>
 @endpush
