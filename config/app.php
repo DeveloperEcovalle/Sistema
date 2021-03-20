@@ -179,6 +179,8 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
 
         Spatie\Permission\PermissionServiceProvider::class,
+        'Spatie\Backup\BackupServiceProvider',
+        
 
     ],
 

@@ -322,7 +322,7 @@
                     String(obj.id),
                     String(obj.articulo_id),
                     String(obj.articulo),
-                    parseInt(obj.cantidad),
+                    parseFloat(obj.cantidad),
                     parseFloat(obj.peso),
                     String(obj.observacion)
                 ]);
@@ -384,7 +384,7 @@
                 id: null,
                 articulo_id: $("#articulo").val(),
                 articulo: $("#articulo").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad").val()),
+                cantidad: parseFloat($("#cantidad").val()),
                 peso: parseFloat($("#peso").val()),
                 observacion: $("#observacion").val()
             };
@@ -422,7 +422,7 @@
                 id: id,
                 articulo_id: $("#articulo_editar").val(),
                 articulo: $("#articulo_editar").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad_editar").val()),
+                cantidad: parseFloat($("#cantidad_editar").val()),
                 peso: parseFloat($("#peso_editar").val()),
                 observacion: $("#observacion_editar").val()
             };

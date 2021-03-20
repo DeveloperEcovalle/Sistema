@@ -56,7 +56,8 @@ class CreateClientesTable extends Migration
             $table->string('celular_propietario')->nullable();
             $table->string('correo_propietario')->nullable();
 
-
+            //CRM
+            $table->enum('crm',['0','1'])->default('0');
 
             $table->string('activo')->default('SIN VERIFICAR');
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');

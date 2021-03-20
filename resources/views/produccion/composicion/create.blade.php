@@ -96,7 +96,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
                                                         <label class="required">Cantidad</label>
-                                                        <input type="text" id="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad')}}" maxlength="10" onkeypress="return isNumber(event);">
+                                                        <input type="text" id="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad')}}" maxlength="10" onkeypress="return filterFloat(event, this, true);">
                                                         @if ($errors->has('cantidad'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('cantidad') }}</strong>
@@ -336,7 +336,7 @@
                 data.push([
                     String(obj.articulo_id),
                     String(obj.articulo),
-                    parseInt(obj.cantidad),
+                    parseFloat(obj.cantidad),
                     parseFloat(obj.peso),
                     String(obj.observacion)
                 ]);
@@ -397,7 +397,7 @@
             var detalle = {
                 articulo_id: $("#articulo").val(),
                 articulo: $("#articulo").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad").val()),
+                cantidad: parseFloat($("#cantidad").val()),
                 peso: parseFloat($("#peso").val()),
                 observacion: $("#observacion").val()
             };
@@ -431,7 +431,7 @@
             var detalle = {
                 articulo_id: $("#articulo_editar").val(),
                 articulo: $("#articulo_editar").select2('data')[0].text,
-                cantidad: parseInt($("#cantidad_editar").val()),
+                cantidad: parseFloat($("#cantidad_editar").val()),
                 peso: parseFloat($("#peso_editar").val()),
                 observacion: $("#observacion_editar").val()
             };

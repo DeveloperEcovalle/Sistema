@@ -7,7 +7,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        // $this->call(ProductoSeeder::class);
+        $this->call(ProductoSeeder::class);
         $this->call(DepartamentoSeeder::class);
         $this->call(ProvinciaSeeder::class);
         $this->call(DistritoSeeder::class);

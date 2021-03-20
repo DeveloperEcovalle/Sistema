@@ -19,6 +19,7 @@
         "luecano/numero-a-letras": "^2.2",
         "mtownsend/xml-to-array": "^1.0",
         "spatie/laravel-activitylog": "^3.16",
+        "spatie/laravel-backup": "^6.11",
         "spatie/laravel-permission": "^4.0",
         "yajra/laravel-datatables-oracle": "^9.15"
     },

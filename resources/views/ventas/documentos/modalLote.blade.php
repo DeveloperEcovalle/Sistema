@@ -16,7 +16,7 @@
                 </div>
                 <div class="form-group">
                     <div class="table-responsive m-t">
-                        <table class="table dataTables-lotes table-bordered" style="width:100%;" id="table_lotes">
+                        <table class="table dataTables-lotes table-bordered" style="width:100%; text-transform:uppercase;" id="table_lotes">
                             <thead>
                             <tr>
                                 <th class="text-center"></th>
