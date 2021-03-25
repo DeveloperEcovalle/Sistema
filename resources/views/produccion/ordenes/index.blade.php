@@ -180,7 +180,6 @@ function eliminar(id) {
 }
 
 function conformidad(id, confor , editable) {
-    alert(editable);
     if (editable == '0') {
         var url = '{{ route("produccion.getOrden", ":id")}}';
         url = url.replace(':id',id);
