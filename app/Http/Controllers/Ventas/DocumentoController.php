@@ -17,7 +17,7 @@ use App\Almacenes\Producto;
 use App\Ventas\Cliente;
 use App\Ventas\Cotizacion;
 use App\Ventas\CotizacionDetalle;
-use App\ventas\Documento\Documento;
+use App\ventas\Documento;
 use App\ventas\Documento\Detalle;
 
 use App\Ventas\Documento\Pago\PagoDetalle as PivotPago;
