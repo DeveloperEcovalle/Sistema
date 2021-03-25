@@ -13,14 +13,20 @@ use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Validator;
 use App\Almacenes\ProductoDetalle;
+use App\Almacenes\Producto;
 use App\Almacenes\Almacen;
 
 
 class OrdenController extends Controller
 {
     public function index()
-    {
-        return view('produccion.ordenes.index');
+    {   
+        $fecha_hoy = Carbon::now()->toDateString();
+        return view('produccion.ordenes.index',
+            [
+                'fecha_hoy' => $fecha_hoy,
+            ]
+        );
     }
 
     public function getOrdenes(){
@@ -35,7 +41,9 @@ class OrdenController extends Controller
                 'cantidad_programada' => $orden->programacion->cantidad_programada,
                 'fecha_orden'=> Carbon::parse($orden->fecha_orden)->format( 'd/m/Y'),
                 'observacion' => ($orden->observacion) ? $orden->observacion : '-',
+                'conformidad' => $orden->conformidad,
                 'estado' => $orden->estado,
+                'editable' => $orden->editable,
             ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -61,19 +69,19 @@ class OrdenController extends Controller
         return $detalle->last();
     }
 
-    public function stockArticulo($detalle)
-    {
-        if ($detalle->cantidad_devuelta_correcta) {
-            $correcto = $detalle->cantidad_devuelta_correcta;
-        }else{
-            $correcto = 0;
-        }
-        $nuevoStock = ($detalle->productoDetalle->articulo->stock - $detalle->cantidad_entregada) + $correcto; 
-        $articulo = Articulo::findOrFail($detalle->productoDetalle->articulo->id);
-        $articulo->stock =  $nuevoStock;
-        $articulo->update();
+    // public function stockArticulo($detalle)
+    // {
+    //     if ($detalle->cantidad_devuelta_correcta) {
+    //         $correcto = $detalle->cantidad_devuelta_correcta;
+    //     }else{
+    //         $correcto = 0;
+    //     }
+    //     $nuevoStock = ($detalle->productoDetalle->articulo->stock - $detalle->cantidad_entregada) + $correcto; 
+    //     $articulo = Articulo::findOrFail($detalle->productoDetalle->articulo->id);
+    //     $articulo->stock =  $nuevoStock;
+    //     $articulo->update();
 
-    }
+    // }
 
     public function store(Request $request)
     {
@@ -95,6 +103,18 @@ class OrdenController extends Controller
 
         $orden = new Orden;
         $orden->programacion_id =  $request->get('programacion_aprobada_id');
+        //PROGRAMACION APROBADA
+        $programacion= Programacion_produccion::findOrFail($request->get('programacion_aprobada_id'));
+        //PRODUCTO DE LA PROGRAMACION APROBADA
+        $producto= Producto::findOrFail($programacion->producto_id);
+        //DATOS DEL PRODUCTO
+        $orden->producto_id = $programacion->producto_id;
+        $orden->codigo_producto = $producto->codigo;
+        $orden->descripcion_producto = $producto->nombre;
+        //DATOS DE LA PROGRAMACION
+        $orden->fecha_produccion = $programacion->fecha_produccion;
+        $orden->cantidad = $programacion->cantidad_programada;
+        //DATOS DE LA ORDEN 
         $orden->fecha_orden = Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
         $orden->save();
 
@@ -123,14 +143,11 @@ class OrdenController extends Controller
                 'observacion_incorrecta' => $detalle->observacion_incorrecta,
             ]);
 
-            self::stockArticulo($detalleProducto);
-
-
+            // self::stockArticulo($detalleProducto);
         }
 
-        $produccion = Programacion_produccion::findOrFail($orden->programacion_id);
-        $produccion->produccion =  'ATENDIDA';
-        $produccion->update();
+        $programacion->produccion =  'ATENDIDA';
+        $programacion->update();
 
         Session::flash('success','Orden de Produccion creada');
         return redirect()->route('produccion.orden.index')->with('guardar', 'success');
@@ -158,6 +175,14 @@ class OrdenController extends Controller
             'detalles'=>  $detalles,           
         ]);
     }
+
+
+    public function getOrden($id)
+    {
+        $orden = Orden::findOrFail($id);
+        return  response()->json($orden); 
+    }
+
 
     public function getArticles($id)
     {

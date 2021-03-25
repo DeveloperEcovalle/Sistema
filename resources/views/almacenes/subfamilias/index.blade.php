@@ -41,7 +41,6 @@
                             <th class="text-center"></th>
                             <th class="text-center">DESCRIPCION</th>
                             <th class="text-center">CATEGORIA</th>
-                            <th class="text-center">ESTADO</th>
                             <th class="text-center">CREADO</th>
                             <th class="text-center">ACTUALIZADO</th>
                             <th class="text-center">ACCIONES</th>
@@ -119,9 +118,8 @@
                 //Caja chica
                 {data: 'id', className:"text-center", "visible":false},
                 {data: 'familia_id', className:"text-center", "visible":false},
-                {data: 'descripcion' , className:"text-center"},
-                {data: 'familia' , className:"text-center"},
-                {data: 'estado', className:"text-center"},
+                {data: 'descripcion' , className:"text-left"},
+                {data: 'familia' , className:"text-left"},
                 {data: 'creado', className:"text-center"},
                 {data: 'actualizado', className:"text-center"},
                 {

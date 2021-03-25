@@ -233,6 +233,36 @@
         timer: 2500
     })
     @endif
+
+    @if(session('error_orden_produccion') == 'error')
+    Swal.fire({
+        icon: 'error',
+        title: 'Orden de Producción',
+        text: 'Falta la confirmación del Área de Producción',
+        showConfirmButton: false,
+        timer: 2500
+    })
+    @endif
+
+    @if(session('error_orden_almacen') == 'error')
+    Swal.fire({
+        icon: 'error',
+        title: 'Orden de Producción',
+        text: 'Falta la confirmación del Área de Almacen',
+        showConfirmButton: false,
+        timer: 2500
+    })
+    @endif
+
+    @if(session('error_orden_areas') == 'error')
+    Swal.fire({
+        icon: 'error',
+        title: 'Orden de Producción',
+        text: 'Falta la confirmación de las Áreas de Almacen y Producción',
+        showConfirmButton: false,
+        timer: 2500
+    })
+    @endif
     
     </script>
 

@@ -11,7 +11,19 @@ class Guia extends Model
         'documento_id',
         'cantidad_productos',
         'peso_productos',
+
         'tienda_id',
+        
+        'direccion_llegada',
+        // 'direccion_partida', //EMPRESA DOCUMENTO DE VENTA PLANO
+
+        //OFICINA
+        'ruc_transporte_oficina',
+        'nombre_transporte_oficina',
+        //DOMICILIO
+        'ruc_transporte_domicilio',
+        'nombre_transporte_domicilio',
+
         'observacion',
         'ubigeo_llegada',
         'ubigeo_partida',

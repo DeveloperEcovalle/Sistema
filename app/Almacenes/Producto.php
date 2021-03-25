@@ -61,4 +61,13 @@ class Producto extends Model
         else
             return $medida->simbolo;
     }
+
+    public function medidaCompleta(): string
+    {
+        $medida = unidad_medida()->where('id', $this->medida)->first();
+        if (is_null($medida))
+            return "-";
+        else
+            return $medida->simbolo.' - '.$medida->descripcion;
+    }
 }

@@ -13,7 +13,7 @@ class GenerarNumeracionGuia
 
     public function handle($event)
     {
-        $numeracion = Numeracion::where('empresa_id',$event->guia->documento->empresa->id)->where('estado','ACTIVO')->where('tipo_comprobante',135)->first();
+        $numeracion = Numeracion::where('empresa_id',$event->guia->documento->empresa_id)->where('estado','ACTIVO')->where('tipo_comprobante',135)->first();
         if ($numeracion) {
 
             $resultado = ($numeracion)->exists();
@@ -36,7 +36,7 @@ class GenerarNumeracionGuia
                             ->join('cotizacion_documento','cotizacion_documento.empresa_id','=','empresas.id')
                             ->join('guias_remision','guias_remision.documento_id','=','cotizacion_documento.id')
                             ->where('empresa_numeracion_facturaciones.tipo_comprobante',135)
-                            ->where('empresa_numeracion_facturaciones.empresa_id',$guia->documento->empresa->id)
+                            ->where('empresa_numeracion_facturaciones.empresa_id',$guia->documento->empresa_id)
                             ->where('guias_remision.sunat',"1")
                             ->select('guias_remision.*','empresa_numeracion_facturaciones.*')
                             ->orderBy('guias_remision.correlativo','DESC')

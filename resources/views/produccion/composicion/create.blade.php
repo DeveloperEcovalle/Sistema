@@ -38,14 +38,6 @@
                         <div class="form-group row">
                             
                             <div class="col-lg-6 col-xs-12">
-
-                                <!-- <label class="required">Nombre</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
-                                @if ($errors->has('nombre'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('nombre') }}</strong>
-                                    </span>
-                                @endif -->
                                 <label class="required">Producto</label>
                                 <select name="producto_id" id="producto_id" class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" onchange="ponerMedida()">
                                     <option></option>
@@ -536,7 +528,7 @@
             var medida = ""
             @foreach($productos as $producto)
             if ("{{$producto->id}}" == producto) {
-                medida = "{{$producto->medida}}"
+                medida = "{{$producto->medidaCompleta()}}"
             }
             @endforeach
             $("#medida").val(medida)

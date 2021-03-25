@@ -49,6 +49,7 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
         $rules = [
             'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
                 $query->whereIn('estado',["ACTIVO"]);
@@ -76,7 +77,7 @@ class ProductoController extends Controller
             'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'codigo.unique' => 'El campo Código debe ser único',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
-            'nombre.required' => 'El campo Nombre es obligatorio',
+            'nombre.required' => 'El campo Descripción del Producto es obligatorio',
             'familia.required' => 'El campo Categoria es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
             'medida.required' => 'El campo Unidad de medida es obligatorio',
@@ -125,7 +126,7 @@ class ProductoController extends Controller
             }
 
             //Registro de actividad
-            $descripcion = "SE AGREGÓ EL PRODUCTO CON EL NOMBRE: ". $producto->nombre;
+            $descripcion = "SE AGREGÓ EL PRODUCTO CON LA DESCRIPCION: ". $producto->nombre;
             $gestion = "PRODUCTO";
             crearRegistro($producto, $descripcion , $gestion);
         
@@ -197,7 +198,7 @@ class ProductoController extends Controller
             'peso_producto.required' => 'El campo Peso es obligatorio',
             'peso_producto.numeric' => 'El campo Peso debe ser numérico',
             'codigo.max:50' => 'El campo Código debe tener como máximo 50 caracteres',
-            'nombre.required' => 'El campo Nombre es obligatorio',
+            'nombre.required' => 'El campo Descripción del Producto es obligatorio',
             'familia.required' => 'El campo Categoria es obligatorio',
             'linea_comercial.required' => 'El campo Linea Comercial es obligatorio',
             'sub_familia.required' => 'El campo Sub Categoria es obligatorio',
@@ -263,7 +264,7 @@ class ProductoController extends Controller
         }
 
         //Registro de actividad
-        $descripcion = "SE MODIFICÓ EL PRODUCTO CON EL NOMBRE: ". $producto->nombre;
+        $descripcion = "SE MODIFICÓ EL PRODUCTO CON LA DESCRIPCION: ". $producto->nombre;
         $gestion = "PRODUCTO";
         modificarRegistro($producto, $descripcion , $gestion);
         
@@ -290,7 +291,7 @@ class ProductoController extends Controller
         $producto->detalles()->update(['estado'=> 'ANULADO']);
 
         //Registro de actividad
-        $descripcion = "SE ELIMINÓ EL PRODUCTO CON EL NOMBRE: ". $producto->nombre;
+        $descripcion = "SE ELIMINÓ EL PRODUCTO CON LA DESCRIPCION: ". $producto->nombre;
         $gestion = "PRODUCTO";
         eliminarRegistro($producto, $descripcion , $gestion);
 

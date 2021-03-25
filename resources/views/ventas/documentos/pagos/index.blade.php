@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Pagos del documento de venta #{{$documento->id}} por el cliente "{{$documento->cliente->nombre}}"</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Pagos del documento de venta #{{$documento->id}} por el cliente "{{$documento->cliente}}"</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>

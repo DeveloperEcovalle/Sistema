@@ -11,7 +11,6 @@ class GenerarGuiaRemisionElectronica
 
     public function handle($event)
     {   
-
         //ARREGLO GUIA
         $arreglo_guia = array(
 
@@ -21,19 +20,19 @@ class GenerarGuiaRemisionElectronica
             "fechaEmision" => self::obtenerFecha($event->guia),
 
             "company" => array(  
-                "ruc" => $event->guia->documento->empresa->ruc,
-                "razonSocial" => $event->guia->documento->empresa->razon_social,
+                "ruc" => $event->guia->documento->ruc_empresa,
+                "razonSocial" => $event->guia->documento->empresa,
                 "address" => array(
-                    "direccion" => $event->guia->documento->empresa->direccion_fiscal,
+                    "direccion" => $event->guia->documento->direccion_fiscal_empresa,
                 )),
 
 
             "destinatario" => array(  
-                "tipoDoc" =>  $event->guia->documento->cliente->tipoDocumento(),
-                "numDoc" => $event->guia->documento->cliente->documento,
-                "rznSocial" => $event->guia->documento->cliente->nombre,
+                "tipoDoc" =>  $event->guia->documento->tipoDocumentoCliente(),
+                "numDoc" => $event->guia->documento->documento_cliente,
+                "rznSocial" => $event->guia->documento->cliente,
                 "address" => array(
-                    "direccion" => $event->guia->documento->cliente->direccion,
+                    "direccion" => $event->guia->documento->direccion_cliente,
                 )
             ),
 
@@ -51,17 +50,13 @@ class GenerarGuiaRemisionElectronica
                 "numBultos" => $event->guia->cantidad_productos,
                 "llegada" => array(
                     "ubigueo" =>  $event->guia->ubigeo_llegada,
-                    "direccion" => self::limitarDireccion($event->guia->tienda->direccion,50,"..."),
+                    "direccion" => self::limitarDireccion($event->guia->direccion_llegada,50,"..."),
                 ),
-
-
                 "partida" => array(
                     "ubigueo" => $event->guia->ubigeo_partida,
-                    "direccion" => self::limitarDireccion($event->guia->documento->empresa->direccion_fiscal,50,"..."),
+                    "direccion" => self::limitarDireccion($event->guia->documento->direccion_fiscal_empresa,50,"..."),
                 ),
-                
-                "transportista" => self::condicionReparto($event->guia),
-
+                "transportista"=> self::condicionReparto($event->guia)
             ),
 
             "details" =>  self::obtenerProductos($event->guia),

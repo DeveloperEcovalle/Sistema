@@ -14,6 +14,7 @@ class GenerarComprobante
 
     public function handle($event)
     {
+        
         //ARREGLO COMPROBANTE
         $arreglo_comprobante = array(
             "tipoOperacion" => $event->documento->tipoOperacion(),
@@ -24,17 +25,17 @@ class GenerarComprobante
             "observacion" => $event->documento->observacion,
             "tipoMoneda" => $event->documento->simboloMoneda(),
             "client" => array(
-                "tipoDoc" => $event->documento->cliente->tipoDocumento(),
-                "numDoc" => $event->documento->cliente->documento,
-                "rznSocial" => $event->documento->cliente->nombre,
+                "tipoDoc" => $event->documento->tipoDocumentoCliente(),
+                "numDoc" => $event->documento->documento_cliente,
+                "rznSocial" => $event->documento->cliente,
                 "address" => array(
-                    "direccion" => $event->documento->cliente->direccion,
+                    "direccion" => $event->documento->direccion_cliente,
                 )),
             "company" => array(
-                "ruc" =>  $event->documento->empresa->ruc,
-                "razonSocial" => $event->documento->empresa->razon_social,
+                "ruc" =>  $event->documento->ruc_empresa,
+                "razonSocial" => $event->documento->empresa,
                 "address" => array(
-                    "direccion" => $event->documento->empresa->direccion_fiscal,
+                    "direccion" => $event->documento->direccion_fiscal_empresa,
                 )),
             "mtoOperGravadas" => $event->documento->sub_total,
             "mtoOperExoneradas" => 0,
@@ -74,9 +75,9 @@ class GenerarComprobante
         for($i = 0; $i < count($detalles); $i++){
 
             $arrayProductos[] = array(
-                "codProducto" => $detalles[$i]->lote->producto->codigo,
-                "unidad" => $detalles[$i]->lote->producto->getMedida(),
-                "descripcion"=> $detalles[$i]->lote->producto->nombre.' - '.$detalles[$i]->lote->codigo,
+                "codProducto" => $detalles[$i]->codigo_producto,
+                "unidad" => $detalles[$i]->unidad,
+                "descripcion"=> $detalles[$i]->nombre_producto.' - '.$detalles[$i]->codigo_lote,
                 "cantidad" => $detalles[$i]->cantidad,
                 "mtoValorUnitario" => $detalles[$i]->precio / 1.18,
                 "mtoValorVenta" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,

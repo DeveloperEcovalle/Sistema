@@ -88,8 +88,8 @@ class TransferenciaController extends Controller
         $documento = Documento::findOrFail($id);
         $fecha_hoy = Carbon::now()->toDateString();
         $bancos_empresa = collect([]);
-
-        foreach($documento->empresa->bancos as $moneda_bancos){
+        
+        foreach($documento->empresaEntidad->bancos as $moneda_bancos){
             if ($moneda_bancos->tipo_moneda == "SOLES") {
                 $bancos_empresa->push([
                     'id' => $moneda_bancos->id,

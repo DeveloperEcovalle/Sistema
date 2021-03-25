@@ -76,6 +76,9 @@
                                                                     <input type="checkbox" class="i-checks" id="estado_fe" name="estado_fe" value="{{old('estado_fe',$empresa->estado_fe)}}" ></label>
                                                                 @endif
                                                             </div>
+                                                            @else
+
+                                                            <input type="hidden" name="estado_fe"  id="estado_fe" value="{{old('estado_fe',$empresa->estado_fe)}}" >
 
                                                             @endif
 
@@ -571,7 +574,7 @@
 
                                                             <div class="col-md-6 col-xs-12">
                                                                 <label class="required">Soap Contraseña:</label>
-                                                                <input type="text" class="form-control {{ $errors->has('soap_password') ? ' is-invalid' : '' }}" @if($empresa->estado_fe) readonly @else '' @endif  name="soap_password" id="soap_password" value="{{old('soap_password', $facturacion ? $facturacion->sol_pass : '' )}}">
+                                                                <input type="text" class="form-control {{ $errors->has('soap_password') ? ' is-invalid' : '' }}" @if($empresa->estado_fe) readonly @else '' @endif  name="soap_password" id="soap_password" value="{{old('soap_password', $facturacion ?  $facturacion->sol_pass  : '')}}">
                                                                 <div class="invalid-feedback"><b><span id="error-soap_password"></span></b></div>
                                                             </div>
 
@@ -704,805 +707,786 @@
 
 <script>
 
-$(".select2_form").select2({
-    placeholder: "SELECCIONAR",
-    allowClear: true,
-    height: '200px',
-    width: '100%',
-});
-// Solo campos numericos
-$('#ruc').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#ubigeo_empresa').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#dni_representante').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#telefono').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#celular').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#estado_fe').on('ifChanged', function(event) {
-    document.getElementById("facturacion_tab").style.display = "";
-    $('#logo_label').addClass("required")
-    if ($('#logo_txt').text() == 'Seleccionar') {
-        $('#logo').prop("required",true)
-    }
-    $('#estado_fe').val('1')
-
-    $('#ubigeo_texto').addClass("required")
-    $('#ubigeo_empresa').prop("required",true)
-
-        
-});
-
-$('#estado_fe').on('ifUnchecked', function(event) {
-    document.getElementById("facturacion_tab").style.display = "none";
-    $('#logo_label').removeClass("required")
-    $('#certificado_base').val('')
-    $('#estado_certificado').val('SIN VERIFICAR')
-    $('#logo').prop("required",false)
-    $('#estado_fe').val('0')
-
-    $('#ubigeo_texto').removeClass("required")
-    $('#ubigeo_empresa').prop("required",false)
-});
-
-
-/* Limpiar imagen */
-$('#limpiar_logo').click(function() {
-    $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
-    var fileName = "Seleccionar"
-    $('.custom-file-label').addClass("selected").html(fileName);
-    $('#logo').val('')
-    $('#ruta_logo').val('')
-
-})
-
-$('#logo').on('change', function() {
-    var fileInput = document.getElementById('logo');
-    var filePath = fileInput.value;
-    var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
-    $imagenPrevisualizacion = document.querySelector(".logo");
-
-    if (allowedExtensions.exec(filePath)) {
-        var userFile = document.getElementById('logo');
-        userFile.src = URL.createObjectURL(event.target.files[0]);
-        var data = userFile.src;
-        $imagenPrevisualizacion.src = data
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    } else {
-        toastr.error('Extensión inválida, formatos admitidos (.jpg . jpeg . png)', 'Error');
-    }
-});
-
-$("#ruc").keyup(function() {
-    $('#estado').val('INACTIVO');
-})
-
-$('#enviar_empresa_editar').submit(function(e) {
-    e.preventDefault();
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
-
-    Swal.fire({
-        title: 'Opción Modificar',
-        text: "¿Seguro que desea modificar cambios?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: "#1ab394",
-        confirmButtonText: 'Si, Confirmar',
-        cancelButtonText: "No, Cancelar",
-    }).then((result) => {
-
-        if (result.isConfirmed) {
-            
-            var existe = entidadFinanciera()
-            if (existe == false) {
-                
-                Swal.fire({
-                    title: 'Entidad Financiera',
-                    text: "¿Seguro que desea modificar Empresa sin ninguna entidad financiera?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: "#1ab394",
-                    confirmButtonText: 'Si, Confirmar',
-                    cancelButtonText: "No, Cancelar",
-                }).then((result) => {
-                    
-                    if (result.isConfirmed) {
-                        if (validarCertificado() == true) {
-
-                            if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR" ) {
-                                $("#estado").prop('disabled', false)
-                                $("#estado_dni_representante").prop('disabled', false)
-                                //Cargar Entidades en modal
-                                cargarEntidades()
-                                cargarNumeracion()
-                                this.submit();
-                                Swal.fire({
-                                    title: '¡Cargando!',
-                                    type: 'info',
-                                    icon: 'info',
-                                    text: 'Modificando Registro',
-                                    showConfirmButton: false,
-                                    onBeforeOpen: () => {
-                                        Swal.showLoading()
-                                    }
-                                })
-                            } else {
-                                $("#estado").prop('disabled', true)
-                                $("#estado_dni_representante").prop('disabled', true)
-                                toastr.error('Ingrese una empresa activa o sin verificar', 'Error');
-                            }
-                        }
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        $('#bancos_link').click();
-                    }
-                })
-            }else{
-                if (validarCertificado() == true) {
-
-                    if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR") {
-                        $("#estado").prop('disabled', false)
-                        $("#estado_dni_representante").prop('disabled', false)
-                        cargarEntidades()
-                        cargarNumeracion()
-                        this.submit();
-                        Swal.fire({
-                            title: '¡Cargando!',
-                            type: 'info',
-                            icon: 'info',
-                            text: 'Modificando Registro',
-                            showConfirmButton: false,
-                            onBeforeOpen: () => {
-                                Swal.showLoading()
-                            }
-                        })
-                    } else {
-                        $("#estado").prop('disabled', true)
-                        $("#estado_dni_representante").prop('disabled', true)
-                        toastr.error('Ingrese una empresa activa', 'Error');
-                    }
-                }
-            }
-    
-    
-
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La Solicitud se ha cancelado.',
-                'error'
-            )
-        }
-    })
-})
-
-
-$("#ruc").keyup(function() {
-    if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('SIN VERIFICAR');
-    }
-})
-
-$("#razon_social").keyup(function() {
-    if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('SIN VERIFICAR');
-    }
-})
-
-$("#razon_social_abreviada").keyup(function() {
-    if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('SIN VERIFICAR');
-    }
-})
-
-$("#direccion_fiscal").keyup(function() {
-    if ($('#estado').val('ACTIVO')) {
-        $('#estado').val('SIN VERIFICAR');
-    }
-})
-
-
-
-
-$("#dni_representante").keyup(function() {
-    if ($('#estado_dni_representante').val('ACTIVO')) {
-        $('#estado_dni_representante').val('SIN VERIFICAR');
-    }
-})
-
-$("#nombre_representante").keyup(function() {
-    if ($('#estado_dni_representante').val('ACTIVO')) {
-        $('#estado_dni_representante').val('SIN VERIFICAR');
-    }
-})
-
-
-function camposRuc(objeto) {
-    var razonsocial = objeto.value.razonSocial;
-    var nombrecorto = objeto.value.nombreComercial;
-    var direccion = objeto.value.direccion;
-    var departamento = objeto.value.departamento;
-    var provincia = objeto.value.provincia;
-    var distrito = objeto.value.distrito;
-    var estado = objeto.value.estado;
-    var ubigeo = objeto.value.ubigeo;
-
-    if (razonsocial != '-' && razonsocial != "NULL") {
-        $('#razon_social').val(razonsocial)
-    }
-
-    if (nombrecorto != '-' && nombrecorto != "NULL") {
-        $('#razon_social_abreviada').val(nombrecorto)
-    } else {
-        $('#razon_social_abreviada').val(razonsocial)
-    }
-    if (estado == "ACTIVO") {
-        $('#estado').val(estado)
-    } else {
-        $('#estado').val('INACTIVO')
-        toastr.error('Empresa no se encuentra "Activa"', 'Error');
-    }
-
-    if (direccion != '-' && direccion != "NULL") {
-        $('#direccion_fiscal').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
-    }
-
-    if (razonsocial != '-' && razonsocial != "NULL") {
-        $('#ubigeo_empresa').val(ubigeo)
-    }
-}
-
-// Consulta Dni
-$("#dni_representante").keypress(function() {
-    if (event.which == 13) {
-        event.preventDefault();
-        var dni = $("#dni_representante").val()
-        evaluarDni(dni);
-    }
-})
-// Consulta Dni
-function consultarDni(dni) {
-    var dni = $('#dni_representante').val()
-    if (dni.length == 8) {
-
-        Swal.fire({
-            title: 'Consultar',
-            text: "¿Desea consultar Dni a Reniec?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: "#1ab394",
-            confirmButtonText: 'Si, Confirmar',
-            cancelButtonText: "No, Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: (login) => {
-                var url = '{{ route("getApidni", ":dni")}}';
-                url = url.replace(':dni', dni);
-
-                return fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(response.statusText)
-                        }
-                        return response.json()
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        $('#dni_representante').val('SIN VERIFICAR')
-                        Swal.showValidationMessage(
-                            `Dni Inválido`
-                        )
-                    })
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            camposDni(result)
-            consultaExitosa()
-        })
-    } else {
-        toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
-    }
-
-
-}
-
-function camposDni(objeto) {
-
-    var nombres = objeto.value.nombres;
-    var apellidopa = objeto.value.apellidoPaterno;
-    var apellidoma = objeto.value.apellidoMaterno;
-
-    var nombre_completo = []
-
-    if (nombres != "-" && nombres != null) {
-        nombre_completo.push(nombres)
-    }
-
-    if (apellidopa != "-" && apellidopa != null) {
-        nombre_completo.push(apellidopa)
-    }
-
-    if (apellidoma != "-" && apellidoma != null) {
-        nombre_completo.push(apellidoma)
-    }
-
-    $('#nombre_representante').val(nombre_completo.join(' '))
-    $('#estado_dni_representante').val('ACTIVO')
-
-}
-
-$(document).ready(function() {
-
-    //Iniciar I-Checks
-    $('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
+    $(".select2_form").select2({
+        placeholder: "SELECCIONAR",
+        allowClear: true,
+        height: '200px',
+        width: '100%',
+    });
+    // Solo campos numericos
+    $('#ruc, #ubigeo_empresa, #dni_representante, #telefono , #celular' ).on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
     });
 
-
-
-    @if(old('estado_fe',$empresa->estado_fe) == '1')
+    $('#estado_fe').on('ifChanged', function(event) {
         document.getElementById("facturacion_tab").style.display = "";
         $('#logo_label').addClass("required")
         if ($('#logo_txt').text() == 'Seleccionar') {
             $('#logo').prop("required",true)
         }
+        $('#estado_fe').val('1')
 
         $('#ubigeo_texto').addClass("required")
         $('#ubigeo_empresa').prop("required",true)
-        
-    @else
+
+            
+    });
+
+    $('#estado_fe').on('ifUnchecked', function(event) {
         document.getElementById("facturacion_tab").style.display = "none";
-        $('#logo').prop("required",false)
         $('#logo_label').removeClass("required")
         $('#certificado_base').val('')
         $('#estado_certificado').val('SIN VERIFICAR')
+        $('#logo').prop("required",false)
+        $('#estado_fe').val('0')
 
         $('#ubigeo_texto').removeClass("required")
         $('#ubigeo_empresa').prop("required",false)
-
-    @endif
-
-    // DataTables
-    $('.dataTables-bancos').DataTable({
-        "dom": 'Tftp',
-        "bPaginate": true,
-        "bFilter": true,
-        "bInfo": true,
-        "bAutoWidth": false,
-        "language": {
-            "url": "{{asset('Spanish.json')}}"
-        },
-
-        "columnDefs": [
-            {
-
-                "targets": [0],
-                "width": "10%" ,
-                className: "text-center",
-                render: function(data, type, row) {
-                    return "<div class='btn-group'>" +
-                        "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_entidad' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
-                        "<a class='btn btn-danger btn-sm' id='borrar_entidad' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
-                        "</div>";
-                }
-            },
-            {
-                "targets": [1],
-                "width": "20%" 
-            },
-            {
-                "targets": [2],
-                className: "text-center",
-                "width": "10%" 
-            },
-            {
-                "targets": [3],
-                className: "text-center",
-                "width": "20%"
-            },
-            {
-                "targets": [4],
-                className: "text-center",
-                "width": "20%"
-            },
-            {
-                "targets": [5],
-                className: "text-center",
-                "width": "20%"
-            },
-
-        ],
-
-    });
-    obtenerTabla()
-
-    //Ruta Numeracion
-    var url = '{{ route("mantenimiento.empresas.obtenerNumeracion", ":id")}}';
-    url = url.replace(':id', "{{$empresa->id}}");
-    $('.dataTables-numeracion').DataTable({
-        "dom": 'Tftp',
-        "bPaginate": true,
-        "bFilter": true,
-        "bInfo": true,
-        "bAutoWidth": false,
-        "ajax": url,
-        "language": {
-            "url": "{{asset('Spanish.json')}}"
-        },
-
-        "columnDefs": [
-            {
-
-                "targets": [0],
-                data: null,
-                className: "text-center",
-                render: function(data) {
-                    if (data.emision == '1') {
-                        return  '-';
-                    }else{
-                        return "<div class='btn-group'>" +
-                        "<a class='btn btn-danger btn-sm' id='borrar_numeracion' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
-                        "</div>";
-                    }
-
-                }
-            },
-            {
-                "targets": [1],
-                data: 'tipo_comprobante',
-            },
-            {
-                "targets": [2],
-                data: 'serie',
-                className: "text-center",
-              
-            },
-            {
-                "targets": [3],
-                data: 'numero_iniciar',
-                className: "text-center",
-               
-            },
-            {
-                "targets": [4],
-                data: null,
-                className: "text-center",
-                render: function(data) {
-                    
-                    if (data.emision == '1') {
-                        return  'SI';
-                    }else{
-                        return "NO";
-                    }
-
-                }
-               
-            },
-            {
-                "targets": [5],
-                visible: false,
-                data: 'tipo_id',
-               
-            },
-
-        ],
-
     });
 
-    // obtenerNumeracion()
 
-})
+    /* Limpiar imagen */
+    $('#limpiar_logo').click(function() {
+        $('.logo').attr("src", "{{asset('storage/empresas/logos/default.png')}}")
+        var fileName = "Seleccionar"
+        $('.custom-file-label').addClass("selected").html(fileName);
+        $('#logo').val('')
+        $('#ruta_logo').val('')
 
-function obtenerTabla() {
-    var t = $('.dataTables-bancos').DataTable();
-        @foreach($banco as $ban)
-        t.row.add([
-            '',
-            "{{$ban->descripcion}}",
-            "{{$ban->tipo_moneda}}",
-            "{{$ban->num_cuenta}}",
-            "{{$ban->cci}}",
-            "{{$ban->itf}}",
-        ]).draw(false);
-        @endforeach
-}
+    })
 
-function obtenerNumeracion() {
-    var t = $('.dataTables-numeracion').DataTable();
-        @foreach($numeraciones as $numero)
-        t.row.add([
-            '',
-            "{{$numero->comprobanteDescripcion()}}",
-            "{{$numero->serie}}",
-            "{{$numero->numero_iniciar}}",
-            "{{$numero->emision_iniciada}}",
-            "{{$numero->tipo_comprobante}}",
-        ]).draw(false);
-        @endforeach
-}
+    $('#logo').on('change', function() {
+        var fileInput = document.getElementById('logo');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
+        $imagenPrevisualizacion = document.querySelector(".logo");
 
-//Añadir Entidad Financiera
-function agregarEntidad() {
-    $('#modal_agregar_entidad').modal('show');
-}
-
-//Consultar si ingesar entidad financiera
-function entidadFinanciera() {
-    var existe = true
-    var table = $('.dataTables-bancos').DataTable();
-    var registros = table.rows().data().length;
-
-    if (registros == 0) {
-        existe = false
-    }
-    return existe
-}
-
-$('.modal_certificado').click(function(){
-    $('#modal_certificado').modal('show');
-})
-
-$('.tabs-container .nav-tabs #bancos_link , .tabs-container .nav-tabs #facturacion_link').click(function() {
-    limpiarErrores()
-    var enviar = true;
-
-    if ( $('#estado_fe').prop("checked") ) {
-        if ($('#logo_txt').text() == 'Seleccionar') {
-            enviar = false
-            $('#logo').addClass("is-invalid")
-            toastr.error("Ingrese Logo de la empresa.", 'Error');
-            $('#error-logo_empresa').text("El campo Logo es obligatorio.")
+        if (allowedExtensions.exec(filePath)) {
+            var userFile = document.getElementById('logo');
+            userFile.src = URL.createObjectURL(event.target.files[0]);
+            var data = userFile.src;
+            $imagenPrevisualizacion.src = data
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        } else {
+            toastr.error('Extensión inválida, formatos admitidos (.jpg . jpeg . png)', 'Error');
         }
+    });
 
-        if (!$('#ubigeo_empresa').val()) {
-            enviar = false
-            $('#ubigeo_empresa').addClass("is-invalid")
-            toastr.error("Ingrese el ubigeo de la dirección fiscal de la empresa.", 'Error');
-            $('#error-empresa_ubigeo').text("El campo Ubigeo es obligatorio.")
-        }
+    $("#ruc").keyup(function() {
+        $('#estado').val('INACTIVO');
+    })
 
-    }else{
-        enviar = true
-        $('#logo').removeClass("is-invalid")
-        $('#error-logo_empresa').text("")
-    }
+    $('#enviar_empresa_editar').submit(function(e) {
+        e.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
 
-
-    if ($('#ruc').val() == '') {
-        enviar = false
-        $('#ruc').addClass("is-invalid")
-        toastr.error("Ingrese Ruc de la empresa.", 'Error');
-        $('#error-ruc').text("El campo Ruc es obligatorio.")
-    }
-
-    if ($('#razon_social').val() == '') {
-        enviar = false
-        $('#razon_social').addClass("is-invalid")
-        toastr.error("Ingrese Razón Social de la empresa.", 'Error');
-        $('#error-razon_social').text("El campo Razón Social es obligatorio.")
-    }
-
-    if ($('#direccion_fiscal').val() == '') {
-        enviar = false
-        $('#direccion_fiscal').addClass("is-invalid")
-        toastr.error("Ingrese la Dirección Fiscal de la Empresa.", 'Error');
-        $('#error-direccion_fiscal').text("El campo Dirección Fiscal es obligatorio.")
-    }
-
-    
-    if ($('#direccion_llegada').val() == '') {
-        enviar = false
-        $('#direccion_llegada').addClass("is-invalid")
-        toastr.error("Ingrese la Dirección de Llegada de la Empresa.", 'Error');
-        $('#error-direccion_llegada').text("El campo Dirección de Llegada es obligatorio.")
-    }
-
-    if ($('#dni_representante').val() == '') {
-        enviar = false
-        $('#dni_representante').addClass("is-invalid")
-        toastr.error("Ingrese el Dni del Representante de la Empresa.", 'Error');
-        $('#error-dni_representante').text("El campo Dni es obligatorio.")
-    }
-
-    if ($('#nombre_representante').val() == '') {
-        enviar = false
-        $('#nombre_representante').addClass("is-invalid")
-        toastr.error("Ingrese el Nombre Completo del Representante de la Empresa.", 'Error');
-        $('#error-nombre_representante').text("El campo Nombre Completo es obligatorio.")
-    }
-
-    if ($('#num_asiento').val() == '') {
-        enviar = false
-        $('#num_asiento').addClass("is-invalid")
-        toastr.error("Ingrese el N° de Asiento de la Empresa.", 'Error');
-        $('#error-num_asiento').text("El campo N° de Asiento es obligatorio.")
-    }
-
-    if ($('#num_partida').val() == '') {
-        enviar = false
-        $('#num_partida').addClass("is-invalid")
-        toastr.error("Ingrese el N° de Partida de la Empresa.", 'Error');
-        $('#error-num_partida').text("El campo N° de Partida es obligatorio.")
-    }
-
-    return enviar
-
-})
-
-
-function limpiarErrores() {
-    $('#ruc').removeClass("is-invalid")
-    $('#error-ruc').text("")
-
-    $('#razon_social').removeClass("is-invalid")
-    $('#error-razon_social').text("")
-
-    $('#direccion_fiscal').removeClass("is-invalid")
-    $('#error-direccion_fiscal').text("")
-
-    $('#direccion_llegada').removeClass("is-invalid")
-    $('#error-direccion_llegada').text("")
-
-    $('#dni_representante').removeClass("is-invalid")
-    $('#error-dni_representante').text("")
-
-    $('#nombre_representante').removeClass("is-invalid")
-    $('#error-nombre_representante').text("")
-
-    $('#num_asiento').removeClass("is-invalid")
-    $('#error-num_asiento').text("")
-
-    $('#num_partida').removeClass("is-invalid")
-    $('#error-num_partida').text("")
-    
-    $('#logo').removeClass("is-invalid")
-    $('#error-logo_empresa').text("")
-
-    $('#ubigeo_empresa').removeClass("is-invalid")
-    $('#error-empresa_ubigeo').text("")
-
-}
-
-function consultarRuc() {
-    var ruc = $('#ruc').val()
-
-    if (ruc.length == 11) {
         Swal.fire({
-            title: 'Consultar',
-            text: "¿Desea consultar Ruc a Sunat?",
+            title: 'Opción Modificar',
+            text: "¿Seguro que desea modificar cambios?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: "#1ab394",
             confirmButtonText: 'Si, Confirmar',
             cancelButtonText: "No, Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: (login) => {
-                var url = '{{ route("getApiruc", ":ruc")}}';
-                url = url.replace(':ruc', ruc);
-                return fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(response.statusText)
-                        }
-                        return response.json()
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        Swal.showValidationMessage(
-                            `Ruc Inválido`
-                        )
-                    })
-            },
-            allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
-            // $('#ruc').removeClass('is-invalid')
-            camposRuc(result)
-            consultaExitosa()
+
+            if (result.isConfirmed) {
+                
+                var existe = entidadFinanciera()
+                if (existe == false) {
+                    
+                    Swal.fire({
+                        title: 'Entidad Financiera',
+                        text: "¿Seguro que desea modificar Empresa sin ninguna entidad financiera?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: "#1ab394",
+                        confirmButtonText: 'Si, Confirmar',
+                        cancelButtonText: "No, Cancelar",
+                    }).then((result) => {
+                        
+                        if (result.isConfirmed) {
+                            if (validarCertificado() == true) {
+
+                                if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR" ) {
+                                    $("#estado").prop('disabled', false)
+                                    $("#estado_dni_representante").prop('disabled', false)
+                                    //Cargar Entidades en modal
+                                    cargarEntidades()
+                                    cargarNumeracion()
+                                    this.submit();
+                                    Swal.fire({
+                                        title: '¡Cargando!',
+                                        type: 'info',
+                                        icon: 'info',
+                                        text: 'Modificando Registro',
+                                        showConfirmButton: false,
+                                        onBeforeOpen: () => {
+                                            Swal.showLoading()
+                                        }
+                                    })
+                                } else {
+                                    $("#estado").prop('disabled', true)
+                                    $("#estado_dni_representante").prop('disabled', true)
+                                    toastr.error('Ingrese una empresa activa o sin verificar', 'Error');
+                                }
+                            }
+                            
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            $('#bancos_link').click();
+                        }
+                    })
+                }else{
+                    if (validarCertificado() == true) {
+
+                        if ($('#estado').val() == "ACTIVO" || $('#estado').val() == "SIN VERIFICAR") {
+                            $("#estado").prop('disabled', false)
+                            $("#estado_dni_representante").prop('disabled', false)
+                            cargarEntidades()
+                            cargarNumeracion()
+                            this.submit();
+                            Swal.fire({
+                                title: '¡Cargando!',
+                                type: 'info',
+                                icon: 'info',
+                                text: 'Modificando Registro',
+                                showConfirmButton: false,
+                                onBeforeOpen: () => {
+                                    Swal.showLoading()
+                                }
+                            })
+                        } else {
+                            $("#estado").prop('disabled', true)
+                            $("#estado_dni_representante").prop('disabled', true)
+                            toastr.error('Ingrese una empresa activa', 'Error');
+                        }
+                    }
+                }
+        
+        
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'La Solicitud se ha cancelado.',
+                    'error'
+                )
+            }
         })
+    })
 
-    } else {
-        toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
+
+    $("#ruc").keyup(function() {
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('SIN VERIFICAR');
+        }
+    })
+
+    $("#razon_social").keyup(function() {
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('SIN VERIFICAR');
+        }
+    })
+
+    $("#razon_social_abreviada").keyup(function() {
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('SIN VERIFICAR');
+        }
+    })
+
+    $("#direccion_fiscal").keyup(function() {
+        if ($('#estado').val('ACTIVO')) {
+            $('#estado').val('SIN VERIFICAR');
+        }
+    })
+
+    $("#dni_representante").keyup(function() {
+        if ($('#estado_dni_representante').val('ACTIVO')) {
+            $('#estado_dni_representante').val('SIN VERIFICAR');
+        }
+    })
+
+    $("#nombre_representante").keyup(function() {
+        if ($('#estado_dni_representante').val('ACTIVO')) {
+            $('#estado_dni_representante').val('SIN VERIFICAR');
+        }
+    })
+
+
+    function camposRuc(objeto) {
+        var razonsocial = objeto.value.razonSocial;
+        var nombrecorto = objeto.value.nombreComercial;
+        var direccion = objeto.value.direccion;
+        var departamento = objeto.value.departamento;
+        var provincia = objeto.value.provincia;
+        var distrito = objeto.value.distrito;
+        var estado = objeto.value.estado;
+        var ubigeo = objeto.value.ubigeo;
+
+        if (razonsocial != '-' && razonsocial != "NULL") {
+            $('#razon_social').val(razonsocial)
+        }
+
+        if (nombrecorto != '-' && nombrecorto != "NULL") {
+            $('#razon_social_abreviada').val(nombrecorto)
+        } else {
+            $('#razon_social_abreviada').val(razonsocial)
+        }
+        if (estado == "ACTIVO") {
+            $('#estado').val(estado)
+        } else {
+            $('#estado').val('INACTIVO')
+            toastr.error('Empresa no se encuentra "Activa"', 'Error');
+        }
+
+        if (direccion != '-' && direccion != "NULL") {
+            $('#direccion_fiscal').val(direccion + " - " + departamento + " - " + provincia + " - " + distrito)
+        }
+
+        if (razonsocial != '-' && razonsocial != "NULL") {
+            $('#ubigeo_empresa').val(ubigeo)
+        }
     }
-}
 
-//CERTIFICADO
+    // Consulta Dni
+    $("#dni_representante").keypress(function() {
+        if (event.which == 13) {
+            event.preventDefault();
+            var dni = $("#dni_representante").val()
+            evaluarDni(dni);
+        }
+    })
+    // Consulta Dni
+    function consultarDni(dni) {
+        var dni = $('#dni_representante').val()
+        if (dni.length == 8) {
 
-$('#certificado').on('change', function() {
-    var fileInput = document.getElementById('certificado');
-    var filePath = fileInput.value;
-    var allowedExtensions = /(.pfx)$/i;
+            Swal.fire({
+                title: 'Consultar',
+                text: "¿Desea consultar Dni a Reniec?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+                showLoaderOnConfirm: true,
+                preConfirm: (login) => {
+                    var url = '{{ route("getApidni", ":dni")}}';
+                    url = url.replace(':dni', dni);
 
-    if (allowedExtensions.exec(filePath)) {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    } else {
-        toastr.error('Extensión inválida, formatos admitidos (.pfx)', 'Error');
+                    return fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            $('#dni_representante').val('SIN VERIFICAR')
+                            Swal.showValidationMessage(
+                                `Dni Inválido`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                camposDni(result)
+                consultaExitosa()
+            })
+        } else {
+            toastr.error('El campo Dni debe de contar con 8 dígitos', 'Error');
+        }
+
+
     }
-    
-});
 
-function validarCertificado() {
-    var correcto = true
-    if ( $('#estado_fe').prop("checked") ) {
-        if ($('#estado_certificado').val() != "VERIFICADO") {
-            correcto = false
-            toastr.error("Certitificado Incorrecto.", 'Error');
-            $('#facturacion_link').click();
+    function camposDni(objeto) {
+
+        var nombres = objeto.value.nombres;
+        var apellidopa = objeto.value.apellidoPaterno;
+        var apellidoma = objeto.value.apellidoMaterno;
+
+        var nombre_completo = []
+
+        if (nombres != "-" && nombres != null) {
+            nombre_completo.push(nombres)
         }
 
-        if ($('#logo_txt').text() == 'Seleccionar') {
-            correcto = false
-            toastr.error("Ingrese Logo de la empresa.", 'Error');
-            $('#empresas_link').click();
+        if (apellidopa != "-" && apellidopa != null) {
+            nombre_completo.push(apellidopa)
         }
 
-        if ($('#soap_usuario').val() == "") {
-            correcto = false
-            $('#soap_usuario').addClass("is-invalid")
-            toastr.error("Ingrese Soap Usuario Sunat.", 'Error');
-            $('#error-soap_usuario').text("El campo Soap Usuario es obligatorio.")
-
-            $('#facturacion_link').click();
-
+        if (apellidoma != "-" && apellidoma != null) {
+            nombre_completo.push(apellidoma)
         }
 
-        if ($('#soap_password').val() == "") {
-            correcto = false
-            $('#soap_password').addClass("is-invalid")
-            toastr.error("Ingrese Soap Contraseña Sunat.", 'Error');
-            $('#error-soap_password').text("El campo Soap Contraseña es obligatorio.")
+        $('#nombre_representante').val(nombre_completo.join(' '))
+        $('#estado_dni_representante').val('ACTIVO')
+
+    }
+
+    $(document).ready(function() {
+
+        //Iniciar I-Checks
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+
+
+        @if(old('estado_fe',$empresa->estado_fe) == '1')
+            document.getElementById("facturacion_tab").style.display = "";
+            $('#logo_label').addClass("required")
+            if ($('#logo_txt').text() == 'Seleccionar') {
+                $('#logo').prop("required",true)
+            }
+
+            $('#ubigeo_texto').addClass("required")
+            $('#ubigeo_empresa').prop("required",true)
             
-            $('#facturacion_link').click();
-        }
+        @else
+            document.getElementById("facturacion_tab").style.display = "none";
+            $('#logo').prop("required",false)
+            $('#logo_label').removeClass("required")
+            $('#certificado_base').val('')
+            $('#estado_certificado').val('SIN VERIFICAR')
 
+            $('#ubigeo_texto').removeClass("required")
+            $('#ubigeo_empresa').prop("required",false)
 
+        @endif
 
-    }else{
-        $('#soap_usuario').val('')
-        $('#soap_password').val('')
+        // DataTables
+        $('.dataTables-bancos').DataTable({
+            "dom": 'Tftp',
+            "bPaginate": true,
+            "bFilter": true,
+            "bInfo": true,
+            "bAutoWidth": false,
+            "language": {
+                "url": "{{asset('Spanish.json')}}"
+            },
+
+            "columnDefs": [
+                {
+
+                    "targets": [0],
+                    "width": "10%" ,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return "<div class='btn-group'>" +
+                            "<a class='btn btn-warning btn-sm modificarDetalle' id='editar_entidad' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
+                            "<a class='btn btn-danger btn-sm' id='borrar_entidad' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                            "</div>";
+                    }
+                },
+                {
+                    "targets": [1],
+                    "width": "20%" 
+                },
+                {
+                    "targets": [2],
+                    className: "text-center",
+                    "width": "10%" 
+                },
+                {
+                    "targets": [3],
+                    className: "text-center",
+                    "width": "20%"
+                },
+                {
+                    "targets": [4],
+                    className: "text-center",
+                    "width": "20%"
+                },
+                {
+                    "targets": [5],
+                    className: "text-center",
+                    "width": "20%"
+                },
+
+            ],
+
+        });
+        obtenerTabla()
+
+        //Ruta Numeracion
+        var url = '{{ route("mantenimiento.empresas.obtenerNumeracion", ":id")}}';
+        url = url.replace(':id', "{{$empresa->id}}");
+        $('.dataTables-numeracion').DataTable({
+            "dom": 'Tftp',
+            "bPaginate": true,
+            "bFilter": true,
+            "bInfo": true,
+            "bAutoWidth": false,
+            "ajax": url,
+            "language": {
+                "url": "{{asset('Spanish.json')}}"
+            },
+
+            "columnDefs": [
+                {
+
+                    "targets": [0],
+                    data: null,
+                    className: "text-center",
+                    render: function(data) {
+                        if (data.emision == '1') {
+                            return  '-';
+                        }else{
+                            return "<div class='btn-group'>" +
+                            "<a class='btn btn-danger btn-sm' id='borrar_numeracion' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+                            "</div>";
+                        }
+
+                    }
+                },
+                {
+                    "targets": [1],
+                    data: 'tipo_comprobante',
+                },
+                {
+                    "targets": [2],
+                    data: 'serie',
+                    className: "text-center",
+                
+                },
+                {
+                    "targets": [3],
+                    data: 'numero_iniciar',
+                    className: "text-center",
+                
+                },
+                {
+                    "targets": [4],
+                    data: null,
+                    className: "text-center",
+                    render: function(data) {
+                        
+                        if (data.emision == '1') {
+                            return  'SI';
+                        }else{
+                            return "NO";
+                        }
+
+                    }
+                
+                },
+                {
+                    "targets": [5],
+                    visible: false,
+                    data: 'tipo_id',
+                
+                },
+
+            ],
+
+        });
+
+        // obtenerNumeracion()
+
+    })
+
+    function obtenerTabla() {
+        var t = $('.dataTables-bancos').DataTable();
+            @foreach($banco as $ban)
+            t.row.add([
+                '',
+                "{{$ban->descripcion}}",
+                "{{$ban->tipo_moneda}}",
+                "{{$ban->num_cuenta}}",
+                "{{$ban->cci}}",
+                "{{$ban->itf}}",
+            ]).draw(false);
+            @endforeach
     }
 
-    var table = $('.dataTables-numeracion').DataTable();
-    var registros = table.rows().data().length;
-    if ( $('#estado_fe').prop("checked") ) {
+    function obtenerNumeracion() {
+        var t = $('.dataTables-numeracion').DataTable();
+            @foreach($numeraciones as $numero)
+            t.row.add([
+                '',
+                "{{$numero->comprobanteDescripcion()}}",
+                "{{$numero->serie}}",
+                "{{$numero->numero_iniciar}}",
+                "{{$numero->emision_iniciada}}",
+                "{{$numero->tipo_comprobante}}",
+            ]).draw(false);
+            @endforeach
+    }
+
+    //Añadir Entidad Financiera
+    function agregarEntidad() {
+        $('#modal_agregar_entidad').modal('show');
+    }
+
+    //Consultar si ingesar entidad financiera
+    function entidadFinanciera() {
+        var existe = true
+        var table = $('.dataTables-bancos').DataTable();
+        var registros = table.rows().data().length;
+
         if (registros == 0) {
-            correcto = false
-            toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
-            $('#facturacion_link').click();
+            existe = false
+        }
+        return existe
+    }
+
+    $('.modal_certificado').click(function(){
+        $('#modal_certificado').modal('show');
+    })
+
+    $('.tabs-container .nav-tabs #bancos_link , .tabs-container .nav-tabs #facturacion_link').click(function() {
+        limpiarErrores()
+        var enviar = true;
+
+        if ( $('#estado_fe').prop("checked") ) {
+            if ($('#logo_txt').text() == 'Seleccionar') {
+                enviar = false
+                $('#logo').addClass("is-invalid")
+                toastr.error("Ingrese Logo de la empresa.", 'Error');
+                $('#error-logo_empresa').text("El campo Logo es obligatorio.")
+            }
+
+            if (!$('#ubigeo_empresa').val()) {
+                enviar = false
+                $('#ubigeo_empresa').addClass("is-invalid")
+                toastr.error("Ingrese el ubigeo de la dirección fiscal de la empresa.", 'Error');
+                $('#error-empresa_ubigeo').text("El campo Ubigeo es obligatorio.")
+            }
+
+        }else{
+            enviar = true
+            $('#logo').removeClass("is-invalid")
+            $('#error-logo_empresa').text("")
+        }
+
+
+        if ($('#ruc').val() == '') {
+            enviar = false
+            $('#ruc').addClass("is-invalid")
+            toastr.error("Ingrese Ruc de la empresa.", 'Error');
+            $('#error-ruc').text("El campo Ruc es obligatorio.")
+        }
+
+        if ($('#razon_social').val() == '') {
+            enviar = false
+            $('#razon_social').addClass("is-invalid")
+            toastr.error("Ingrese Razón Social de la empresa.", 'Error');
+            $('#error-razon_social').text("El campo Razón Social es obligatorio.")
+        }
+
+        if ($('#direccion_fiscal').val() == '') {
+            enviar = false
+            $('#direccion_fiscal').addClass("is-invalid")
+            toastr.error("Ingrese la Dirección Fiscal de la Empresa.", 'Error');
+            $('#error-direccion_fiscal').text("El campo Dirección Fiscal es obligatorio.")
+        }
+
+        
+        if ($('#direccion_llegada').val() == '') {
+            enviar = false
+            $('#direccion_llegada').addClass("is-invalid")
+            toastr.error("Ingrese la Dirección de Llegada de la Empresa.", 'Error');
+            $('#error-direccion_llegada').text("El campo Dirección de Llegada es obligatorio.")
+        }
+
+        if ($('#dni_representante').val() == '') {
+            enviar = false
+            $('#dni_representante').addClass("is-invalid")
+            toastr.error("Ingrese el Dni del Representante de la Empresa.", 'Error');
+            $('#error-dni_representante').text("El campo Dni es obligatorio.")
+        }
+
+        if ($('#nombre_representante').val() == '') {
+            enviar = false
+            $('#nombre_representante').addClass("is-invalid")
+            toastr.error("Ingrese el Nombre Completo del Representante de la Empresa.", 'Error');
+            $('#error-nombre_representante').text("El campo Nombre Completo es obligatorio.")
+        }
+
+        if ($('#num_asiento').val() == '') {
+            enviar = false
+            $('#num_asiento').addClass("is-invalid")
+            toastr.error("Ingrese el N° de Asiento de la Empresa.", 'Error');
+            $('#error-num_asiento').text("El campo N° de Asiento es obligatorio.")
+        }
+
+        if ($('#num_partida').val() == '') {
+            enviar = false
+            $('#num_partida').addClass("is-invalid")
+            toastr.error("Ingrese el N° de Partida de la Empresa.", 'Error');
+            $('#error-num_partida').text("El campo N° de Partida es obligatorio.")
+        }
+
+        return enviar
+
+    })
+
+
+    function limpiarErrores() {
+        $('#ruc').removeClass("is-invalid")
+        $('#error-ruc').text("")
+
+        $('#razon_social').removeClass("is-invalid")
+        $('#error-razon_social').text("")
+
+        $('#direccion_fiscal').removeClass("is-invalid")
+        $('#error-direccion_fiscal').text("")
+
+        $('#direccion_llegada').removeClass("is-invalid")
+        $('#error-direccion_llegada').text("")
+
+        $('#dni_representante').removeClass("is-invalid")
+        $('#error-dni_representante').text("")
+
+        $('#nombre_representante').removeClass("is-invalid")
+        $('#error-nombre_representante').text("")
+
+        $('#num_asiento').removeClass("is-invalid")
+        $('#error-num_asiento').text("")
+
+        $('#num_partida').removeClass("is-invalid")
+        $('#error-num_partida').text("")
+        
+        $('#logo').removeClass("is-invalid")
+        $('#error-logo_empresa').text("")
+
+        $('#ubigeo_empresa').removeClass("is-invalid")
+        $('#error-empresa_ubigeo').text("")
+
+    }
+
+    function consultarRuc() {
+        var ruc = $('#ruc').val()
+
+        if (ruc.length == 11) {
+            Swal.fire({
+                title: 'Consultar',
+                text: "¿Desea consultar Ruc a Sunat?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: "#1ab394",
+                confirmButtonText: 'Si, Confirmar',
+                cancelButtonText: "No, Cancelar",
+                showLoaderOnConfirm: true,
+                preConfirm: (login) => {
+                    var url = '{{ route("getApiruc", ":ruc")}}';
+                    url = url.replace(':ruc', ruc);
+                    return fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            Swal.showValidationMessage(
+                                `Ruc Inválido`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                // $('#ruc').removeClass('is-invalid')
+                camposRuc(result)
+                consultaExitosa()
+            })
+
+        } else {
+            toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
         }
     }
 
-    return correcto
-}
+    //CERTIFICADO
+
+    $('#certificado').on('change', function() {
+        var fileInput = document.getElementById('certificado');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(.pfx)$/i;
+
+        if (allowedExtensions.exec(filePath)) {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        } else {
+            toastr.error('Extensión inválida, formatos admitidos (.pfx)', 'Error');
+        }
+        
+    });
+
+    function validarCertificado() {
+        var correcto = true
+
+        if ($('#estado_fe').val()) {
+            if ( $('#estado_fe').prop("checked")  ) {
+                if ($('#estado_certificado').val() != "VERIFICADO") {
+                    correcto = false
+                    toastr.error("Certitificado Incorrecto.", 'Error');
+                    $('#facturacion_link').click();
+                }
+
+                if ($('#logo_txt').text() == 'Seleccionar') {
+                    correcto = false
+                    toastr.error("Ingrese Logo de la empresa.", 'Error');
+                    $('#empresas_link').click();
+                }
+
+                if ($('#soap_usuario').val() == "") {
+                    correcto = false
+                    $('#soap_usuario').addClass("is-invalid")
+                    toastr.error("Ingrese Soap Usuario Sunat.", 'Error');
+                    $('#error-soap_usuario').text("El campo Soap Usuario es obligatorio.")
+
+                    $('#facturacion_link').click();
+
+                }
+
+                if ($('#soap_password').val() == "") {
+                    correcto = false
+                    $('#soap_password').addClass("is-invalid")
+                    toastr.error("Ingrese Soap Contraseña Sunat.", 'Error');
+                    $('#error-soap_password').text("El campo Soap Contraseña es obligatorio.")
+                    
+                    $('#facturacion_link').click();
+                }
+            }
+        }else{
+            $('#soap_usuario').val('')
+            $('#soap_password').val('')
+        }
+
+
+        var table = $('.dataTables-numeracion').DataTable();
+        var registros = table.rows().data().length;
+        if ($('#estado_fe').val()) {
+            if ( $('#estado_fe').prop("checked") ) {
+                if (registros == 0) {
+                    correcto = false
+                    toastr.error("Debe de ingresar al menos 1 Numeración de facturación.", 'Error');
+                    $('#facturacion_link').click();
+                }
+            }
+        }
+        return correcto
+    }
 
 
 </script>
 
-
-</script>
 @endpush

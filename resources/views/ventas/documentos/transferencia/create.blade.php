@@ -74,11 +74,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label><strong>Empresa: </strong></label>
-                                        <p>{{$documento->empresa->razon_social}}</p>
+                                        <p>{{$documento->empresa}}</p>
                                     </div>
                                     <div class="form-group">
                                         <label><strong>Cliente: </strong></label>
-                                        <p>{{$documento->cliente->nombre}}</p>
+                                        <p>{{$documento->cliente}}</p>
                                     </div>
                                 </div>
                             
@@ -109,7 +109,7 @@
                                                                     
                                                                     <div class="form-group" >
                                                                         <label class="col-form-label"><b>RUC:</b></label>
-                                                                        <p>{{$documento->empresa->ruc}}</p>
+                                                                        <p>{{$documento->ruc_empresa}}</p>
                                                                     </div>
                                                                 
                                                                 </div>
@@ -118,27 +118,15 @@
 
                                                             <div class="form-group">
                                                                     <label class="col-form-label"><b>Razón Social:</b></label>
-                                                                    <p>{{$documento->empresa->razon_social}}</p>
+                                                                    <p>{{$documento->empresa}}</p>
                                                             </div>
-
-                                                            <div class="form-group">
-                                                                    <label class="col-form-label"><b>Razón Social Abreviada:</b></label>
-                                                                    <p>{{$documento->empresa->razon_social_abreviada}}</p>
-                                                            </div>
-
-
-
 
                                                         </div>
                                                         <div class="col-md-6">
                                                             
                                                             <div class="form-group">
                                                                 <label class="col-form-label"><b>Dirección Fiscal:</b></label>
-                                                                <p>{{$documento->empresa->direccion_fiscal}}</p>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-form-label"><b>Dirección de Planta:</b></label>
-                                                                <p>{{$documento->empresa->direccion_llegada}}</p>
+                                                                <p>{{$documento->empresa_direccion}}</p>
                                                             </div>
 
 

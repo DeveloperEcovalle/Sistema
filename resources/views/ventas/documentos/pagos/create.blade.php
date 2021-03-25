@@ -79,11 +79,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label><strong>Empresa: </strong></label>
-                                        <p>{{$documento->empresa->razon_social}}</p>
+                                        <p>{{$documento->empresa}}</p>
                                     </div>
                                     <div class="form-group">
                                         <label><strong>Cliente: </strong></label>
-                                        <p>{{$documento->cliente->nombre}}</p>
+                                        <p>{{$documento->cliente}}</p>
                                     </div>
                                 </div>
                             

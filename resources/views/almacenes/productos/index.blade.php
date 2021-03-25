@@ -93,6 +93,7 @@
                 "bInfo": true,
                 "bAutoWidth": false,
                 "processing":true,
+                "serverSide":true,
                 "ajax": "{{ route('almacenes.producto.getTable')}}",
                 "columns": [
                     {data: 'codigo', className:"text-left"},

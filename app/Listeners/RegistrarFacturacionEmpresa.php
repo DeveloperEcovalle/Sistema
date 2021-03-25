@@ -15,7 +15,7 @@ class RegistrarFacturacionEmpresa
         //INGRESO DE NUMERACION DE FACTURACION DE EMPRESA
         $numeracionJSON = $event->numeracion_empresa;
         $numeraciontabla = json_decode($numeracionJSON[0]);
-
+        
         if ($numeraciontabla) {
             foreach ($numeraciontabla as $numeracion) {
                 Numeracion::create([

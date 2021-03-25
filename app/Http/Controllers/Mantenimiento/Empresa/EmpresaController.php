@@ -305,6 +305,7 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         $empresa = Empresa::findOrFail($id);
+        
         $numeraciones = Numeracion::where('empresa_id',$id)->where('estado','ACTIVO')->get();
         $facturacion = Facturacion::where('empresa_id',$empresa->id)->where('estado','ACTIVO')->first();
         $banco = Banco::where('empresa_id',$id)->where('estado','ACTIVO')->get();
@@ -421,6 +422,8 @@ class EmpresaController extends Controller
 
         $empresa->update();
 
+
+
         if ($request->get('estado_fe') == '1' ){
 
             if($request->hasFile('logo')){
@@ -467,8 +470,9 @@ class EmpresaController extends Controller
             $json_empresa = json_encode($empresa_facturacion);
             //ENCONTRAR ID DE LA API
             $facturacion = Facturacion::where('empresa_id',$empresa->id)->where('estado','ACTIVO')->first();
-
+           
             if ($facturacion) {
+                
                 //MODIFICAR EMPRESA "FACTURACION ELECTRONICA"
                 $facturado = json_decode((modificarEmpresaapi($json_empresa,$facturacion->fe_id)));
 
@@ -486,7 +490,7 @@ class EmpresaController extends Controller
                 $facturacion->update();
             
             }else{
-                
+              
                 //AGREGAR EMPRESA "FACTURACION ELECTRONICA"
                 $agregar_api = json_decode((agregarEmpresaapi($json_empresa)));
                 //Facturacion Electronica (GUARDAR DATOS INGRESADO POR API)
@@ -505,22 +509,23 @@ class EmpresaController extends Controller
 
 
 
-        }else{
-
-            
-            //ENCONTRAR SI EXISTE REGISTRA DE LA FACTURACION
-            $facturacion = Facturacion::where('empresa_id',$empresa->id)->where('estado','ACTIVO')->first();
-
-            if ($facturacion) {
-                //BORRAR REGISTRO DE LA API
-                $estado = borrarEmpresaapi($facturacion->fe_id);
-
-                $facturacion->estado = "ANULADO";
-                $facturacion->update();
-
-            }
-
         }
+        
+        // else{
+
+        //     dd('sasa');
+        //     //ENCONTRAR SI EXISTE REGISTRA DE LA FACTURACION
+        //     $facturacion = Facturacion::where('empresa_id',$empresa->id)->where('estado','ACTIVO')->first();
+
+        //     if ($facturacion) {
+        //         //BORRAR REGISTRO DE LA API
+        //         $estado = borrarEmpresaapi($facturacion->fe_id);
+        //         $facturacion->estado = "ANULADO";
+        //         $facturacion->update();
+
+        //     }
+
+        // }
 
         //MODIFICAR NUMERACION DE FACTURACION DE LA EMPRESA
         event(new EmpresaModificada(
@@ -600,10 +605,19 @@ class EmpresaController extends Controller
         $tipos = tipos_venta();
         $empresas_facturacion = Facturacion::where('estado','ACTIVO')->get();
         foreach ($tipos as $tipo) {
-            if ($tipo->id == $id ) {
-                $serie = $tipo->parametro.'00'.(count($empresas_facturacion)+1);
-                return $serie;
+            if ($id== '133' || $id== '134' ) {
+                if ($tipo->id == $id ) {
+                    $serie = $tipo->parametro.'0'.(count($empresas_facturacion)+1);
+                    return $serie;
+                }
+            }else{
+                if ($tipo->id == $id ) {
+                   
+                    $serie = $tipo->parametro.'00'.(count($empresas_facturacion)+1);
+                    return $serie;
+                } 
             }
+
         }
     }
 

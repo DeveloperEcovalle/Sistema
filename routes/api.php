@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,48 +40,48 @@ Route::get('clientes',function ()
 //     comparacion => 
 // ]
 
-Route::get('clientes/parametros',function (Request $request)
-{
+// Route::get('clientes/parametros',function (Request $request)
+// {
 
-        $clientes = DB::table('clientes')
-                    ->when($request->get('zona'), function ($query, $request) {
-                        return $query->where('clientes.zona', $request);
-                    })
-                    ->when($request->get('departamento'), function ($query, $request) {
-                        return $query->where('clientes.departamento_id', $request);
-                    });
+//         $clientes = DB::table('clientes')
+//                     ->when($request->get('zona'), function ($query, $request) {
+//                         return $query->where('clientes.zona', $request);
+//                     })
+//                     ->when($request->get('departamento'), function ($query, $request) {
+//                         return $query->where('clientes.departamento_id', $request);
+//                     });
 
-        $clientes = $clientes->get();
-        $coleccion = collect([]);       
+//         $clientes = $clientes->get();
+//         $coleccion = collect([]);       
         
-        foreach ($clientes as $cliente) {
-            $venta_monto = DB::table('cotizacion_documento')
+//         foreach ($clientes as $cliente) {
+//             $venta_monto = DB::table('cotizacion_documento')
 
-                        ->where('cotizacion_documento.cliente_id',$cliente->id)
+//                         ->where('cotizacion_documento.cliente_id',$cliente->id)
                     
-                        ->when($request->get('fecha_inicio'), function ($query, $request) {
-                            return $query->where('cotizacion_documento.fecha_documento','>=',$request);
-                        })
+//                         ->when($request->get('fecha_inicio'), function ($query, $request) {
+//                             return $query->where('cotizacion_documento.fecha_documento','>=',$request);
+//                         })
 
-                        ->when($request->get('fecha_fin'), function ($query, $request) {
-                            return $query->where('cotizacion_documento.fecha_documento','>=',$request);
-                        })
+//                         ->when($request->get('fecha_fin'), function ($query, $request) {
+//                             return $query->where('cotizacion_documento.fecha_documento','>=',$request);
+//                         })
 
-                        ->when($request->all(), function ($query, $request) {
-                            if ( !empty($request['comparacion'])  &&  !empty($request['monto'])  ) {
-                                return $query->where('cotizacion_documento.total', $request['comparacion'], $request['monto']);
-                            }
-                        })
-                        ->sum('cotizacion_documento.total');
+//                         ->when($request->all(), function ($query, $request) {
+//                             if ( !empty($request['comparacion'])  &&  !empty($request['monto'])  ) {
+//                                 return $query->where('cotizacion_documento.total', $request['comparacion'], $request['monto']);
+//                             }
+//                         })
+//                         ->sum('cotizacion_documento.total');
 
-            $coleccion->push([
-                'cliente' => $cliente,
-                'total' => $venta_monto
-                ]);
-        }
+//             $coleccion->push([
+//                 'cliente' => $cliente,
+//                 'total' => $venta_monto
+//                 ]);
+//         }
 
-        return response()->json($coleccion);
-});
+//         return response()->json($coleccion);
+// });
 
 
 //COLABORADORES
@@ -127,7 +127,113 @@ Route::get('departamentos/{zona}',function ($zona)
 
 });
 
+//PRODUCTOS TERMINADOS
+Route::get('productos/terminados',function ()
+{
+    return datatables()->query(
+        DB::table('productos')
+            ->join('familias', 'productos.familia_id', '=', 'familias.id')
+            ->join('subfamilias', 'productos.sub_familia_id', '=', 'subfamilias.id')
+            ->join('tabladetalles as lineas_comerciales', 'productos.linea_comercial', '=', 'lineas_comerciales.id')
+            ->join('tabladetalles as medidas', 'productos.medida', '=', 'medidas.id')
+        ->select('productos.*', 
+                'familias.familia as categoria_pt' , 
+                'subfamilias.descripcion as sub_categoria_pt', 
+                'lineas_comerciales.descripcion as lineaComercialDescripcion', 
+                'medidas.descripcion as medidaDescripcion',
+                'medidas.simbolo as medidaSimbolo'
+                )
+        ->where('productos.estado','ACTIVO'))
+        ->toJson();
+});
 
+// CLIENTES PARAMETROS PARAMETROS
+// [
+//     TIPO_CLIENTE => id,
+//     TIPO => FISICA / VIRTUAL,
+//     NEGOCIO => MARKET / BIOTIENDA
+//     COD_PRODUCTO => 204820
+//     ZONA => CENTRO,
+//     DEPARTAMENTO => ANCASH,
+//     MONTO => 10000.00 VALORES MAYORES A ESA VENTA
+//     fecha_fin =>
+//     fecha_inicio =>
+//     comparacion => 
+// ]
+
+
+Route::get('clientes/venta/parametros',function (Request $request)
+{
+
+    $clientes = DB::table('clientes')
+                ->when($request->get('tipoCliente'), function ($query, $request) {
+                    return $query->where('clientes.tabladetalles_id', $request);
+                })
+                ->leftJoin('cliente_tiendas', 'cliente_tiendas.cliente_id', '=', 'clientes.id')
+                ->when($request->get('tipo'), function ($query, $request) {
+                    return $query->where('cliente_tiendas.tipo_tienda', $request);
+                })
+                ->when($request->get('negocio'), function ($query, $request) {
+                    return $query->where('cliente_tiendas.tipo_negocio', $request);
+                })
+                ->when($request->get('zona'), function ($query, $request) {
+                    return $query->where('clientes.zona', $request);
+                })
+                ->when($request->get('departamento'), function ($query, $request) {
+                    return $query->where('clientes.departamento_id', $request);
+                })
+                ->select(
+                    'clientes.id',
+                    'clientes.tipo_documento',
+                    'clientes.documento',
+                    'clientes.correo_electronico',
+                    'clientes.telefono_movil',
+                    'clientes.nombre',
+                    'cliente_tiendas.tipo_tienda',
+                    'cliente_tiendas.tipo_negocio',
+                    'clientes.facebook',
+                    'clientes.instagram',
+                    'clientes.web'
+                );
+
+        $clientes = $clientes->get();
+        $coleccion = collect([]);       
+
+        foreach ($clientes as $cliente) {
+            $ventas = DB::table('cotizacion_documento')
+                    ->join('cotizacion_documento_detalles', 'cotizacion_documento.id', '=', 'cotizacion_documento_detalles.id')
+                    ->select('cotizacion_documento_detalles.codigo_producto')->distinct()
+                    ->where('cotizacion_documento.cliente_id',$cliente->id)
+                    ->where('cotizacion_documento_detalles.estado','ACTIVO')
+                    ->when($request->get('producto'), function ($query, $request) {
+                        return $query->where('cotizacion_documento_detalles.codigo_producto', $request);
+                    })->get();
+
+            $venta_monto = DB::table('cotizacion_documento')
+                 
+                    ->where('cotizacion_documento.cliente_id',$cliente->id)
+                    ->when($request->get('fecha_inicio'), function ($query, $request) {
+                        return $query->where('cotizacion_documento.fecha_documento','>=',$request);
+                    })
+                    ->when($request->get('fecha_fin'), function ($query, $request) {
+                        return $query->where('cotizacion_documento.fecha_documento','<=',$request);
+                    })
+                    ->when($request->all(), function ($query, $request) {
+                        if ( !empty($request['comparacion'])  &&  !empty($request['monto'])  ) {
+                            return $query->where('cotizacion_documento.total', $request['comparacion'], $request['monto']);
+                        }
+                    })
+                    ->sum('cotizacion_documento.total');
+
+            $coleccion->push([
+                'cliente' => $cliente,
+                'producto' => count($ventas) > 0 ? 'SI' : 'NO',
+                'total' => $venta_monto
+                ]);
+        }
+
+        return DataTables::collection($coleccion)->toJson();
+});
 
 
 

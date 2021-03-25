@@ -63,7 +63,7 @@ class ComposicionController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+        // dd($data);
         // $rules = [
         //     'codigo' => ['required','string', 'max:50', Rule::unique('productos','codigo')->where(function ($query) {
         //         $query->whereIn('estado',["ACTIVO"]);
@@ -148,7 +148,7 @@ class ComposicionController extends Controller
                 'id' => (string)$detalle->id,
                 'articulo_id' => (string)$detalle->articulo_id,
                 'articulo' => $detalle->articulo->codigo_fabrica.'-'.$detalle->articulo->descripcion,
-                'cantidad' => (int)$detalle->cantidad,
+                'cantidad' => (float)$detalle->cantidad,
                 'peso' => (float)$detalle->peso,
                 'observacion' => $detalle->observacion
             ];

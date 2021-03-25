@@ -113,7 +113,7 @@
             "columns": [
                 //Tabla General
                 {data: 'id', className:"text-center", "visible":false},
-                {data: 'familia', className:"text-center"},
+                {data: 'familia', className:"text-left"},
                 {data: 'fecha_creacion', className:"text-center"},
                 {data: 'fecha_actualizacion', className:"text-center"},
                 {

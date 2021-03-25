@@ -83,7 +83,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-xs-12">
                                                         <label class="required">Cantidad</label>
-                                                        <input type="text" id="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad', $producto->cantidad)}}" maxlength="10" onkeypress="return isNumber(event);">
+                                                        <input type="text" id="cantidad" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : '' }}" value="{{old('cantidad', $producto->cantidad)}}" maxlength="10" onkeypress="return filterFloat(event);">
                                                         @if ($errors->has('cantidad'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('cantidad') }}</strong>

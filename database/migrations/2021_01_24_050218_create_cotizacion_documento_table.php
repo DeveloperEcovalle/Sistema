@@ -15,10 +15,17 @@ class CreateCotizacionDocumentoTable extends Migration
     {
         Schema::create('cotizacion_documento', function (Blueprint $table) {
             $table->Increments('id');
-            $table->unsignedInteger('empresa_id');
-            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
-            $table->unsignedInteger('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
+            //EMPRESA
+            $table->BigInteger('ruc_empresa');
+            $table->string('empresa');
+            $table->mediumText('direccion_fiscal_empresa');
+            $table->unsignedInteger('empresa_id'); //OBTENER NUMERACION DE LA EMPRESA 
+            //CLIENTE
+            $table->string('tipo_documento_cliente');
+            $table->BigInteger('documento_cliente');
+            $table->mediumText('direccion_cliente');
+            $table->string('cliente');
+            $table->unsignedInteger('cliente_id'); //OBTENER TIENDAS DEL CLIENTE 
             
             $table->dateTime('fecha_documento');
             $table->dateTime('fecha_atencion')->nullable();

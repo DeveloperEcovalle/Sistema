@@ -10,6 +10,10 @@ class Detalle extends Model
     protected $fillable = [
         'documento_id',
         'lote_id',
+        'codigo_producto',
+        'unidad',
+        'nombre_producto',
+        'codigo_lote',
         'cantidad',
         'precio',
         'importe',

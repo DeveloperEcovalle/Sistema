@@ -40,10 +40,12 @@ class CajaController extends Controller
                 
                 $restante = calcularMontoRestanteCaja($caja->id);
                 $ventas = calcularSumaMontosPagosVentas($caja->id);
-             
+                
                 $quedando = $caja->saldo_inicial - $restante;
                 $total_ventas = $quedando+$ventas;
-
+                
+                //EVALUAR MONTO EN CAJA 
+                self::ventasCaja($caja->id, $ventas);
                 $coleccion->push([
                     'id' => $caja->id,
                     'empleado_id' => $caja->empleado_id,
@@ -55,6 +57,7 @@ class CajaController extends Controller
                     'saldo_inicial' => $caja->saldo_inicial,
                     'moneda' => $tipo_moneda.' '.$caja->moneda,
                     'estado' => $caja->estado,
+                    'uso' => $caja->uso,
                     ]);
         }
           
@@ -63,6 +66,20 @@ class CajaController extends Controller
         return DataTables::of($coleccion)->toJson();
 
         
+    }
+
+    public function ventasCaja($caja,$ventas)
+    {
+        //VENTAS EN CAJA -> 1 SIN VENTAS O BORRADAS -> 0
+        $caja_old = Caja::findOrFail($caja);
+        if ($ventas == 0 ) {
+            $caja_old->uso = '0';
+        }else{
+            $caja_old->uso = '1';
+        }
+        $caja_old->update();
+
+
     }
     public function store(Request $request){
 

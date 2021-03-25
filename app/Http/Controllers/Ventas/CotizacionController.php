@@ -79,7 +79,6 @@ class CotizacionController extends Controller
 
         Validator::make($data, $rules, $message)->validate();
 
-        // dd($request);
         $cotizacion = new Cotizacion();
         $cotizacion->empresa_id = $request->get('empresa');
         $cotizacion->cliente_id = $request->get('cliente');

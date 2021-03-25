@@ -114,7 +114,7 @@ class PagoController extends Controller
         //Registro de actividad
         $descripcion = "SE AGREGÓ EL PAGO DEL DOCUMENTO DE VENTA CON EL MONTO: ".  $venta->total ;
         $gestion = "DOCUMENTO DE VENTA";
-        crearRegistro($pago, $descripcion , $gestion);
+        crearRegistro($venta, $descripcion , $gestion);
 
         Session::flash('success','Pago creado.');
         return redirect()->route('ventas.documentos.pago.index',$request->get('id_documento'))->with('guardar', 'success');
@@ -147,8 +147,8 @@ class PagoController extends Controller
                 ->join('cotizacion_documento','cotizacion_documento.id','=','cotizacion_documento_pagos.documento_id')
                 ->join('cotizacion_documento_pago_cajas','cotizacion_documento_pago_cajas.id','=','cotizacion_documento_pago_detalle_cajas.caja_id')
                 ->join('pos_caja_chica','pos_caja_chica.id','=','cotizacion_documento_pago_cajas.caja_id')
-                ->join('empleados','empleados.id','=','pos_caja_chica.empleado_id')
-                ->join('personas','personas.id','=','empleados.persona_id')
+                ->join('colaboradores','colaboradores.id','=','pos_caja_chica.colaborador_id')
+                ->join('personas','personas.id','=','colaboradores.persona_id')
 
                 ->select('cotizacion_documento.id as id_documento', 'cotizacion_documento_pago_detalle_cajas.id',
                 'cotizacion_documento_pago_cajas.monto as caja_monto',
@@ -176,7 +176,6 @@ class PagoController extends Controller
 
     public function show($id)
     {
-
         $pago = Pivot_pago::where('caja_id',$id)->first();
         return view('ventas.documentos.pagos.show',[
             'pago' => $pago,

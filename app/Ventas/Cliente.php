@@ -77,14 +77,7 @@ class Cliente extends Model
         return distritos($this->distrito_id)->first()->nombre;
     }
 
-    public function tipoDocumento(): string
-    {
-        $documento = tipos_documento()->where('simbolo', $this->tipo_documento)->first();
-        if (is_null($documento))
-            return "-";
-        else
-            return $documento->parametro;
-    }
+
 
 
 }

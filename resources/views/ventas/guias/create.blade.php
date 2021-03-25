@@ -501,18 +501,9 @@
         });
 
         // Solo campos numericos
-        $('#ubigeo_llegada').on('input', function() {
+        $('#ubigeo_llegada , #ubigeo_partida , #dni_conductor').on('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
-        $('#ubigeo_partida').on('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-        $('#dni_conductor').on('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-
-
 
         $(document).ready(function() {
 

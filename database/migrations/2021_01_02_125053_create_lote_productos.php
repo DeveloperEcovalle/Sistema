@@ -16,10 +16,22 @@ class CreateLoteProductos extends Migration
         Schema::create('lote_productos', function (Blueprint $table) {
             $table->Increments('id');
             $table->string('codigo');
-            $table->unsignedInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
+            // $table->unsignedInteger('producto_id');
+            // $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
+            $table->unsignedInteger('orden_id')->unsigned();
+            
+            $table->unsignedInteger('producto_id')->unsigned();
+            $table->string('codigo_producto');     
+            $table->string('descripcion_producto');
+
             $table->unsignedDecimal('cantidad', 15,2);
-            $table->date('fecha_vencimiento');
+            $table->date('fecha_vencimiento'); //FECHA DE PRODUCCION
+            $table->date('fecha_entrega');
+            $table->mediumText('observacion')->nullable();
+
+            $table->char('confor_almacen')->nullable();
+            $table->char('confor_produccion')->nullable();
+
             $table->enum('estado',['0','1'])->default('1');
             $table->timestamps();
         });

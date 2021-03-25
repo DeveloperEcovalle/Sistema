@@ -1010,7 +1010,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle = new Detalle();
         $detalle->descripcion = "NOTA DE CRÉDITO";
         $detalle->simbolo = '07';
-        $detalle->parametro = 'FC';
+        $detalle->parametro = 'FF';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->editable = 1;
@@ -1019,7 +1019,7 @@ class TablaDetalleSeeder extends Seeder
         $detalle = new Detalle();
         $detalle->descripcion = "NOTA DE DÉBITO";
         $detalle->simbolo = '08';
-        $detalle->parametro = 'FD';
+        $detalle->parametro = 'FF';
         $detalle->estado = 'ACTIVO';
         $detalle->tabla_id = 21;
         $detalle->editable = 1;

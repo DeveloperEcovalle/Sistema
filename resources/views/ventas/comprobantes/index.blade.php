@@ -34,7 +34,7 @@
                                     <th class="text-center">EMPRESA</th>
                                     <th class="text-center">CLIENTE</th>
                                     <th class="text-center">MONTO</th>
-                                    <th class="text-center">COMPROBANTE</th>
+                                    <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,11 +129,18 @@ $(document).ready(function() {
                 data: null,
                 className: "text-center",
                 render: function(data) {
+
                     //Ruta Detalle
                     var url = '{{ Storage::url(":ruta") }}';
                     url = url.replace(':ruta', data.ruta_comprobante_archivo);
                     url = url.replace('public/', '');
-                    return "<a class='btn btn-danger btn-sm text-center' title='"+data.nombre_comprobante_archivo+"'download='"+data.nombre_comprobante_archivo+"' href="+url+"><i class='fa fa-file-pdf-o'></i></a>";
+
+                    return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+                    
+                        "<li><a class='dropdown-item' target='_blank'  title='"+data.nombre_comprobante_archivo+"'download='"+data.nombre_comprobante_archivo+"' href="+url+" ><b><i class='fa fa-download'></i> Descargar</a></b></li>" +
+                        "<li><a class='dropdown-item' onclick='notaDebito(" +data.id+ ")'  title='Generar nota de Debito'><b><i class='fa fa-file'></i> Nota de Debito</a></b></li>"
+                    
+                    "</ul></div>"
                 }
             }
 
@@ -157,11 +164,11 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 
 
-function eliminar(id) {
-
+function notaDebito(id) {
+ 
     Swal.fire({
-        title: 'Opción Eliminar',
-        text: "¿Seguro que desea guardar cambios?",
+        title: 'Opción Nota debito',
+        text: "¿Seguro que desea generar nota de debito ?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",
@@ -169,10 +176,9 @@ function eliminar(id) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            //Ruta Eliminar
-            var url_eliminar = '{{ route("ventas.documento.destroy", ":id")}}';
-            url_eliminar = url_eliminar.replace(':id', id);
-            $(location).attr('href', url_eliminar);
+            //Ruta debito
+            var url = "{{ route('ventas.notas.create', [ 'comprobante' =>'id', 'nota'=>  '1' ]) }}".replace('id', id);
+            $(location).attr('href', url);
 
         } else if (
             /* Read more about handling dismissals below */

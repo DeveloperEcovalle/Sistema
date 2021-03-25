@@ -137,9 +137,25 @@
                 {data: 'saldo_inicial', className:"text-center"},
                 {data: 'restante', className:"text-center"},
                 {data: 'moneda', className:"text-center"},
-                {data: 'estado', className:"text-center"},
-                // {data: 'creado', className:"text-center", name: 'almacenes.created_at'},
-                // {data: 'actualizado', className:"text-center", name: 'almacenes.updated_at'},
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data) {
+                        switch (data.estado) {
+                            case "APERTURADA":
+                                return "<span class='badge badge-primary' d-block>" + data.estado +
+                                    "</span>";
+                                break;
+                            case "CERRADA":
+                                return "<span class='badge badge-warning' d-block>" + data.estado +
+                                    "</span>";
+                                break;
+                            default:
+                                return "<span class='badge badge-danger' d-block>" + data.estado +
+                                    "</span>";
+                        }
+                    },
+                },
                 
                 {
                     data: null,
@@ -147,14 +163,28 @@
                     name:'cajas.saldo_inicial',
                     render: function(data) {
 
-                        if (data.estado != "CERRADA") {                        
-                            return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+                        if (data.estado != "CERRADA") {   
 
-                                "<li><a class='dropdown-item' onclick='obtenerData("+data.id+")' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
-                                "<li><a class='dropdown-item' onclick='eliminar("+data.id+")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
-                                "<li class='dropdown-divider'></li>" +
-                                "<li><a class='dropdown-item' onclick='cerrarCaja("+data.id+")' title='Eliminar'><b><i class='fa fa-minus-square'></i> Cerrar Caja</a></b></li>" +
-                            "</ul></div>"
+                            if (data.uso == '1') {
+                                
+                                return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+
+                                        "<li><a class='dropdown-item' onclick='obtenerData("+data.id+")' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                                        "<li><a class='dropdown-item' onclick='cerrarCaja("+data.id+")' title='Cerrar Caja'><b><i class='fa fa-minus-square'></i> Cerrar Caja</a></b></li>" +
+                                        "</ul></div>"
+                            }else{
+                                return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+
+                                    "<li><a class='dropdown-item' onclick='obtenerData("+data.id+")' title='Modificar' ><b><i class='fa fa-edit'></i> Modificar</a></b></li>" +
+                                    "<li><a class='dropdown-item' onclick='eliminar("+data.id+")' title='Eliminar'><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
+                                    "<li class='dropdown-divider'></li>" +
+                                    "<li><a class='dropdown-item' onclick='cerrarCaja("+data.id+")' title='Eliminar'><b><i class='fa fa-minus-square'></i> Cerrar Caja</a></b></li>" +
+                                    "</ul></div>"
+                            }
+
+
+                        
+                        
                         }else{
                             return '-'
                         }

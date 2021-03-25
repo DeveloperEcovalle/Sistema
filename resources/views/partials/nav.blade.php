@@ -79,6 +79,7 @@
             @can('crud_guia_remision')
             <li class="@yield('guias-remision-active')"><a href="{{route('ventas.guiasremision.index')}}">Guias de Remision</a></li>
             @endcan
+            <li class="@yield('notas-active')"><a href="{{route('ventas.notas')}}">Nota Credito / Debito</a></li>
         </ul>
     </li>
     @endif

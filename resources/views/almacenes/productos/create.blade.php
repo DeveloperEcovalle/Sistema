@@ -84,7 +84,7 @@
 
                                 <div class="form-group">
  
-                                    <label class="required">Nombre</label>
+                                    <label class="required">Descripción del Producto</label>
                                     <input type="text" id="nombre" name="nombre" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{old('nombre')}}" maxlength="191" onkeyup="return mayus(this)" required>
                                     @if ($errors->has('nombre'))
                                         <span class="invalid-feedback" role="alert">

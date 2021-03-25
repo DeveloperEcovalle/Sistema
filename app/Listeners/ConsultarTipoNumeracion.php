@@ -14,8 +14,7 @@ class ConsultarTipoNumeracion
     public function handle($event)
     {
         
-        $numeracion = Numeracion::where('empresa_id',$event->documento->empresa->id)->where('estado','ACTIVO')->where('tipo_comprobante',$event->documento->tipo_venta)->first();
-
+        $numeracion = Numeracion::where('empresa_id',$event->documento->empresa_id)->where('estado','ACTIVO')->where('tipo_comprobante',$event->documento->tipo_venta)->first();
         if ($numeracion) {
 
             $resultado = ($numeracion)->exists();
@@ -31,7 +30,6 @@ class ConsultarTipoNumeracion
 
     public function obtenerCorrelativo($documento, $numeracion)
     {
-     
         $serie_comprobantes = DB::table('empresa_numeracion_facturaciones')
                             ->join('empresas','empresas.id','=','empresa_numeracion_facturaciones.empresa_id')
                             ->join('cotizacion_documento','cotizacion_documento.empresa_id','=','empresas.id')

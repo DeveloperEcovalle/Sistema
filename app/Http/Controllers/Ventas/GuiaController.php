@@ -67,7 +67,7 @@ class GuiaController extends Controller
     }
     public function tiendaDireccion($id)
     {
-        $tienda = Tienda::findOrFail($id);        
+        $tienda = Tienda::findOrFail($id);    
         return $tienda;
     }
 
@@ -81,7 +81,7 @@ class GuiaController extends Controller
                 "numero" =>  ($guia->documento->serie && $guia->documento->correlativo) ? $guia->documento->serie.'-'.$guia->documento->correlativo : '-',
                 'tipo_venta' => ($guia->documento->sunat == '1') ? $guia->documento->descripcionTipo() : $guia->documento->nombreTipo()  ,
                 'tipo_pago' => $guia->documento->tipo_pago,
-                'cliente' => $guia->documento->cliente->tipo_documento.': '.$guia->documento->cliente->documento.' - '.$guia->documento->cliente->nombre,
+                'cliente' => $guia->documento->tipo_documento_cliente.': '.$guia->documento->documento_cliente.' - '.$guia->documento->cliente,
                 'fecha_documento' =>  Carbon::parse($guia->documento->fecha_documento)->format( 'd/m/Y'),
                 'estado' => $guia->estado,
                 "serie_guia" => $guia->serie.'-'.$guia->correlativo,
@@ -124,10 +124,21 @@ class GuiaController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
         $guia = Guia::where('documento_id',$request->get('documento_id'))->get();
+
         if (count($guia) == 0) {
             $guia = new Guia();
             $guia->documento_id = $request->get('documento_id');
+            
+            $tienda = Tienda::findOrFail($request->get('tienda_id'));
             $guia->tienda_id = $request->get('tienda_id');
+
+            $guia->ruc_transporte_oficina = $tienda->ruc_transporte_oficina;
+            $guia->nombre_transporte_oficina = $tienda->nombre_transporte_oficina;
+
+            $guia->ruc_transporte_domicilio = $tienda->ruc_transporte_domicilio;
+            $guia->nombre_transporte_domicilio = $tienda->nombre_transporte_domicilio;
+            $guia->direccion_llegada = $tienda->direccion;
+
             $guia->cantidad_productos = $request->get('cantidad_productos');
             $guia->peso_productos = $request->get('peso_productos');
             $guia->observacion = $request->get('observacion');
@@ -165,9 +176,9 @@ class GuiaController extends Controller
         for($i = 0; $i < count($detalles); $i++){
 
             $arrayProductos[] = array(
-                "codigo" => $detalles[$i]->lote->producto->codigo,
-                "unidad" => $detalles[$i]->lote->producto->getMedida(),
-                "descripcion"=> $detalles[$i]->lote->producto->nombre.' - '.$detalles[$i]->lote->codigo,
+                "codigo" => $detalles[$i]->codigo_producto,
+                "unidad" => $detalles[$i]->unidad,
+                "descripcion"=> $detalles[$i]->nombre_producto.' - '.$detalles[$i]->codigo_lote,
                 "cantidad" => $detalles[$i]->cantidad,
                 "codProdSunat" => '10',
             );
@@ -182,8 +193,8 @@ class GuiaController extends Controller
             //CREAR TRANSPORTISTA (OFICINA)
             $Transportista = array(  
                 "tipoDoc"=> "6",
-                "numDoc"=> $guia->tienda->ruc_transporte_oficina,
-                "rznSocial"=> $guia->tienda->nombre_transporte_oficina,
+                "numDoc"=> $guia->ruc_transporte_oficina,
+                "rznSocial"=> $guia->nombre_transporte_oficina,
                 "placa"=> $guia->placa_vehiculo,
                 "choferTipoDoc"=> "1",
                 "choferDoc"=> $guia->dni_conductor
@@ -191,8 +202,8 @@ class GuiaController extends Controller
         }else{
             $Transportista = array(  
                 "tipoDoc"=> "6",
-                "numDoc"=> $guia->tienda->ruc_transporte_domicilio,
-                "rznSocial"=> $guia->tienda->nombre_transporte_domicilio,
+                "numDoc"=> $guia->ruc_transporte_domicilio,
+                "rznSocial"=> $guia->nombre_transporte_domicilio,
                 "placa"=> $guia->placa_vehiculo,
                 "choferTipoDoc"=> "1",
                 "choferDoc"=> $guia->dni_conductor
@@ -223,19 +234,19 @@ class GuiaController extends Controller
                     "fechaEmision" => self::obtenerFecha($guia),
 
                     "company" => array(  
-                        "ruc" => $guia->documento->empresa->ruc,
-                        "razonSocial" => $guia->documento->empresa->razon_social,
+                        "ruc" => $guia->documento->ruc_empresa,
+                        "razonSocial" => $guia->documento->empresa,
                         "address" => array(
-                            "direccion" => $guia->documento->empresa->direccion_fiscal,
+                            "direccion" => $guia->documento->direccion_fiscal_empresa,
                         )),
 
 
                     "destinatario" => array(  
-                        "tipoDoc" =>  $guia->documento->cliente->tipoDocumento(),
-                        "numDoc" => $guia->documento->cliente->documento,
-                        "rznSocial" => $guia->documento->cliente->nombre,
+                        "tipoDoc" =>  $guia->documento->tipoDocumentoCliente(),
+                        "numDoc" => $guia->documento->documento_cliente,
+                        "rznSocial" => $guia->documento->cliente,
                         "address" => array(
-                            "direccion" => $guia->documento->cliente->direccion,
+                            "direccion" => $guia->documento->direccion_cliente,
                         )
                     ),
 
@@ -253,11 +264,11 @@ class GuiaController extends Controller
                         "numBultos" => $guia->cantidad_productos,
                         "llegada" => array(
                             "ubigueo" =>  $guia->ubigeo_llegada,
-                            "direccion" => self::limitarDireccion($guia->tienda->direccion,50,"..."),
+                            "direccion" => self::limitarDireccion($guia->direccion_llegada,50,"..."),
                         ),
                         "partida" => array(
                             "ubigueo" => $guia->ubigeo_partida,
-                            "direccion" => self::limitarDireccion($guia->documento->empresa->direccion_fiscal,50,"..."),
+                            "direccion" => self::limitarDireccion($guia->documento->direccion_fiscal_empresa,50,"..."),
                         ),
                         "transportista"=> self::condicionReparto($guia)
                     ),
@@ -309,19 +320,19 @@ class GuiaController extends Controller
                             "fechaEmision" => self::obtenerFecha($guia),
 
                             "company" => array(  
-                                "ruc" => $guia->documento->empresa->ruc,
-                                "razonSocial" => $guia->documento->empresa->razon_social,
+                                "ruc" => $guia->documento->ruc_empresa,
+                                "razonSocial" => $guia->documento->empresa,
                                 "address" => array(
-                                    "direccion" => $guia->documento->empresa->direccion_fiscal,
+                                    "direccion" => $guia->documento->direccion_fiscal_empresa,
                                 )),
 
 
                             "destinatario" => array(  
-                                "tipoDoc" =>  $guia->documento->cliente->tipoDocumento(),
-                                "numDoc" => $guia->documento->cliente->documento,
-                                "rznSocial" => $guia->documento->cliente->nombre,
+                                "tipoDoc" =>  $guia->documento->tipoDocumentoCliente(),
+                                "numDoc" => $guia->documento->documento_cliente,
+                                "rznSocial" => $guia->documento->cliente,
                                 "address" => array(
-                                    "direccion" => $guia->documento->cliente->direccion,
+                                    "direccion" => $guia->documento->direccion_cliente,
                                 )
                             ),
 
@@ -339,11 +350,11 @@ class GuiaController extends Controller
                                 "numBultos" => $guia->cantidad_productos,
                                 "llegada" => array(
                                     "ubigueo" =>  $guia->ubigeo_llegada,
-                                    "direccion" => self::limitarDireccion($guia->tienda->direccion,50,"..."),
+                                    "direccion" => self::limitarDireccion($guia->direccion_llegada,50,"..."),
                                 ),
                                 "partida" => array(
                                     "ubigueo" => $guia->ubigeo_partida,
-                                    "direccion" => self::limitarDireccion($guia->documento->empresa->direccion_fiscal,50,"..."),
+                                    "direccion" => self::limitarDireccion($guia->documento->direccion_fiscal_empresa,50,"..."),
                                 ),
                                 "transportista"=> self::condicionReparto($guia)
                             ),

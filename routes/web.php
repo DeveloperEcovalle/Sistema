@@ -348,14 +348,7 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('reporte/{id}','Ventas\DocumentoController@report')->name('ventas.documento.reporte');
     Route::get('tipoPago/{id}','Ventas\DocumentoController@TypePay')->name('ventas.documento.tipo_pago.existente');
     Route::get('comprobante/{id}','Ventas\DocumentoController@voucher')->name('ventas.documento.comprobante');
-    Route::get('sunat/comprobante/{id}','Ventas\DocumentoController@sunat')->name('ventas.documento.sunat');
     
-    //Comprobantes Electronicos
-    Route::get('index/comprobantes', 'Ventas\DocumentoController@indexVouchers')->name('ventas.comprobantes')->middleware('permission:crud_comprobante');
-    Route::get('getVouchers','Ventas\DocumentoController@getVouchers')->name('ventas.getVouchers');
-    Route::post('vouchersAvaible','Ventas\DocumentoController@vouchersAvaible')->name('ventas.vouchersAvaible');
-    Route::post('customers','Ventas\DocumentoController@customers')->name('ventas.customers');
-    Route::get('getLot/{id}','Ventas\DocumentoController@getLot')->name('ventas.getLot');
 
     //Pagos
     Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
@@ -365,6 +358,9 @@ Route::prefix('ventas/documentos')->group(function(){
     Route::get('pagos/destroy/{id}', 'Ventas\Documentos\PagoController@destroy')->name('ventas.documentos.pago.destroy');
     Route::get('pagos/show/{id}', 'Ventas\Documentos\PagoController@show')->name('ventas.documentos.pago.show');
     // Route::get('getBox/document/{id}', 'Compras\Documentos\PagoController@getBox')->name('compras.documentos.pago.getBox');
+    Route::post('customers','Ventas\DocumentoController@customers')->name('ventas.customers');
+    Route::get('getLot/{id}','Ventas\DocumentoController@getLot')->name('ventas.getLot');
+    Route::post('vouchersAvaible','Ventas\DocumentoController@vouchersAvaible')->name('ventas.vouchersAvaible');
 
     //Pago Transferencia
     Route::get('transferencia/pagos/index/{id}', 'Ventas\Documentos\TransferenciaController@index')->name('ventas.documentos.transferencia.pago.index');
@@ -376,8 +372,14 @@ Route::prefix('ventas/documentos')->group(function(){
 
 });
 
-//GUIAS DE REMISION
+//COMPROBANTES ELECTRONICOS
+Route::prefix('comprobantes/electronicos')->group(function(){
+    Route::get('/', 'Ventas\Electronico\ComprobanteController@index')->name('ventas.comprobantes');
+    Route::get('getVouchers','Ventas\Electronico\ComprobanteController@getVouchers')->name('ventas.getVouchers');
+    Route::get('sunat/{id}','Ventas\Electronico\ComprobanteController@sunat')->name('ventas.documento.sunat');
+});
 
+//GUIAS DE REMISION
 Route::prefix('guiasremision/')->group(function(){
 
     Route::get('index', 'Ventas\GuiaController@index')->name('ventas.guiasremision.index')->middleware('permission:crud_guia_remision');
@@ -396,6 +398,15 @@ Route::prefix('guiasremision/')->group(function(){
 
 });
 
+//NOTAS DE CREDITO / DEBITO
+Route::prefix('notas/electronicos')->group(function(){
+    Route::get('/', 'Ventas\Electronico\NotaController@index')->name('ventas.notas');
+    Route::get('create/', 'Ventas\Electronico\NotaController@create')->name('ventas.notas.create');
+    Route::post('store', 'Ventas\Electronico\NotaController@store')->name('ventas.notas.store');
+    Route::get('getNotes','Ventas\Electronico\NotaController@getNotes')->name('ventas.getNotes');
+    Route::get('show/{id}','Ventas\Electronico\NotaController@show')->name('ventas.notas.show');
+    Route::get('sunat/{id}','Ventas\Electronico\NotaController@sunat')->name('ventas.notas.sunat');
+});
 
 // Talonarios
 Route::prefix('mantenimiento/talonarios')->group(function() {
@@ -516,13 +527,17 @@ Route::prefix('produccion/ordenes')->group(function() {
     Route::get('create/{id}','Produccion\OrdenController@create')->name('produccion.orden.create');
     Route::post('store','Produccion\OrdenController@store')->name('produccion.orden.store');
     Route::get('productoDetalle/{id}','Produccion\OrdenController@getArticles')->name('produccion.orden.articulos');
-    // Route::post('store', 'Produccion\Programacion_produccionController@store')->name('produccion.programacion_produccion.store');
-    // Route::get('edit/{id}','Produccion\Programacion_produccionController@edit')->name('produccion.programacion_produccion.edit');
     Route::get('show/{id}','Produccion\OrdenController@show')->name('produccion.orden.show');
-    // Route::put('update/{id}', 'Produccion\Programacion_produccionController@update')->name('produccion.programacion_produccion.update');
     Route::post('destroy', 'Produccion\OrdenController@destroy')->name('produccion.orden.destroy');
-    // Route::get('reporte/{id}','Produccion\Programacion_produccionController@report')->name('produccion.programacion_produccion.reporte');
-    // Route::get('produccion/{id}','Produccion\Programacion_produccionController@production')->name('produccion.programacion_produccion.produccion');
+    Route::get('getOrden/{id}', 'Produccion\OrdenController@getOrden')->name('produccion.getOrden');
+
+});
+
+Route::prefix('produccion/confirmacion')->group(function() {
+    Route::post('storeLote','Produccion\LoteController@store')->name('produccion.lote.store');
+    Route::get('edit/{id}', 'Produccion\LoteController@edit')->name('produccion.lote.edit');
+    Route::post('updateLote','Produccion\LoteController@update')->name('produccion.lote.update');
+
 });
 
 // Roles

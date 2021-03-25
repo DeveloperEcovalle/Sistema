@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Produccion\Programacion_produccion;
 use App\Almacenes\Producto;
+use App\Almacenes\ProductoDetalle;
+
 use DataTables;
 use Carbon\Carbon;
 use Session;
@@ -40,8 +42,10 @@ class Programacion_produccionController extends Controller
     public function create()
     {
         $fecha_hoy = Carbon::now()->toDateString();
-        $productos = Producto::where('estado','ACTIVO')->get();
+        // $productos = Producto::where('estado','ACTIVO')->get();
 
+
+        $productos = ProductoDetalle::where('estado','ACTIVO')->distinct()->get(['producto_id']);
         return view('produccion.programacion_produccion.create',[
             'productos' => $productos, 
             'fecha_hoy' => $fecha_hoy,
@@ -73,6 +77,7 @@ class Programacion_produccionController extends Controller
     }
     public function store(Request $request){
     
+
         $data = $request->all();
         $rules = [
             'producto_id' => 'required',

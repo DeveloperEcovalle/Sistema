@@ -16,12 +16,19 @@ class CreateOrdenProduccion extends Migration
         Schema::create('orden_produccion', function (Blueprint $table) {
             $table->Increments('id');
             $table->unsignedInteger('programacion_id')->unsigned();
-            $table->foreign('programacion_id')
-                  ->references('id')->on('programacion_produccion')
-                  ->onDelete('cascade');
+            
+            $table->unsignedInteger('producto_id')->unsigned();
+            $table->string('codigo_producto');     
+            $table->string('descripcion_producto');
+            $table->date('fecha_produccion');  
+               
+            $table->unsignedDecimal('cantidad', 15,2);
+
             $table->date('fecha_orden');
             $table->mediumText('observacion')->nullable();
             $table->enum('estado',['PRODUCIDO','ANULADO'])->default('PRODUCIDO');
+            $table->enum('conformidad',['0','1', '2'])->default('0');
+            $table->enum('editable',['0','1', '2'])->default('0');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ class Caja extends Model
     'saldo_inicial',
     'colaborador_id',
     'moneda',
+    'uso'
     ];
     public $timestamps = true;
 

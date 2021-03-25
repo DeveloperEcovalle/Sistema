@@ -52,7 +52,7 @@
                                         <select name="producto_id" id="producto_id" class="select2_form form-control {{ $errors->has('producto_id') ? ' is-invalid' : '' }}" required>
                                             <option></option>
                                             @foreach ($productos as $producto)
-                                                <option {{ old('producto_id') == $producto->id ? 'selected' : '' }} value="{{$producto->id}}">{{$producto->nombre}}</option>
+                                                <option {{ old('producto_id') == $producto->producto_id ? 'selected' : '' }} value="{{$producto->producto_id}}">{{$producto->producto->codigo.' - '.$producto->producto->nombre}}</option>
                                             @endforeach
                                         </select>
                                     </div>

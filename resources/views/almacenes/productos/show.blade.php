@@ -73,7 +73,7 @@
 
                             <div class="form-group">
                                
-                               <label> <strong>NOMBRE</strong> </label>
+                               <label> <strong>DESCRIPCION DEL PRODUCTO</strong> </label>
                                <p>{{ $producto->nombre }}</p>
                                
                            </div>

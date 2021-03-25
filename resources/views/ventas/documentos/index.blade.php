@@ -152,8 +152,6 @@ $(document).ready(function() {
                 className: "text-left"
             },
 
-
-
             {
                 data: 'total',
                 className: "text-center"

@@ -281,7 +281,7 @@
                         <div class="form-group row">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="required">Serie:</label>
-                                <input type="text" name="serie_comprobante" id="serie_comprobante" class="form-control" readonly>
+                                <input type="text" name="serie_comprobante" id="serie_comprobante" class="form-control" readonly required>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="required">Número a Iniciar :</label>
@@ -818,7 +818,8 @@ $(document).ready(function(){
                 url: url,
                 type:'get',
                 success:  function (response) {
-                    $('#serie_comprobante').val(response);
+                    console.log(response)
+                    $('#serie_comprobante').val($.trim(response));
                 },              
             });
         });
@@ -948,16 +949,6 @@ $(document).on('click', '#borrar_numeracion', function(event) {
 
 
 });
-
-
-
-
-
-
-
-
-
-
 
 
 

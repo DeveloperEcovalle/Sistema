@@ -807,7 +807,6 @@
         }
 
         function conIgv(subtotal) {
-
             var calcularIgv = 18/100
             var base = subtotal / (1 + calcularIgv)
             var nuevo_igv = subtotal - base;
@@ -815,7 +814,6 @@
             $('#subtotal').text(base.toFixed(2))
             $('#igv_monto').text(nuevo_igv.toFixed(2))
             $('#total').text(subtotal.toFixed(2))
-
         }
 
 

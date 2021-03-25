@@ -8,8 +8,18 @@ class Documento extends Model
 {
     protected $table = 'cotizacion_documento';
     protected $fillable = [
+        //DATOS DE LA EMPRESA
+        'ruc_empresa',
+        'empresa',
+        'direccion_fiscal_empresa',
         'empresa_id',
+        //CLIENTE
+        'tipo_documento_cliente',
+        'documento_cliente',
+        'direccion_cliente',
+        'cliente',
         'cliente_id',
+    
         'moneda',
         'fecha_documento',
         'fecha_atencion',
@@ -29,20 +39,24 @@ class Documento extends Model
         'nombre_comprobante_archivo'
     ];
 
-    public function empresa()
-    {
-        return $this->belongsTo('App\Mantenimiento\Empresa\Empresa', 'empresa_id');
-    }
 
-    public function cliente()
-    {
-        return $this->belongsTo('App\Ventas\Cliente', 'cliente_id');
-    }
 
     public function detalles()
     {
         return $this->hasMany('App\Ventas\CotizacionDetalle');
     }
+
+
+    public function empresaEntidad()
+    {
+        return $this->belongsTo('App\Mantenimiento\Empresa\Empresa', 'empresa_id');
+    }
+
+    public function clienteEntidad()
+    {
+        return $this->belongsTo('App\Ventas\Cliente', 'cliente_id');
+    }
+    
 
     public function user()
     {
@@ -92,5 +106,15 @@ class Documento extends Model
             return "-";
         else
             return $moneda->parametro;
+    }
+
+
+    public function tipoDocumentoCliente(): string
+    {
+        $documento = tipos_documento()->where('simbolo', $this->tipo_documento_cliente)->first();
+        if (is_null($documento))
+            return "-";
+        else
+            return $documento->parametro;
     }
 }

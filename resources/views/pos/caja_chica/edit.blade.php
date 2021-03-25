@@ -18,7 +18,7 @@
                    <input type="hidden" name="empleado_id_2_editar" id="empleado_id_2_editar" value="{{old('empleado_id_2_editar')}}">
                    
                    <div class="form-group">
-                        <label class="required">Empleado:</label> 
+                        <label class="required">Colaborador:</label> 
                         <select class="form-control  {{ $errors->has('empleado_id_editar') ? ' is-invalid' : '' }}" style="text-transform: uppercase; width:100%" value="{{old('empleado_id_editar')}}" name="empleado_id_editar" id="empleado_id_editar"  required>
                             <option></option>
                         </select>

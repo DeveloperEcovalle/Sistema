@@ -542,6 +542,7 @@ if (!function_exists('eliminarRegistro')) {
 
 /////////////////////////////////////////////////////////////////////////////
 // FACTURACION ELECTRONICA
+//LOGUEO
 // GENERAR TOKEN 
 if (!function_exists('obtenerTokenapi')) {
     function obtenerTokenapi()
@@ -561,8 +562,11 @@ if (!function_exists('obtenerTokenapi')) {
         }
     }
 }
-// AGREGAR EMPRESA
 
+////////////////////////////////////////////////
+
+//EMPRESA
+// AGREGAR EMPRESA
 if (!function_exists('agregarEmpresaapi')) {
     function agregarEmpresaapi($empresa)
     {
@@ -589,9 +593,7 @@ if (!function_exists('agregarEmpresaapi')) {
         }
     }
 }
-
 // BORRAR EMPRESA
-
 if (!function_exists('borrarEmpresaapi')) {
     function borrarEmpresaapi($id)
     {
@@ -609,9 +611,7 @@ if (!function_exists('borrarEmpresaapi')) {
         return $estado;
     }
 }
-
 // MODIFICAR EMPRESA 
-
 if (!function_exists('modificarEmpresaapi')) {
     function modificarEmpresaapi($empresa,$id)
     {
@@ -638,6 +638,8 @@ if (!function_exists('modificarEmpresaapi')) {
         }
     }
 }
+
+////////////////////////////////////////////////
 
 //ENVIAR FACTURA O BOLETA
 //GENERAR PDF
@@ -670,7 +672,6 @@ if (!function_exists('generarComprobanteapi')) {
         }
     }
 }
-
 //GENERAR XML
 if (!function_exists('generarXmlapi')) {
     function generarXmlapi($comprobante)
@@ -703,7 +704,6 @@ if (!function_exists('generarXmlapi')) {
         }
     }
 }
-
 //ENVIAR A  SUNAT
 if (!function_exists('enviarComprobanteapi')) {
     function enviarComprobanteapi($comprobante)
@@ -765,7 +765,6 @@ if (!function_exists('pdfGuiaapi')) {
         }
     }
 }
-
 //ENVIAR A  SUNAT
 if (!function_exists('enviarGuiaapi')) {
     function enviarGuiaapi($guia)
@@ -792,6 +791,63 @@ if (!function_exists('enviarGuiaapi')) {
         }
     }
 }
+
+////////////////////////////////////////////////
+//NOTA DE CREDITO Y DEBITO
+//GENERAR PDF DE NOTA
+if (!function_exists('pdfNotaapi')) {
+    function pdfNotaapi($nota)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/note/pdf";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $nota
+        ]); 
+
+        $estado = $response->getStatusCode();
+        
+        if ($estado=='200'){
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
+//ENVIAR NOTA A SUNAT
+if (!function_exists('enviarNotaapi')) {
+    function enviarNotaapi($nota)
+    {
+        $url = "https://facturacion.apisperu.com/api/v1/note/send";
+        $client = new \GuzzleHttp\Client();
+        $token = obtenerTokenapi();
+        $response = $client->post($url, [
+            'headers' => [
+                        'Content-Type' => 'application/json', 
+                        'Accept' => 'application/json',
+                        'Authorization' => "Bearer {$token}"
+                    ],
+            'body'    => $nota
+        ]); 
+
+        $estado = $response->getStatusCode();
+        
+        if ($estado=='200'){
+            $resultado = $response->getBody()->getContents();  
+            json_decode($resultado);
+            return $resultado; 
+            
+        }
+    }
+}
+
 
 
 

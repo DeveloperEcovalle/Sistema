@@ -20,7 +20,15 @@ class CreateGuiasRemisionTable extends Migration
             $table->unsignedDecimal('cantidad_productos', 15, 2);
             $table->unsignedDecimal('peso_productos', 15, 2);
             $table->unsignedInteger('tienda_id');
-            $table->foreign('tienda_id')->references('id')->on('cliente_tiendas')->onDelete('cascade');
+            
+            $table->string('ruc_transporte_oficina')->nullable();
+            $table->string('nombre_transporte_oficina')->nullable();
+
+            $table->string('ruc_transporte_domicilio')->nullable();
+            $table->string('nombre_transporte_domicilio')->nullable();
+            // $table->foreign('tienda_id')->references('id')->on('cliente_tiendas')->onDelete('cascade');
+            $table->string('direccion_llegada')->nullable();
+
             $table->mediumText('observacion')->nullable();
             $table->enum('estado',['REGISTRADO','ACEPTADO','NULO'])->default('REGISTRADO');
             
