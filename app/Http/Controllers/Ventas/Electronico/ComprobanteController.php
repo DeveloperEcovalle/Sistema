@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Ventas\Electronico;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\ventas\Documento\Documento;
-use App\ventas\Documento\Detalle;
+use App\Ventas\Documento\Documento;
+use App\Ventas\Documento\Detalle;
 use App\Events\DocumentoNumeracion;
 
 use Session;
