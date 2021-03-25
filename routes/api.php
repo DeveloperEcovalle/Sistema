@@ -193,7 +193,10 @@ Route::get('clientes/venta/parametros',function (Request $request)
                     'cliente_tiendas.tipo_negocio',
                     'clientes.facebook',
                     'clientes.instagram',
-                    'clientes.web'
+                    'clientes.web',
+                    'clientes.tabladetalles_id as tipoCliente',
+                    'clientes.departamento_id as departamentoCliente',
+                    'clientes.zona'
                 );
 
         $clientes = $clientes->get();
