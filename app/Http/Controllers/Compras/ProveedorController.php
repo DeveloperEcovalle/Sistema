@@ -120,8 +120,8 @@ class ProveedorController extends Controller
             'direccion' => 'required',
             'zona' => 'required',
 
-            'telefono' => 'required|numeric',
-            'celular' => 'nullable|numeric',
+            'telefono' => 'required',
+            'celular' => 'nullable',
             'web' => 'nullable',
             'facebook' => 'nullable',
             'instagram' => 'nullable',
@@ -129,8 +129,8 @@ class ProveedorController extends Controller
 
             'contacto' => 'nullable',
             'correo_contacto' => 'nullable',
-            'telefono_contacto' => 'nullable|numeric',
-            'celular_contacto' => 'nullable|numeric',
+            'telefono_contacto' => 'nullable',
+            'celular_contacto' => 'nullable',
 
             'ruc_transporte' => 'required|numeric',
             'transporte' => 'required',
@@ -140,8 +140,8 @@ class ProveedorController extends Controller
             'estado' => 'required',
 
             'calidad' => 'nullable',
-            'telefono_calidad' => 'nullable|numeric',
-            'celular_calidad' => 'nullable|numeric',
+            'telefono_calidad' => 'nullable',
+            'celular_calidad' => 'nullable',
             'correo_calidad' => 'nullable|email',
 
         ];
@@ -153,12 +153,12 @@ class ProveedorController extends Controller
 
             'correo.required' => 'El campo Correo es obligatorio.',
             'correo.email' => 'El campo Correo debe ser email.',
-            'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
-            'telefono.required' => 'El campo Teléfono es obligatorio.',
+            // 'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
+            // 'telefono.required' => 'El campo Teléfono es obligatorio.',
 
-            'celular.numeric' => 'El campo Celular debe ser numérico.',
-            'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
-            'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            // 'celular.numeric' => 'El campo Celular debe ser numérico.',
+            // 'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
+            // 'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
 
             'ruc_tranporte.numeric' => 'El campo Ruc debe ser numérico.',
             'ruc_tranporte.required' => 'El campo Ruc es obligatorio.',
@@ -167,8 +167,8 @@ class ProveedorController extends Controller
 
             'estado.required' => 'El campo Estado es obligatorio.',
                         
-            'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
-            'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
+            // 'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
+            // 'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
             'correo_calidad.email' => 'El campo Correo debe ser email.',
             
 
@@ -354,8 +354,8 @@ class ProveedorController extends Controller
             'direccion' => 'required',
             'zona' => 'required',
 
-            'telefono' => 'required|numeric',
-            'celular' => 'nullable|numeric',
+            'telefono' => 'required',
+            'celular' => 'nullable',
             'web' => 'nullable',
             'facebook' => 'nullable',
             'instagram' => 'nullable',
@@ -364,8 +364,8 @@ class ProveedorController extends Controller
 
             'contacto' => 'nullable',
             'correo_contacto' => 'nullable',
-            'telefono_contacto' => 'nullable|numeric',
-            'celular_contacto' => 'nullable|numeric',
+            'telefono_contacto' => 'nullable',
+            'celular_contacto' => 'nullable',
 
             'ruc_transporte' => 'required|numeric',
             'transporte' => 'required',
@@ -375,8 +375,8 @@ class ProveedorController extends Controller
             'estado' => 'required',
 
             'calidad' => 'nullable',
-            'telefono_calidad' => 'nullable|numeric',
-            'celular_calidad' => 'nullable|numeric',
+            'telefono_calidad' => 'nullable',
+            'celular_calidad' => 'nullable',
             'correo_calidad' => 'nullable|email',
 
         ];
@@ -388,16 +388,16 @@ class ProveedorController extends Controller
 
             'correo.required' => 'El campo Correo es obligatorio.',
             'correo.email' => 'El campo Correo debe ser email.',
-            'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
+            // 'telefono.numeric' => 'El campo Teléfono debe ser numérico.',
             'telefono.required' => 'El campo Teléfono es obligatorio.',
 
-            'celular.numeric' => 'El campo Celular debe ser numérico.',
-            'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
-            'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
+            // 'celular.numeric' => 'El campo Celular debe ser numérico.',
+            // 'telefono_contacto.numeric' => 'El campo Teléfono debe ser numérico.',
+            // 'celular_contacto.numeric' => 'El campo Celular debe ser numérico.',
 
             'estado.required' => 'El campo Estado es obligatorio.',
-            'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
-            'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
+            // 'telefono_calidad.numeric' => 'El campo Teléfono debe ser numérico.',
+            // 'celular_calidad.numeric' => 'El campo Celular debe ser numérico.',
             'correo_calidad.email' => 'El campo Correo debe ser email.',
             
 

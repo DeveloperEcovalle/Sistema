@@ -818,30 +818,6 @@ $('#dni').on('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
 
-$('#telefono').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#celular').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#telefono_contacto').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#celular_contacto').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#telefono_calidad').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-$('#celular_calidad').on('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
 //Old tipo de Documento
 @if(!old('tipo_documento'))
 $('#tipo_documento_ruc').prop("checked", true)

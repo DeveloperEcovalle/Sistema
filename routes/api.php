@@ -149,8 +149,8 @@ Route::get('productos/terminados',function ()
 
 // CLIENTES PARAMETROS PARAMETROS
 // [
-//     TIPO_CLIENTE => id,
-//     TIPO => FISICA / VIRTUAL,
+//     tipoCliente => id (tabladetalles_id),
+//     tipo => FISICA / VIRTUAL, (cadena)
 //     NEGOCIO => MARKET / BIOTIENDA
 //     COD_PRODUCTO => 204820
 //     ZONA => CENTRO,
