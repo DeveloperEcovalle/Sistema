@@ -80,19 +80,24 @@ class OrdenController extends Controller
     }
 
     public function store(Request $request)
-    {
-       
+    {  
         $data = $request->all();
         $rules = [
             'programacion_aprobada_id' => 'required',
             'fecha_produccion' => 'required',
-            'cantidad_programada'=>'required',
+            'cantidad_programada'=> 'required',
+            'version' => 'required',
+            'codigo' => 'required',
+            'tiempo_proceso' => 'required',
         ];
 
         $message = [
             'required.programacion_aprobada_id'=>'El campo Producto es obligatorio',
             'required.fecha_produccion'=>'El campo Fecha de Producción es obligatorio',
             'required.cantidad_programada'=>'El campo Cantidad Producir es obligatorio',
+            'required.version'=>'El campo Version es obligatorio',
+            'required.codigo'=>'El campo Codigo es obligatorio',
+            'required.tiempo_proceso'=>'El campo Tiempo de Proceso es obligatorio',
         ];
 
         Validator::make($data, $rules, $message)->validate();
@@ -111,42 +116,117 @@ class OrdenController extends Controller
         $orden->fecha_produccion = $programacion->fecha_produccion;
         $orden->cantidad = $programacion->cantidad_programada;
         //DATOS DE LA ORDEN 
+        $orden->version = $request->get('version');
+        $orden->codigo = $request->get('codigo');
+        $orden->tiempo_proceso = $request->get('tiempo_proceso');
         $orden->fecha_orden = Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
         $orden->save();
 
-        //Llenado de detalles
-        $detalleJSON = $request->get('productos_detalle');       
-        $detalletabla = json_decode($detalleJSON);
-        foreach ($detalletabla as $detalle) {
-            $operacion = self::ObtenerOperacion();
-            if($operacion != null){
-                $num = $operacion->operacion + 1; 
-            }else{
-                $num = 1000;
-            }
-            
-            $detalleProducto = OrdenDetalle::create([
+        //BUSCAR TODOS LOS DETALLES DE LA ORDEN DE PRODUCCION 
+        $productoDetalles = ProductoDetalle::where('producto_id',$programacion->producto_id)->where('estado','ACTIVO')->get();
+        //AGREGAMOS TODOS LOS ARTICULOS DE LA ORDEN AL DETALLE
+        foreach ($productoDetalles as $productoDetalle) { 
+            OrdenDetalle::create([
                 'orden_id' => $orden->id,
-                'articulo_id' => $detalle->id, //PRODUCTO DETALLE ID
-                'cantidad_solicitada' => $detalle->cantidad_solicitada,
-                'cantidad_entregada' => $detalle->cantidad_entregada,
-                'almacen_correcto_id' => ($detalle->cantidad_devuelta_correcta_almacen) ? $detalle->cantidad_devuelta_correcta_almacen : null ,
-                'cantidad_devuelta_correcta' => ($detalle->cantidad_devuelta_correcta_cantidad) ? $detalle->cantidad_devuelta_correcta_cantidad : null ,
-                'almacen_incorrecto_id' => ($detalle->cantidad_devuelta_incorrecta_almacen) ? $detalle->cantidad_devuelta_incorrecta_almacen : null ,
-                'cantidad_devuelta_incorrecta' => ($detalle->cantidad_devuelta_incorrecta_cantidad) ? $detalle->cantidad_devuelta_incorrecta_cantidad : null ,
-                'operacion' => $num,
-                'observacion_correcta' => $detalle->observacion_correcta,
-                'observacion_incorrecta' => $detalle->observacion_incorrecta,
+                'articulo_id' => $productoDetalle->articulo_id,
+                'cantidad_produccion' => $programacion->cantidad_programada * $productoDetalle->cantidad,
+                'cantidad_produccion_completa' => $programacion->cantidad_programada * $productoDetalle->cantidad.' '.$productoDetalle->articulo->getMedida(),
+                'cantidad_excedida' => $programacion->cantidad_programada * $productoDetalle->cantidad,
             ]);
-
-            // self::stockArticulo($detalleProducto);
         }
 
-        $programacion->produccion =  'ATENDIDA';
+        //CAMBIAR EL ESTADO DE LA PROGRAMACION DE PRODUCCION (NO PUEDA AGREGAR ORDEN DE PRODUCCION)
+        $programacion->produccion = '1';
         $programacion->update();
+
+
+        // dd('guardo');
+
+ 
+        // $detalleJSON = $request->get('productos_detalle');       
+        // $detalletabla = json_decode($detalleJSON);
+        // foreach ($detalletabla as $detalle) {
+        //     $operacion = self::ObtenerOperacion();
+        //     if($operacion != null){
+        //         $num = $operacion->operacion + 1; 
+        //     }else{
+        //         $num = 1000;
+        //     }
+            
+        //     $detalleProducto = OrdenDetalle::create([
+        //         'orden_id' => $orden->id,
+        //         'articulo_id' => $detalle->id, //PRODUCTO DETALLE ID
+        //         'cantidad_solicitada' => $detalle->cantidad_solicitada,
+        //         'cantidad_entregada' => $detalle->cantidad_entregada,
+        //         'almacen_correcto_id' => ($detalle->cantidad_devuelta_correcta_almacen) ? $detalle->cantidad_devuelta_correcta_almacen : null ,
+        //         'cantidad_devuelta_correcta' => ($detalle->cantidad_devuelta_correcta_cantidad) ? $detalle->cantidad_devuelta_correcta_cantidad : null ,
+        //         'almacen_incorrecto_id' => ($detalle->cantidad_devuelta_incorrecta_almacen) ? $detalle->cantidad_devuelta_incorrecta_almacen : null ,
+        //         'cantidad_devuelta_incorrecta' => ($detalle->cantidad_devuelta_incorrecta_cantidad) ? $detalle->cantidad_devuelta_incorrecta_cantidad : null ,
+        //         'operacion' => $num,
+        //         'observacion_correcta' => $detalle->observacion_correcta,
+        //         'observacion_incorrecta' => $detalle->observacion_incorrecta,
+        //     ]);
+
+        // }
+
+        // $programacion->produccion =  'ATENDIDA';
+        // $programacion->update();
 
         Session::flash('success','Orden de Produccion creada');
         return redirect()->route('produccion.orden.index')->with('guardar', 'success');
+        
+    }
+
+    public function update(Request $request, $id)
+    {  
+        $data = $request->all();
+        $rules = [
+            'programacion_aprobada_id' => 'required',
+            'fecha_produccion' => 'required',
+            'cantidad_programada'=> 'required',
+            'version' => 'required',
+            'codigo' => 'required',
+            'tiempo_proceso' => 'required',
+        ];
+
+        $message = [
+            'required.programacion_aprobada_id'=>'El campo Producto es obligatorio',
+            'required.fecha_produccion'=>'El campo Fecha de Producción es obligatorio',
+            'required.cantidad_programada'=>'El campo Cantidad Producir es obligatorio',
+            'required.version'=>'El campo Version es obligatorio',
+            'required.codigo'=>'El campo Codigo es obligatorio',
+            'required.tiempo_proceso'=>'El campo Tiempo de Proceso es obligatorio',
+        ];
+
+        Validator::make($data, $rules, $message)->validate();
+
+        $orden = Orden::findOrFail($id);
+        $orden->programacion_id =  $request->get('programacion_aprobada_id');
+        //PROGRAMACION APROBADA
+        $programacion= Programacion_produccion::findOrFail($request->get('programacion_aprobada_id'));
+        //PRODUCTO DE LA PROGRAMACION APROBADA
+        $producto= Producto::findOrFail($programacion->producto_id);
+        //DATOS DEL PRODUCTO
+        $orden->producto_id = $programacion->producto_id;
+        $orden->codigo_producto = $producto->codigo;
+        $orden->descripcion_producto = $producto->nombre;
+        //DATOS DE LA PROGRAMACION
+        $orden->fecha_produccion = $programacion->fecha_produccion;
+        $orden->cantidad = $programacion->cantidad_programada;
+        //DATOS DE LA ORDEN 
+        $orden->version = $request->get('version');
+        $orden->codigo = $request->get('codigo');
+        $orden->tiempo_proceso = $request->get('tiempo_proceso');
+        $orden->fecha_orden = Carbon::createFromFormat('d/m/Y', $request->get('fecha_produccion'))->format('Y-m-d');
+        $orden->save();
+
+        //CAMBIAR EL ESTADO DE LA PROGRAMACION DE PRODUCCION (NO PUEDA AGREGAR ORDEN DE PRODUCCION)
+        $programacion->produccion = '1';
+        $programacion->update();
+
+
+        Session::flash('success','Orden de Produccion modificada');
+        return redirect()->route('produccion.orden.index')->with('modificar', 'success');
         
     }
 
@@ -171,6 +251,8 @@ class OrdenController extends Controller
             'detalles'=>  $detalles,           
         ]);
     }
+
+
 
 
     public function getOrden($id)

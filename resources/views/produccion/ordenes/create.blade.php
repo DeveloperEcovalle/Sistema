@@ -45,6 +45,7 @@
                             <div class="row">
                             
                                 <div class="col-lg-6 col-xs-12 b-r">
+                                    
                                     <div class="form-group">
 
                                         <input type="hidden" name="producto_id" value="{{$programacion->producto_id}}">
@@ -58,6 +59,37 @@
                                      
 
                                     </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-lg-6 col-xs-12">
+                                            <label class='required'>Codigo</label>
+                                            <input type="text" id="codigo" name="codigo" onkeyup="return mayus(this)"  class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" 
+                                                value="{{old('codigo')}}" required>
+
+                                            @if ($errors->has('codigo'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('codigo') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="col-lg-6 col-xs-12">
+                                            <label class='required'>Versión</label>
+                                            <input type="text" id="version" name="version" onkeyup="return mayus(this)"  class="form-control {{ $errors->has('version') ? ' is-invalid' : '' }}" 
+                                                value="{{old('version')}}" required>
+
+                                            @if ($errors->has('version'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('version') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+
+
+                                     
+                                    </div>
+
+
                                 </div>
 
                                 <div class="col-lg-6 col-xs-12">
@@ -93,6 +125,20 @@
                                                     </div>
                                                 </div>
                                         </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6 col-xs-12">
+                                                <label class='required'>Tiempo de Proceso</label>
+                                                <input type="time" id="tiempo_proceso" name="tiempo_proceso" class="form-control {{ $errors->has('tiempo_proceso') ? ' is-invalid' : '' }}" 
+                                                    value="{{old('tiempo_proceso', '00:00')}}" required>
+
+                                                @if ($errors->has('tiempo_proceso'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('tiempo_proceso') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
                                 </div>
                             
                             </div>
@@ -117,26 +163,12 @@
 
                                                     <table class="table dataTables-ordenes table-striped table-bordered table-hover" id="orden" style="text-transform:uppercase">
                                                         <thead>
-                                                        <!-- <tr>
-                                    
-                                                            <th colspan="2" class="text-center"></th>
-                                                            <th colspan="2" class="text-center">CANTIDADES</th>
-                                                            <th colspan="4" class="text-center">CANT. DEVUELTAS</th>
-                                                            <th colspan="1" class="text-center"></th>
-
-                                                        </tr> -->
                                                         <tr>
                                                             <th class="text-center">ID</th>
                                                             <th class="text-center">CODIGO</th>
                                                             <th class="text-center">ARTICULO</th>
                                                             <th class="text-center">ALMACEN</th>
-                                                            <!-- <th class="text-center">SOLICITADO</th>
-                                                            <th class="text-center">ENTREGADO</th>
-                                                            <th class="text-center"><i class="fa fa-check"></i></th>
-                                                            <th class="text-center">OBS.</th>
-                                                            <th class="text-center"><i class="fa fa-times"></i></th>
-                                                            <th class="text-center">OBS.</th> -->
-                                                            <th class="text-center">ACCIONES</th>
+                                                            <!-- <th class="text-center">ACCIONES</th> -->
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -147,7 +179,7 @@
                                                                 <td class="text-center">{{$articulo->articulo->codigo_fabrica}}</td>
                                                                 <td>{{$articulo->articulo->descripcion}}</td>
                                                                 <td>{{$articulo->articulo->almacen->descripcion}}</td>
-                                                                <td class="text-center">
+                                                                <!-- <td class="text-center">
                                                                     <div class='btn-group'>
                                                                         <a class='btn btn-warning btn-sm' href="{{route('produccion.orden.detalle.lote.create' , 
                                                                                                                 [   'producto_detalle_id' => $articulo->id ,
@@ -156,7 +188,7 @@
                                                                                                                 ])}}" style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>
                                                                     </div>
                                                                 
-                                                                </td>
+                                                                </td> -->
                                                             </tr>
                                                             @endforeach
 
@@ -189,6 +221,9 @@
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
+                                <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
+                                    <i class="fa fa-save"></i> Grabar
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -445,10 +480,10 @@ $('#enviar_orden_produccion').submit(function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
 
-            if (validarCantidades() == true) {
-                cargarDetalles()
+            // if (validarCantidades() == true) {
+            //     cargarDetalles()
                 this.submit()
-            }
+            // }
 
         } else if (
             /* Read more about handling dismissals below */

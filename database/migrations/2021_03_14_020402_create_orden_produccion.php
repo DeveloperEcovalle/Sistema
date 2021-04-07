@@ -24,7 +24,11 @@ class CreateOrdenProduccion extends Migration
             $table->string('codigo_producto');     
             $table->string('descripcion_producto');
             // ORDEN DE PRODUCCION
-            $table->date('fecha_orden')->nullable();
+            $table->date('fecha_orden');
+            $table->string('version');
+            $table->string('codigo');
+            $table->time('tiempo_proceso');
+
             $table->mediumText('observacion')->nullable();
             $table->enum('produccion',['0','1'])->default('0');
             $table->enum('estado',['PRODUCCION','ANULADO'])->default('PRODUCCION');

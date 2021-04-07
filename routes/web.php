@@ -531,6 +531,7 @@ function(){
         Route::get('create/{id}','Produccion\OrdenController@create')->name('produccion.orden.create');
         Route::get('edit/','Produccion\OrdenController@edit')->name('produccion.orden.edit');
         Route::post('store','Produccion\OrdenController@store')->name('produccion.orden.store');
+        Route::post('update/{id}','Produccion\OrdenController@update')->name('produccion.orden.update');
         Route::get('productoDetalle/{id}','Produccion\OrdenController@getArticles')->name('produccion.orden.articulos');
         Route::get('show/{id}','Produccion\OrdenController@show')->name('produccion.orden.show');
         Route::post('destroy', 'Produccion\OrdenController@destroy')->name('produccion.orden.destroy');

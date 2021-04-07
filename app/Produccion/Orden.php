@@ -15,6 +15,10 @@ class Orden extends Model
           'descripcion_producto',
           'fecha_produccion',
           'cantidad',
+          
+          'version',
+          'codigo',
+          'tiempo_proceso',
 
           'fecha_orden',
           'observacion', //POR BORRAR O INGRESARLO

@@ -32,7 +32,7 @@
 
                 <div class="ibox-content">
 
-                    <form action="{{route('produccion.orden.store')}}" method="POST" id="enviar_orden_produccion">
+                    <form action="{{route('produccion.orden.update',$orden->id)}}" method="POST" id="enviar_orden_produccion">
                         {{csrf_field()}}
 
                         <h4 class=""><b>Orden de Producción</b></h4>
@@ -58,6 +58,37 @@
                                      
 
                                     </div>
+
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-lg-6 col-xs-12">
+                                            <label class='required'>Codigo</label>
+                                            <input type="text" id="codigo" name="codigo" onkeyup="return mayus(this)" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" 
+                                                value="{{old('codigo',$orden->codigo)}}" required>
+
+                                            @if ($errors->has('codigo'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('codigo') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="col-lg-6 col-xs-12">
+                                            <label class='required'>Versión</label>
+                                            <input type="text" id="version" name="version" onkeyup="return mayus(this)" class="form-control {{ $errors->has('version') ? ' is-invalid' : '' }}" 
+                                                value="{{old('version',$orden->version)}}" required>
+
+                                            @if ($errors->has('version'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('version') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+
+
+                                     
+                                    </div>
+
                                 </div>
 
                                 <div class="col-lg-6 col-xs-12">
@@ -92,6 +123,20 @@
 
                                                     </div>
                                                 </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-6 col-xs-12">
+                                                <label class='required'>Tiempo de Proceso</label>
+                                                <input type="time" id="tiempo_proceso" name="tiempo_proceso" class="form-control {{ $errors->has('tiempo_proceso') ? ' is-invalid' : '' }}" 
+                                                    value="{{old('tiempo_proceso', $orden->tiempo_proceso)}}" required>
+
+                                                @if ($errors->has('tiempo_proceso'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('tiempo_proceso') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
                                         </div>
                                 </div>
                             
@@ -221,6 +266,9 @@
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
+                                <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
+                                    <i class="fa fa-save"></i> Grabar
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -371,10 +419,10 @@ $('#enviar_orden_produccion').submit(function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
 
-            if (validarCantidades() == true) {
-                cargarDetalles()
+            // if (validarCantidades() == true) {
+            //     cargarDetalles()
                 this.submit()
-            }
+            // }
 
         } else if (
             /* Read more about handling dismissals below */
