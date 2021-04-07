@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 use DataTables;
 use Carbon\Carbon;
 use Session;
@@ -29,6 +30,7 @@ use App\Events\DocumentoNumeracion;
 use App\Events\ComprobanteRegistrado;
 use App\Mantenimiento\Tabla\Detalle as TablaDetalle;
 use App\Almacenes\LoteProducto;
+use App\Almacenes\LoteDetalle;
 
 //CONVERTIR DE NUMEROS A LETRAS
 use Luecano\NumeroALetras\NumeroALetras;
@@ -42,7 +44,7 @@ class DocumentoController extends Controller
 
     public function getDocument(){
 
-        $documentos = Documento::where('estado','!=','ANULADO')->get();
+        $documentos = Documento::where('estado','!=','ANULADO')->orderBy('id', 'desc')->get();
         $coleccion = collect([]);
         foreach($documentos as $documento){
 
@@ -84,46 +86,178 @@ class DocumentoController extends Controller
 
     public function create(Request $request)
     {
-        
-        $cotizacion = '';
-        $detalles = '';
-        if($request->get('cotizacion')){
-            $cotizacion =  Cotizacion::findOrFail( $request->get('cotizacion') );
-            $detalles = CotizacionDetalle::where('cotizacion_id', $request->get('cotizacion'))->get(); 
-        }
-
         $empresas = Empresa::where('estado', 'ACTIVO')->get();
         $clientes = Cliente::where('estado', 'ACTIVO')->get();
         $fecha_hoy = Carbon::now()->toDateString();
         $productos = Producto::where('estado', 'ACTIVO')->get();
+
+        $cotizacion = '';
+        $detalles = '';
+        if($request->get('cotizacion')){
+            //COLECCION DE ERRORES
+            $errores = collect();
+            $devolucion = false;
+            $cotizacion =  Cotizacion::findOrFail( $request->get('cotizacion') );
+            $detalles = CotizacionDetalle::where('cotizacion_id', $request->get('cotizacion'))->get(); 
+            $lotes = self::cotizacionLote($detalles);
+            //COMPROBACION DE LOTES SI LAS CANTIDADES ENVIADAS SON IGUALES A LAS SOLICITADAS
+            $nuevoDetalle = collect();
+            foreach ($detalles as $detalle) {
+                $cantidadDetalle = $lotes->where('producto',$detalle->producto_id)->sum('cantidad');
+                if($cantidadDetalle != $detalle->cantidad){
+                    $devolucion = true; 
+                    $devolucionLotes = $lotes->where('producto',$detalle->producto_id)->first();
+                    //LLENAR ERROR CANTIDAD SOLICITADA MAYOR AL STOCK
+                    $coll = new Collection();
+                    $coll->producto = $devolucionLotes->descripcion_producto;
+                    $coll->cantidad = $detalle->cantidad;
+                    $errores->push($coll);
+                    self::devolverCantidad($lotes->where('producto',$detalle->producto_id));
+                }else{
+                    $nuevoSindevoluciones = $lotes->where('producto',$detalle->producto_id);
+                    foreach ($nuevoSindevoluciones as $devolucion) {
+                        $coll = new Collection();
+                        $coll->producto_id = $devolucion->producto_id;
+                        $coll->cantidad = $devolucion->cantidad;
+                        $coll->precio = $devolucion->precio;
+                        $coll->unidad = $devolucion->unidad;
+                        $coll->descripcion_producto = $devolucion->descripcion_producto;
+                        $coll->precio = $devolucion->precio;
+                        $coll->importe = $devolucion->importe;
+                        $coll->presentacion = $devolucion->presentacion;
+                        $coll->producto = $devolucion->producto;
+                        $nuevoDetalle->push( $coll);
+                    }
+
+                }
+            }
+
+            return view('ventas.documentos.create',[
+                'cotizacion' => $cotizacion,
+                'empresas' => $empresas,
+                'clientes' => $clientes,
+                'productos' => $productos,  
+                'lotes' => $nuevoDetalle,
+                'errores' => $errores,
+            ]);
+
+        }
         
         if (empty($cotizacion)) {
-            
             return view('ventas.documentos.create',[
                 'empresas' => $empresas,
                 'clientes' => $clientes,
                 'productos' => $productos, 
                 'fecha_hoy' => $fecha_hoy,
             ]);
-
-        }else{
-            
-            
-            return view('ventas.documentos.create',[
-                'cotizacion' => $cotizacion,
-                'empresas' => $empresas,
-                'clientes' => $clientes,
-                'productos' => $productos,  
-                'detalles' => $detalles
-            ]);
         }
-        
-
-
-
     }
 
+    public function devolverCantidad($devoluciones)
+    {
+        foreach ($devoluciones as $devolucion) {
+            $lote = LoteProducto::findOrFail($devolucion->producto_id);
+            $lote->cantidad_logica = $lote->cantidad_logica + $devolucion->cantidad;
+            $lote->cantidad =  $lote->cantidad_logica;
+            $lote->estado = '1';
+            $lote->update();
+        }
+    }
+
+    public function cotizacionLote($detalles)
+    {       
+        $nuevoDetalle = collect();
+        foreach ($detalles as $detalle) {
+            $lotes = LoteProducto::where('producto_id',$detalle->producto_id)
+                    ->where('estado','1')
+                    ->where('cantidad_logica','>',0)
+                    ->orderBy('fecha_vencimiento', 'asc')
+                    ->get();
+            //INICIO CON LA CANTIDAD DEL DETALLE
+            $cantidadSolicitada = $detalle->cantidad;
+       
+            foreach ($lotes as $lote) {
+                //SE OBTUVO LA CANTIDAD SOLICITADA DEL LOTE
+                if ($cantidadSolicitada > 0) {
+                    //CANTIDAD LOGICA DEL LOTE ES IGUAL A LA CANTIDAD SOLICITADA
+                    $cantidadLogica = $lote->cantidad_logica;
+                    if ($cantidadLogica == $cantidadSolicitada) {
+                        //CREAMOS EL NUEVO DETALLE
+                        $coll = new Collection();
+                        $coll->producto_id = $lote->id;
+                        $coll->cantidad = $lote->cantidad_logica;
+                        $coll->precio = $detalle->precio;
+                        $coll->unidad = $lote->producto->medidaCompleta();
+                        $coll->descripcion_producto= $lote->producto->nombre.' - '.$lote->codigo;
+                        $coll->precio = $detalle->precio;
+                        $coll->importe = $detalle->importe;
+                        $coll->presentacion = $lote->producto->medida;
+                        $coll->producto = $lote->producto->id;
+                        $nuevoDetalle->push( $coll);
+                        //ACTUALIZAMOS EL LOTE
+                        $lote->cantidad_logica = $lote->cantidad_logica - $cantidadSolicitada;
+                        //REDUCIMOS LA CANTIDAD SOLICITADA
+                        $cantidadSolicitada = 0;
+                        $lote->update(); 
+                    }else{
+                       
+                        if ($lote->cantidad_logica < $cantidadSolicitada) {
+                            //CREAMOS EL NUEVO DETALLE
+                            $coll = new Collection();
+                            $coll->producto_id = $lote->id;
+                            $coll->cantidad = $lote->cantidad_logica;
+                            $coll->precio = $detalle->precio;
+                            $coll->unidad = $lote->producto->medidaCompleta();
+                            $coll->descripcion_producto= $lote->producto->nombre.' - '.$lote->codigo;
+                            $coll->precio = $detalle->precio;
+                            $coll->importe = $detalle->importe;
+                            $coll->presentacion = $lote->producto->medida;
+                            $coll->producto = $lote->producto->id;
+                            $nuevoDetalle->push( $coll);
+                            //REDUCIMOS LA CANTIDAD SOLICITADA
+                            $cantidadSolicitada = $cantidadSolicitada - $lote->cantidad_logica;
+                            //ACTUALIZAMOS EL LOTE
+                            $lote->cantidad_logica = 0;
+                            $lote->update(); 
+                        }else{
+                            if ($lote->cantidad_logica > $cantidadSolicitada) {
+                                 //CREAMOS EL NUEVO DETALLE
+                                $coll = new Collection();
+                                $coll->producto_id = $lote->id;
+                                $coll->cantidad = $cantidadSolicitada ;
+                                $coll->precio = $detalle->precio;
+                                $coll->unidad = $lote->producto->medidaCompleta();
+                                $coll->descripcion_producto= $lote->producto->nombre.' - '.$lote->codigo;
+                                $coll->precio = $detalle->precio;
+                                $coll->importe = $detalle->importe;
+                                $coll->presentacion = $lote->producto->medida;
+                                $coll->producto = $lote->producto->id;
+                                $nuevoDetalle->push( $coll);
+                                //ACTUALIZAMOS EL LOTE
+                                $lote->cantidad_logica = $lote->cantidad_logica - $cantidadSolicitada;
+                                //REDUCIMOS LA CANTIDAD SOLICITADA
+                                $cantidadSolicitada = 0;
+                                $lote->update(); 
+                            }
+                            
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+       
+        return $nuevoDetalle;
+  
+    }
+
+
+
     public function store(Request $request){
+        
         $data = $request->all();
         $rules = [
             'fecha_documento'=> 'required',
@@ -200,9 +334,14 @@ class DocumentoController extends Controller
                 'precio' => $producto->precio,
                 'importe' => $producto->total,
             ]);
+
+            $lote->cantidad =  $lote->cantidad - $producto->cantidad;
+            $lote->update();
         }
 
-        event(new VentaRegistrada($documento));
+
+
+        // event(new VentaRegistrada($documento));
 
 
         //Registro de actividad
@@ -223,8 +362,8 @@ class DocumentoController extends Controller
         $documento->update();
 
         $detalles = Detalle::where('documento_id',$id)->get();
-
         foreach ($detalles as $detalle) {
+            //ANULAMOS EL DETALLE
             $detalle->estado = "ANULADO";
             $detalle->update();
         }
@@ -241,6 +380,7 @@ class DocumentoController extends Controller
 
     public function show($id)
     {
+        
         $documento = Documento::findOrFail($id);
         $nombre_completo = $documento->user->empleado->persona->apellido_paterno.' '.$documento->user->empleado->persona->apellido_materno.' '.$documento->user->empleado->persona->nombres;
         $detalles = Detalle::where('documento_id',$id)->get(); 
@@ -397,7 +537,7 @@ class DocumentoController extends Controller
 
     public function voucher($id)
     {
-        
+      
         $documento = Documento::findOrFail($id);
         if ($documento->sunat == '0' || $documento->sunat == '2' ) {
 
@@ -436,7 +576,7 @@ class DocumentoController extends Controller
             );
 
             $comprobante= json_encode($arreglo_comprobante);
-            $data = generarComprobanteapi($comprobante);
+            $data = generarComprobanteapi($comprobante, $documento->empresa_id);
             $name = $documento->id.'.pdf';
             $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'.DIRECTORY_SEPARATOR.$name);
             if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'))) {
@@ -450,7 +590,7 @@ class DocumentoController extends Controller
             //OBTENER CORRELATIVO DEL COMPROBANTE ELECTRONICO
             $comprobante = event(new ComprobanteRegistrado($documento,$documento->serie));
             //ENVIAR COMPROBANTE PARA LUEGO GENERAR PDF
-            $data = generarComprobanteapi($comprobante[0]);
+            $data = generarComprobanteapi($comprobante[0],$documento->empresa_id);
             $name = $documento->id.'.pdf';
             $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'.DIRECTORY_SEPARATOR.$name);
             if(!file_exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'comprobantes'))) {
@@ -523,15 +663,62 @@ class DocumentoController extends Controller
             ->join('tabladetalles','tabladetalles.id','=','productos.medida')
             ->select('lote_productos.*','productos.nombre','productos_clientes.cliente','productos_clientes.moneda','tabladetalles.simbolo as unidad_producto',
                     'productos_clientes.monto as precio_venta','familias.familia', DB::raw('DATE_FORMAT(lote_productos.fecha_vencimiento, "%d/%m/%Y") as fecha_venci'))
-            ->where('lote_productos.cantidad','>',0) 
+            ->where('lote_productos.cantidad_logica','>',0) 
             ->where('lote_productos.estado','1') 
             ->where('productos_clientes.cliente','29') //TIPO DE CLIENTE CONSUMIDOR TABLA DETALLE (29)
             ->where('productos_clientes.moneda','4') // TABLA DETALLE SOLES(4)
             ->orderBy('lote_productos.id','ASC')  
             ->where('productos_clientes.estado','ACTIVO')
         )->toJson();
+    }
 
+    //CAMBIAR CANTIDAD LOGICA DEL LOTE 
+    public function quantity(Request $request)
+    {
+        $data = $request->all();
+        $producto_id = $data['producto_id'];
+        $cantidad = $data['cantidad'];
+        $condicion = $data['condicion'];
+        $mensaje = '';
+        $lote = LoteProducto::findOrFail($producto_id);
+        //DISMINUIR
+        if ($lote->cantidad_logica >= $cantidad && $condicion == '1' ) {
+            $nuevaCantidad = $lote->cantidad_logica - $cantidad;
+            $lote->cantidad_logica = $nuevaCantidad;
+            $lote->update();
+            $mensaje = 'Cantidad aceptada';
+        }
+        //AUMENTAR
+        if ($condicion == '0' ) {
+            $nuevaCantidad = $lote->cantidad_logica + $cantidad;
+            $lote->cantidad_logica = $nuevaCantidad;
+            $lote->update();
+            $mensaje = 'Cantidad regresada';
+        }
 
+        return $mensaje;
+    }
+
+    //DEVOLVER CANTIDAD LOGICA AL CERRAR VENTANA
+    public function returnQuantity(Request $request)
+    {
+        $data = $request->all();
+        $cantidades = $data['cantidades'];
+        $productosJSON = $cantidades;
+        $productotabla = json_decode($productosJSON);
+        $mensaje = '';
+        foreach ($productotabla as $detalle) {
+            //DEVOLVEMOS CANTIDAD AL LOTE Y AL LOTE LOGICO
+            $lote = LoteProducto::findOrFail($detalle->producto_id);
+            $lote->cantidad_logica = $lote->cantidad_logica + $detalle->cantidad;
+            $lote->cantidad =  $lote->cantidad_logica;
+            $lote->estado = '1';
+            $lote->update();
+            $mensaje = 'Cantidad devuelta';
+        };
+
+        return $mensaje;
+    
     }
 
 

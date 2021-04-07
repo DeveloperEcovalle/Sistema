@@ -126,17 +126,14 @@ $(document).ready(function() {
                 className: "text-center",
                 render: function(data) {
                     switch (data.produccion) {
-                        case "PENDIENTE":
-                            return "<span class='badge badge-warning' d-block>" + data.produccion +
-                                "</span>";
+                        case "0":
+                            return "<span class='badge badge-warning' d-block> PENDIENTE </span>";
                             break;
-                        case "ATENDIDO":
-                            return "<span class='badge badge-primary' d-block>" + data.produccion +
-                                "</span>";
+                        case "1":
+                            return "<span class='badge badge-success' d-block> ATENDIDA </span>";
                             break;
                         default:
-                            return "<span class='badge badge-success' d-block>" + data.produccion +
-                                "</span>";
+                            return "<span class='badge badge-danger' d-block> ANULADO </span>";
                     }
                 },
             },
@@ -152,7 +149,7 @@ $(document).ready(function() {
                     var url_editar = '{{ route("produccion.programacion_produccion.edit", ":id")}}';
                     url_editar = url_editar.replace(':id', data.id);
 
-                    if (data.produccion == 'PENDIENTE') {
+                    if (data.produccion == '0') {
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +                        
                         "<li><a class='dropdown-item' onclick='orden(" + data.id +
                         ")' title='Generar una orden de produccion' ><b><i class='fa fa-line-chart'></i> Orden de produccion</a></b></li>" +

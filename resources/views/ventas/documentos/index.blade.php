@@ -33,16 +33,17 @@
                             <thead>
                                 <tr>
                                     
-                                    <th colspan="3" class="text-center"></th>
-                                    <th colspan="5" class="text-center">DOCUMENTO DE VENTA</th>
+                                    <th colspan="2" class="text-center"></th>
+                                    <th colspan="6" class="text-center">DOCUMENTO DE VENTA</th>
                                     <th colspan="2" class="text-center">FORMAS DE PAGO</th>
                                     <th colspan="4" class="text-center"></th>
 
                                 </tr>
                                 <tr>
-                                    <th style="display:none;"></th>
+                                   
                                     <th style="display:none;"></th>
                                     <th class="text-center">C.O</th>
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">FECHA DOC.</th>
                                     <th class="text-center">TIPO</th>
                                     <th class="text-center">CLIENTE</th>
@@ -113,15 +114,12 @@ $(document).ready(function() {
         "columns": [
             //DOCUMENTO DE VENTA
             {
-                data: 'id',
-                className: "text-center",
-                visible: false
-            },
-            {
                 data: 'cotizacion_venta',
                 className: "text-center",
                 visible: false
             },
+
+
 
             {
                 data: null,
@@ -134,6 +132,10 @@ $(document).ready(function() {
                     }
                 }
                 
+            },
+            {
+                data: 'id',
+                className: "text-center",
             },
             {
                 data: 'fecha_documento',
@@ -237,9 +239,7 @@ $(document).ready(function() {
         "language": {
             "url": "{{asset('Spanish.json')}}"
         },
-        "order": [
-            [0, "desc"]
-        ],
+        "order": [],
     });
 
     tablaDatos = $('.dataTables-enviados').DataTable();

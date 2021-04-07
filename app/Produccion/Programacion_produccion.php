@@ -17,8 +17,8 @@ class Programacion_produccion extends Model
                 // 'cantidad_producida',
                 'observacion',
                 // 'usuario_id',
+                'produccion', // [ 0 => NO SE AGREGAR NINGUN DETALLE A LA ORDEN , 1 => SE AGREGADO UN DETALLE A LA ORDEN DE PRODUCCION]
                 'estado',
-                'produccion',
                 // 'created_at',
                 // 'updated_at'
             ];

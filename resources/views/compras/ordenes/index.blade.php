@@ -39,7 +39,7 @@
 
                                 </tr>
                                 <tr>
-                                    <th style="display:none;"></th>
+                                    <th style="text-center">ID</th>
                                     <th class="text-center">EMISION</th>
                                     <th class="text-center">ENTREGA</th>
                                     <th class="text-center">PROVEEDOR</th>
@@ -157,7 +157,6 @@ $(document).ready(function() {
             {
                 data: 'id',
                 className: "text-center",
-                visible: false
             },
             {
                 data: 'fecha_emision',

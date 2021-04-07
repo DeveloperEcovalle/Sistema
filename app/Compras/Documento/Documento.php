@@ -3,12 +3,16 @@
 namespace App\Compras\Documento;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Compras\Documento\Detalle;
+use App\Compras\Articulo;
+use App\Movimientos\MovimientoAlmacen;
 
 class Documento extends Model
 {
     protected $table = 'compra_documentos';
     public $timestamps = true;
     protected $fillable = [
+            'id',
             'fecha_emision',
             'fecha_entrega',
             'empresa_id',
@@ -46,5 +50,6 @@ class Documento extends Model
     public function usuario()
     {
         return $this->belongsTo('App\User','usuario_id');
-    }
+    }    
+ 
 }

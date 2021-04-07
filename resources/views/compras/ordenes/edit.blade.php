@@ -290,7 +290,7 @@
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <label class="required">Producto</label>
+                                                <label class="required">Artículo</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="articulo_id"
                                                     id="articulo_id" onchange="cargarPresentacion(this)">
@@ -773,11 +773,9 @@ $(document).ready(function() {
 
     obtenerTabla()
     sumaTotal()
-     
+    //Controlar Error
+    $.fn.DataTable.ext.errMode = 'throw';
     
-
-
-
 })
 
 

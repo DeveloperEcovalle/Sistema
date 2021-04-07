@@ -21,11 +21,15 @@ class CreateCompraDocumentoDetallesTable extends Migration
                   ->onDelete('cascade');
 
             $table->unsignedInteger('articulo_id')->unsigned();
-            $table->foreign('articulo_id')
-                ->references('id')->on('articulos')
-                ->onDelete('cascade');
-
+            $table->string('codigo_articulo');
+            $table->string('descripcion_articulo');
+            $table->string('presentacion_articulo');
+            $table->string('medida_articulo');
+        
             $table->BigInteger('cantidad');
+            $table->date('fecha_vencimiento');
+            $table->string('lote');
+           
             $table->unsignedDecimal('precio', 15,2);
             $table->unsignedDecimal('costo_flete', 15,2);
 

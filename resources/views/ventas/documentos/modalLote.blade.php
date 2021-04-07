@@ -154,7 +154,7 @@ function obtenerLotesproductos(tipo_cliente) {
             {data: 'unidad_producto', className: "text-center", name:"tabladetalles.simbolo" },
             {data: 'codigo', className: "text-center", name:"lote_productos.codigo" },
             {data: 'fecha_venci', className: "text-center", name:"lote_productos.fecha_vencimiento" },
-            {data: 'cantidad', className: "text-center", name:"lote_productos.cantidad" },
+            {data: 'cantidad_logica', className: "text-center", name:"lote_productos.cantidad_logica" },
             {data: 'familia', className: "text-center", name:"familias.familia" },
             {data: 'precio_venta', className: "text-center", name:"productos_clientes.monto" },
         ],
@@ -173,9 +173,6 @@ function obtenerLotesproductos(tipo_cliente) {
 
 
     });
-
-    
-    
 }
 
 $(document).ready(function() {
@@ -192,7 +189,6 @@ $(document).ready(function() {
     $ ('.dataTables-lotes'). on ('dblclick', 'tbody td', function () {
         var lote =  $('.dataTables-lotes').DataTable();
         var data = lote.row(this).data();
-        console.log(data);
         ingresarProducto(data)
     });
 
@@ -207,13 +203,13 @@ function ingresarProducto(producto) {
     $('#btn_agregar_detalle').prop('disabled' , false)
     //INGRESAR DATOS DEL PRODUCTO A LOS CAMPOS
     $('#precio').val(evaluarPrecioigv(producto))
-    $('#cantidad').val(producto.cantidad)
+    $('#cantidad').val(producto.cantidad_logica)
     $('#producto_unidad').val(producto.unidad_producto)
     $('#producto_id').val(producto.id)
     $('#producto_lote').val(producto.nombre+' - '+ producto.codigo)
     //AGREGAR LIMITE A LA CANTIDAD SEGUN EL LOTE SELECCIONADO
     $("#cantidad").attr({ 
-        "max" : producto.cantidad,
+        "max" : producto.cantidad_logica,
         "min" : 1,
     });
     $("#precio").attr({ 
@@ -246,6 +242,11 @@ function limpiarModallote() {
     //CERRAR MODAL
     $('#modal_lote').modal('hide');
 }
+//AL ABRIR EL MODAL SE DEBE DE ACTUALIZAR EL DATATABLE 
+$('#modal_lote').on('show.bs.modal', function(e) {
+    //ACTUALIZAR DATATABLE
+    $('.dataTables-lotes').DataTable().ajax.reload();
+});
 
 
 </script>

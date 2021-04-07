@@ -29,6 +29,7 @@ class CreateEmpresaFacturacionesTable extends Migration
             //////////////////////////////////////////////////
             $table->string('ruta_certificado_pem')->nullable();
             $table->longText('certificado')->nullable();
+            $table->longText('token_code')->nullable();
             $table->BigInteger('fe_id')->nullable();
             $table->enum('estado',['ACTIVO','ANULADO'])->default('ACTIVO');
             $table->timestamps();

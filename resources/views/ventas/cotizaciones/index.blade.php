@@ -31,6 +31,7 @@
                         <table class="table dataTables-cotizacion table-striped table-bordered table-hover"  style="text-transform:uppercase">
                             <thead>
                             <tr>
+                                <th class="text-center">ID</th>
                                 <th class="text-center">EMPRESA</th>
                                 <th class="text-center">CLIENTE</th>
                                 <th class="text-center">FECHA DOCUMENTO</th>
@@ -96,6 +97,7 @@
                 "processing":true,
                 "ajax": "{{ route('ventas.cotizacion.getTable')}}",
                 "columns": [
+                    {data: 'id', className:"text-center"},
                     {data: 'empresa', className:"text-left"},
                     {data: 'cliente', className:"text-left"},
                     {data: 'fecha_documento', className:"text-center"},
@@ -157,7 +159,7 @@
                 "language": {
                     "url": "{{asset('Spanish.json')}}"
                 },
-                "order": [[ 0, "desc" ]],
+                "order": [],
             });
 
             // Eventos

@@ -160,8 +160,6 @@ Route::get('productos/terminados',function ()
 //     fecha_inicio =>
 //     comparacion => 
 // ]
-
-
 Route::get('clientes/venta/parametros',function (Request $request)
 {
 
@@ -238,6 +236,56 @@ Route::get('clientes/venta/parametros',function (Request $request)
         return DataTables::collection($coleccion)->toJson();
 });
 
+//TIPO DE DOCUMENTO Y SE ENVIA SUS TIENDAS
+// [
+//     tipoDocumento => RUC (CADENA),
+//     documento => DNI O RUC cliente
+// ]
+Route::get('clientes/tienda',function (Request $request)
+{
+    $clientes = DB::table('clientes')
+                ->when($request->get('tipoDocumento'), function ($query, $request) {
+                    return $query->where('clientes.tipo_documento', $request);
+                })
+                // ->leftJoin('cliente_tiendas', 'cliente_tiendas.cliente_id', '=', 'clientes.id')
+                ->when($request->get('documento'), function ($query, $request) {
+                    return $query->where('clientes.documento', $request);
+                })
+                ->select(
+                    'clientes.id',
+                    'clientes.tipo_documento',
+                    'clientes.documento',
+                    'clientes.nombre',
+                    'clientes.correo_electronico',
+                    'clientes.telefono_movil',
+                    'clientes.facebook',
+                    'clientes.instagram',
+                    'clientes.web'
+                );
+
+        $clientes = $clientes->get();
+        $coleccion = collect([]);       
+
+        foreach ($clientes as $cliente) {
+            $tiendas = DB::table('cliente_tiendas')
+                    ->select(
+                        'cliente_tiendas.nombre',
+                        'cliente_tiendas.tipo_tienda',
+                        'cliente_tiendas.tipo_negocio',
+                        'cliente_tiendas.direccion'                    
+                    )
+                    ->where('cliente_tiendas.cliente_id',$cliente->id)
+                    ->where('cliente_tiendas.estado','ACTIVO')
+                    ->get();
+
+            $coleccion->push([
+                'cliente' => $cliente,
+                'tiendas' => $tiendas,
+                ]);
+        }
+
+        return DataTables::collection($coleccion)->toJson();
+});
 
 
 

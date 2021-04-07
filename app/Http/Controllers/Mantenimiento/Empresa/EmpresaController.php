@@ -159,9 +159,7 @@ class EmpresaController extends Controller
         }else{
             $empresa->estado_fe = '0';
         }
-
         $empresa->save();
-
 
 
         if ($request->get('estado_fe') == 'on'){
@@ -183,7 +181,6 @@ class EmpresaController extends Controller
             $json_empresa = json_encode($empresa_facturacion);
             //AGREGAR EMPRESA "FACTURACION ELECTRONICA"
             $facturado = json_decode((agregarEmpresaapi($json_empresa)));
-
             //Facturacion Electronica (GUARDAR DATOS INGRESADO POR API)
             $facturacion = new Facturacion();
             $facturacion->empresa_id = $empresa->id; //RELACION CON LA EMPRESA
@@ -603,17 +600,17 @@ class EmpresaController extends Controller
     public function serie($id)
     {
         $tipos = tipos_venta();
-        $empresas_facturacion = Facturacion::where('estado','ACTIVO')->get();
         foreach ($tipos as $tipo) {
             if ($id== '133' || $id== '134' ) {
                 if ($tipo->id == $id ) {
-                    $serie = $tipo->parametro.'0'.(count($empresas_facturacion)+1);
+                    $empresas_numeracion = Numeracion::where('tipo_comprobante', $id)->where('estado','ACTIVO')->get();
+                    $serie = $tipo->parametro.'0'.(count($empresas_numeracion)+1);
                     return $serie;
                 }
             }else{
                 if ($tipo->id == $id ) {
-                   
-                    $serie = $tipo->parametro.'00'.(count($empresas_facturacion)+1);
+                    $empresas_numeracion = Numeracion::where('tipo_comprobante', $id)->where('estado','ACTIVO')->get();
+                    $serie = $tipo->parametro.'00'.(count($empresas_numeracion)+1);
                     return $serie;
                 } 
             }

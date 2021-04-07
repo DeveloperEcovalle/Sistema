@@ -13,14 +13,6 @@ class DepartamentoSeeder extends Seeder
 {
     public function run()
     {
-
-
-        //factory(Almacen::class)->times(30)->create();
-        //factory(Categoria::class)->times(30)->create();
-        // factory(Articulo::class)->times(10)->create();
-        // factory(Empresa::class)->times(10)->create();
-        // factory(LoteProducto::class)->times(100000)->create();
-
         DB::table('departamentos')->delete();
         $file = database_path("data/ubigeo/departamentos.json");
         $json = file_get_contents($file);

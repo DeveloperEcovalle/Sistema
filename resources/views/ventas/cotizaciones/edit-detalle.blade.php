@@ -20,8 +20,8 @@
                     <label class="">Producto</label>
                     <select id="producto_editar" name="producto_editar" class="select2_form form-control" disabled>
                         <option></option>
-                        @foreach($productos as $producto)
-                            <option value="{{ $producto->id }}">{{ $producto->getDescripcionCompleta() }}</option>
+                        @foreach($lotes as $lote)
+                            <option value="{{ $lote->producto_id }}">{{ $lote->producto->nombre}}</option>
                         @endforeach
                     </select>
                 </div>

@@ -269,7 +269,7 @@
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <label class="required">Producto</label>
+                                                <label class="required">Artículo</label>
                                                 <select class="select2_form form-control"
                                                     style="text-transform: uppercase; width:100%" name="articulo_id"
                                                     id="articulo_id" onchange="cargarPresentacion(this)">
@@ -440,9 +440,6 @@
 <!-- DataTable -->
 <script src="{{asset('Inspinia/js/plugins/dataTables/datatables.min.js')}}"></script>
 <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
-
-
-
 
 <script>
 //Select2
@@ -727,8 +724,6 @@ $(document).on('click', '#borrar_articulo', function(event) {
             var table = $('.dataTables-orden-detalle').DataTable();
             table.row($(this).parents('tr')).remove().draw();
             sumaTotal()
-            // calcularIgv($('#igv').val())
-
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
@@ -975,10 +970,8 @@ function sinIgv(subtotal) {
 }
 
 function conIgv(subtotal) {
-    // calular igv (calcular la base)
+    // CALCULAR IGV (BASE)
     var igv = $('#igv').val()
-    ///////////////////////////////
-
     if (igv) {
         var calcularIgv = igv/100
         var base = subtotal / (1 + calcularIgv)

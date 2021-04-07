@@ -10,15 +10,17 @@ class OrdenDetalle extends Model
     protected $fillable = [
           'orden_id',
           'articulo_id',
-          'cantidad_solicitada',
-          'cantidad_entregada',
-          'almacen_correcto_id',
-          'cantidad_devuelta_correcta',
-          'observacion_correcta',
-          'almacen_incorrecto_id',
-          'cantidad_devuelta_incorrecta',
-          'observacion_incorrecta',
-          'operacion',
+          'cantidad_produccion',
+          'cantidad_produccion_completa',
+          'cantidad_excedida',
+          'completado',
+        //   'almacen_correcto_id',
+        //   'cantidad_devuelta_correcta',
+        //   'observacion_correcta',
+        //   'almacen_incorrecto_id',
+        //   'cantidad_devuelta_incorrecta',
+        //   'observacion_incorrecta',
+        //   'operacion',
           
         ];
 
@@ -32,6 +34,11 @@ class OrdenDetalle extends Model
     public function productoDetalle()
 	{
 	    return $this->belongsTo('App\Almacenes\ProductoDetalle', 'articulo_id');
+	}
+
+    public function articulo()
+	{
+	    return $this->belongsTo('App\Compras\Articulo', 'articulo_id');
 	}
 
     public function almacenCorrecto()

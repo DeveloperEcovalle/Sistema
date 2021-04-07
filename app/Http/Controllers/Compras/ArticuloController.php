@@ -22,7 +22,7 @@ class ArticuloController extends Controller
         return view('compras.articulos.index');
     }
 
-    public function getArticle(){
+    public function getArticles(){
         return datatables()->query(
             DB::table('articulos')
             ->join('categorias', 'articulos.categoria_id', '=', 'categorias.id')
@@ -192,7 +192,6 @@ class ArticuloController extends Controller
 
     }
 
-
     public function destroy($id)
     {
         
@@ -217,6 +216,12 @@ class ArticuloController extends Controller
             'articulo' => $articulo 
         ]);
 
+    }
+
+    public function getArticle($id)
+    {
+        $articulo = Articulo::findOrFail($id);
+        return $articulo;
     }
 
 

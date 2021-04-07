@@ -34,6 +34,7 @@
 
                 <div class="ibox-content">
 
+                    <input type="hidden" id='asegurarCierre' >
                     <form action="{{route('ventas.documento.store')}}" method="POST" id="enviar_documento">
                         {{csrf_field()}}
 
@@ -114,7 +115,7 @@
                                         <select
                                             class="select2_form form-control {{ $errors->has('tipo_venta') ? ' is-invalid' : '' }}"
                                             style="text-transform: uppercase; width:100%" value="{{old('tipo_venta')}}"
-                                            name="tipo_venta" id="tipo_venta" required onchange="consultarSeguntipo()" >
+                                            name="tipo_venta" id="tipo_venta" required  @if (!empty($cotizacion)) '' @else onchange="consultarSeguntipo()" @endif >
                                             <option></option>
                                             
                                                 @foreach (tipos_venta() as $tipo)
@@ -188,8 +189,12 @@
                                         <select
                                         class="select2_form form-control {{ $errors->has('cliente_id') ? ' is-invalid' : '' }}"
                                         style="text-transform: uppercase; width:100%" value="{{old('cliente_id', $cotizacion->cliente_id)}}"
-                                        name="cliente_id" id="cliente_id" onchange="obtenerTipocliente(this.value)"  disabled >
+                                        name="cliente_id" id="cliente_id"   disabled >
                                             <option></option>
+                                            @foreach ($clientes as $cliente)
+                                            <option value="{{$cliente->id}}" @if(old('cliente_id',$cotizacion->cliente_id)==$cliente->id )
+                                                {{'selected'}} @endif >{{ $cliente->getDocumento() }} - {{ $cliente->nombre }}</option>
+                                            @endforeach
                                             </select>
                                         @else
                                             <select
@@ -204,17 +209,12 @@
 
                                 <div class="form-group">
                                     <label>Observación:</label>
-                                    @if (!empty($cotizacion))
-                                    <textarea type="text" placeholder=""
-                                        class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
-                                        name="observacion" id="observacion"  onkeyup="return mayus(this)"
-                                        value="{{old('observacion',$cotizacion->observacion)}}" disabled >{{old('observacion',$cotizacion->observacion)}}</textarea>
-                                    @else
+                               
                                     <textarea type="text" placeholder=""
                                         class="form-control {{ $errors->has('observacion') ? ' is-invalid' : '' }}"
                                         name="observacion" id="observacion"  onkeyup="return mayus(this)"
                                         value="{{old('observacion')}}">{{old('observacion')}}</textarea>
-                                    @endif
+                                
 
                                     @if ($errors->has('observacion'))
                                     <span class="invalid-feedback" role="alert">
@@ -324,18 +324,18 @@
                                                 <tfoot>
                                                     <tr>
                                                         <th colspan="6" style="text-align:right">Sub Total:</th>
-                                                        <th><span id="subtotal">0.0</span></th>
+                                                        <th><span id="subtotal">@if (!empty($cotizacion)) {{$cotizacion->sub_total}} @else 0.0 @endif</span></th>
 
                                                     </tr>
                                                     <tr>
                                                         <th colspan="6" class="text-center">IGV <span
                                                                 id="igv_int"></span>:</th>
-                                                        <th class="text-center"><span id="igv_monto">0.0</span></th>
+                                                        <th class="text-center"><span id="igv_monto">@if (!empty($cotizacion)) {{$cotizacion->total_igv}} @else 0.0 @endif</span></th>
 
                                                     </tr>
                                                     <tr>
                                                         <th colspan="6" class="text-center">TOTAL:</th>
-                                                        <th class="text-center"><span id="total">0.0</span></th>
+                                                        <th class="text-center"><span id="total">@if (!empty($cotizacion)) {{$cotizacion->total}} @else 0.0 @endif</span></th>
 
                                                     </tr>
                                                 </tfoot>
@@ -367,10 +367,17 @@
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
-                                
-                                <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
-                                    <i class="fa fa-save"></i> Grabar
-                                </button>
+                                @if(empty($errores))
+                                    <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
+                                        <i class="fa fa-save"></i> Grabar
+                                    </button>
+                                @else
+                                    @if ( count($errores) == 0)
+                                    <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
+                                        <i class="fa fa-save"></i> Grabar
+                                    </button>
+                                    @endif
+                                @endif
                             </div>
 
                         </div>
@@ -479,8 +486,15 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var table = $('.dataTables-detalle-documento').DataTable();
+                        var data = table.row($(this).parents('tr')).data();
+                        var detalle = {
+                            producto_id: data[0],
+                            cantidad: data[2],
+                        }
+                        //DEVOLVER LA CANTIDAD LOGICA
+                        cambiarCantidad(detalle,'0')
                         table.row($(this).parents('tr')).remove().draw();
-                        // sumaTotal()
+                        sumaTotal()
 
                     } else if (
                         /* Read more about handling dismissals below */
@@ -615,7 +629,7 @@
                 $('#igv').prop('required', true)
                 var igv = ($('#igv').val()) + ' %'
                 $('#igv_int').text(igv)
-                sumaTotal()
+                // sumaTotal()
             @else
                 if ($("#igv_check").prop('checked')) {
                     $('#igv').attr('disabled', false)
@@ -626,9 +640,9 @@
                 }
             @endif
 
-            @if ($detalles) 
+            @if ($lotes) 
                 obtenerTabla()
-                sumaTotal()
+                // sumaTotal()
             @endif
 
             @endif
@@ -703,6 +717,7 @@
                     buttonsStyling: false
                 })
 
+               
                 Swal.fire({
                     title: 'Opción Agregar',
                     text: "¿Seguro que desea agregar Producto?",
@@ -714,6 +729,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         llegarDatos()
+                        $('#asegurarCierre').val(1)
                     } else if (
                         /* Read more about handling dismissals below */
                         result.dismiss === Swal.DismissReason.cancel
@@ -752,8 +768,10 @@
                 cantidad: $('#cantidad').val(),
             }
             agregarTabla(detalle);
+            cambiarCantidad(detalle,'1');
         }
 
+        //AGREGAR EL DETALLE A LA TABLA
         function agregarTabla($detalle) {
             var t = $('.dataTables-detalle-documento').DataTable();
             t.row.add([
@@ -776,7 +794,7 @@
             $('#producto_id').val('')
             $('#producto_lote').val('')
         }
-
+        //CARGAR EL DETALLE A UNA VARIABLE
         function cargarProductos() {
             var productos = [];
             var table = $('.dataTables-detalle-documento').DataTable();
@@ -794,6 +812,40 @@
 
             $('#productos_tabla').val(JSON.stringify(productos));
         }
+        //CAMBIAR LA CANTIDAD LOGICA DEL PRODUCTO
+        function cambiarCantidad(detalle, condicion) {
+            $.ajax({
+                dataType : 'json',
+                type : 'post',
+                url : '{{ route('ventas.documento.cantidad') }}',
+                data : {
+                    '_token' : $('input[name=_token]').val(),
+                    'producto_id' : detalle.producto_id,
+                    'cantidad' : detalle.cantidad,
+                    'condicion' : condicion,
+                }
+            }).done(function (result){
+                alert('REVISAR')
+                console.log(result)
+            });
+        }
+        //DEVOLVER CANTIDADES A LOS LOTES
+        function devolverCantidades() {
+            //CARGAR PRODUCTOS PARA DEVOLVER LOTE
+            cargarProductos() 
+            $.ajax({
+                dataType : 'json',
+                type : 'post',
+                url : '{{ route('ventas.documento.devolver.cantidades') }}',
+                data : {
+                    '_token' : $('input[name=_token]').val(),
+                    'cantidades' :  $('#productos_tabla').val(),
+                }
+            }).done(function (result){
+                alert('DEVOLUCION REALIZADA')
+                console.log(result)
+            });
+        }
 
         function sumaTotal() {
             var t = $('.dataTables-detalle-documento').DataTable();
@@ -802,7 +854,15 @@
                 subtotal = Number(el[6]) + subtotal
             });
 
-            conIgv(subtotal)
+            @if (!empty($cotizacion))
+                @if ($cotizacion->igv_check == '1')
+                    sinIgv(subtotal)
+                @else
+                    conIgv(subtotal)
+                @endif
+            @else
+                conIgv(subtotal)
+            @endif
 
         }
 
@@ -814,6 +874,16 @@
             $('#subtotal').text(base.toFixed(2))
             $('#igv_monto').text(nuevo_igv.toFixed(2))
             $('#total').text(subtotal.toFixed(2))
+        }
+
+        function sinIgv(subtotal) {
+            var igv =  subtotal * 0.18
+            var total = subtotal + igv
+            $('#igv_int').text('18%')
+            $('#subtotal').text(subtotal.toFixed(2))
+            $('#igv_monto').text(igv.toFixed(2))
+            $('#total').text(total.toFixed(2))
+
         }
 
 
@@ -890,14 +960,14 @@
                             $('#monto_total_igv').val($('#igv_monto').text())
                             $('#monto_total').val($('#total').text())
 
-                            // document.getElementById("igv_check").disabled = false;
                             document.getElementById("moneda").disabled = false;
                             document.getElementById("observacion").disabled = false;
                             document.getElementById("fecha_documento_campo").disabled = false;
                             document.getElementById("fecha_atencion_campo").disabled = false;
                             document.getElementById("empresa_id").disabled = false;
                             document.getElementById("cliente_id").disabled = false;
-
+                            //HABILITAR EL CARGAR PAGINA
+                            $('#asegurarCierre').val(2)
                             this.submit();
                         }
 
@@ -917,22 +987,25 @@
 
         })
 
-
         function obtenerTabla() {
         var t = $('.dataTables-detalle-documento').DataTable();
             @if (!empty($cotizacion))
-                @foreach($detalles as $detalle)
+                @foreach($lotes as $lote)
                     t.row.add([
-                        "{{$detalle->producto->id}}",
+                        "{{$lote->producto_id}}",
                         '',
-                        "{{$detalle->cantidad}}",
-                        "{{$detalle->producto->getMedida()}}",
-                        "{{$detalle->producto->nombre}}",
-                        "{{$detalle->precio}}",
-                        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2),
-                        "{{$detalle->producto->medida}}",
-                    ]).draw(false);
+                        "{{$lote->cantidad}}",
+                        "{{$lote->unidad}}",
+                        "{{$lote->descripcion_producto}}",
+                        "{{$lote->precio}}",
+                        "{{$lote->importe}}",
+                        "{{$lote->presentacion}}",
+                    ])
+                    
                 @endforeach
+                //SUMATORIA TOTAL
+                sumaTotal()
+
             @endif
         }
 
@@ -1018,11 +1091,25 @@
             }
         }
 
+         //ERRORES DEVOLUCIONES
+        @if (!empty($errores))
+            $('#asegurarCierre').val(1)
+            @foreach($errores as $error)
+                toastr.error('La cantidad solicitada '+"{{$error->cantidad}}"+' excede al stock del producto '+"{{$error->producto}}", 'Error');
+            @endforeach
+        @endif
 
 
 </script>
 
+<script>
+    window.onbeforeunload = function () { 
+        //DEVOLVER CANTIDADES 
+        if($('#asegurarCierre').val() == 1 ) {devolverCantidades()}
+    
+    };
 
+</script>
 
 
 

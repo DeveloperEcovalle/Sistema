@@ -43,6 +43,7 @@ class LoteController extends Controller
         $lote->codigo_producto = $orden->codigo_producto;
         $lote->descripcion_producto = $orden->descripcion_producto;
         $lote->cantidad = $request->get('cantidad');
+        $lote->cantidad_logica = $request->get('cantidad');
         $lote->fecha_vencimiento = $orden->fecha_produccion;
         $lote->observacion = $request->get('observacion');
         $lote->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');
@@ -127,6 +128,7 @@ class LoteController extends Controller
         $lote->codigo_producto = $orden->codigo_producto;
         $lote->descripcion_producto = $orden->descripcion_producto;
         $lote->cantidad = $request->get('cantidad');
+        $lote->cantidad_logica = $request->get('cantidad');
         $lote->fecha_vencimiento = $orden->fecha_produccion;
         $lote->observacion = $request->get('observacion');
         $lote->fecha_entrega = Carbon::createFromFormat('d/m/Y', $request->get('fecha_entrega'))->format('Y-m-d');

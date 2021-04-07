@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use PDF;
 use Illuminate\Support\Facades\Mail;
 use App\Ventas\Documento\Documento;
+use App\Almacenes\LoteProducto;
 
 class CotizacionController extends Controller
 {
@@ -29,7 +30,7 @@ class CotizacionController extends Controller
 
     public function getTable()
     {
-        $cotizaciones = Cotizacion::where('estado', '<>', 'ANULADO')->get();
+        $cotizaciones = Cotizacion::where('estado', '<>', 'ANULADO')->orderBy('id', 'desc')->get();
         $coleccion = collect([]);
         foreach($cotizaciones as $cotizacion) {
             $coleccion->push([
@@ -49,23 +50,20 @@ class CotizacionController extends Controller
         $empresas = Empresa::where('estado', 'ACTIVO')->get();
         $clientes = Cliente::where('estado', 'ACTIVO')->get();
         $fecha_hoy = Carbon::now()->toDateString();
-        $productos = Producto::where('estado', 'ACTIVO')->get();
-
-        return view('ventas.cotizaciones.create', compact('empresas', 'clientes', 'fecha_hoy', 'productos'));
+        $lotes = LoteProducto::where('estado', '1')->distinct()->get(['producto_id']);
+       
+        return view('ventas.cotizaciones.create', compact('empresas', 'clientes', 'fecha_hoy', 'lotes'));
     }
 
     public function store(Request $request)
     {
-        // dd($request);
-        
         $data = $request->all();
-        
-
         $rules = [
             'empresa' => 'required',
             'cliente' => 'required',
             'fecha_documento' => 'required|date_format:d/m/Y',
             'fecha_atencion_campo' => 'nullable|date_format:d/m/Y',
+            'igv' => 'required_if:igv_check,==,on|numeric|digits_between:1,3',
         ];
 
         $message = [
@@ -75,6 +73,9 @@ class CotizacionController extends Controller
             'fecha_documento.required' => 'El campo Fecha de Documento es obligatorio',
             'fecha_documento.date_format:d/m/Y' => 'El formato de la Fecha de Documento es incorrecto',
             'fecha_atencion_campo.date_format:d/m/Y' => 'El formato de la Fecha de Atención es incorrecto',
+            'igv.required_if' => 'El campo Igv es obligatorio.',
+            'igv.digits' => 'El campo Igv puede contener hasta 3 dígitos.',
+            'igv.numeric' => 'El campo Igv debe se numérico.',
         ];
 
         Validator::make($data, $rules, $message)->validate();
@@ -92,14 +93,10 @@ class CotizacionController extends Controller
         
         $cotizacion->user_id = Auth::id();
         $cotizacion->igv = $request->get('igv');
-        $cotizacion->igv = $request->get('igv');
         if ($request->get('igv_check') == "on") {
             $cotizacion->igv_check = "1";
-        }else{
-            $cotizacion->igv_check = '';
-        }
+        };
         $cotizacion->save();
-
 
         //Llenado de los Productos
         $productosJSON = $request->get('productos_tabla');
@@ -130,7 +127,7 @@ class CotizacionController extends Controller
         $empresas = Empresa::where('estado', 'ACTIVO')->get();
         $clientes = Cliente::where('estado', 'ACTIVO')->get();
         $fecha_hoy = Carbon::now()->toDateString();
-        $productos = Producto::where('estado', 'ACTIVO')->get();
+        $lotes = LoteProducto::where('estado', '1')->distinct()->get(['producto_id']);
 
         $detalles = CotizacionDetalle::where('cotizacion_id',$id)->where('estado', 'ACTIVO')->get(); 
     
@@ -139,7 +136,7 @@ class CotizacionController extends Controller
             'empresas' => $empresas,
             'clientes' => $clientes,
             'fecha_hoy' => $fecha_hoy,
-            'productos' => $productos,
+            'lotes' => $lotes,
             'detalles' => $detalles
         ]);
     }
@@ -169,6 +166,9 @@ class CotizacionController extends Controller
             'monto_sub_total.required' => 'El campo Total Afecto es obligatorio',
             'monto_total_igv.required' => 'El campo Total IGV es obligatorio',
             'monto_total.required' => 'El campo Total es obligatorio',
+            'igv.required_if' => 'El campo Igv es obligatorio.',
+            'igv.digits' => 'El campo Igv puede contener hasta 3 dígitos.',
+            'igv.numeric' => 'El campo Igv debe se numérico.',
         ];
 
         Validator::make($data, $rules, $message)->validate();

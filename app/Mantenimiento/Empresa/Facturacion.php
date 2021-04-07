@@ -20,6 +20,7 @@ class Facturacion extends Model
             'ambiente',
             'logo',
             'ruta_certificado_pem',
+            'token_code',
             'fe_id',
             'estado'
 

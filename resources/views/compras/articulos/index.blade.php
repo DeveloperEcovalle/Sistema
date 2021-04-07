@@ -3,13 +3,13 @@
 @section('articulo-active', 'active')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Articulos</b></h2>
+       <h2  style="text-transform:uppercase"><b>Listado de Artículos</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Articulos</strong>
+                <strong>Artículos</strong>
             </li>
 
         </ol>
@@ -108,7 +108,7 @@
             "bAutoWidth": false,
             "processing":true,
             "serverSide":true,
-            "ajax": '{{ route("getArticle")}}',
+            "ajax": '{{ route("getArticles")}}',
             "columns": [
                 //Articulo
                 {data: 'id' , className:"text-center", visible:false , name: 'articulos.codigo_fabrica' },

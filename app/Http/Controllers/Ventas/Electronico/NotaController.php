@@ -479,7 +479,7 @@ class NotaController extends Controller
             }
         }else{
             Session::flash('error','Empresa sin parametros para emitir comprobantes electronicos');
-            return redirect()->route('vventas.notas');
+            return redirect()->route('ventas.notas');
         }
     }
 

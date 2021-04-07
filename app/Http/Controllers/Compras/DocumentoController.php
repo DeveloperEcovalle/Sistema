@@ -22,6 +22,8 @@ use App\Compras\Documento\Pago\Transferencia;
 
 use App\Compras\Pago as Pago_Compras;
 use App\Compras\Detalle as Detalle_Orden;
+//MOVIMIENTO
+use App\Movimientos\MovimientoAlmacen;
 
 
 class DocumentoController extends Controller
@@ -187,8 +189,16 @@ class DocumentoController extends Controller
 
     }
 
+    public function movement($documento)
+    {
+        $movimiento = new MovimientoAlmacen(); 
+        $movimiento->documento_compra_id = $documento_id;
+        $movimiento->cantidad = Detalle::where('documento_id',$documento->id)->sum('cantidad');
+        $movimiento->save();
+    }
+
     public function store(Request $request){
-        
+
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
@@ -253,15 +263,24 @@ class DocumentoController extends Controller
         $articulosJSON = $request->get('articulos_tabla');
         $articulotabla = json_decode($articulosJSON[0]);
 
-        foreach ($articulotabla as $articulo) {
-            Detalle::create([
-                'documento_id' => $documento->id,
-                'articulo_id' => $articulo->articulo_id,
-                'cantidad' => $articulo->cantidad,
-                'precio' => $articulo->precio,
-                'costo_flete' => $articulo->costo_flete,
-            ]);
+        foreach ($articulotabla as $detalle) {
+            $articulo = Articulo::findOrFail($detalle->articulo_id);
+                Detalle::create([
+                    'documento_id' => $documento->id,
+                    'articulo_id' => $detalle->articulo_id,
+                    'descripcion_articulo' => $articulo->descripcion,
+                    'presentacion_articulo' => $articulo->presentacion,
+                    'codigo_articulo' => $articulo->codigo_fabrica,
+                    'medida_articulo' => $articulo->unidad_medida,
+                    'cantidad' => $detalle->cantidad,
+                    'precio' => $detalle->precio,
+                    'costo_flete' => $detalle->costo_flete,
+                    'fecha_vencimiento' =>  Carbon::createFromFormat('d/m/Y', $detalle->fecha_vencimiento)->format('Y-m-d'),
+                    'lote' => $detalle->lote,
+                ]);
         }
+
+        
 
         // TRANSFERRIR PAGOS DE LA ORDEN SI EXISTEN
         if($request->get('orden_id')){
@@ -327,7 +346,7 @@ class DocumentoController extends Controller
     }
 
     public function update(Request $request, $id){
-        
+
         $data = $request->all();
         $rules = [
             'fecha_emision'=> 'required',
@@ -390,14 +409,20 @@ class DocumentoController extends Controller
             foreach ($detalles as $detalle) {
                 $detalle->delete();
             }
-            foreach ($articulotabla as $articulo) {
-                
+            foreach ($articulotabla as $detalle) {
+                $articulo = Articulo::findOrFail($detalle->articulo_id);
                 Detalle::create([
                     'documento_id' => $documento->id,
-                    'articulo_id' => $articulo->articulo_id,
-                    'cantidad' => $articulo->cantidad,
-                    'precio' => $articulo->precio,
-                    'costo_flete' => $articulo->costo_flete,
+                    'articulo_id' => $detalle->articulo_id,
+                    'descripcion_articulo' => $articulo->descripcion,
+                    'presentacion_articulo' => $articulo->presentacion,
+                    'codigo_articulo' => $articulo->codigo_fabrica,
+                    'medida_articulo' => $articulo->unidad_medida,
+                    'cantidad' => $detalle->cantidad,
+                    'precio' => $detalle->precio,
+                    'costo_flete' => $detalle->costo_flete,
+                    'fecha_vencimiento' =>  Carbon::createFromFormat('d/m/Y', $detalle->fecha_vencimiento)->format('Y-m-d'),
+                    'lote' => $detalle->lote,
                 ]);
             }
         }

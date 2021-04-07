@@ -26,25 +26,28 @@ class CreateOrdenProduccionDetallesTable extends Migration
                 ->references('id')->on('producto_detalles')
                 ->onDelete('cascade');
 
-            $table->unsignedDecimal('cantidad_solicitada', 15, 6);
-            $table->unsignedDecimal('cantidad_entregada', 15, 6);
-
-            $table->unsignedInteger('almacen_correcto_id')->unsigned()->nullable();
-            $table->foreign('almacen_correcto_id')
-                    ->references('id')->on('almacenes')
-                    ->onDelete('cascade');
-
-            $table->unsignedDecimal('cantidad_devuelta_correcta', 15, 6)->nullable();
-            $table->mediumText('observacion_correcta')->nullable();
+            $table->unsignedDecimal('cantidad_produccion', 15, 6);
+            $table->string('cantidad_produccion_completa');
+            $table->unsignedDecimal('cantidad_excedida', 15, 6);
+            $table->enum('completado',['0','1'])->default('0');
             
-            $table->unsignedInteger('almacen_incorrecto_id')->unsigned()->nullable();
-            $table->foreign('almacen_incorrecto_id')
-                    ->references('id')->on('almacenes')
-                    ->onDelete('cascade');
+
+            // $table->unsignedInteger('almacen_correcto_id')->unsigned()->nullable();
+            // $table->foreign('almacen_correcto_id')
+            //         ->references('id')->on('almacenes')
+            //         ->onDelete('cascade');
+
+            // $table->unsignedDecimal('cantidad_devuelta_correcta', 15, 6)->nullable();
+            // $table->mediumText('observacion_correcta')->nullable();
+            
+            // $table->unsignedInteger('almacen_incorrecto_id')->unsigned()->nullable();
+            // $table->foreign('almacen_incorrecto_id')
+            //         ->references('id')->on('almacenes')
+            //         ->onDelete('cascade');
                     
-            $table->unsignedDecimal('cantidad_devuelta_incorrecta', 15, 6)->nullable();
-            $table->mediumText('observacion_incorrecta')->nullable();
-            $table->BigInteger('operacion')->nullable();
+            // $table->unsignedDecimal('cantidad_devuelta_incorrecta', 15, 6)->nullable();
+            // $table->mediumText('observacion_incorrecta')->nullable();
+            // $table->BigInteger('operacion')->nullable();
             
             $table->timestamps();
         });

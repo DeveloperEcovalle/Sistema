@@ -37,7 +37,7 @@ class Articulo extends Model
         return $this->hasMany('App\Ventas\CotizacionDetalle');
     }
 
-    // helpers
+    // HELPERS
     function getDescripcionCompleta()
     {
         return $this->codigo_fabrica.' - '.$this->descripcion;

@@ -332,83 +332,110 @@
                                     <div class="panel-body">
 
 
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <label class="required">Producto</label>
-                                                <select class="select2_form form-control"
-                                                    style="text-transform: uppercase; width:100%" name="articulo_id"
-                                                    id="articulo_id" onchange="cargarPresentacion(this)">
-                                                    <option></option>
-                                                    @foreach ($articulos as $articulo)
-                                                    <option value="{{$articulo->id}}">{{$articulo->descripcion}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="invalid-feedback"><b><span id="error-articulo"></span></b>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <div class="col-md-6">
-                                                        <label class="">Presentación</label>
-                                                        <input type="text" id="presentacion" name="presentacion" class="form-control" disabled>
-                                                        <div class="invalid-feedback"><b><span id="error-presentacion"></span></b></div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="required">Costo Flete:</label>
-                                                        <input type="text" id="costo_flete" name="costo_flete" class="form-control">
-                                                        <div class="invalid-feedback"><b><span id="error-costo-flete"></span></b></div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="col-form-label required" for="amount">Precio</label>
-                                                            <input type="text" id="precio" class="form-control">
-                                                            <div class="invalid-feedback"><b><span id="error-precio"></span></b>
+                                    <div class="row">
+                                                <div class="col-lg-6 col-xs-12 b-r">
+                                                    <div class="form-group row">
+                                                        <div class="col-md-12 col-xs-12">
+                                                            <label class="required">Artículo:</label>
+                                                            <select class="select2_form form-control"
+                                                                style="text-transform: uppercase; width:100%" name="articulo_id"
+                                                                id="articulo_id" onchange="cargarPresentacion(this)">
+                                                                <option></option>
+                                                                @foreach ($articulos as $articulo)
+                                                                <option value="{{$articulo->id}}">{{$articulo->descripcion}}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <div class="invalid-feedback"><b><span id="error-articulo"></span></b>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
 
-                                                        <label class="col-form-label required">Cantidad</label>
-                                                        <input type="text" id="cantidad" class="form-control">
-                                                        <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
+                                                    <div class="form-group row">
+                                                        <div class="col-md-6">
+                                                            <label class="">Presentación:</label>
+                                                            <input type="text" id="presentacion" name="presentacion" class="form-control" disabled>
+                                                            <div class="invalid-feedback"><b><span id="error-presentacion"></span></b></div>
+                                                        
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="required">Costo Flete:</label>
+                                                            <input type="text" id="costo_flete" name="costo_flete" class="form-control">
+                                                            <div class="invalid-feedback"><b><span id="error-costo-flete"></span></b></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label required" for="amount">Precio:</label>
+                                                                <input type="text" id="precio" class="form-control">
+                                                                <div class="invalid-feedback"><b><span id="error-precio"></span></b>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+
+                                                            <label class="col-form-label required">Cantidad:</label>
+                                                            <input type="text" id="cantidad" class="form-control">
+                                                            <div class="invalid-feedback"><b><span id="error-cantidad"></span></b>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-lg-6 col-xs-12">
+
+                                                    <div class="form-group row" >
+                                                        <div class="col-md-6" id="fecha_vencimiento_campo">
+                                                            <label class="required">Fecha de vencimiento:</label>
+                                                            <div class="input-group date">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                                <input type="text" id="fecha_vencimiento" name="fecha_vencimiento" class="form-control"  autocomplete="off" readonly>
+                                                                <div class="invalid-feedback"><b><span id="error-fecha_vencimiento"></span></b></div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="required">Lote:</label>
+                                                            <input type="text" id="lote" name="lote" class="form-control" onkeypress="return mayus(this);">
+                                                            <div class="invalid-feedback"><b><span id="error-lote"></span></b></div>
+                                                        </div>
+                                                    </div>
+
+                                                       
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6 col-xs-12">
+                                                            <label class="col-form-label" for="amount">&nbsp;</label> <a class="btn btn-block btn-success " onclick="limpiarDetalle()" style='color:white;'> <i class="fa fa-paint-brush"></i> LIMPIAR</a>
+                                                        </div>
+
+                                                        <div class="col-lg-6 col-xs-12">
+                                                            <label class="col-form-label" for="amount">&nbsp;</label>
+                                                            <a class="btn btn-block btn-warning enviar_articulo" style='color:white;'> <i class="fa fa-plus"></i> AGREGAR</a>
                                                         </div>
 
 
                                                     </div>
+                                                   
+
+                                                
                                                 </div>
+
+
 
 
                                             </div>
 
 
-                                            <div class="col-sm-6">
-
-                                                <div class="form-group">
-                                                    <label class="col-form-label" for="amount">&nbsp;</label>
-                                                    <a class="btn btn-block btn-warning enviar_articulo"
-                                                        style='color:white;'>
-                                                        <i class="fa fa-plus"></i> AGREGAR</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
 
 
-                                        <hr>
+                                            <hr>
 
                                         <div class="table-responsive">
                                             <table
@@ -421,6 +448,7 @@
                                                         <th class="text-center">CANTIDAD</th>
                                                         <th class="text-center">PRESENTACION</th>
                                                         <th class="text-center">PRODUCTO</th>
+                                                        <th class="text-center">FECHA. VENC</th>
                                                         <th class="text-center">COSTO FLETE</th>
                                                         <th class="text-center">PRECIO</th>
                                                         <th class="text-center">TOTAL</th>
@@ -432,18 +460,18 @@
                                                 </tbody>
                                                 <tfoot style="text-transform:uppercase">
                                                     <tr>
-                                                        <th colspan="7" style="text-align:right">Sub Total:</th>
-                                                        <th><span id="subtotal"></span></th>
+                                                        <th colspan="8" style="text-align:right">Sub Total:</th>
+                                                        <th class="text-center"><span id="subtotal">0.0</span></th>
 
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="7" class="text-center">IGV <span
+                                                        <th colspan="8" class="text-center">IGV <span
                                                                 id="igv_int"></span>:</th>
                                                         <th class="text-center"><span id="igv_monto"></span></th>
 
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="7" class="text-center">TOTAL:</th>
+                                                        <th colspan="8" class="text-center">TOTAL:</th>
                                                         <th class="text-center"><span id="total"></span></th>
 
                                                     </tr>
@@ -613,11 +641,6 @@ if ("{{$documento->igv}}") {
 }
 
 
-
-
-
-
-
 //Select2
 $(".select2_form").select2({
     placeholder: "SELECCIONAR",
@@ -626,16 +649,7 @@ $(".select2_form").select2({
     width: '100%',
 });
 
-$('#fecha_documento .input-group.date').datepicker({
-    todayBtn: "linked",
-    keyboardNavigation: false,
-    forceParse: false,
-    autoclose: true,
-    language: 'es',
-    format: "dd/mm/yyyy"
-});
-
-$('#fecha_entrega .input-group.date').datepicker({
+$('#fecha_documento .input-group.date , #fecha_vencimiento_campo .input-group.date , #fecha_entrega .input-group.date , #fecha_vencimiento_campo_editar .input-group.date ').datepicker({
     todayBtn: "linked",
     keyboardNavigation: false,
     forceParse: false,
@@ -644,9 +658,17 @@ $('#fecha_entrega .input-group.date').datepicker({
     format: "dd/mm/yyyy",
 })
 
+const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false
+})
+
 // Solo campos numericos
-$('#precio').keyup(function() {
-    var val = $(this).val();
+$('#tipo_cambio , #costo_flete , #precio , #flete_table').keyup(function() {
+    var val = $(this).val();1
     if (isNaN(val)) {
         val = val.replace(/[^0-9\.]/g, '');
         if (val.split('.').length > 2)
@@ -655,15 +677,6 @@ $('#precio').keyup(function() {
     $(this).val(val);
 });
 
-$('#costo_flete').keyup(function() {
-    var val = $(this).val();
-    if (isNaN(val)) {
-        val = val.replace(/[^0-9\.]/g, '');
-        if (val.split('.').length > 2)
-            val = val.replace(/\.+$/, "");
-    }
-    $(this).val(val);
-});
 
 function activarNumero(){
     $('#numero_tipo').val('')
@@ -727,7 +740,7 @@ function validarFecha() {
     }
 
     if (articulos == 0) {
-        toastr.error('Ingrese al menos 1  Producto.', 'Error');
+        toastr.error('Ingrese al menos 1 Artículo.', 'Error');
         enviar = true;
     }
 
@@ -738,13 +751,6 @@ $('#enviar_orden').submit(function(e) {
     e.preventDefault();
     var correcto = validarFecha()
     if (correcto == false) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
 
         Swal.fire({
             title: 'Opción Guardar',
@@ -800,7 +806,7 @@ $("#igv_check").click(function() {
 $(document).ready(function() {
 
     // DataTables
-    $('.dataTables-orden-detalle').DataTable({
+    table = $('.dataTables-orden-detalle').DataTable({
         "dom": 'lTfgitp',
         "bPaginate": true,
         "bLengthChange": true,
@@ -852,6 +858,24 @@ $(document).ready(function() {
                 className: "text-center",
             },
 
+            {
+                "targets": [8],
+                className: "text-center",
+            },
+
+            {
+                "targets": [9],
+                className: "text-center",
+                visible: false
+            },
+            {
+                "targets": [10],
+                className: "text-center",
+                visible: false
+            },
+                    
+
+
         ],
     });
 
@@ -874,56 +898,63 @@ $(document).ready(function() {
 
     obtenerTabla()
     sumaTotal()
-     
-    
-
-
 
 })
-
-
 
 function obtenerTabla() {
     var t = $('.dataTables-orden-detalle').DataTable();
     @foreach($detalles as $detalle)
-    var presentacion = obtenerPresentacion("{{$detalle->articulo->presentacion}}")
+    
     t.row.add([
         "{{$detalle->articulo_id}}",
         '',
         "{{$detalle->cantidad}}",
-        presentacion,
-        "{{$detalle->articulo->descripcion}}",
+        obtenerArticulo("{{$detalle->articulo->id}}").presentacion,
+        "{{$detalle->articulo->descripcion.' - '.$detalle->lote}}",
+        "{{$detalle->fechaFormateada()}}",
         "{{$detalle->costo_flete}}",
         "{{$detalle->precio}}",
-        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2)
+        ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2),
+        "{{$detalle->lote}}",
+        '1'
     ]).draw(false);
     @endforeach
 }
 //Editar Registro
 $(document).on('click', '#editar_articulo', function(event) {
-    var table = $('.dataTables-orden-detalle').DataTable();
     var data = table.row($(this).parents('tr')).data();
-
     $('#indice').val(table.row($(this).parents('tr')).index());
     $('#articulo_id_editar').val(data[0]).trigger('change');
-    $('#presentacion_editar').val(articuloPresentacion(data[0]));
+    $('#presentacion_editar').val(obtenerArticulo(data[0]).presentacion);
     $('#precio_editar').val(data[7]);
     $('#costo_flete_editar').val(data[6]);
+    $('#fecha_vencimiento_editar').val(data[5]);
+    $('#lote_editar').val(data[9]);
     $('#cantidad_editar').val(data[2]);
+    $('#editable_lote').val(data[10]);
+    
+    //MOSTRAR TABLA SI ES INGRESO POR PRIMERA VEZ DEL LOTE
+    if (data[10]=='' && data[9] != '') {
+        $('#modalLote').hide(); 
+        $('#editarLote').hide(); 
+        $('#editarRegistro').show(); 
+    }else{
+        if (data[10]!='1') { 
+            $('#modalLote').show(); 
+            $('#editarLote').show(); 
+            $('#editarRegistro').hide(); 
+        } else { 
+            $('#modalLote').hide(); 
+            $('#editarLote').hide(); 
+            $('#editarRegistro').show(); 
+        }   
+    }
     $('#modal_editar_orden').modal('show');
 
 })
 
 //Borrar registro de articulos
 $(document).on('click', '#borrar_articulo', function(event) {
-
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false
-    })
 
     Swal.fire({
         title: 'Opción Eliminar',
@@ -935,7 +966,6 @@ $(document).on('click', '#borrar_articulo', function(event) {
         cancelButtonText: "No, Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            var table = $('.dataTables-orden-detalle').DataTable();
             table.row($(this).parents('tr')).remove().draw();
             sumaTotal()
         } else if (
@@ -959,20 +989,20 @@ $(".enviar_articulo").click(function() {
     limpiarErrores()
     var enviar = false;
     if ($('#articulo_id').val() == '') {
-        toastr.error('Seleccione Producto.', 'Error');
+        toastr.error('Seleccione Artículo.', 'Error');
         enviar = true;
         $('#articulo_id').addClass("is-invalid")
-        $('#error-articulo').text('El campo Producto es obligatorio.')
+        $('#error-articulo').text('El campo Artículo es obligatorio.')
     } else {
         var existe = buscarArticulo($('#articulo_id').val())
         if (existe == true) {
-            toastr.error('Producto ya se encuentra ingresado.', 'Error');
+            toastr.error('Artículo ya se encuentra ingresado.', 'Error');
             enviar = true;
         }
     }
     if ($('#precio').val() == '') {
 
-        toastr.error('Ingrese el precio del producto.', 'Error');
+        toastr.error('Ingrese el Artículo del Artículo.', 'Error');
         enviar = true;
 
         $("#precio").addClass("is-invalid");
@@ -980,7 +1010,7 @@ $(".enviar_articulo").click(function() {
     }
 
     if ($('#cantidad').val() == '') {
-        toastr.error('Ingrese cantidad del producto.', 'Error');
+        toastr.error('Ingrese cantidad del Artículo.', 'Error');
         enviar = true;
 
         $("#cantidad").addClass("is-invalid");
@@ -988,23 +1018,32 @@ $(".enviar_articulo").click(function() {
     }
 
     if ($('#costo_flete').val() == '') {
-        toastr.error('Ingrese Costo de Flete del producto.', 'Error');
+        toastr.error('Ingrese Costo de Flete del Artículo.', 'Error');
         enviar = true;
 
         $("#costo_flete").addClass("is-invalid");
         $('#error-costo_flete').text('El campo Costo de Flete es obligatorio.')
     }
 
+    if ($('#lote').val() == '') {
+        toastr.error('Ingrese el Lote del Artículo.', 'Error');
+        enviar = true;
+
+        $("#lote").addClass("is-invalid");
+        $('#error-lote').text('El campo Lote es obligatorio.')
+    }
+
+    if ($('#fecha_vencimiento').val() == '') {
+        toastr.error('Ingrese la Fecha de Vencimiento del Artículo.', 'Error');
+        enviar = true;
+
+        $("#fecha_vencimiento").addClass("is-invalid");
+        $('#error-fecha_vencimiento').text('El campo Fecha de Vencimiento es obligatorio.')
+    }
+
 
 
     if (enviar != true) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger',
-            },
-            buttonsStyling: false
-        })
 
         Swal.fire({
             title: 'Opción Agregar',
@@ -1020,13 +1059,15 @@ $(".enviar_articulo").click(function() {
                 var presentacion_articulo = obtenerPresentacion($('#presentacion').val())
                 var detalle = {
                     articulo_id: $('#articulo_id').val(),
-                    descripcion: descripcion_articulo,
+                    descripcion: descripcion_articulo.descripcion+' - '+$('#lote').val(),
                     presentacion: presentacion_articulo,
                     costo_flete: $('#costo_flete').val(),
                     precio: $('#precio').val(),
                     cantidad: $('#cantidad').val(),
+                    lote: $('#lote').val(),
+                    fecha_vencimiento: $('#fecha_vencimiento').val(),
                 }
-                limpiarDetalle()
+                // limpiarDetalle()
                 agregarTabla(detalle);
                 sumaTotal()
 
@@ -1051,7 +1092,8 @@ function limpiarDetalle() {
     $('#cantidad').val('')
     $('#costo_flete').val('')
     $('#articulo_id').val($('#articulo_id option:first-child').val()).trigger('change');
-
+    $('#lote').val('')
+    $('#fecha_vencimiento').val('')
 }
 
 function limpiarErrores() {
@@ -1066,30 +1108,30 @@ function limpiarErrores() {
 
     $('#costo_flete').removeClass("is-invalid")
     $('#error-costo_flete').text('')
+
+    $('#fecha_vencimiento').removeClass("is-invalid")
+    $('#error-fecha_vencimiento').text('')
+
+    $('#lote').removeClass("is-invalid")
+    $('#error-lote').text('')
 }
 
-function obtenerArticulo($id) {
-    var articulo = ""
-    @foreach($articulos as $articulo)
-    if ("{{$articulo->id}}" == $id) {
-        articulo = "{{$articulo->descripcion}}"
-    }
-    @endforeach
-    return articulo;
+//OBTENER EL ARTICULO POR SU ID 
+function obtenerArticulo(id) {
+    var articulo = "";
+    $.ajax({
+      url: '{{ route("getArticle", ":id") }}'.replace(':id', id),
+      async: false,  
+      success:function(data) {
+        articulo = (data) ? data : toastr.error('El Artículo no se encuentra en Base de Datos.', 'Error'); 
+      }
+   });
+   return articulo;
 }
-
+//AGREGAR EL CAMPO PRESENTACION Y PRECIO DEL PRODUCTO
 function cargarPresentacion(articulo) {
-    var id = articulo.value
-    var presentacion = ""
-    @foreach($articulos as $articulo)
-    if ("{{$articulo->id}}" == id) {
-        presentacion = "{{$articulo->presentacion}}"
-        precio = "{{$articulo->precio_compra}}"
-    }
-    @endforeach
-    //Añadir a input presentacion
-    $('#presentacion').val(presentacion)
-    $('#precio').val(precio)
+    $('#presentacion').val(obtenerArticulo(articulo.value).presentacion)
+    $('#precio').val(obtenerArticulo(articulo.value).precio_compra)
 }
 
 $("#moneda").on("change", function() {
@@ -1128,21 +1170,30 @@ function agregarTabla($detalle) {
         $detalle.cantidad,
         $detalle.presentacion,
         $detalle.descripcion,
+        $detalle.fecha_vencimiento,
         $detalle.costo_flete,
         $detalle.precio,
         ($detalle.cantidad * $detalle.precio).toFixed(2),
+        $detalle.lote,
+        editable($detalle.editable)
     ]).draw(false);
     cargarArticulos()
 
 }
 
+//EDITABLE SIRVE PARA MANEJAR EL AGREGAR LOTES EN UN PRODUCTO
+function editable(editable) {
+    if (editable) {
+        return editable
+    }else{
+        return ''
+    }
+}
+
 function buscarArticulo(id) {
     var existe = false;
-    var t = $('.dataTables-orden-detalle').DataTable();
-    t.rows().data().each(function(el, index) {
-        if (el[0] == id) {
-            existe = true
-        }
+    table.rows().data().each(function(el, index) {
+        (el[0] == id && $('#lote').val() == el[9]) ? existe = true : ''
     });
     return existe
 }
@@ -1158,8 +1209,10 @@ function cargarArticulos() {
             articulo_id: value[0],
             cantidad: value[2],
             presentacion: value[3],
-            costo_flete: value[5],
-            precio: value[6],
+            costo_flete: value[6],
+            precio: value[7],
+            fecha_vencimiento: value[5],
+            lote: value[9],
         };
 
         articulos.push(fila);
@@ -1180,17 +1233,15 @@ function obtenerPresentacion($descripcion) {
 }
 
 function registrosArticulos() {
-    var table = $('.dataTables-orden-detalle').DataTable();
     var registros = table.rows().data().length;
     return registros
 }
 
 
 function sumaTotal() {
-    var t = $('.dataTables-orden-detalle').DataTable();
     var subtotal = 0;
-    t.rows().data().each(function(el, index) {
-        subtotal = Number(el[7]) + subtotal
+    table.rows().data().each(function(el, index) {
+        subtotal = Number(el[8]) + subtotal
     });
 
     var igv = $('#igv').val()

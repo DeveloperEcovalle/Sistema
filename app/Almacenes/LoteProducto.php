@@ -19,6 +19,7 @@ class LoteProducto extends Model
         'codigo_producto',
         'descripcion_producto',
         'cantidad',
+        'cantidad_logica',
         
         'fecha_vencimiento',
         'fecha_entrega',
@@ -37,10 +38,10 @@ class LoteProducto extends Model
     }
 
     //EVENTO AL CREAR Y AL MODIFICAR
-
     protected static function booted()
     {
         static::saved(function(LoteProducto $loteProducto){
+          
             if ($loteProducto->confor_almacen != null && $loteProducto->confor_produccion != null) {
                 //RECORRER LOTE - PRODUCTO Y LA SUMA
                 $cantidadProductos = LoteProducto::where('estado','1')->where('producto_id',$loteProducto->producto_id)->sum('cantidad');

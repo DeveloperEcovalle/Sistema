@@ -28,7 +28,7 @@ class CreateProgramacionProduccionTable extends Migration
             $table->mediumText('observacion')->nullable();
             // $table->BigInteger('usuario_id');
             $table->enum('estado',['VIGENTE','PRODUCCION','TERMINADO','ANULADO'])->default('VIGENTE');
-            $table->enum('produccion',['PENDIENTE','ATENDIDA'])->default('PENDIENTE');
+            $table->enum('produccion',['0','1'])->default('0');
             $table->timestamps();
         });
     }

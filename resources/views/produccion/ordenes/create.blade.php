@@ -109,7 +109,7 @@
                                 <div class="col-lg-12">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            <h4 class=""><b>Detalle de la orden de produccion</b></h4>
+                                            <h4 class=""><b>Descripción de la orden de produccion</b></h4>
                                         </div>
                                         <div class="panel-body">
                                         
@@ -117,27 +117,48 @@
 
                                                     <table class="table dataTables-ordenes table-striped table-bordered table-hover" id="orden" style="text-transform:uppercase">
                                                         <thead>
-                                                        <tr>
+                                                        <!-- <tr>
                                     
                                                             <th colspan="2" class="text-center"></th>
                                                             <th colspan="2" class="text-center">CANTIDADES</th>
                                                             <th colspan="4" class="text-center">CANT. DEVUELTAS</th>
                                                             <th colspan="1" class="text-center"></th>
 
-                                                        </tr>
+                                                        </tr> -->
                                                         <tr>
-                                                            <th class="text-left"></th>
+                                                            <th class="text-center">ID</th>
+                                                            <th class="text-center">CODIGO</th>
                                                             <th class="text-center">ARTICULO</th>
-                                                            <th class="text-center">SOLICITADO</th>
+                                                            <th class="text-center">ALMACEN</th>
+                                                            <!-- <th class="text-center">SOLICITADO</th>
                                                             <th class="text-center">ENTREGADO</th>
                                                             <th class="text-center"><i class="fa fa-check"></i></th>
                                                             <th class="text-center">OBS.</th>
                                                             <th class="text-center"><i class="fa fa-times"></i></th>
-                                                            <th class="text-center">OBS.</th>
+                                                            <th class="text-center">OBS.</th> -->
                                                             <th class="text-center">ACCIONES</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+
+                                                            @foreach($productoDetalles as $articulo)
+                                                            <tr>
+                                                                <td class="text-center" >{{$articulo->id}}</td>
+                                                                <td class="text-center">{{$articulo->articulo->codigo_fabrica}}</td>
+                                                                <td>{{$articulo->articulo->descripcion}}</td>
+                                                                <td>{{$articulo->articulo->almacen->descripcion}}</td>
+                                                                <td class="text-center">
+                                                                    <div class='btn-group'>
+                                                                        <a class='btn btn-warning btn-sm' href="{{route('produccion.orden.detalle.lote.create' , 
+                                                                                                                [   'producto_detalle_id' => $articulo->id ,
+                                                                                                                    'articulo_id' => $articulo->articulo_id ,
+                                                                                                                    'programacion_id'=> $programacion->id,
+                                                                                                                ])}}" style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>
+                                                                    </div>
+                                                                
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
 
 
                                                         </tbody>
@@ -168,9 +189,6 @@
                                     class="btn btn-w-m btn-default">
                                     <i class="fa fa-arrow-left"></i> Regresar
                                 </a>
-                                <button type="submit" id="btn_grabar" class="btn btn-w-m btn-primary">
-                                    <i class="fa fa-save"></i> Grabar
-                                </button>
                             </div>
                         </div>
                     </form>
@@ -181,6 +199,8 @@
     </div>
 
 </div>
+
+
 @include('produccion.ordenes.modal')
 @stop
 @push('styles')
@@ -238,8 +258,8 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 $(document).ready(function() {
     // DataTables Orden
-    var url = '{{ route("produccion.orden.articulos", ":id")}}';
-    url= url.replace(':id', '{{$programacion->id}}' );
+    // var url = '{{ route("produccion.orden.articulos", ":id")}}';
+    // url= url.replace(':id', '{{$programacion->id}}' );
 
     $('.dataTables-ordenes').DataTable({
         "dom": 'lTfgitp',
@@ -251,139 +271,139 @@ $(document).ready(function() {
         "language": {
             "url": "{{asset('Spanish.json')}}"
         },
-        "processing": true,
-        "ajax": url,
+        // "processing": true,
+        // "ajax": url,
 
-        "columnDefs": [
-            {
-                //ID - ARTICULO
-                "targets": [0],
-                "visible": false,
-                "data": 'id'
-            },
-            {
-                //ARTICULO
-                "targets": [1],
-                "className": "text-left",
-                "data" : 'articulo',
-                sWidth: '25%'
-            },
-            {
-                //CANTIDAD_SOLICITADA COMPLETADA
-                "targets": [2],
-                "className":"text-center",
-                "data" : 'cantidad_solicitada_completa',
-                sWidth: '10%'
-            },
-            {
-                //CANTIDAD_ENTREGADA
-                "targets": [3],
-                className: "text-center",
-                "data" : 'cantidad_entregada',
-                sWidth: '10%'
-            },
-            {
-                 //CANTIDAD_DEVUELTA_CORRECTA (COMPLETA)
-                "targets": [4],
-                className: "text-center",
-                "data" : 'cantidad_devuelta_correcta_completa'
-            },
-            {
-                 //OBSERVACION_CORRECTA
-                "targets": [5],
-                className: "text-center",
-                "data" : 'observacion_correcta'
-            },
-            {
-                 //CANTIDAD_DEVUELTA_INCORRECTA (COMPLETA)
-                "targets": [6],
-                className: "text-center",
-                "data" : 'cantidad_devuelta_incorrecta_completa'
-            },
-            {
-                 //OBSERVACION_INCORRECTA
-                "targets": [7],
-                className: "text-center",
-                "data" : 'observacion_incorrecta'
-            },
+        // "columnDefs": [
+        //     {
+        //         //ID - ARTICULO
+        //         "targets": [0],
+        //         "visible": false,
+        //         "data": 'id'
+        //     },
+        //     {
+        //         //ARTICULO
+        //         "targets": [1],
+        //         "className": "text-left",
+        //         "data" : 'articulo',
+        //         sWidth: '25%'
+        //     },
+        //     {
+        //         //CANTIDAD_SOLICITADA COMPLETADA
+        //         "targets": [2],
+        //         "className":"text-center",
+        //         "data" : 'cantidad_solicitada_completa',
+        //         sWidth: '10%'
+        //     },
+        //     {
+        //         //CANTIDAD_ENTREGADA
+        //         "targets": [3],
+        //         className: "text-center",
+        //         "data" : 'cantidad_entregada',
+        //         sWidth: '10%'
+        //     },
+        //     {
+        //          //CANTIDAD_DEVUELTA_CORRECTA (COMPLETA)
+        //         "targets": [4],
+        //         className: "text-center",
+        //         "data" : 'cantidad_devuelta_correcta_completa'
+        //     },
+        //     {
+        //          //OBSERVACION_CORRECTA
+        //         "targets": [5],
+        //         className: "text-center",
+        //         "data" : 'observacion_correcta'
+        //     },
+        //     {
+        //          //CANTIDAD_DEVUELTA_INCORRECTA (COMPLETA)
+        //         "targets": [6],
+        //         className: "text-center",
+        //         "data" : 'cantidad_devuelta_incorrecta_completa'
+        //     },
+        //     {
+        //          //OBSERVACION_INCORRECTA
+        //         "targets": [7],
+        //         className: "text-center",
+        //         "data" : 'observacion_incorrecta'
+        //     },
 
-            {
-                "targets": [8],
-                className: "text-center",
-                render: function(data, type, row) {
-                    return "<div class='btn-group'>" +
-                        "<a class='btn btn-warning btn-sm modificar_cantidad' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
-                        "<a class='btn btn-danger btn-sm eliminar_cantidad' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
-                        "</div>";
-                }
-            },
+        //     {
+        //         "targets": [8],
+        //         className: "text-center",
+        //         render: function(data, type, row) {
+        //             return "<div class='btn-group'>" +
+        //                 "<a class='btn btn-warning btn-sm modificar_cantidad' style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>" +
+        //                 "<a class='btn btn-danger btn-sm eliminar_cantidad' style='color:white;' title='Eliminar'><i class='fa fa-trash'></i></a>" +
+        //                 "</div>";
+        //         }
+        //     },
 
-            {
-                //CANTIDAD_DEVUELTA_CORRECTA (CANTIDAD)
-                "targets": [9],
-                "visible": false,
-                "data" : 'cantidad_devuelta_correcta_cantidad'
-            },
-            {
-                //CANTIDAD_DEVUELTA_CORRECTA (ALMACEN(ID))
-                "targets": [10],
-                "visible": false,
-                "data" : 'cantidad_devuelta_correcta_almacen'
-            },
-            {
-                //CANTIDAD_DEVUELTA_INCORRECTA (CANTIDAD)
-                "targets": [11],
-                "visible": false,
-                "data" : 'cantidad_devuelta_incorrecta_cantidad'
-            },
-            {
-                //CANTIDAD_DEVUELTA_INCORRECTA (ALMACEN(ID))
-                "targets": [12],
-                "visible": false,
-                "data" : 'cantidad_devuelta_incorrecta_almacen'
-            },
-            {
-                //CANTIDAD_SOLICITADA
-                "targets": [13],
-                "visible": false,
-                "data" : 'cantidad_solicitada'
-            },
+        //     {
+        //         //CANTIDAD_DEVUELTA_CORRECTA (CANTIDAD)
+        //         "targets": [9],
+        //         "visible": false,
+        //         "data" : 'cantidad_devuelta_correcta_cantidad'
+        //     },
+        //     {
+        //         //CANTIDAD_DEVUELTA_CORRECTA (ALMACEN(ID))
+        //         "targets": [10],
+        //         "visible": false,
+        //         "data" : 'cantidad_devuelta_correcta_almacen'
+        //     },
+        //     {
+        //         //CANTIDAD_DEVUELTA_INCORRECTA (CANTIDAD)
+        //         "targets": [11],
+        //         "visible": false,
+        //         "data" : 'cantidad_devuelta_incorrecta_cantidad'
+        //     },
+        //     {
+        //         //CANTIDAD_DEVUELTA_INCORRECTA (ALMACEN(ID))
+        //         "targets": [12],
+        //         "visible": false,
+        //         "data" : 'cantidad_devuelta_incorrecta_almacen'
+        //     },
+        //     {
+        //         //CANTIDAD_SOLICITADA
+        //         "targets": [13],
+        //         "visible": false,
+        //         "data" : 'cantidad_solicitada'
+        //     },
             
 
-        ],
+        // ],
 
     });
 });
 
 
 //Editar Registro --REVISAR
-$(document).on('click', '.modificar_cantidad', function(event) {
-    var table = $('.dataTables-ordenes').DataTable();
-    var data = table.row($(this).parents('tr')).data();
-    console.log(data)
-    $('#indice').val(table.row($(this).parents('tr')).index());
+// $(document).on('click', '.modificar_cantidad', function(event) {
+//     var table = $('.dataTables-ordenes').DataTable();
+//     var data = table.row($(this).parents('tr')).data();
+//     console.log(data)
+//     $('#indice').val(table.row($(this).parents('tr')).index());
     
-    $('#cantidad_solicitada').val(data.cantidad_solicitada);
+//     $('#cantidad_solicitada').val(data.cantidad_solicitada);
 
-    $("#cantidad_entregada").attr({ 
-        "min" : data.cantidad_solicitada,
-    });
-    $('#cantidad_entregada').val(data.cantidad_entregada);
+//     $("#cantidad_entregada").attr({ 
+//         "min" : data.cantidad_solicitada,
+//     });
+//     $('#cantidad_entregada').val(data.cantidad_entregada);
 
-    $('#cantidad_correcta').val(data.cantidad_devuelta_correcta_cantidad);
-    $("#almacen_cantidad_correcta").val(data.cantidad_devuelta_correcta_almacen).trigger("change");
-    $('#observacion_correcta').val(data.observacion_correcta);
+//     $('#cantidad_correcta').val(data.cantidad_devuelta_correcta_cantidad);
+//     $("#almacen_cantidad_correcta").val(data.cantidad_devuelta_correcta_almacen).trigger("change");
+//     $('#observacion_correcta').val(data.observacion_correcta);
 
-    $('#cantidad_incorrecta').val(data.cantidad_devuelta_incorrecta_cantidad);
-    $("#almacen_cantidad_incorrecta").val(data.cantidad_devuelta_incorrecta_almacen).trigger("change");
-    $('#observacion_incorrecta').val(data.observacion_incorrecta);
+//     $('#cantidad_incorrecta').val(data.cantidad_devuelta_incorrecta_cantidad);
+//     $("#almacen_cantidad_incorrecta").val(data.cantidad_devuelta_incorrecta_almacen).trigger("change");
+//     $('#observacion_incorrecta').val(data.observacion_incorrecta);
 
-    $('#observacion').val(data.observacion);
-    $('#modal_cantidad_produccion').modal('show');
-})
+//     $('#observacion').val(data.observacion);
+//     $('#modal_cantidad_produccion').modal('show');
+// })
 
 
-//Borrar registro 
+//ELIMINAR REGISTRO
 $(document).on('click', '.eliminar_cantidad', function(event) {
     Swal.fire({
         title: 'Opción Eliminar',
@@ -398,7 +418,6 @@ $(document).on('click', '.eliminar_cantidad', function(event) {
             var table = $('.dataTables-ordenes').DataTable();
             table.row($(this).parents('tr')).remove().draw();
         } else if (
-            /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
         ) {
             swalWithBootstrapButtons.fire(
@@ -408,9 +427,6 @@ $(document).on('click', '.eliminar_cantidad', function(event) {
             )
         }
     })
-
-
-
 });
 
 
@@ -464,15 +480,15 @@ function validarCantidades() {
     return existe
 }
 
-function cargarDetalles() {
-    var detalles = [];
-    var tabla = $('.dataTables-ordenes').DataTable();
-    var data = tabla.rows().data();
-    data.each(function(value, index) {
-        detalles.push(value)
-        $('#productos_detalle').val(JSON.stringify(detalles));
-    })
-}
+// function cargarDetalles() {
+//     var detalles = [];
+//     var tabla = $('.dataTables-ordenes').DataTable();
+//     var data = tabla.rows().data();
+//     data.each(function(value, index) {
+//         detalles.push(value)
+//         $('#productos_detalle').val(JSON.stringify(detalles));
+//     })
+// }
 
 
 </script>

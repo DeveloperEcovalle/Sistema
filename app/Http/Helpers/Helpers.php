@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Mantenimiento\Parametro\Parametro;
 use GuzzleHttp\Client;
+use App\Mantenimiento\Empresa\Facturacion;
 
 // TABLAS-DETALLES
 
@@ -639,16 +640,25 @@ if (!function_exists('modificarEmpresaapi')) {
     }
 }
 
+// OBTENER TOKEN DE LA EMPRESA TOKEN-CODE
+if (!function_exists('tokenEmpresa')) {
+    function tokenEmpresa($id)
+    {
+        $facturacion = Facturacion::findOrFail($id);
+        return $facturacion->token_code;
+    }
+}
+
 ////////////////////////////////////////////////
 
 //ENVIAR FACTURA O BOLETA
 //GENERAR PDF
 if (!function_exists('generarComprobanteapi')) {
-    function generarComprobanteapi($comprobante)
+    function generarComprobanteapi($comprobante,$empresa)
     {
         $url = "https://facturacion.apisperu.com/api/v1/invoice/pdf";
         $client = new \GuzzleHttp\Client();
-        $token = obtenerTokenapi();
+        $token = tokenEmpresa($empresa);
         $response = $client->post($url, [
             'headers' => [
                         'Content-Type' => 'application/json', 
@@ -674,11 +684,11 @@ if (!function_exists('generarComprobanteapi')) {
 }
 //GENERAR XML
 if (!function_exists('generarXmlapi')) {
-    function generarXmlapi($comprobante)
+    function generarXmlapi($comprobante,$empresa)
     {
         $url = "https://facturacion.apisperu.com/api/v1/invoice/xml";
         $client = new \GuzzleHttp\Client();
-        $token = obtenerTokenapi();
+        $token = tokenEmpresa($empresa);
         $response = $client->post($url, [
             'headers' => [
                         'Content-Type' => 'application/json', 
@@ -706,11 +716,11 @@ if (!function_exists('generarXmlapi')) {
 }
 //ENVIAR A  SUNAT
 if (!function_exists('enviarComprobanteapi')) {
-    function enviarComprobanteapi($comprobante)
+    function enviarComprobanteapi($comprobante,$empresa)
     {
         $url = "https://facturacion.apisperu.com/api/v1/invoice/send";
         $client = new \GuzzleHttp\Client();
-        $token = obtenerTokenapi();
+        $token = tokenEmpresa($empresa);
         $response = $client->post($url, [
             'headers' => [
                         'Content-Type' => 'application/json', 

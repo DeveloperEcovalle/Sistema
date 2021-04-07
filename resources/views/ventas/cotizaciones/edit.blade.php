@@ -69,6 +69,25 @@
                                             <option selected>SOLES</option>
                                         </select>
                                     </div>
+                                    <div class="col-lg-6 col-xs-12">
+                                        <label id="igv_requerido">IGV (%):</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-addon">
+                                                    <input type="checkbox" id="igv_check" name="igv_check">
+                                                </span>
+                                            </div>
+                                            <input type="text" value="{{old('igv',$cotizacion->igv)}}" maxlength="3"
+                                                class="form-control {{ $errors->has('igv') ? ' is-invalid' : '' }}"
+                                                name="igv" id="igv"  onkeyup="return mayus(this)" required>
+                                                @if ($errors->has('igv'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('igv') }}</strong>
+                                                </span>
+                                                @endif
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -121,16 +140,12 @@
                                                         <label class="required">Producto</label>
                                                         <select id="producto" class="select2_form form-control {{ $errors->has('producto') ? ' is-invalid' : '' }}" onchange="obtenerMonto(this)" >
                                                             <option></option>
-                                                            @foreach($productos as $producto)
-                                                                <option value="{{ $producto->id }}" data-igv="{{ $producto->igv }}" {{ (old('producto') == $producto->id ? "selected" : "") }} >{{ $producto->getDescripcionCompleta() }}</option>
+                                                            @foreach($lotes as $lote)
+                                                                <option value="{{ $lote->producto_id }}" {{ (old('producto') == $lote->producto_id ? "selected" : "") }} >{{ $lote->producto->nombre }}</option>
                                                             @endforeach
                                                         </select>
                                                         <div class="invalid-feedback"><b><span id="error-producto"></span></b></div>
                                                     </div>
-                                                    <!--<div class="col-lg-1 col-xs-12">
-                                                        <label class="required">IGV (%)</label>
-                                                        <input type="text" id="igv" class="form-control" value="-" disabled>
-                                                    </div>-->
                                                     <div class="col-lg-2 col-xs-12">
                                                         <label class="required">Cantidad</label>
                                                         <input type="text" id="cantidad" class="form-control" maxlength="10" onkeypress="return isNumber(event);">
@@ -254,6 +269,13 @@
     <script src="{{ asset('Inspinia/js/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="{{ asset('Inspinia/js/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script>
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+            },
+            buttonsStyling: false
+        })
         //IGV
         $(document).ready(function() {
             if ($("#igv_check").prop('checked')) {
@@ -263,7 +285,6 @@
                 $('#igv').attr('disabled', true)
                 $('#igv_requerido').removeClass("required")
             }
-
         })
 
         $("#igv_check").click(function() {
@@ -362,29 +383,44 @@
         });
 
         function sumaTotal() {
-           
-            var t = $('.dataTables-detalle-cotizacion').DataTable();
             var subtotal = 0;
-            t.rows().data().each(function(el, index) {
+            table.rows().data().each(function(el, index) {
                 subtotal = Number(el[6]) + subtotal
             });
-
-            conIgv(subtotal)
-            
+            var igv = $('#igv').val()
+            if (!igv) {
+                sinIgv(subtotal)   
+            }else{
+                conIgv(subtotal)
+            }
         }
 
 
         function conIgv(subtotal) {
-            var calcularIgv = 18/100
-            var base = subtotal / (1 + calcularIgv)
-            var nuevo_igv = subtotal - base;
-            $('#igv_int').text(18+'%')
-            $('#subtotal').text(base.toFixed(2))
-            $('#igv_monto').text(nuevo_igv.toFixed(2))
-            $('#total').text(subtotal.toFixed(2))
+            // CALCULAR IGV (BASE)
+            var igv = $('#igv').val()
+            if (igv) {
+                var calcularIgv = subtotal*(igv/100)
+                var total = subtotal + calcularIgv
+                $('#igv_int').text(igv+' %')
+                $('#subtotal').text(subtotal.toFixed(2))
+                $('#igv_monto').text(calcularIgv.toFixed(2))
+                $('#total').text(total.toFixed(2))
+            }else{
+                toastr.error('Ingrese Igv.', 'Error');
+            }
 
         }
 
+        function sinIgv(subtotal) {
+            /// CALCULAR IGV (BASE)
+            var base = subtotal / (1 + 0.18)
+            var nuevo_igv = subtotal - base;
+            $('#igv_int').text('18 %')
+            $('#subtotal').text(base.toFixed(2))
+            $('#igv_monto').text(nuevo_igv.toFixed(2))
+            $('#total').text(subtotal.toFixed(2))
+        }
 
         $(document).ready(function() {
             if ($("#igv_check").prop('checked')) {
@@ -442,10 +478,10 @@
                 'bAutoWidth': false,
                 'aoColumns': [
                     { sWidth: '0%' },
+                    { sWidth: '10%', sClass: 'text-center' },
+                    { sWidth: '10%', sClass: 'text-center' },
                     { sWidth: '15%', sClass: 'text-center' },
-                    { sWidth: '15%', sClass: 'text-center' },
-                    { sWidth: '15%', sClass: 'text-center' },
-                    { sWidth: '25%', sClass: 'text-left' },
+                    { sWidth: '40%', sClass: 'text-left' },
                     { sWidth: '15%', sClass: 'text-center' },
                     { sWidth: '15%', sClass: 'text-center' },
                 ],
@@ -483,18 +519,22 @@
         function obtenerTipo(tipo){
             
             if (tipo.value) {
-                
                 $('#producto').prop('disabled' , false)
                 $('#precio').prop('disabled' , false)
                 $('#cantidad').prop('disabled' , false)
-
-                @foreach ($clientes as $cliente)
-
-                    if ("{{$cliente->id}}" == tipo.value) {
-                        $('#tipo_cliente').val("{{$cliente->detalle->descripcion}}")
-                    }
-
-                @endforeach
+                //CONSULTA A CLIENTE PARA OBTENER EL MONTO
+                $.ajax({
+                    dataType : 'json',
+                    url: '{{ route("ventas.cliente.getcustomer")}}',
+                    type:'post',
+                    data : {
+                        '_token' : $('input[name=_token]').val(),
+                        'cliente_id': tipo.value
+                    },
+                    success : function(cliente){
+                        $('#tipo_cliente').val(cliente.tabladetalles_id)
+                    },            
+                })
             }else{
                 $('#producto').prop('disabled' , true)
                 $('#precio').prop('disabled' , true)
@@ -504,15 +544,18 @@
 
         function obtenerMonto(producto){
             var tipo = $('#tipo_cliente').val()
-            // alert(tipo)
             $.get('/almacenes/productos/obtenerProducto/'+ producto.value, function (data) {
-
-                for (var i = 0; i < data.length; i++)
-                //SOLO SOLES LOS MONTOS
-                    if (data[i].cliente == tipo && data[i].moneda == 4  ) {
-                        $('#precio').val(data[i].monto)
+                for (var i = 0; i < data.cliente_producto.length; i++)
+                    //SOLO SOLES LOS MONTOS
+                    if (data.cliente_producto[i].cliente == tipo && data.cliente_producto[i].moneda == '4'  ) {
+                        if ( data.cliente_producto[i].igv == '0' ) {
+                            var monto = Number(data.cliente_producto[i].monto * 0.18) + Number(data.cliente_producto[i].monto)
+                            $('#precio').val(Number(monto).toFixed(2))
+                        }else{
+                            var monto = data.cliente_producto[i].monto
+                            $('#precio').val(Number(monto).toFixed(2))
+                        } 
                     }
-
             });
 
         }
@@ -526,7 +569,6 @@
                 type : 'get',
                 url : url,
             }).done(function (result){
-
                 $('#presentacion_producto').val(result.medida)
                 $('#codigo_nombre_producto').val(result.codigo+' - '+result.nombre)
                 llegarDatos()
@@ -537,20 +579,17 @@
 
 
         function obtenerTabla() {
-            var t = $('.dataTables-detalle-cotizacion').DataTable();
             @foreach($detalles as $detalle)
-           
-            t.row.add([
-                "{{$detalle->producto_id}}",
-                '',
-                "{{$detalle->cantidad}}",
-                "{{$detalle->producto->tabladetalle->simbolo.' - '.$detalle->producto->tabladetalle->descripcion}}",
-                "{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}",
-                "{{$detalle->precio}}",
-                ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2),
-                "{{$detalle->producto->medida}}",
-
-            ]).draw(false);
+                table.row.add([
+                    "{{$detalle->producto_id}}",
+                    '',
+                    "{{$detalle->cantidad}}",
+                    "{{$detalle->producto->tabladetalle->simbolo.' - '.$detalle->producto->tabladetalle->descripcion}}",
+                    "{{$detalle->producto->codigo.' - '.$detalle->producto->nombre}}",
+                    "{{$detalle->precio}}",
+                    ("{{$detalle->precio}}" * "{{$detalle->cantidad}}").toFixed(2),
+                    "{{$detalle->producto->medida}}",
+                ]).draw(false);
             @endforeach
         }
 
@@ -579,9 +618,7 @@
 
         //Editar Registro
         $(document).on('click', '.btn-edit', function(event) {
-            var table = $('.dataTables-detalle-cotizacion').DataTable();
             var data = table.row($(this).parents('tr')).data();
-
             $('#indice').val(table.row($(this).parents('tr')).index());
             $('#producto_editar').val(data[0]).trigger('change');
             $('#precio_editar').val(data[5]);
@@ -595,15 +632,6 @@
 
         //Borrar registro de Producto
         $(document).on('click', '.btn-delete', function(event) {
-
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger',
-                    },
-                    buttonsStyling: false
-                })
-
                 Swal.fire({
                     title: 'Opción Eliminar',
                     text: "¿Seguro que desea eliminar Producto?",
@@ -614,7 +642,6 @@
                     cancelButtonText: "No, Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var table = $('.dataTables-detalle-cotizacion').DataTable();
                         table.row($(this).parents('tr')).remove().draw();
                         sumaTotal()
 
@@ -636,9 +663,7 @@
 
 
         function agregarTabla($detalle) {
-        
-            var t = $('.dataTables-detalle-cotizacion').DataTable();
-            t.row.add([
+            table.row.add([
                 $detalle.producto_id,
                 '',
                 $detalle.cantidad,
@@ -677,7 +702,6 @@
         function cargarProductos() {
 
             var productos = [];
-            var table = $('.dataTables-detalle-cotizacion').DataTable();
             var data = table.rows().data();
             data.each(function(value, index) {
                 let fila = {
@@ -696,7 +720,6 @@
         }
 
         function registrosProductos() {
-            var table = $('.dataTables-detalle-cotizacion').DataTable();
             var registros = table.rows().data().length;
             return registros
         }
@@ -729,14 +752,6 @@
             var correcto = validarFecha()
 
             if (correcto == false) {
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger',
-                    },
-                    buttonsStyling: false
-                })
-
                 Swal.fire({
                     title: 'Opción Guardar',
                     text: "¿Seguro que desea guardar cambios?",
@@ -804,13 +819,6 @@
                 $('#error-cantidad').text('El campo Cantidad es obligatorio.')
             }
             if (enviar != true) {
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger',
-                    },
-                    buttonsStyling: false
-                })
 
                 Swal.fire({
                     title: 'Opción Agregar',
@@ -836,18 +844,14 @@
                         )
                     }
                 })
-
             }
-
-
 
         })
 
 
         function buscarProducto(id) {
             var existe = false;
-            var t = $('.dataTables-detalle-cotizacion').DataTable();
-            t.rows().data().each(function(el, index) {
+            table.rows().data().each(function(el, index) {
                 if (el[0] == id) {
                     existe = true
                 }

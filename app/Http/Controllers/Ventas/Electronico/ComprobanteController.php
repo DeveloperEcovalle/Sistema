@@ -98,6 +98,7 @@ class ComprobanteController extends Controller
 
     public function sunat($id)
     {
+       
         $documento = Documento::findOrFail($id);
         //OBTENER CORRELATIVO DEL COMPROBANTE ELECTRONICO
         $existe = event(new DocumentoNumeracion($documento));
@@ -138,14 +139,14 @@ class ComprobanteController extends Controller
                         "legends" =>  self::obtenerLeyenda($documento),
                     );
                     //OBTENER JSON DEL COMPROBANTE EL CUAL SE ENVIARA A SUNAT
-                    $data = enviarComprobanteapi(json_encode($arreglo_comprobante));
+                    $data = enviarComprobanteapi(json_encode($arreglo_comprobante), $documento->empresa_id);
                     //RESPUESTA DE LA SUNAT EN JSON
                     $json_sunat = json_decode($data);
                     if ($json_sunat->sunatResponse->success == true) {
         
                         $documento->sunat = '1';
         
-                        $data_comprobante = generarComprobanteapi(json_encode($arreglo_comprobante));
+                        $data_comprobante = generarComprobanteapi(json_encode($arreglo_comprobante), $documento->empresa_id);
                         $name = $existe[0]->get('numeracion')->serie."-".$documento->correlativo.'.pdf';
                         
                         $pathToFile = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'sunat'.DIRECTORY_SEPARATOR.$name);

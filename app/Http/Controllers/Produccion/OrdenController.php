@@ -41,7 +41,7 @@ class OrdenController extends Controller
                 'cantidad_programada' => $orden->programacion->cantidad_programada,
                 'fecha_orden'=> Carbon::parse($orden->fecha_orden)->format( 'd/m/Y'),
                 'observacion' => ($orden->observacion) ? $orden->observacion : '-',
-                'conformidad' => $orden->conformidad,
+                'produccion' => $orden->produccion,
                 'estado' => $orden->estado,
                 'editable' => $orden->editable,
             ]);
@@ -53,13 +53,13 @@ class OrdenController extends Controller
     {
         $fecha_hoy = Carbon::now()->toDateString();
         $programacion= Programacion_produccion::findOrFail($id);
+        $productoDetalles= ProductoDetalle::where('producto_id',$programacion->producto_id)->where('estado','ACTIVO')->get();
         $almacenes = Almacen::where('estado','ACTIVO')->get();
-        
         return view('produccion.ordenes.create',[
             'programacion'=> $programacion,
             'almacenes'=> $almacenes,
             'fecha_hoy' => $fecha_hoy,
-           
+            'productoDetalles' => $productoDetalles
         ]);
     }
 
@@ -69,19 +69,15 @@ class OrdenController extends Controller
         return $detalle->last();
     }
 
-    // public function stockArticulo($detalle)
-    // {
-    //     if ($detalle->cantidad_devuelta_correcta) {
-    //         $correcto = $detalle->cantidad_devuelta_correcta;
-    //     }else{
-    //         $correcto = 0;
-    //     }
-    //     $nuevoStock = ($detalle->productoDetalle->articulo->stock - $detalle->cantidad_entregada) + $correcto; 
-    //     $articulo = Articulo::findOrFail($detalle->productoDetalle->articulo->id);
-    //     $articulo->stock =  $nuevoStock;
-    //     $articulo->update();
-
-    // }
+    public function edit(Request $request)
+    {
+        $orden = Orden::findOrFail($request->get('orden'));
+        $productoDetalles = OrdenDetalle::where('orden_id', $orden->id)->get();
+        return view('produccion.ordenes.edit',[
+            'orden' => $orden,
+            'productoDetalles' => $productoDetalles,
+        ]);
+    }
 
     public function store(Request $request)
     {

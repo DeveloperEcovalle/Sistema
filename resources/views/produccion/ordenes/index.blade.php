@@ -31,8 +31,8 @@
                                     <th class="text-center">Cantidad Produccida</th>
                                     <th class="text-center">Fecha de Producción</th>
                                     <th class="text-center">Observacion</th>
-                                    <th class="text-center">Conformidad</th>
-                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">PRODUCCION</th>
+                                    <th class="text-center">ESTADO</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
@@ -107,12 +107,12 @@ $(document).ready(function() {
                 data: null,
                 className: "text-center",
                 render: function(data) {
-                    switch (data.conformidad) {
+                    switch (data.produccion) {
                         case "0":
                             return "<span class='badge badge-warning' d-block>PENDIENTE</span>";
                             break;
                         case "1":
-                            return "<span class='badge badge-primary' d-block>APROBADO</span>";
+                            return "<span class='badge badge-primary' d-block>ATENDIDA</span>";
                             break;
                         default:
                             return "<span class='badge badge-danger' d-block>NULO</span>";
@@ -149,6 +149,7 @@ $(document).ready(function() {
                         "</ul></div>"
                     }else{
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
+                            "<li><a class='dropdown-item' onclick='modificar(" +data.id+","+data.conformidad+","+data.editable +")' title='Editar'><b><i class='fa fa-edit'></i> Modificar </a></b></li>" +
                             "<li><a class='dropdown-item' href='" + url_detalle +
                             "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
                             "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
@@ -259,6 +260,13 @@ function conformidad(id, confor , editable) {
         }
     }
     
+}
+
+function modificar(id, confor , editable) {
+    // console.log(id, confor , editable)
+
+    var url = "{{ route('produccion.orden.edit', [ 'orden' =>'id']) }}".replace('id', id);
+    $(location).attr('href', url);
 }
 
 </script>

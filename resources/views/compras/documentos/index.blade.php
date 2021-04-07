@@ -39,7 +39,7 @@
 
                                 </tr>
                                 <tr>
-                                    <th style="display:none;"></th>
+                                    <th style="text-center">ID</th>
                                     <th style="display:none;"></th>
                                     <th class="text-center">O.C</th>
                                     <th class="text-center">EMISION</th>
@@ -112,7 +112,6 @@ $(document).ready(function() {
             {
                 data: 'id',
                 className: "text-center",
-                visible: false
             },
             {
                 data: 'tipo_pago',

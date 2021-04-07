@@ -18,19 +18,19 @@ class EmpresaSeeder extends Seeder
     public function run()
     {
         // Agroensancha S.R.L
-        $empresa = new Empresa();
-        $empresa->ruc = '20482089594';
-        $empresa->razon_social = 'AGROENSANCHA S.R.L.';
-        $empresa->razon_social_abreviada = 'AGROENSANCHA S.R.L.';
-        $empresa->direccion_fiscal = 'JR. JOSE MARTI NRO. 2184 OTR.  LA ESPERANZA  (A TRES CUADRAS DEL PUENTE CAPRICORNIO) - LA LIBERTAD - TRUJILLO - TRUJILLO';
-        $empresa->direccion_llegada = 'TRUJILLO';
-        $empresa->dni_representante = '70004110';
-        $empresa->nombre_representante = 'AXEL GASTON KEVIN GUTIERREZ LOPEZ';
-        $empresa->num_asiento = 'A00001';
-        $empresa->num_partida = '11036086';
-        $empresa->estado_ruc = 'ACTIVO';
-        $empresa->estado_dni_representante= 'ACTIVO';
-        $empresa->save();
+        // $empresa = new Empresa();
+        // $empresa->ruc = '20482089594';
+        // $empresa->razon_social = 'AGROENSANCHA S.R.L.';
+        // $empresa->razon_social_abreviada = 'AGROENSANCHA S.R.L.';
+        // $empresa->direccion_fiscal = 'JR. JOSE MARTI NRO. 2184 OTR.  LA ESPERANZA  (A TRES CUADRAS DEL PUENTE CAPRICORNIO) - LA LIBERTAD - TRUJILLO - TRUJILLO';
+        // $empresa->direccion_llegada = 'TRUJILLO';
+        // $empresa->dni_representante = '70004110';
+        // $empresa->nombre_representante = 'AXEL GASTON KEVIN GUTIERREZ LOPEZ';
+        // $empresa->num_asiento = 'A00001';
+        // $empresa->num_partida = '11036086';
+        // $empresa->estado_ruc = 'ACTIVO';
+        // $empresa->estado_dni_representante= 'ACTIVO';
+        // $empresa->save();
 
         $proveedor = new Proveedor();
         $proveedor->descripcion = 'LIMPIATODO S.A.C';

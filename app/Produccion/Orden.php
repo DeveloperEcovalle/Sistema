@@ -20,6 +20,7 @@ class Orden extends Model
           'observacion', //POR BORRAR O INGRESARLO
           'conformidad', //[0=>PENDIENTE , 1 => APROBADO , 2 => NULO]
           'editable',// [0=>NUEVO , 1 => EDITAR , 2 => NO NECESITA (COMPLETADO)]
+          'atendido', //[ 0 => NO SE AGREGAR NINGUN DETALLE A LA ORDEN , 1 => SE AGREGADO UN DETALLE A LA ORDEN DE PRODUCCION]
           'estado',
         ];
         
