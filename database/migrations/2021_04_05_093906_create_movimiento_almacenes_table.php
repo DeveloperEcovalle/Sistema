@@ -15,7 +15,7 @@ class CreateMovimientoAlmacenesTable extends Migration
     {
         Schema::create('movimiento_almacenes', function (Blueprint $table) {
             $table->Increments('id');
-            $table->unsignedInteger('orden_produccion_id')->unsigned()->nullable();
+            $table->unsignedInteger('orden_produccion_detalle_id')->unsigned()->nullable();
             $table->unsignedInteger('almacen_inicio_id')->unsigned()->nullable();
             $table->unsignedInteger('almacen_final_id')->unsigned();
             $table->unsignedDecimal('cantidad', 15,2);

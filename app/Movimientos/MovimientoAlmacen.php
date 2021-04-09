@@ -9,7 +9,7 @@ class MovimientoAlmacen extends Model
     protected $table = 'movimiento_almacenes';
     public $timestamps = true;
     protected $fillable = [
-            'orden_produccion_id',
+            'orden_produccion_detalle_id',
             'almacen_inicio_id',
             'almacen_final_id',
             'cantidad',

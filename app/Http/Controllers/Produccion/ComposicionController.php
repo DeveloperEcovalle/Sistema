@@ -25,7 +25,7 @@ class ComposicionController extends Controller
 
     public function getTable()
     {
-        $composicions = ProductoDetalle::where('estado','ACTIVO')->distinct()->get(['producto_id']);
+        $composicions = ProductoDetalle::where('estado','ACTIVO')->distinct()->orderBy('producto_id','DESC')->get(['producto_id']);
         $coleccion = collect([]);
         foreach($composicions as $producto) {
             $coleccion->push([

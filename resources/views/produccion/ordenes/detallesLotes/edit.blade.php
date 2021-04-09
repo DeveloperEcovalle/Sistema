@@ -67,7 +67,7 @@
                                                 <div class="col-lg-6 col-xs-12">
                                                     <label class="">Cantidad de Producción</label>
                                                     <input type="text" id="cantidadProduccionCompleta" name="cantidadProduccionCompleta" readonly class="form-control {{ $errors->has('cantidadProduccionCompleta') ? ' is-invalid' : '' }}" 
-                                                        @if ($ordenDetalle)  value="{{old('cantidadProduccionCompleta', $ordenDetalle->cantidad_produccion_completa)}}" @else value="{{old('cantidadProduccionCompleta')}}" @endif>
+                                                        @if ($ordenDetalle)  value="{{old('cantidadProduccionCompleta',number_format ($ordenDetalle->cantidad_produccion,2))}}" @else value="{{old('cantidadProduccionCompleta')}}" @endif>
                                                     @if ($errors->has('cantidad_programada'))
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $errors->first('cantidad_programada') }}</strong>
@@ -78,7 +78,7 @@
                                                 <div class="col-lg-6 col-xs-12" >
                                                     <label class="required">Cantidad de Excedida</label>
                                                     <input type="number" id="cantidadExcedida" name="cantidadExcedida" class="form-control {{ $errors->has('cantidadExcedida') ? ' is-invalid' : '' }}" 
-                                                    @if ($ordenDetalle) value="{{old('cantidadExcedida', number_format($ordenDetalle->cantidad_excedida,2 ) )}}" @else  value="{{old('cantidadExcedida')}}" @endif required>
+                                                    @if ($ordenDetalle) value="{{old('cantidadExcedida', 3)}}" @else  value="{{old('cantidadExcedida')}}" @endif required>
                                                     @if ($errors->has('cantidadExcedida'))
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $errors->first('cantidadExcedida') }}</strong>

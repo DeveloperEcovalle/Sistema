@@ -174,66 +174,34 @@
 
                                                             @foreach($productoDetalles as $articulo)
 
-                                                                @if ( isset($ordenDetalle) && ($articulo->id == $ordenDetalle->articulo_id))
-                                                                    <tr>
-                                                                        <td class="text-center" >{{$articulo->id}}</td>
-                                                                        <td class="text-center">{{$articulo->articulo->codigo_fabrica}}</td>
-                                                                        <td>{{$articulo->articulo->descripcion}}</td>
-                                                                        <td>{{$articulo->articulo->almacen->descripcion}}</td>
-                                                                        <td class="text-center">
-                                                                            <div class='btn-group'>
-                                                                                @if ($articulo->completado == 1)
-                                                                                <a class='btn btn-success btn-sm' href="{{route('produccion.orden.detalle.lote.edit' , 
-                                                                                                                        [  
-                                                                                                                            'articulo_id' => $articulo->articulo_id ,
-                                                                                                                            'programacion_id'=> $orden->programacion_id,
-                                                                                                                            'ordenDetalle' => $ordenDetalle,
-                                                                                                                        ])}}" style='color:white;' title='Devoluciones'><i class='fa fa-refresh'></i></a>
-                                                                                @endif
-                                                                                <a class='btn btn-warning btn-sm' href="{{route('produccion.orden.detalle.lote.edit' , 
-                                                                                                                        [ 
-                                                                                                                            'articulo_id' => $articulo->articulo_id ,
-                                                                                                                            'programacion_id'=> $orden->programacion_id,
-                                                                                                                            'ordenDetalle' => $ordenDetalle,
-                                                                                                                        ])}}" style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>
-                                                                                                                        
-                                                                            </div>
-                                                                        
-                                                                        </td>
-                                                                    </tr>
-                                                                @else
-                                                                    <tr>
-                                                                        <!-- ID ORDEN DETALLE -->
-                                                                        <td class="text-center" >{{$articulo->id}}</td> 
-                                                                        <td class="text-center">{{$articulo->articulo->codigo_fabrica}}</td>
-                                                                        <td>{{$articulo->articulo->descripcion}}</td>
-                                                                        <td>{{$articulo->articulo->almacen->descripcion}}</td>
-                                                                        <td class="text-center">
-                                                                            <div class='btn-group'>
-                                                                                @if ($articulo->completado == 1)
-                                                                                <a class='btn btn-success btn-sm' href="{{route('produccion.orden.detalle.lote.edit' , 
-                                                                                                                        [  
-                                                                                                                            'articulo_id' => $articulo->articulo_id ,
-                                                                                                                            'programacion_id'=> $orden->programacion_id,
-                                                                                                                        ])}}" style='color:white;' title='Devoluciones'><i class='fa fa-refresh'></i></a>
-                                                                                @endif
-                                                                                <a class='btn btn-warning btn-sm' href="{{route('produccion.orden.detalle.lote.edit' , 
-                                                                                                                        [  
-                                                                                                                            'articulo_id' => $articulo->articulo_id ,
-                                                                                                                            'programacion_id'=> $orden->programacion_id,
-                                                                                                                            'ordenDetalle' => $articulo->id,
-                                                                                                                        ])}}" style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>
-                                                                            </div>
-                                                                        
-                                                                        </td>
-                                                                    </tr>
-
-
-                                                                
-                                                                @endif
-
-
-
+                                                              
+                                                                <tr>
+                                                                    <!-- ID ORDEN DETALLE -->
+                                                                    <td class="text-center" >{{$articulo->id}}</td> 
+                                                                    <td class="text-center">{{$articulo->articulo->codigo_fabrica}}</td>
+                                                                    <td>{{$articulo->articulo->descripcion}}</td>
+                                                                    <td>{{$articulo->articulo->almacen->descripcion}}</td>
+                                                                    <td class="text-center">
+                                                                        <div class='btn-group'>
+                                                                            @if ($articulo->completado == 1)
+                                                                            <a class='btn btn-success btn-sm' href="{{route('produccion.orden.detalle.lote.devolucion', 
+                                                                                                                    [  
+                                                                                                                        'articulo_id' => $articulo->articulo_id ,
+                                                                                                                        'orden_id'=> $orden->id,
+                                                                                                                        'ordenDetalle' => $articulo->id,
+                                                                                                                    ]
+                                                                                                                    )}}" style='color:white;' title='Devoluciones'><i class='fa fa-refresh'></i></a>
+                                                                            @endif
+                                                                            <a class='btn btn-warning btn-sm' href="{{route('produccion.orden.detalle.lote.edit' , 
+                                                                                                                    [  
+                                                                                                                        'articulo_id' => $articulo->articulo_id ,
+                                                                                                                        'programacion_id'=> $orden->programacion_id,
+                                                                                                                        'ordenDetalle' => $articulo->id,
+                                                                                                                    ])}}" style='color:white;' title='Modificar'><i class='fa fa-edit'></i></a>
+                                                                        </div>
+                                                                    
+                                                                    </td>
+                                                                </tr>
 
                                                             @endforeach
 

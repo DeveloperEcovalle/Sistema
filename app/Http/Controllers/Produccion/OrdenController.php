@@ -134,7 +134,7 @@ class OrdenController extends Controller
                 'cantidad_excedida' => $programacion->cantidad_programada * $productoDetalle->cantidad,
             ]);
         }
-
+        
         //CAMBIAR EL ESTADO DE LA PROGRAMACION DE PRODUCCION (NO PUEDA AGREGAR ORDEN DE PRODUCCION)
         $programacion->produccion = '1';
         $programacion->update();

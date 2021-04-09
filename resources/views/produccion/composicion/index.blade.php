@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10 col-md-10">
-       <h2  style="text-transform:uppercase"><b>Listado de Producto Detalles</b></h2>
+       <h2  style="text-transform:uppercase"><b>LISTADO DE COMPOSICION DE PRODUCTOS TERMINADOS</b></h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">Panel de Control</a>
@@ -31,6 +31,7 @@
                         <table class="table dataTables-producto table-striped table-bordered table-hover"  style="text-transform:uppercase">
                             <thead>
                                 <tr>
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">CÓDIGO</th>
                                     <th class="text-center">NOMBRE</th>
                                     <th class="text-center">FAMILIA</th>
@@ -95,6 +96,7 @@
                 "processing":true,
                 "ajax": "{{ route('produccion.composicion.getTable')}}",
                 "columns": [
+                    {data: 'producto_id', className:"text-center"},
                     {data: 'codigo', className:"text-left"},
                     {data: 'nombre', className:"text-left"},
                     {data: 'familia', className:"text-left"},
