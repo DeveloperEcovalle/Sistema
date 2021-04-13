@@ -78,7 +78,7 @@
                                                 <div class="col-lg-6 col-xs-12" >
                                                     <label class="required">Cantidad de Excedida</label>
                                                     <input type="number" id="cantidadExcedida" name="cantidadExcedida" class="form-control {{ $errors->has('cantidadExcedida') ? ' is-invalid' : '' }}" 
-                                                    @if ($ordenDetalle) value="{{old('cantidadExcedida', 3)}}" @else  value="{{old('cantidadExcedida')}}" @endif required>
+                                                    @if ($ordenDetalle->cantidad_excedida == 0 ) value="{{old('cantidadExcedida', 3)}}" @else  value="{{old('cantidadExcedida', number_format ($ordenDetalle->cantidad_excedida,2))}}" @endif required>
                                                     @if ($errors->has('cantidadExcedida'))
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $errors->first('cantidadExcedida') }}</strong>
@@ -93,55 +93,7 @@
 
                             <div class="row">
                                 <div class="col-lg-6 col-xs-12 b-r">
-                                    <p>Seleccionar Lote para la cantidad de Producción :</p>
-                                    <div class="row">
-                                            <div class="col-lg-8 col-xs-12">
-                                                <label class="required">Lote Artículo:</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" id="lote_articulo" readonly> 
-                                                    <span class="input-group-append"> 
-                                                        <button type="button" class="btn btn-primary" @if ($ordenDetalle) onclick="buscarCantidadProduccion({{$ordenDetalle->articulo_id}},1)" @endif><i class='fa fa-search'></i> Buscar
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                                <div class="invalid-feedback"><b><span id="error-lote_articulo"></span></b></div>
-                                            </div>
-
-                                            <div class="col-lg-4 col-xs-12">
-                                                <label class="required">Cantidad:</label>
-                                                <input type="number" class="form-control" id="cantidad_produccion_ingreso" disabled> 
-                                                <div class="invalid-feedback"><b><span id="error-cantidad_produccion_ingreso"></span></b></div>
-                                            </div>
-                                    </div>
-
-                                    <hr>
-
-
-                                    <div class="form-group row">
-                                        <div class="col-lg-12">
-                                            <p>Datos seleccionados:</p>
-                                        </div>
-                                        <input type="hidden" class="form-control" id="lote_articulo_id"> 
-                                        <div class="col-lg-4 col-xs-12">
-                                            <label class="required">Lote:</label>
-                                            <input type="text" class="form-control" id="lote_cantidad_produccion" readonly> 
-                                            <div class="invalid-feedback"><b><span id="error-cantidad_produccion_lote_cantidad_produccion"></span></b></div>
-                                        </div>
-                                        <div class="col-lg-4 col-xs-12">
-                                            <label class="required">Fecha de Vencimiento:</label>
-                                            <input type="text" class="form-control" id="fecha_vencimiento_cantidad_produccion" readonly>
-                                            <div class="invalid-feedback"><b><span id="error-fecha_vencimiento_cantidad_produccion"></span></b></div> 
-                                        </div>
-                                        <div class="col-lg-4 col-xs-12">
-                                            <label class="" for="amount">&nbsp;</label>
-                                            <a class="btn btn-block btn-warning agregar_cantidad_produccion" style='color:white;'> <i class="fa fa-plus"></i> AGREGAR</a>
-                                        </div>
-                                        
-                                    </div>
-                                    
-
-                                    <hr>
-
+                                    <p>Cantidades de Producción :</p>
 
                                     <div class="row">
 
@@ -154,22 +106,34 @@
 
                                                             <tr>
                                                                 <th></th>
+                                                                <th class="text-center">ID</th>
                                                                 <th class="text-center">LOTE</th>
                                                                 <th class="text-center">FECHA VENCE.</th>
                                                                 <th class="text-center">CANTIDAD</th>
-                                                                <th class="text-center">ACCIONES</th>
+                                                            
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($cantidadProducciones as $loteProduccion)
-                                                            <tr>
-                                                                <td>{{$loteProduccion->lote_articulo_id}} </td>
-                                                                <td>{{$loteProduccion->loteArticulo->lote}}</td>
-                                                                <td> {{ Carbon\Carbon::parse($loteProduccion->loteArticulo->fecha_vencimiento)->format('d/m/y') }}</td>
-                                                                <td>{{$loteProduccion->cantidad}}</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            @endforeach
+                                                            @if ($cantidadProducciones->count() > 0)
+                                                                @foreach ($cantidadProducciones as $loteProduccion)
+                                                                <tr>
+                                                                    <td>{{$loteProduccion->orden_produccion_detalle_id}} </td>
+                                                                    <td>{{$loteProduccion->lote_articulo_id}} </td>
+                                                                    <td>{{$loteProduccion->loteArticulo->lote}}</td>
+                                                                    <td>{{ Carbon\Carbon::parse($loteProduccion->loteArticulo->fecha_vencimiento)->format('d/m/y') }}</td>
+                                                                    <td>{{$loteProduccion->cantidad}}</td>
+                                                                </tr>
+                                                                @endforeach
+                                                            
+                                                            @else
+                                                                @foreach ($lotes as $lote)
+                                                                    <td>{{$lote->orden_produccion_detalle_id}} </td>
+                                                                    <td>{{$lote->lote_articulo_id}} </td>
+                                                                    <td>{{$lote->lote}}</td>
+                                                                    <td>{{Carbon\Carbon::parse($lote->fecha_vencimiento)->format('d/m/y')}}</td>
+                                                                    <td>{{number_format($lote->cantidad,2)}}</td>
+                                                                @endforeach
+                                                            @endif
                                                         </tbody>
                                                     </table>
 
@@ -354,7 +318,7 @@ $(document).ready(function() {
                 "visible": false,
             },
             {
-                "targets": [1],
+                "targets":  [1],
                 className: 'text-center',
             },
             {
@@ -366,18 +330,8 @@ $(document).ready(function() {
                 className: 'text-center',
             },
             {
-                searchable: false,
-                className: 'text-center',
                 "targets": [4],
-                data: null,
-
-                render: function(data, type, row) {
-
-                        return  "<div class='btn-group'>" +
-                                "<a class='btn btn-sm btn-danger borrar_cantidad_produccion' style='color:white'>"+"<i class='fa fa-trash'></i>"+"</a>"+ 
-                                "</div>";
-                }
-                
+                className: 'text-center',
             },
         ]
     });
@@ -729,8 +683,9 @@ function cantidadProduccion() {
     var data = lotesProduccion.rows().data();
     data.each(function(value, index) {
         let produccion = {
-            lote_id: value[0],
-            cantidad: value[3],
+            orden_produccion_detalle_id: value[0],
+            lote_id: value[1],
+            cantidad: value[4],
         };
         cantidadProduccion.push(produccion);
     });
@@ -805,19 +760,46 @@ $('#enviar_orden_produccion_lote').submit(function(e) {
 function cantidadLoteproduccion(cantidadProduccion) {
     var cantidad = 0;
     lotesProduccion.rows().data().each(function(el, index) {
-        cantidad = Number(el[3]) + cantidad
+        cantidad = Number(el[4]) + cantidad
     });
    return Number(cantidad) + Number(cantidadProduccion);
 }
 
 //SUMAR TOTAL DE CANTIDADES LOTE DE PRODUCCION
-function cantidadLoteexcedida(cantidadExcedida) {
+function cantidadLoteexcedida(cantidadExcedida2) {
     var cantidad = 0;
     lotesExcedidos.rows().data().each(function(el, index) {
         cantidad = Number(el[3]) + cantidad
     });
-   return Number(cantidad) + Number(cantidadExcedida);
+   return Number(cantidad) + Number(cantidadExcedida2);
 }
+
+//DEVOLVER CANTIDADES A LOS LOTES
+function devolverCantidades() {
+    //CARGAR CANTIDAD EXCEDIDA PARA DEVOLVER LOTE ARTICULO
+    cantidadExcedida()
+    $.ajax({
+        dataType : 'json',
+        type : 'post',
+        url : '{{ route('produccion.orden.detalle.lote.articulos.devolver.cantidades') }}',
+        data : {
+            '_token' : $('input[name=_token]').val(),
+            'cantidades' :  $('#cantidadExcedidaLote').val(),
+        }
+    }).done(function (result){
+        alert('DEVOLUCION REALIZADA')
+        console.log(result)
+    });
+}
+
+</script>
+
+<script>
+    window.onbeforeunload = function () { 
+        //DEVOLVER CANTIDADES 
+        devolverCantidades()
+        
+    };
 
 </script>
 @endpush

@@ -287,6 +287,76 @@ Route::get('clientes/tienda',function (Request $request)
         return DataTables::collection($coleccion)->toJson();
 });
 
+//BUSQUEDA CLIENTE Y DOCUMENTO
+// [
+//     cliente => nombre
+// ]
+Route::get('clientes/documentos',function (Request $request)
+{
+    $clientes = DB::table('clientes')
+                ->when($request->get('cliente'), function ($query, $request) {
+                    return $query->where('nombre', 'like', '%' .$request. '%');
+                })
+                ->where('clientes.estado','ACTIVO')
+                ->select(
+                    'clientes.id',
+                    'clientes.nombre',
+                    'clientes.tipo_documento',
+                    'clientes.documento'
+                )->get();
+
+    return DataTables::collection($clientes)->toJson();
+});
+
+
+// BUESQUEDA DE ZONAS
+Route::get('zonas/departamentos',function ()
+{
+    $departamentos = DB::table('departamentos')
+                ->select(
+                    'departamentos.id',
+                    'departamentos.nombre'
+                )->get();
+
+    return DataTables::collection($departamentos)->toJson();
+});
+
+// [
+//     departamento => 01
+// ]
+
+Route::get('zonas/provincias',function (Request $request)
+{
+    $provincias = DB::table('provincias')
+                ->when($request->get('departamento'), function ($query, $request) {
+                    return $query->where('provincias.departamento_id', $request);
+                })
+                ->select(
+                    'provincias.id',
+                    'provincias.nombre'
+                )->get();
+
+    return DataTables::collection($provincias)->toJson();
+});
+
+// [
+//     provincia => 01
+// ]
+Route::get('zonas/distritos',function (Request $request)
+{
+    $distritos = DB::table('distritos')
+                ->when($request->get('provincia'), function ($query, $request) {
+                    return $query->where('distritos.provincia_id', $request);
+                })
+                ->select(
+                    'distritos.id',
+                    'distritos.nombre',
+                    'distritos.nombre_legal'
+                )->get();
+
+    return DataTables::collection($distritos)->toJson();
+});
+
 
 
 

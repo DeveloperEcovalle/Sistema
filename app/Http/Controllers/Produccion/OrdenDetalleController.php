@@ -16,6 +16,7 @@ use App\Produccion\OrdenDetalle; // DETALLE DE LA ORDEN DE PRODUCCION
 use App\Produccion\OrdenDetalleLote; // DETALLE DEL ARTICULO (LOTES PRODUCCION / EXCEDIDA)
 use App\Produccion\Devolucion; // DEVOLUCION 
 use Session;
+use Illuminate\Support\Collection;
 
 use App\Movimientos\MovimientoAlmacen;
 use App\Movimientos\MovimientoAlmacenDetalle;
@@ -48,25 +49,103 @@ class OrdenDetalleController extends Controller
 
     public function edit(Request $request)
     {
-        $articulo= Articulo::findOrFail($request->articulo_id);
-        $programacion= Programacion_produccion::findOrFail($request->programacion_id);
+        
+        $articulo = Articulo::findOrFail($request->articulo_id);
+        $programacion = Programacion_produccion::findOrFail($request->programacion_id);
         $ordenDetalle = OrdenDetalle::findOrFail($request->ordenDetalle);
+        $lotes = self::getLot($articulo->id, $ordenDetalle);
         $loteCantidadProduccion = OrdenDetalleLote::where('tipo_cantidad','PRODUCCION')->where('orden_produccion_detalle_id',$ordenDetalle->id)->get();
         $loteCantidadExcedida = OrdenDetalleLote::where('tipo_cantidad','EXCEDIDA')->where('orden_produccion_detalle_id',$ordenDetalle->id)->get();
         return view('produccion.ordenes.detallesLotes.edit',[
             'articulo'=> $articulo,
             'programacion' => $programacion,
             'ordenDetalle' => $ordenDetalle,
-            'cantidadProducciones' => $loteCantidadProduccion ,
-            'cantidadExcedidas' => $loteCantidadExcedida ,    
+            'cantidadProducciones' => $loteCantidadProduccion,
+            'lotes' => $lotes,
+            'cantidadExcedidas' => $loteCantidadExcedida ,
         ]);
 
+    }
+
+    // OBTENER LOTES 
+    public function getLot($articulo_id, $ordenDetalle)
+    {       
+        $nuevoDetalle = collect();
+   
+        $lotes = LoteArticulo::where('articulo_id',$articulo_id)
+                ->where('estado','1')
+                ->where('cantidad_logica','>',0)
+                ->orderBy('fecha_vencimiento', 'asc')
+                ->get();
+        //INICIO CON LA CANTIDAD DEL DETALLE
+        $cantidadSolicitada = $ordenDetalle->cantidad_produccion;
+    
+        foreach ($lotes as $lote) {
+            //SE OBTUVO LA CANTIDAD SOLICITADA DEL LOTE
+            if ($cantidadSolicitada > 0) {
+                //CANTIDAD LOGICA DEL LOTE ES IGUAL A LA CANTIDAD SOLICITADA
+                $cantidadLogica = $lote->cantidad_logica;
+                if ($cantidadLogica == $cantidadSolicitada) {
+                    //CREAMOS EL NUEVO DETALLE
+                    $coll = new Collection();
+                    $coll->orden_produccion_detalle_id = $ordenDetalle->id;
+                    $coll->lote_articulo_id =  $lote->id;
+                    $coll->lote = $lote->lote;
+                    $coll->fecha_vencimiento = $lote->fecha_vencimiento;
+                    $coll->cantidad = $lote->cantidad_logica;
+                    $nuevoDetalle->push( $coll);
+                    //ACTUALIZAMOS EL LOTE
+                    $lote->cantidad_logica = $lote->cantidad_logica - $cantidadSolicitada;
+                    //REDUCIMOS LA CANTIDAD SOLICITADA
+                    $cantidadSolicitada = 0;
+                    $lote->update(); 
+                }else{
+                    
+                    if ($lote->cantidad_logica < $cantidadSolicitada) {
+                        //CREAMOS EL NUEVO DETALLE
+                        $coll = new Collection();
+                        $coll->orden_produccion_detalle_id = $ordenDetalle->id;
+                        $coll->lote_articulo_id =  $lote->id;
+                        $coll->lote = $lote->lote;
+                        $coll->cantidad = $lote->cantidad_logica;
+                        $coll->fecha_vencimiento = $lote->fecha_vencimiento;
+                        $nuevoDetalle->push( $coll);
+                        //REDUCIMOS LA CANTIDAD SOLICITADA
+                        $cantidadSolicitada = $cantidadSolicitada - $lote->cantidad_logica;
+                        //ACTUALIZAMOS EL LOTE
+                        $lote->cantidad_logica = 0;
+                        $lote->update(); 
+                    }else{
+                        if ($lote->cantidad_logica > $cantidadSolicitada) {
+                            //CREAMOS EL NUEVO DETALLE
+                            $coll = new Collection();
+                            $coll->orden_produccion_detalle_id = $ordenDetalle->id;
+                            $coll->lote_articulo_id =  $lote->id;
+                            $coll->lote = $lote->lote;
+                            $coll->fecha_vencimiento = $lote->fecha_vencimiento;
+                            $coll->cantidad = $cantidadSolicitada;
+                            $nuevoDetalle->push( $coll);
+                            //ACTUALIZAMOS EL LOTE
+                            $lote->cantidad_logica = $lote->cantidad_logica - $cantidadSolicitada;
+                            //REDUCIMOS LA CANTIDAD SOLICITADA
+                            $cantidadSolicitada = 0;
+                            $lote->update(); 
+                        }
+                        
+                    }
+
+                }
+
+            }
+
+        }
+
+        return $nuevoDetalle;
     }
 
 
     public function update(Request $request)
     {
-
         // DETALLE DE LA ORDEN DE PRODUCCION
         $detalle = OrdenDetalle::findOrFail($request->get('ordenDetalle_id'));
         $detalle->articulo_id = $request->get('articulo_id');
@@ -127,14 +206,6 @@ class OrdenDetalleController extends Controller
                 $loteArticulo->update();
                 //ELIMINAR LAS DEVOLUCIONES
                 $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
-
-                // if ($movimientoAlmacen->count() > 0) {
-                //     MovimientoAlmacenDetalle::where('movimiento_almacen_id',$movimientoAlmacen->first()->id)->delete();
-                //     MovimientoAlmacen::where('orden_produccion_detalle_id',$detalleLote->orden_produccion_detalle_id)
-                //                                         ->where('nota','DEVOLUCION DE PROD')                                        
-                //                                         ->get()->delete();
-                //     // $movimientoAlmacen->delete();
-                // }
                 //ELIMINAR LOS DETALLES LOTES
                 $detalleLote->delete();
 
@@ -143,13 +214,13 @@ class OrdenDetalleController extends Controller
             foreach ($cantidadProduccion as $produccion) { 
                 $lote = LoteArticulo::findOrFail($produccion->lote_id);
                 $ordenLote = OrdenDetalleLote::create([
-                                'orden_produccion_detalle_id' => $detalle->id,
+                                'orden_produccion_detalle_id' => $produccion->orden_produccion_detalle_id,
                                 'lote_articulo_id' => $produccion->lote_id,
                                 'cantidad' => $produccion->cantidad,
                                 'tipo_cantidad' => 'PRODUCCION',
                             ]);
-
                 $lote->cantidad =  $lote->cantidad - $produccion->cantidad;
+                $lote->cantidad_logica = $lote->cantidad;
                 $lote->update();
 
                 //MOVIMIENTO ALMACEN - DETALLE (CANTIDAD PRODUCCION)
@@ -172,18 +243,6 @@ class OrdenDetalleController extends Controller
                 $loteArticulo->update();
                 //ELIMINAR LAS DEVOLUCIONES
                 $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
-                // //ELIMINAR MOVIMIENTOS - ALMACEN
-                // $movimientoAlmacen =  MovimientoAlmacen::where('orden_produccion_detalle_id',$detalleLote->orden_produccion_detalle_id)
-                //                                         ->where('nota','DEVOLUCION DE PROD')                                        
-                //                                         ->get();
-
-                // if ($movimientoAlmacen->count() > 0) {
-                //     MovimientoAlmacenDetalle::where('movimiento_almacen_id',$movimientoAlmacen->first()->id)->delete();
-                //     MovimientoAlmacen::where('orden_produccion_detalle_id',$detalleLote->orden_produccion_detalle_id)
-                //                                         ->where('nota','DEVOLUCION DE PROD')                                        
-                //                                         ->get()->delete();
-                //     // $movimientoAlmacen->delete();
-                // }
                 //ELIMINAR LOS DETALLES LOTES
                 $detalleLote->delete();
             }
@@ -211,15 +270,6 @@ class OrdenDetalleController extends Controller
                     $loteArticulo->update();
                     //ELIMINAR LAS DEVOLUCIONES
                     $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
-                    //ELIMINAR MOVIMIENTOS - ALMACEN
-
-                    // if ($movimientoAlmacen->count() > 0) {
-                    //     MovimientoAlmacenDetalle::where('movimiento_almacen_id',$movimientoAlmacen->first()->id)->delete();
-                    //     MovimientoAlmacen::where('orden_produccion_detalle_id',$detalleLote->orden_produccion_detalle_id)
-                    //                                         ->where('nota','MAL ESTADO')                                        
-                    //                                         ->get()->delete();
-                    //     // $movimientoAlmacen->delete();
-                    // }
                     //ELIMINAR LOS DETALLES LOTES
                     $detalleLote->delete();
                 }
@@ -232,6 +282,7 @@ class OrdenDetalleController extends Controller
                     'tipo_cantidad' => 'EXCEDIDA',
                 ]);
                 $lote->cantidad =  $lote->cantidad - $excedida->cantidad;
+                $lote->cantidad_logica = $lote->cantidad;
                 $lote->update();
 
                 //MOVIMIENTO ALMACEN - DETALLE (CANTIDAD EXCEDIDA)
@@ -254,18 +305,6 @@ class OrdenDetalleController extends Controller
                 $loteArticulo->update();
                 //ELIMINAR LAS DEVOLUCIONES
                 $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
-                // //ELIMINAR MOVIMIENTOS - ALMACEN
-                // $movimientoAlmacen = MovimientoAlmacen::where('orden_produccion_detalle_id',$detalleLote->orden_produccion_detalle_id)
-                //                                         ->where('nota','MAL ESTADO')                                        
-                //                                         ->get();
-              
-                // if ($movimientoAlmacen->count() > 0) {
-                //     MovimientoAlmacenDetalle::where('movimiento_almacen_id',$movimientoAlmacen->first()->id)->delete();
-                //     MovimientoAlmacen::where('orden_produccion_detalle_id',$detalleLote->orden_produccion_detalle_id)
-                //     ->where('nota','MAL ESTADO')                                        
-                //     ->get()->delete();
-                //     // $movimientoAlmacen->delete();
-                // }
                 //ELIMINAR LOS DETALLES LOTES
                 $detalleLote->delete();
             }
@@ -284,6 +323,9 @@ class OrdenDetalleController extends Controller
             ]
         )->with('modificar', 'success');
     }
+
+
+
 
 
     //POSIBLE CODIGO BASURA
@@ -421,6 +463,30 @@ class OrdenDetalleController extends Controller
         }
 
         return $mensaje;
-        }
+    }
+
+    //DEVOLVER CANTIDAD LOGICA AL CERRAR VENTANA
+    public function returnQuantity(Request $request)
+    {
+   
+        $data = $request->all();
+        $cantidades = $data['cantidades'];
+        $articulosJSON = $cantidades;
+        $productotabla = json_decode($articulosJSON);
+        $mensaje = '';
+        foreach ($productotabla as $detalle) {
+            //DEVOLVEMOS CANTIDAD AL LOTE Y AL LOTE LOGICO
+            $lote = LoteArticulo::findOrFail($detalle->lote_id);
+            $lote->cantidad_logica = $lote->cantidad_logica + $detalle->cantidad;
+            $lote->cantidad =  $lote->cantidad_logica;
+            $lote->estado = '1';
+            $lote->update();
+            $mensaje = 'Cantidad devuelta';
+        };
+
+        return $mensaje;
     
+    }
+
+
 }

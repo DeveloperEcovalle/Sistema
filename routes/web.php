@@ -548,6 +548,7 @@ function(){
         Route::post('detalles/lotes/store','Produccion\OrdenDetalleController@store')->name('produccion.orden.detalle.lote.store');
         Route::get('detalles/lotes/articulos/{id}','Produccion\OrdenDetalleController@getLotArticle')->name('produccion.orden.detalle.lote.articulos');
         Route::post('detalles/lotes/articulos/cantidad','Produccion\OrdenDetalleController@quantity')->name('produccion.orden.detalle.lote.articulos.cantidad');
+        Route::post('devolver/cantidad', 'Produccion\OrdenDetalleController@returnQuantity')->name('produccion.orden.detalle.lote.articulos.devolver.cantidades');
     });
 
     //ORDENES DE PRODUCCION - DETALLES - (LOTES - ARTICULOS) - DEVOLUCIONES
@@ -556,6 +557,7 @@ function(){
         Route::get('detalles/lotes/devolucion/','Produccion\OrdenDetalleDevolucionController@loteReturns')->name('produccion.orden.detalle.lote.devolucion');
         Route::post('/cantidad', 'Produccion\OrdenDetalleDevolucionController@quantity')->name('produccion.orden.detalle.lote.devolucion.cantidad');
         Route::post('detalles/lotes/devolucion/update','Produccion\OrdenDetalleDevolucionController@update')->name('produccion.orden.detalle.lote.devolucion.update');
+       
         // Route::post('detalles/lotes/update','Produccion\OrdenDetalleController@update')->name('produccion.orden.detalle.lote.update');
         // Route::post('detalles/lotes/store','Produccion\OrdenDetalleController@store')->name('produccion.orden.detalle.lote.store');
         // Route::get('detalles/lotes/articulos/{id}','Produccion\OrdenDetalleController@getLotArticle')->name('produccion.orden.detalle.lote.articulos');

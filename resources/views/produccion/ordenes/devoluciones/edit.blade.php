@@ -9,6 +9,9 @@
             <li class="breadcrumb-item">
                 <a href="{{route('home')}}">Panel de Control</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{route('produccion.orden.edit', [ 'orden' => $orden->id ])}}">Orden de Producción</a>
+            </li>
             <li class="breadcrumb-item active">
                 <strong>Devolución</strong>
             </li>
@@ -82,6 +85,50 @@
 
 
                                                     </div>
+
+                                                    <div class="form-group">
+                                                        <p>Cantidades Devueltas:</p>
+                                                    </div>
+
+                                                    <div class="table-responsive" >
+
+                                                        <table class="table dataTables-devoluciones table-striped table-bordered table-hover" style="text-transform:uppercase">
+                                                            <thead>
+                                                            <tr>
+                                                                <th colspan="4" class="text-center">LOTES</th>
+                                                                <th colspan="2" class="text-center">DEVOLUCIONES</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-center">ID</th>
+                                                                <th class="text-center">LOTE</th>
+                                                                <th class="text-center">CANTIDAD</th>
+                                                                <th class="text-center">TIPO</th>
+                                                                <th class="text-center">DESCRIPCION</th> 
+                                                                <th class="text-center">CANTIDAD</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                @foreach($devoluciones as $devolucion)
+                                                                    <tr>
+                                                                        <!-- DEVOLUCIONES -->
+                                                                        <td class="text-center" >{{$devolucion->orden_detalle_lote}}</td> 
+                                                                        <td class="text-center">{{$devolucion->lote}}</td>
+                                                                        <td>{{$devolucion->cantidad_lote}}</td>
+                                                                        <td>{{$devolucion->tipo}}</td>
+                                                                        <td>@if($devolucion->estado == 0) {{'MAL ESTADO'}}@else{{'BUEN ESTADO'}}@endif</td>
+                                                                        <td>{{$devolucion->cantidad}}</td>
+                                                                    </tr>
+                                                                @endforeach
+
+
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+
+
                                                 </div>
 
                                                 <div class="col-lg-6 col-xs-12">
@@ -256,7 +303,6 @@ $(document).ready(function() {
             },
     });
 
-
     $('buttons-html5').removeClass('.btn-default');
     $('#table_lotes_wrapper').removeClass('');
 
@@ -273,6 +319,48 @@ $(document).ready(function() {
         cantidadLote(data['0'])
     });
 
+
+});
+
+//INICIA DATATABLE DEVOLUCIONES
+$(document).ready(function() {
+    
+    devoluciones = $('.dataTables-devoluciones').DataTable({
+            "dom": 'lTfgitp',
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "language": {
+                "url": "{{asset('Spanish.json')}}"
+            },
+            "columnDefs": [
+                {
+                    "targets": 0,
+                },
+                {
+                    "targets": [1],
+                    className: 'text-center',
+                },
+                {
+                    "targets": [2],
+                    className: 'text-center',
+                },
+                {
+                    "targets": [3],
+                    className: 'text-center',
+                },
+                {
+                    "targets": [4], // BUEN ESTADO CANTIDAD
+                    className: 'text-center',
+                },
+                {
+                    "targets": [5], // MAL ESTADO CANTIDAD
+                    className: 'text-center',
+                },
+            ],
+    });
 
 });
 

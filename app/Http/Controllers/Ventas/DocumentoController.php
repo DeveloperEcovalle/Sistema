@@ -254,8 +254,6 @@ class DocumentoController extends Controller
   
     }
 
-
-
     public function store(Request $request){
         
         $data = $request->all();

@@ -9,6 +9,7 @@ use App\Produccion\OrdenDetalleLote;
 use App\Produccion\Devolucion;
 use Session;
 use Redirect;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 use App\Movimientos\MovimientoAlmacen;
@@ -17,11 +18,32 @@ class OrdenDetalleDevolucionController extends Controller
 {
     public function loteReturns(Request $request)
     {
+        $devolucionCompleta = collect();
         $orden = Orden::findOrFail($request->get('orden_id'));
         $ordenDetalleLotes = OrdenDetalleLote::where('orden_produccion_detalle_id', $request->get('ordenDetalle'))->get();  
+        foreach ($ordenDetalleLotes as $detalleLote) {
+            $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)
+                                        ->where('cantidad','>',0)
+                                        ->get();
+            foreach ($devoluciones as $devolucion) {
+                $coll = new Collection();
+                $coll->id = $devolucion->id;
+                //LOTE
+                $coll->lote = $detalleLote->loteArticulo->lote;
+                $coll->cantidad_lote =  $detalleLote->cantidad;
+                $coll->tipo =  $detalleLote->tipo_cantidad;
+                //DEVOLUCION
+                $coll->orden_detalle_lote = $devolucion->detalle_lote_id;
+                $coll->cantidad =  $devolucion->cantidad;
+                $coll->estado = $devolucion->estado;
+                $devolucionCompleta->push( $coll);
+            }
+        }
+
         return view('produccion.ordenes.devoluciones.edit',[
             'ordenDetalleLotes' => $ordenDetalleLotes,
             'orden' => $orden,
+            'devoluciones' => $devolucionCompleta,
         ]);
     }
 
