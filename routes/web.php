@@ -534,7 +534,8 @@ function(){
         Route::post('update/{id}','Produccion\OrdenController@update')->name('produccion.orden.update');
         Route::get('productoDetalle/{id}','Produccion\OrdenController@getArticles')->name('produccion.orden.articulos');
         Route::get('show/{id}','Produccion\OrdenController@show')->name('produccion.orden.show');
-        Route::post('destroy', 'Produccion\OrdenController@destroy')->name('produccion.orden.destroy');
+        Route::get('destroy/{id}','Produccion\OrdenController@destroy')->name('produccion.orden.destroy');
+        Route::post('cancel', 'Produccion\OrdenController@cancel')->name('produccion.orden.cancel');
         Route::get('getOrden/{id}', 'Produccion\OrdenController@getOrden')->name('produccion.getOrden');
 
 

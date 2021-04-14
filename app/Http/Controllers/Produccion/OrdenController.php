@@ -31,6 +31,7 @@ class OrdenController extends Controller
 
     public function getOrdenes(){
         $ordenes = Orden::select('orden_produccion.*')
+                    ->where('estado','!=','ELIMINADO')
                     ->orderBy('id', 'desc')->get();
         $coleccion = collect([]);
         foreach($ordenes as $orden) {
@@ -230,11 +231,22 @@ class OrdenController extends Controller
         
     }
 
-    public function destroy(Request $request)
+    public function cancel(Request $request)
     {
         $orden = Orden::findOrFail($request->get('orden_id'));
         $orden->estado = 'ANULADO';
         $orden->observacion = $request->get('observacion');
+        $orden->update();
+
+        Session::flash('success','Orden de Produccion anulado.');
+        return redirect()->route('produccion.orden.index')->with('eliminar', 'success');
+    }
+
+
+    public function destroy($id)
+    {
+        $orden = Orden::findOrFail($id);
+        $orden->estado = 'ELIMINADO';
         $orden->update();
 
         Session::flash('success','Orden de Produccion eliminado.');

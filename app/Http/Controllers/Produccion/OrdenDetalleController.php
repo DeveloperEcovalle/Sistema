@@ -53,16 +53,23 @@ class OrdenDetalleController extends Controller
         $articulo = Articulo::findOrFail($request->articulo_id);
         $programacion = Programacion_produccion::findOrFail($request->programacion_id);
         $ordenDetalle = OrdenDetalle::findOrFail($request->ordenDetalle);
-        $lotes = self::getLot($articulo->id, $ordenDetalle);
+       
         $loteCantidadProduccion = OrdenDetalleLote::where('tipo_cantidad','PRODUCCION')->where('orden_produccion_detalle_id',$ordenDetalle->id)->get();
+        if ($loteCantidadProduccion->count() > 0) {
+            $lotes = 0;
+        }else{
+            $lotes = self::getLot($articulo->id, $ordenDetalle);
+        }
+        
         $loteCantidadExcedida = OrdenDetalleLote::where('tipo_cantidad','EXCEDIDA')->where('orden_produccion_detalle_id',$ordenDetalle->id)->get();
+        
         return view('produccion.ordenes.detallesLotes.edit',[
             'articulo'=> $articulo,
             'programacion' => $programacion,
             'ordenDetalle' => $ordenDetalle,
             'cantidadProducciones' => $loteCantidadProduccion,
             'lotes' => $lotes,
-            'cantidadExcedidas' => $loteCantidadExcedida ,
+            'cantidadExcedidas' => $loteCantidadExcedida,
         ]);
 
     }
@@ -146,6 +153,7 @@ class OrdenDetalleController extends Controller
 
     public function update(Request $request)
     {
+        // dd($request);
         // DETALLE DE LA ORDEN DE PRODUCCION
         $detalle = OrdenDetalle::findOrFail($request->get('ordenDetalle_id'));
         $detalle->articulo_id = $request->get('articulo_id');
@@ -201,8 +209,10 @@ class OrdenDetalleController extends Controller
             // DEVOLUCION DE LOTES ARTICULOS
             foreach ($detalleLotes as $detalleLote) {
                 $loteArticulo = LoteArticulo::findOrFail($detalleLote->lote_articulo_id);
-                $loteArticulo->cantidad = $loteArticulo->cantidad + $detalleLote->cantidad;
-                $loteArticulo->cantidad_logica =  $loteArticulo->cantidad;
+                $cantidadTemp = $loteArticulo->cantidad + $detalleLote->cantidad;
+
+                $loteArticulo->cantidad =  $cantidadTemp;
+                $loteArticulo->cantidad_logica = $cantidadTemp;
                 $loteArticulo->update();
                 //ELIMINAR LAS DEVOLUCIONES
                 $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
@@ -238,8 +248,10 @@ class OrdenDetalleController extends Controller
             // DEVOLUCION DE LOTES ARTICULOS
             foreach ($detalleLotes as $detalleLote) {
                 $loteArticulo = LoteArticulo::findOrFail($detalleLote->lote_articulo_id);
-                $loteArticulo->cantidad = $loteArticulo->cantidad + $detalleLote->cantidad;
-                $loteArticulo->cantidad_logica =  $loteArticulo->cantidad;
+                $cantidadTemp = $loteArticulo->cantidad + $detalleLote->cantidad;
+                
+                $loteArticulo->cantidad = $cantidadTemp;
+                $loteArticulo->cantidad_logica = $cantidadTemp;
                 $loteArticulo->update();
                 //ELIMINAR LAS DEVOLUCIONES
                 $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
@@ -265,8 +277,10 @@ class OrdenDetalleController extends Controller
                 // DEVOLUCION DE LOTES ARTICULOS
                 foreach ($detalleLotes as $detalleLote) {
                     $loteArticulo = LoteArticulo::findOrFail($detalleLote->lote_articulo_id);
-                    $loteArticulo->cantidad = $loteArticulo->cantidad + $detalleLote->cantidad;
-                    $loteArticulo->cantidad_logica =  $loteArticulo->cantidad;
+                    $cantidadTemp = $loteArticulo->cantidad + $detalleLote->cantidad;
+
+                    $loteArticulo->cantidad = $cantidadTemp;
+                    $loteArticulo->cantidad_logica = $cantidadTemp;
                     $loteArticulo->update();
                     //ELIMINAR LAS DEVOLUCIONES
                     $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();
@@ -300,8 +314,10 @@ class OrdenDetalleController extends Controller
             // DEVOLUCION DE LOTES ARTICULOS
             foreach ($detalleLotes as $detalleLote) {
                 $loteArticulo = LoteArticulo::findOrFail($detalleLote->lote_articulo_id);
-                $loteArticulo->cantidad = $loteArticulo->cantidad + $detalleLote->cantidad;
-                $loteArticulo->cantidad_logica =  $loteArticulo->cantidad;
+                $cantidadTemp = $loteArticulo->cantidad + $detalleLote->cantidad;
+
+                $loteArticulo->cantidad = $cantidadTemp;
+                $loteArticulo->cantidad_logica =  $cantidadTemp;
                 $loteArticulo->update();
                 //ELIMINAR LAS DEVOLUCIONES
                 $devoluciones = Devolucion::where('detalle_lote_id', $detalleLote->id)->delete();

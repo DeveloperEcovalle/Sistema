@@ -144,14 +144,14 @@ $(document).ready(function() {
 
                     if (data.estado == 'ANULADO') {
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
-                            "<li><a class='dropdown-item' href='" + url_detalle +
-                            "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                            "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
+                            ")' title='Eliminar' ><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                         "</ul></div>"
                     }else{
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
                             "<li><a class='dropdown-item' onclick='modificar(" +data.id+","+data.conformidad+","+data.editable +")' title='Editar'><b><i class='fa fa-edit'></i> Modificar </a></b></li>" +
-                            "<li><a class='dropdown-item' href='" + url_detalle +
-                            "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                            "<li><a class='dropdown-item' onclick='anular(" + data.id +
+                            ")' title='Anular' ><b><i class='fa fa-times'></i> Anular</a></b></li>" +
                             "<li><a class='dropdown-item' onclick='eliminar(" + data.id +
                             ")' title='Eliminar' ><b><i class='fa fa-trash'></i> Eliminar</a></b></li>" +
                             "<li class='dropdown-divider'></li>" +
@@ -175,7 +175,7 @@ $(document).ready(function() {
 //Controlar Error
 $.fn.DataTable.ext.errMode = 'throw';
 
-function eliminar(id) {
+function anular(id) {
     $('#orden_id').val(id)
     $('#modal_observacion_anular').modal('show');
 }
@@ -263,10 +263,44 @@ function conformidad(id, confor , editable) {
 }
 
 function modificar(id, confor , editable) {
-    // console.log(id, confor , editable)
-
     var url = "{{ route('produccion.orden.edit', [ 'orden' =>'id']) }}".replace('id', id);
     $(location).attr('href', url);
+}
+
+function modificar(id, confor , editable) {
+    var url = "{{ route('produccion.orden.edit', [ 'orden' =>'id']) }}".replace('id', id);
+    $(location).attr('href', url);
+}
+
+function eliminar(id) {
+    Swal.fire({
+        title: 'Opción Eliminar',
+        text: "¿Seguro que desea eliminar registro?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#1ab394",
+        confirmButtonText: 'Si, Confirmar',
+        cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Ruta Eliminar
+            var url_eliminar = '{{ route("produccion.orden.destroy", ":id")}}';
+            url_eliminar = url_eliminar.replace(':id', id);
+            $(location).attr('href', url_eliminar);
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'La Solicitud se ha cancelado.',
+                'error'
+            )
+        }
+    })
+
+
 }
 
 </script>

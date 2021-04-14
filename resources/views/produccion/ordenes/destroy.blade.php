@@ -8,10 +8,10 @@
                 </button>
                 <i class="fa fa-cogs modal-icon"></i>
                 <h4 class="modal-title">Orden de Producción</h4>
-                <small class="font-bold">Ingresar la observación acerca de la eliminacion del registro.</small>
+                <small class="font-bold">Ingresar la observación acerca de la anulación del registro.</small>
             </div>
             <div class="modal-body">
-                <form role="form" action="{{route('produccion.orden.destroy')}}" method="POST" id="orden_observar">
+                <form role="form" action="{{route('produccion.orden.cancel')}}" method="POST" id="orden_observar">
                     {{csrf_field()}}
                     <input type="hidden" name="orden_id" id="orden_id">
                     <div class="form-group">
@@ -54,6 +54,7 @@ $('#orden_observar').submit(function(e) {
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
+            container: 'my-swal',
             confirmButton: 'btn btn-success',
             cancelButton: 'btn btn-danger',
         },
@@ -64,8 +65,8 @@ $('#orden_observar').submit(function(e) {
         customClass: {
             container: 'my-swal'
         },
-        title: 'Opción Eliminar',
-        text: "¿Seguro que desea guardar cambios?",
+        title: 'Opción Anular',
+        text: "¿Seguro que desea anular el registro?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: "#1ab394",

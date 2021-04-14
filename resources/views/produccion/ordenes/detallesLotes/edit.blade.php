@@ -38,7 +38,8 @@
 
                             <h4 class=""><b>Orden de Producción</b></h4>
 
-
+                            <input type="hidden" id='asegurarCierre' value="@if ($cantidadProducciones->count() > 0 ) {{'2'}} @else {{'1'}} @endif">
+                            <input type="hidden" id='asegurarCierreExcedida' value="@if ($cantidadExcedidas->count() > 0 ) {{'2'}} @else {{'1'}} @endif">
                             <div class="row">
                             
                                 <div class="col-lg-6 col-xs-12 b-r">
@@ -127,11 +128,13 @@
                                                             
                                                             @else
                                                                 @foreach ($lotes as $lote)
+                                                                <tr>
                                                                     <td>{{$lote->orden_produccion_detalle_id}} </td>
                                                                     <td>{{$lote->lote_articulo_id}} </td>
                                                                     <td>{{$lote->lote}}</td>
                                                                     <td>{{Carbon\Carbon::parse($lote->fecha_vencimiento)->format('d/m/y')}}</td>
                                                                     <td>{{number_format($lote->cantidad,2)}}</td>
+                                                                </tr>
                                                                 @endforeach
                                                             @endif
                                                         </tbody>
@@ -739,6 +742,7 @@ $('#enviar_orden_produccion_lote').submit(function(e) {
             if (enviar == true) {
                 cantidadProduccion()
                 cantidadExcedida()
+                $('#asegurarCierre').val('2')
                 this.submit()
             }
 
@@ -777,6 +781,23 @@ function cantidadLoteexcedida(cantidadExcedida2) {
 //DEVOLVER CANTIDADES A LOS LOTES
 function devolverCantidades() {
     //CARGAR CANTIDAD EXCEDIDA PARA DEVOLVER LOTE ARTICULO
+    cantidadProduccion()
+    $.ajax({
+        dataType : 'json',
+        type : 'post',
+        url : '{{ route('produccion.orden.detalle.lote.articulos.devolver.cantidades') }}',
+        data : {
+            '_token' : $('input[name=_token]').val(),
+            'cantidades' :  $('#cantidadProduccionLote').val(),
+        }
+    }).done(function (result){
+        alert('DEVOLUCION REALIZADA')
+        console.log(result)
+    });
+}
+
+function devolverCantidadesExcedida() {
+    //CARGAR CANTIDAD EXCEDIDA PARA DEVOLVER LOTE ARTICULO
     cantidadExcedida()
     $.ajax({
         dataType : 'json',
@@ -797,7 +818,8 @@ function devolverCantidades() {
 <script>
     window.onbeforeunload = function () { 
         //DEVOLVER CANTIDADES 
-        devolverCantidades()
+        if($('#asegurarCierre').val() != 2 ) {devolverCantidades()}
+        if($('#asegurarCierreExcedida').val() != 2 ) {devolverCantidadesExcedida()}
         
     };
 

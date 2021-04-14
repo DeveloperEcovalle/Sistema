@@ -31,7 +31,7 @@ class CreateOrdenProduccion extends Migration
 
             $table->mediumText('observacion')->nullable();
             $table->enum('produccion',['0','1'])->default('0');
-            $table->enum('estado',['PRODUCCION','ANULADO'])->default('PRODUCCION');
+            $table->enum('estado',['PRODUCCION','ANULADO', 'ELIMINADO'])->default('PRODUCCION');
             $table->enum('conformidad',['0','1', '2'])->default('0');
             $table->enum('editable',['0','1', '2'])->default('0');
             $table->timestamps();
