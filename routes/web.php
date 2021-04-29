@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -602,3 +603,4 @@ function(){
         Route::post('store', 'Seguridad\PermissionsController@store')->name('seguridad.permissions.store')->middleware('permission:crud_permiso');
     });
 });
+

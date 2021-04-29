@@ -4,7 +4,7 @@
             @if(auth()->user()->ruta_imagen)
                 <img alt="image"  alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{Storage::url(auth()->user()->ruta_imagen)}}"/>
             @else
-                <img alt="{{auth()->user()->usuario}}" alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{ asset('storage/usuarios/default.jpg') }}"/>
+                <img alt="{{auth()->user()->usuario}}" alt="{{auth()->user()->usuario}}" class="rounded-circle" height="48" width="48"  src="{{ asset('img/default.jpg') }}"/>
 
             @endif
 

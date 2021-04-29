@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +28,31 @@ Route::get('clientes',function ()
 
     return response()->json([
         'clientes' => $clientes,
+    ]);
+
+});
+
+//TIENDAS
+Route::get('register/clientes',function ()
+{
+    $clientes = DB::table('clientes')
+        ->select('clientes.*')->distinct()->get();
+
+    foreach($clientes as $cliente)
+    {
+        $cliente->tiendas = DB::table('cliente_tiendas')->where('cliente_tiendas.cliente_id',$cliente->id)
+        ->select(
+            'cliente_tiendas.id',
+            'cliente_tiendas.nombre',
+            'cliente_tiendas.tipo_tienda',
+            'cliente_tiendas.tipo_negocio',
+            'cliente_tiendas.direccion'                    
+        )
+        ->get();
+    }
+
+    return response()->json([
+        'clientes' => $clientes
     ]);
 
 });
@@ -192,8 +219,10 @@ Route::get('clientes/venta/parametros',function (Request $request)
                     'clientes.facebook',
                     'clientes.instagram',
                     'clientes.web',
-                    'clientes.tabladetalles_id as tipoCliente',
-                    'clientes.departamento_id as departamentoCliente',
+                    'clientes.tabladetalles_id as tipo_cliente_id',
+                    'clientes.departamento_id as departamento_id',
+                    'clientes.provincia_id as provincia_id',
+                    'clientes.distrito_id as distrito_id',
                     'clientes.zona'
                 );
 
@@ -260,6 +289,11 @@ Route::get('clientes/tienda',function (Request $request)
                     'clientes.telefono_movil',
                     'clientes.facebook',
                     'clientes.instagram',
+                    'clientes.zona',
+                    'clientes.departamento_id',
+                    'clientes.provincia_id',
+                    'clientes.tabladetalles_id as tipo_cliente_id',
+                    'clientes.distrito_id',
                     'clientes.web'
                 );
 
@@ -269,6 +303,7 @@ Route::get('clientes/tienda',function (Request $request)
         foreach ($clientes as $cliente) {
             $tiendas = DB::table('cliente_tiendas')
                     ->select(
+                        'cliente_tiendas.id',
                         'cliente_tiendas.nombre',
                         'cliente_tiendas.tipo_tienda',
                         'cliente_tiendas.tipo_negocio',
@@ -355,6 +390,96 @@ Route::get('zonas/distritos',function (Request $request)
                 )->get();
 
     return DataTables::collection($distritos)->toJson();
+});
+
+//Crm--- 
+Route::get('campanas/eficiencia',function(Request $request)
+{
+    
+    $ventas=DB::table('productos as p')
+            ->join('productos_clientes as pc','pc.producto_id','=','p.id')
+            ->join('clientes as c','c.id','=','pc.cliente')
+            ->select(DB::raw('p.nombre,count(p.nombre) as VU'))
+            ->where('p.estado','ACTIVO')
+            ->whereRaw('month(pc.created_at)=?',$request->mes)
+            ->whereRaw('year(pc.created_at)=?',$request->year)
+            ->groupBy('p.nombre')
+            ->get();
+
+        
+    return DataTables::collection($ventas)->toJson();
+});
+
+Route::get('tiponegocio/ventas',function(Request $request)
+{
+    
+    $ventas=DB::table('productos as p')
+            ->join('productos_clientes as pc','pc.producto_id','=','p.id')
+            ->join('clientes as c','c.id','=','pc.cliente')
+            ->where('p.estado','ACTIVO')
+            ->whereRaw('month(pc.created_at)=?',$request->mes)
+            ->whereRaw('year(pc.created_at)=?',$request->year)
+            ->groupBy('p.nombre')
+            ->get();
+
+        
+    return DataTables::collection($ventas)->toJson();
+});
+Route::get('tiponegocio/clientes',function(Request $request)
+{
+    $fecha_actual = Carbon::now();
+
+    $meses_aux = array();
+    for($i = 0; $i < 13; $i++)
+    {
+        $f_old = (string)date("d-m-Y",strtotime($fecha_actual."- ".$i." month"));
+        $m = array("ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC");
+        $f_old = Carbon::parse($f_old);
+        $mes = $m[($f_old->format('n')) - 1];
+        $nombre = $mes . ' ' . $f_old->format('Y');
+        $ob = new stdClass();
+        $ob->fecha = date("d-m-Y",strtotime($fecha_actual."- ".$i." month"));
+        $ob->nombre = $nombre;
+        $ob->anio =date("Y",strtotime($fecha_actual."- ".$i." month"));
+        $ob->mes =date("m",strtotime($fecha_actual."- ".$i." month"));
+        array_push($meses_aux,$ob);
+    }
+
+    $tipos_negocio = DB::table('tabladetalles')
+    ->select('id','descripcion')
+    ->where('tabla_id',23 )
+    ->get();
+
+    $cont = 0;
+    while($cont < count($tipos_negocio))
+    {
+        $meses = array();
+        for($j = 0; $j < count($meses_aux); $j++)
+        {
+            $vtn = DB::table('clientes as c')
+            ->join('cliente_tiendas as ct','ct.cliente_id','=','c.id')
+            ->when($request->get('zona'), function ($query, $request) {
+                return $query->where('c.zona', $request);
+            })
+            ->when($request->get('departamento'), function ($query, $request) {
+                return $query->where('c.departamento_id', $request);
+            })
+            ->when($request->get('provincia'), function ($query, $request) {
+                return $query->where('c.provincia_id', $request);
+            })
+            ->where('ct.estado','ACTIVO')
+            ->whereMonth('ct.created_at',$meses_aux[$j]->mes)
+            ->whereYear('ct.created_at',$meses_aux[$j]->anio)
+            ->where('ct.tipo_negocio',$tipos_negocio[$cont]->descripcion)
+            ->select('ct.tipo_negocio')
+            ->get();
+            array_push($meses,array("nombre" => $meses_aux[$j]->nombre,"clientes" => count($vtn)));
+        }
+        
+        $tipos_negocio[$cont]->meses = $meses;
+        $cont = $cont + 1;
+    }
+    return DataTables::collection($tipos_negocio)->toJson(); 
 });
 
 
