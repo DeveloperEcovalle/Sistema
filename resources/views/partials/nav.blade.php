@@ -147,6 +147,10 @@
              @can('crud_ingreso_mercaderia')
             <li class="@yield('ingreso_mercaderia-active')"><a href="{{route('almacenes.ingreso_mercaderia.index')}}">Ingreso de Mercaderia</a></li>
              @endcan
+             @can('crud_ingreso_mercaderia')
+            <li class="@yield('nota_ingreso-active')"><a href="{{route('almacenes.nota_ingreso.index')}}">Notas de Ingresos</a></li>
+            <li class="@yield('nota_salidad-active')"><a href="{{route('almacenes.nota_salidad.index')}}">Notas de Salidad</a></li>
+             @endcan
         </ul>
     </li>
 

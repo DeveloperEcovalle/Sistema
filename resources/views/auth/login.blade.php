@@ -131,6 +131,7 @@
             // toastr.error("{{ Session::get('usuario_anulado') }}")
             dd("sasas");
         @endif
+       
 
         window.addEventListener("load",function(){
             $('.loader-spinner').hide();

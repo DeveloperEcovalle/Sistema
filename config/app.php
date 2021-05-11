@@ -177,9 +177,11 @@ return [
         //Yajra Datatable
         Yajra\Datatables\DatatablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         Spatie\Permission\PermissionServiceProvider::class,
         'Spatie\Backup\BackupServiceProvider',
+       
         
 
     ],
@@ -236,6 +238,8 @@ return [
         //Yajra Datatable
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
 
     ],
 

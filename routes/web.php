@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -15,7 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    if(Auth()->user())
+    {
+        return view('home');
+    }
+    else
+    {   return view('auth.login');
+
+    }
+
 });
 
 Auth::routes();
@@ -215,7 +224,7 @@ function(){
         Route::get('destroy/{id}', 'Almacenes\SubFamiliaController@destroy')->name('almacenes.subfamilia.destroy')->middleware('permission:crud_subfamilia');
 
         Route::post('store', 'Almacenes\SubFamiliaController@store')->name('almacenes.subfamilia.store')->middleware('permission:crud_subfamilia');
-        
+
         Route::put('update', 'Almacenes\SubFamiliaController@update')->name('almacenes.subfamilia.update')->middleware('permission:crud_subfamilia');
         Route::post('getByFamilia', 'Almacenes\SubFamiliaController@getByFamilia')->name('almacenes.subfamilia.getByFamilia');
 
@@ -353,7 +362,7 @@ function(){
         Route::get('comprobante/{id}','Ventas\DocumentoController@voucher')->name('ventas.documento.comprobante');
         Route::post('cantidad', 'Ventas\DocumentoController@quantity')->name('ventas.documento.cantidad');
         Route::post('devolver/cantidad', 'Ventas\DocumentoController@returnQuantity')->name('ventas.documento.devolver.cantidades');
-        
+
 
         //Pagos
         Route::get('pagos/index/{id}', 'Ventas\Documentos\PagoController@index')->name('ventas.documentos.pago.index');
@@ -422,7 +431,7 @@ function(){
         Route::get('/destroy/{id}', 'Mantenimiento\TalonarioController@destroy')->name('mantenimiento.talonario.destroy')->middleware('permission:crud_talonario');
     });
 
-    // Actividades 
+    // Actividades
     Route::prefix('mantenimiento/actividades')->group(function() {
         Route::get('index', 'Mantenimiento\Actividad\ActividadController@index')->name('mantenimiento.actividad.index')->middleware('permission:crud_actividad');;
         Route::get('getActivity','Mantenimiento\Actividad\ActividadController@getActivity')->name('actividad.getActivity');
@@ -473,7 +482,7 @@ function(){
         Route::get('destroy/{id}', 'Almacenes\Maquinarias_equiposController@destroy')->name('almacenes.maquinaria_equipo.destroy')->middleware('permission:crud_maquinaria_equipo');
         Route::post('store', 'Almacenes\Maquinarias_equiposController@store')->name('almacenes.maquinaria_equipo.store')->middleware('permission:crud_maquinaria_equipo');
         Route::put('update', 'Almacenes\Maquinarias_equiposController@update')->name('almacenes.maquinaria_equipo.update')->middleware('permission:crud_maquinaria_equipo');
-        
+
     });
 
     // Linea de Produccionlinea_produccion
@@ -502,6 +511,33 @@ function(){
         Route::get('destroy/{id}', 'Almacenes\Ingreso_mercaderiaController@destroy')->name('almacenes.ingreso_mercaderia.destroy')->middleware('permission:crud_ingreso_mercaderia');
         Route::get('reporte/{id}','Almacenes\Ingreso_mercaderiaController@report')->name('almacenes.ingreso_mercaderia.reporte')->middleware('permission:crud_ingreso_mercaderia');
         Route::get('email/{id}','Almacenes\Ingreso_mercaderiaController@email')->name('almacenes.ingreso_mercaderia.email')->middleware('permission:crud_ingreso_mercaderia');
+    });
+    Route::prefix('almacenes/nota_ingreso')->group(function() {
+        Route::get('index', 'Almacenes\NotaIngresoController@index')->name('almacenes.nota_ingreso.index');
+        Route::get('getdata','Almacenes\NotaIngresoController@gettable')->name('almacenes.nota_ingreso.data');
+        Route::get('create','Almacenes\NotaIngresoController@create')->name('almacenes.nota_ingreso.create');
+        Route::post('store', 'Almacenes\NotaIngresoController@store')->name('almacenes.nota_ingreso.store');
+        Route::get('edit/{id}','Almacenes\NotaIngresoController@edit')->name('almacenes.nota_ingreso.edit');
+        Route::get('show/{id}','Almacenes\NotaIngresoController@show')->name('almacenes.nota_ingreso.show');
+        Route::put('update/{id}', 'Almacenes\NotaIngresoController@update')->name('almacenes.nota_ingreso.update');
+        Route::get('destroy/{id}', 'Almacenes\NotaIngresoController@destroy')->name('almacenes.nota_ingreso.destroy');
+        Route::post('productos', 'Almacenes\NotaIngresoController@getProductos')->name('almacenes.nota_ingreso.productos');
+        Route::post('uploadnotaingreso', 'Almacenes\NotaIngresoController@uploadnotaingreso')->name('almacenes.nota_ingreso.uploadnotaingreso');
+        Route::get('downloadexcel', 'Almacenes\NotaIngresoController@getDownload')->name('almacenes.nota_ingreso.downloadexcel');
+        Route::get('downloadproductosexcel', 'Almacenes\NotaIngresoController@getProductosExcel')->name('almacenes.nota_ingreso.downloadproductosexcel');
+        Route::get('downloaderrorexcel', 'Almacenes\NotaIngresoController@getErrorExcel')->name('almacenes.nota_ingreso.error_excel');
+    });
+    Route::prefix('almacenes/nota_salidad')->group(function() {
+        Route::get('index', 'Almacenes\NotaSalidadController@index')->name('almacenes.nota_salidad.index');
+        Route::get('getdata','Almacenes\NotaSalidadController@gettable')->name('almacenes.nota_salidad.data');
+        Route::get('create','Almacenes\NotaSalidadController@create')->name('almacenes.nota_salidad.create');
+        Route::post('store', 'Almacenes\NotaSalidadController@store')->name('almacenes.nota_salidad.store');
+        Route::get('edit/{id}','Almacenes\NotaSalidadController@edit')->name('almacenes.nota_salidad.edit');
+        Route::get('show/{id}','Almacenes\NotaSalidadController@show')->name('almacenes.nota_salidad.show');
+        Route::put('update/{id}', 'Almacenes\NotaSalidadController@update')->name('almacenes.nota_salidad.update');
+        Route::get('destroy/{id}', 'Almacenes\NotaSalidadController@destroy')->name('almacenes.nota_salidad.destroy');
+        Route::post('productos', 'Almacenes\NotaSalidadController@getProductos')->name('almacenes.nota_salidad.productos');
+        Route::get('getLot','Almacenes\NotaSalidadController@getLot')->name('almacenes.nota_salidad.getLot');
     });
 
     // Programacion de la Produccion
@@ -559,7 +595,7 @@ function(){
         Route::get('detalles/lotes/devolucion/','Produccion\OrdenDetalleDevolucionController@loteReturns')->name('produccion.orden.detalle.lote.devolucion');
         Route::post('/cantidad', 'Produccion\OrdenDetalleDevolucionController@quantity')->name('produccion.orden.detalle.lote.devolucion.cantidad');
         Route::post('detalles/lotes/devolucion/update','Produccion\OrdenDetalleDevolucionController@update')->name('produccion.orden.detalle.lote.devolucion.update');
-       
+
         // Route::post('detalles/lotes/update','Produccion\OrdenDetalleController@update')->name('produccion.orden.detalle.lote.update');
         // Route::post('detalles/lotes/store','Produccion\OrdenDetalleController@store')->name('produccion.orden.detalle.lote.store');
         // Route::get('detalles/lotes/articulos/{id}','Produccion\OrdenDetalleController@getLotArticle')->name('produccion.orden.detalle.lote.articulos');
@@ -591,7 +627,7 @@ function(){
         Route::post('store', 'Seguridad\RolController@store')->name('seguridad.roles.store')->middleware('permission:crud_rol');;
     });
 
-    // Permisos 
+    // Permisos
     Route::prefix('seguridad/permissions')->group(function() {
         Route::get('index', 'Seguridad\PermissionsController@index')->name('seguridad.permissions.index')->middleware('permission:crud_permiso');;
         Route::get('create','Seguridad\PermissionsController@create')->name('seguridad.permissions.create')->middleware('permission:crud_permiso');
