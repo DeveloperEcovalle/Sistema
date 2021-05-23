@@ -482,7 +482,7 @@ Route::get('tiponegocio/clientes',function(Request $request)
     return DataTables::collection($tipos_negocio)->toJson();
 });
 Route::get('mapa/peru',function(){
-    $file = database_path("data\mapa\peru.json");
+    $file = database_path("data/mapa/peru.json");
     $json = file_get_contents($file);
 
     return json_decode($json,true);
