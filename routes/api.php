@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//CLIENTES 
+//CLIENTES
 Route::get('clientes',function ()
 {
     $clientes = DB::table('clientes')
@@ -46,7 +46,7 @@ Route::get('register/clientes',function ()
             'cliente_tiendas.nombre',
             'cliente_tiendas.tipo_tienda',
             'cliente_tiendas.tipo_negocio',
-            'cliente_tiendas.direccion'                    
+            'cliente_tiendas.direccion'
         )
         ->get();
     }
@@ -57,14 +57,14 @@ Route::get('register/clientes',function ()
 
 });
 
-//CLIENTES REALIZARON UNA VENTA PARAMETROS 
+//CLIENTES REALIZARON UNA VENTA PARAMETROS
 // [
 //     ZONA => CENTRO,
 //     DEPARTAMENTO => ANCASH,
 //     MONTO => 10000.00 VALORES MAYORES A ESA VENTA
 //     fecha_fin =>
 //     fecha_inicio =>
-//     comparacion => 
+//     comparacion =>
 // ]
 
 // Route::get('clientes/parametros',function (Request $request)
@@ -79,13 +79,13 @@ Route::get('register/clientes',function ()
 //                     });
 
 //         $clientes = $clientes->get();
-//         $coleccion = collect([]);       
-        
+//         $coleccion = collect([]);
+
 //         foreach ($clientes as $cliente) {
 //             $venta_monto = DB::table('cotizacion_documento')
 
 //                         ->where('cotizacion_documento.cliente_id',$cliente->id)
-                    
+
 //                         ->when($request->get('fecha_inicio'), function ($query, $request) {
 //                             return $query->where('cotizacion_documento.fecha_documento','>=',$request);
 //                         })
@@ -163,10 +163,10 @@ Route::get('productos/terminados',function ()
             ->join('subfamilias', 'productos.sub_familia_id', '=', 'subfamilias.id')
             ->join('tabladetalles as lineas_comerciales', 'productos.linea_comercial', '=', 'lineas_comerciales.id')
             ->join('tabladetalles as medidas', 'productos.medida', '=', 'medidas.id')
-        ->select('productos.*', 
-                'familias.familia as categoria_pt' , 
-                'subfamilias.descripcion as sub_categoria_pt', 
-                'lineas_comerciales.descripcion as lineaComercialDescripcion', 
+        ->select('productos.*',
+                'familias.familia as categoria_pt' ,
+                'subfamilias.descripcion as sub_categoria_pt',
+                'lineas_comerciales.descripcion as lineaComercialDescripcion',
                 'medidas.descripcion as medidaDescripcion',
                 'medidas.simbolo as medidaSimbolo'
                 )
@@ -185,7 +185,7 @@ Route::get('productos/terminados',function ()
 //     MONTO => 10000.00 VALORES MAYORES A ESA VENTA
 //     fecha_fin =>
 //     fecha_inicio =>
-//     comparacion => 
+//     comparacion =>
 // ]
 Route::get('clientes/venta/parametros',function (Request $request)
 {
@@ -227,7 +227,7 @@ Route::get('clientes/venta/parametros',function (Request $request)
                 );
 
         $clientes = $clientes->get();
-        $coleccion = collect([]);       
+        $coleccion = collect([]);
 
         foreach ($clientes as $cliente) {
             $ventas = DB::table('cotizacion_documento')
@@ -240,7 +240,7 @@ Route::get('clientes/venta/parametros',function (Request $request)
                     })->get();
 
             $venta_monto = DB::table('cotizacion_documento')
-                 
+
                     ->where('cotizacion_documento.cliente_id',$cliente->id)
                     ->when($request->get('fecha_inicio'), function ($query, $request) {
                         return $query->where('cotizacion_documento.fecha_documento','>=',$request);
@@ -298,7 +298,7 @@ Route::get('clientes/tienda',function (Request $request)
                 );
 
         $clientes = $clientes->get();
-        $coleccion = collect([]);       
+        $coleccion = collect([]);
 
         foreach ($clientes as $cliente) {
             $tiendas = DB::table('cliente_tiendas')
@@ -307,7 +307,7 @@ Route::get('clientes/tienda',function (Request $request)
                         'cliente_tiendas.nombre',
                         'cliente_tiendas.tipo_tienda',
                         'cliente_tiendas.tipo_negocio',
-                        'cliente_tiendas.direccion'                    
+                        'cliente_tiendas.direccion'
                     )
                     ->where('cliente_tiendas.cliente_id',$cliente->id)
                     ->where('cliente_tiendas.estado','ACTIVO')
@@ -392,10 +392,10 @@ Route::get('zonas/distritos',function (Request $request)
     return DataTables::collection($distritos)->toJson();
 });
 
-//Crm--- 
+//Crm---
 Route::get('campanas/eficiencia',function(Request $request)
 {
-    
+
     $ventas=DB::table('productos as p')
             ->join('productos_clientes as pc','pc.producto_id','=','p.id')
             ->join('clientes as c','c.id','=','pc.cliente')
@@ -406,13 +406,13 @@ Route::get('campanas/eficiencia',function(Request $request)
             ->groupBy('p.nombre')
             ->get();
 
-        
+
     return DataTables::collection($ventas)->toJson();
 });
 
 Route::get('tiponegocio/ventas',function(Request $request)
 {
-    
+
     $ventas=DB::table('productos as p')
             ->join('productos_clientes as pc','pc.producto_id','=','p.id')
             ->join('clientes as c','c.id','=','pc.cliente')
@@ -422,7 +422,7 @@ Route::get('tiponegocio/ventas',function(Request $request)
             ->groupBy('p.nombre')
             ->get();
 
-        
+
     return DataTables::collection($ventas)->toJson();
 });
 Route::get('tiponegocio/clientes',function(Request $request)
@@ -475,11 +475,17 @@ Route::get('tiponegocio/clientes',function(Request $request)
             ->get();
             array_push($meses,array("nombre" => $meses_aux[$j]->nombre,"clientes" => count($vtn)));
         }
-        
+
         $tipos_negocio[$cont]->meses = $meses;
         $cont = $cont + 1;
     }
-    return DataTables::collection($tipos_negocio)->toJson(); 
+    return DataTables::collection($tipos_negocio)->toJson();
+});
+Route::get('mapa/peru',function(){
+    $file = database_path("data\mapa\peru.json");
+    $json = file_get_contents($file);
+
+    return json_decode($json,true);
 });
 
 
