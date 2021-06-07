@@ -25,7 +25,7 @@ class Cliente extends Model
         'direccion_negocio',
         'fecha_aniversario',
         'observaciones',
-        
+
         'facebook',
         'instagram',
         'web',
@@ -39,7 +39,10 @@ class Cliente extends Model
         'celular_propietario',
         'correo_propietario',
         'activo',
-        'estado'
+        'estado',
+
+        'lat',
+        'lng'
     ];
 
     public function cotizaciones()

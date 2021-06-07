@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Ventas\Cliente;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use DataTables;
+use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Session;
-
+use Illuminate\Support\Facades\Storage;
 
 class ClienteController extends Controller
 {
@@ -33,7 +33,7 @@ class ClienteController extends Controller
                 'departamento' => $cliente->getDepartamento(),
                 'provincia' => $cliente->getProvincia(),
                 'distrito' => $cliente->getDistrito(),
-                'zona' => $cliente->getDepartamentoZona(),         
+                'zona' => $cliente->getDepartamentoZona(),
                 ]);
         }
         return DataTables::of($coleccion)->toJson();
@@ -65,6 +65,8 @@ class ClienteController extends Controller
             'telefono_movil' => 'required|numeric',
             'activo' => 'required',
             'direccion_negocio' => 'required',
+            'lat'=>'required',
+            'logo' => 'image|mimetypes:image/jpeg,image/png,image/jpg|max:40000|required_if:estado_fe,==,on',
         ];
         $message = [
             'tipo_documento.required' => 'El campo Tipo de documento es obligatorio.',
@@ -80,6 +82,9 @@ class ClienteController extends Controller
             'telefono_movil.numeric' => 'El campo Teléfono móvil debe ser numérico',
             'activo.required' => 'El campo Estado es obligatorio',
             'direccion_negocio.required' => 'El campo Dirección de negocio completa es obligatorio',
+            'lat.required' => 'escoga un marcador',
+            'logo.image' => 'El campo Logo no contiene el formato imagen.',
+            'logo.max' => 'El tamaño máximo del Logo para cargar es de 40 MB.',
 
         ];
 
@@ -104,7 +109,7 @@ class ClienteController extends Controller
         $cliente->telefono_movil = $request->get('telefono_movil');
         $cliente->telefono_fijo = $request->get('telefono_fijo');
         $cliente->activo = $request->get('activo');
-        
+
         $cliente->facebook = $request->get('facebook');
         $cliente->instagram = $request->get('instagram');
         $cliente->web = $request->get('web');
@@ -125,6 +130,18 @@ class ClienteController extends Controller
         $cliente->celular_propietario   = $request->get('celular_propietario');
         $cliente->correo_propietario  = $request->get('correo_propietario');
 
+        //Latitud y longitud
+        $cliente->lat= $request->get('lat');
+        $cliente->lng= $request->get('lng');
+
+        //Img Gps
+        if($request->hasFile('logo')){
+            $file = $request->file('logo');
+            $name = $file->getClientOriginalName();
+            $cliente->nombre_logo = $name;
+            $cliente->ruta_logo = $request->file('logo')->store('public/mensaje/logos');
+        }
+
         $cliente->save();
 
         //Registro de actividad
@@ -139,10 +156,9 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $cliente = Cliente::findOrFail($id);
-        
+
         $put = True;
         $action = route('ventas.cliente.update', $id);
-
         return view('ventas.clientes.edit', [
             'cliente' => $cliente,
             'action' => $action,
@@ -152,7 +168,6 @@ class ClienteController extends Controller
 
     public function update(Request $request, $id)
     {
-       
         $data = $request->all();
 
         $rules = [
@@ -168,7 +183,8 @@ class ClienteController extends Controller
             'direccion' => 'required',
             'telefono_movil' => 'required|numeric',
             'activo' => 'required',
-            'correo_electronico' => 'required|email'
+            'correo_electronico' => 'required|email',
+            'logo' => 'image|mimetypes:image/jpeg,image/png,image/jpg|max:40000|required_if:estado_fe,==,on',
         ];
         $message = [
             'tipo_documento.required' => 'El campo Tipo de documento es obligatorio.',
@@ -184,7 +200,9 @@ class ClienteController extends Controller
             'telefono_movil.numeric' => 'El campo Teléfono móvil debe ser numérico',
             'activo.required' => 'El campo Estado es obligatorio',
             'correo_electronico.required' => 'El campo Correo electrónico es obligatorio',
-            'correo_electronico.email' => 'El campo Correo electrónico es de tipo Email (@).'
+            'correo_electronico.email' => 'El campo Correo electrónico es de tipo Email (@).',
+            'logo.image' => 'El campo Logo no contiene el formato imagen.',
+            'logo.max' => 'El tamaño máximo del Logo para cargar es de 40 MB.',
         ];
 
         Validator::make($data, $rules, $message)->validate();
@@ -193,7 +211,7 @@ class ClienteController extends Controller
         $cliente->tipo_documento = $request->get('tipo_documento');
         $cliente->documento = $request->get('documento');
         $cliente->nombre = $request->get('nombre');
-        
+
         $cliente->codigo = $request->get('codigo');
         $cliente->zona = $request->get('zona');
         $cliente->nombre_comercial = $request->get('nombre_comercial');
@@ -232,9 +250,22 @@ class ClienteController extends Controller
             $cliente->fecha_nacimiento_prop  = NULL;
         }
 
-        
+
         $cliente->celular_propietario   = $request->get('celular_propietario');
         $cliente->correo_propietario  = $request->get('correo_propietario');
+
+        //Latitud y longitud
+        $cliente->lat= $request->get('lat');
+        $cliente->lng= $request->get('lng');
+
+        //Imagen cliente gps
+        if($request->hasFile('logo')){
+            Storage::delete($cliente->ruta_logo);
+            $file = $request->file('logo');
+            $name = $file->getClientOriginalName();
+            $cliente->nombre_logo = $name;
+            $cliente->ruta_logo = $request->file('logo')->store('public/Clientes/img');
+        }
         $cliente->update();
 
         //Registro de actividad

@@ -9,10 +9,7 @@ class UbicacionCliente extends Model
     protected $table = 'ubicacion_cliente';
     public $timestamps = true;
     protected $fillable = [
-            'nombre',
-            'latitud',
-            'longitud',
             'ver',
-            'direccion'
+            'cliente_id'
         ];
 }
