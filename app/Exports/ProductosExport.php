@@ -70,6 +70,10 @@ class ProductosExport implements ShouldAutoSize,WithHeadings,FromArray,WithEvent
             'precio_venta_maximo',
             'peso_producto',
             'igv',
+            'codigo_lote',
+            'cantidad',
+            'fecha_vencimiento',
+            'fecha_entrega'
             ]
         ]
        ;
@@ -80,7 +84,7 @@ class ProductosExport implements ShouldAutoSize,WithHeadings,FromArray,WithEvent
 
             BeforeWriting::class => [self::class, 'beforeWriting'],
             AfterSheet::class    => function(AfterSheet $event) {
-                $event->sheet->getStyle('A8:E8')->applyFromArray([
+                $event->sheet->getStyle('O1:R1')->applyFromArray([
 
 
                     'fill' => [
@@ -98,20 +102,27 @@ class ProductosExport implements ShouldAutoSize,WithHeadings,FromArray,WithEvent
                 ]
 
                 );
+                $event->sheet->getStyle('A1:N1')->applyFromArray([
 
-                $event->sheet->getStyle('A9:E'.(8+$this->filas))->applyFromArray([
 
-
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
-                            'color' => ['argb' => '000000'],
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                        'rotation' => 90,
+                        'startColor' => [
+                            'argb' => '1ab394',
                         ],
-                    ]
+                        'endColor' => [
+                            'argb' => '1ab394',
+                        ],
+                    ],
+
 
                 ]
 
                 );
+
+
+
                // $event->sheet->getColumnDimension('C')->setWidth(20);
 
             },
