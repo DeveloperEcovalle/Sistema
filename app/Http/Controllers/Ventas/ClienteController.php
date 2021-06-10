@@ -65,7 +65,6 @@ class ClienteController extends Controller
             'telefono_movil' => 'required|numeric',
             'activo' => 'required',
             'direccion_negocio' => 'required',
-            'lat'=>'required',
             'logo' => 'image|mimetypes:image/jpeg,image/png,image/jpg|max:40000|required_if:estado_fe,==,on',
         ];
         $message = [
@@ -82,7 +81,6 @@ class ClienteController extends Controller
             'telefono_movil.numeric' => 'El campo Teléfono móvil debe ser numérico',
             'activo.required' => 'El campo Estado es obligatorio',
             'direccion_negocio.required' => 'El campo Dirección de negocio completa es obligatorio',
-            'lat.required' => 'escoga un marcador',
             'logo.image' => 'El campo Logo no contiene el formato imagen.',
             'logo.max' => 'El tamaño máximo del Logo para cargar es de 40 MB.',
 
