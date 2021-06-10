@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Seguridad;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use DB;
-use DataTables;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use App\Mantenimiento\Colaborador\Colaborador;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 
 use App\Seguridad\Roles;
+use Illuminate\Support\Facades\Log;
 
 class UsuarioController extends Controller
 {
@@ -64,7 +66,7 @@ class UsuarioController extends Controller
         ->where('colaboradores.estado','!=',"ANULADO")
         ->get();
 
- 
+
         $coleccion = collect([]);
         foreach($colaboradores as $colaborador){
             if (DB::table('users')->where('colaborador_id', $colaborador->colaborador_id)->where('estado','ACTIVO')->exists() == false) {
@@ -89,14 +91,14 @@ class UsuarioController extends Controller
         ->where('colaboradores.estado','!=',"ANULADO")
         ->get();
 
- 
+
         $coleccion = collect([]);
         foreach($colaboradores as $colaborador){
             if (
                 DB::table('users')
                     ->where('colaborador_id', $colaborador->colaborador_id)
                     ->where('estado','ACTIVO')
-                    ->exists() == false || 
+                    ->exists() == false ||
                     $colaborador->id == $id) {
                 $coleccion->push([
                     'id' => $colaborador->colaborador_id,
@@ -108,18 +110,21 @@ class UsuarioController extends Controller
              }
 
         };
-    
+
 
         return $coleccion;
     }
 
     public function store(Request $request){
-        
+
         $data = $request->all();
         $rules = [
             'empleado_id' => 'required',
             'usuario' => 'required',
-            'correo' => 'required|unique:users,email',
+            'correo' => ['required','email',Rule::unique('users','email')->where(function($query)
+            {
+                $query->whereIn('estado',["ACTIVO"]);
+            })],
             'password' => 'required|confirmed',
             'logo' => 'image|mimetypes:image/jpeg,image/png,image/jpg|max:40000',
             'file' => '',
@@ -140,14 +145,26 @@ class UsuarioController extends Controller
         Validator::make($data, $rules, $message)->validate();
 
 
+        $consulta=DB::table('users')->where('email',$data['correo']);
+        if($consulta->count()==0){
+            $usuario = new User();
+            $usuario->usuario = $data['usuario'];
+            $usuario->colaborador_id = $data['empleado_id'];
+            $usuario->email = $data['correo'];
+            $usuario->password = bcrypt($data['password']);
 
-        $usuario = new User();
-        $usuario->usuario = $data['usuario'];
-        $usuario->colaborador_id = $data['empleado_id'];
-        $usuario->email = $data['correo'];
-        $usuario->password = bcrypt($data['password']);
 
-        if($request->hasFile('logo')){                
+        }
+        else{
+            $idUser=$consulta->first();
+            $usuario= User::findOrFail($idUser->id);
+            $usuario->usuario = $data['usuario'];
+            $usuario->colaborador_id = $data['empleado_id'];
+            $usuario->email = $data['correo'];
+            $usuario->password = bcrypt($data['password']);
+            $usuario->estado="ACTIVO";
+        }
+        if($request->hasFile('logo')){
             $file = $request->file('logo');
             $name = $file->getClientOriginalName();
             $usuario->nombre_imagen = $name;
@@ -155,6 +172,7 @@ class UsuarioController extends Controller
         }
 
         $usuario->save();
+
 
         // Asignación de Rol
         // Elmina roles anteriores
@@ -175,7 +193,7 @@ class UsuarioController extends Controller
     }
 
     public function update(Request $request, $id){
-        
+
         $data = $request->all();
         $rules = [
             'empleado_id' => 'required',
@@ -208,8 +226,8 @@ class UsuarioController extends Controller
 
         if($request->hasFile('logo')){
             //Eliminar Archivo anterior
-            Storage::delete($usuario->ruta_imagen);               
-            //Agregar nuevo archivo                
+            Storage::delete($usuario->ruta_imagen);
+            //Agregar nuevo archivo
             $file = $request->file('logo');
             $name = $file->getClientOriginalName();
             $usuario->nombre_imagen = $name;
@@ -238,7 +256,7 @@ class UsuarioController extends Controller
 
     public function destroy($id)
     {
-        
+
         $usuario = User::findOrFail($id);
         $usuario->estado = 'ANULADO';
         $usuario->update();
@@ -251,7 +269,7 @@ class UsuarioController extends Controller
         if ( auth()->user()->estado == 'ACTIVO') {
             Session::flash('success','Usuario eliminado.');
             return redirect()->route('seguridad.usuario.index')->with('eliminar', 'success');
-            
+
         }else{
             return redirect()->route('logout')->with('usuario_eliminado','error');
         }

@@ -900,6 +900,7 @@
                     },
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
+                    console.log(result);
                     if (result.value !== undefined && result.isConfirmed) {
                         $('#documento').removeClass('is-invalid')
                         if (tipo_documento === 'DNI')
