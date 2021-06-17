@@ -159,6 +159,9 @@ class NotaIngresoController extends Controller
                 'nota_id'=>$notaingreso->id,
                 'producto_id'=>$fila->producto_id,
             ]);
+            $productoU=Producto::findOrFail($fila->producto_id);
+            $productoU->stock=$fila->cantidad;
+            $productoU->update();
 
 
 

@@ -98,6 +98,9 @@ function(){
         Route::get('destroy/{id}', 'Compras\ArticuloController@destroy')->name('compras.articulo.destroy')->middleware('permission:crud_articulo');
         Route::post('store', 'Compras\ArticuloController@store')->name('compras.articulo.store')->middleware('permission:crud_articulo');
         Route::put('update/{id}', 'Compras\ArticuloController@update')->name('compras.articulo.update')->middleware('permission:crud_articulo');
+        Route::get('downloadexcel','Compras\ArticuloController@getDownload')->name('compras.articulo.downloadexcel')->middleware('permission:crud_articulo');
+        Route::post('uploadexcel', 'Compras\ArticuloController@upload')->name('compras.articulo.uploadexcel');
+        Route::get('downloaderrorexcel', 'Compras\ArticuloController@getErrorExcel')->name('compras.articulo.error_excel');
     });
     //Proveedores
     Route::prefix('compras/proveedores')->group(function() {
@@ -267,6 +270,9 @@ function(){
         Route::get('/destroy/{id}', 'Produccion\ComposicionController@destroy')->name('produccion.composicion.destroy')->middleware('permission:crud_composicion_producto');
         Route::post('/destroyDetalle', 'Produccion\ComposicionController@destroyDetalle')->name('produccion.composicion.destroyDetalle')->middleware('permission:crud_composicion_producto');
         Route::post('/getCodigo', 'Produccion\ComposicionController@getCodigo')->name('produccion.composicion.getCodigo');
+        Route::get('/downloadexcel','Produccion\ComposicionController@getDownload')->name('produccion.composicion.downloadexcel');
+        Route::post('/uploadexcel', 'Produccion\ComposicionController@upload')->name('produccion.composicion.uploadexcel');
+        Route::get('/downloaderrorexcel', 'Produccion\ComposicionController@getErrorExcel')->name('produccion.composicion.error_excel');
     });
 
 
@@ -538,6 +544,36 @@ function(){
         Route::get('destroy/{id}', 'Almacenes\NotaSalidadController@destroy')->name('almacenes.nota_salidad.destroy');
         Route::post('productos', 'Almacenes\NotaSalidadController@getProductos')->name('almacenes.nota_salidad.productos');
         Route::get('getLot','Almacenes\NotaSalidadController@getLot')->name('almacenes.nota_salidad.getLot');
+    });
+
+    //Alamacenes nota de ingreso de articulos
+    Route::prefix('almacenes/nota_ingreso_articulo')->group(function() {
+        Route::get('index', 'Almacenes\NotaIngresoArticuloController@index')->name('almacenes.nota_ingreso_articulo.index');
+        Route::get('getdata','Almacenes\NotaIngresoArticuloController@gettable')->name('almacenes.nota_ingreso_articulo.data');
+        Route::get('create','Almacenes\NotaIngresoArticuloController@create')->name('almacenes.nota_ingreso_articulo.create');
+        Route::post('store', 'Almacenes\NotaIngresoArticuloController@store')->name('almacenes.nota_ingreso_articulo.store');
+        Route::get('edit/{id}','Almacenes\NotaIngresoArticuloController@edit')->name('almacenes.nota_ingreso_articulo.edit');
+        Route::get('show/{id}','Almacenes\NotaIngresoArticuloController@show')->name('almacenes.nota_ingreso_articulo.show');
+        Route::put('update/{id}', 'Almacenes\NotaIngresoArticuloController@update')->name('almacenes.nota_ingreso_articulo.update');
+        Route::get('destroy/{id}', 'Almacenes\NotaIngresoArticuloController@destroy')->name('almacenes.nota_ingreso_articulo.destroy');
+        Route::post('productos', 'Almacenes\NotaIngresoArticuloController@getProductos')->name('almacenes.nota_ingreso_articulo.productos');
+        Route::post('uploadnotaingreso', 'Almacenes\NotaIngresoArticuloController@uploadnotaingreso')->name('almacenes.nota_ingreso_articulo.uploadnotaingreso');
+        Route::get('downloadexcel', 'Almacenes\NotaIngresoArticuloController@getDownload')->name('almacenes.nota_ingreso_articulo.downloadexcel');
+        Route::get('downloadproductosexcel', 'Almacenes\NotaIngresoArticuloController@getProductosExcel')->name('almacenes.nota_ingreso_articulo.downloadproductosexcel');
+        Route::get('downloaderrorexcel', 'Almacenes\NotaIngresoArticuloController@getErrorExcel')->name('almacenes.nota_ingreso_articulo.error_excel');
+    });
+    //Almacenes nota de salidad de articulos
+    Route::prefix('almacenes/nota_salidad_articulo')->group(function() {
+        Route::get('index', 'Almacenes\NotaSalidadArticuloController@index')->name('almacenes.nota_salidad_articulo.index');
+        Route::get('getdata','Almacenes\NotaSalidadArticuloController@gettable')->name('almacenes.nota_salidad_articulo.data');
+        Route::get('create','Almacenes\NotaSalidadArticuloController@create')->name('almacenes.nota_salidad_articulo.create');
+        Route::post('store', 'Almacenes\NotaSalidadArticuloController@store')->name('almacenes.nota_salidad_articulo.store');
+        Route::get('edit/{id}','Almacenes\NotaSalidadArticuloController@edit')->name('almacenes.nota_salidad_articulo.edit');
+        Route::get('show/{id}','Almacenes\NotaSalidadArticuloController@show')->name('almacenes.nota_salidad_articulo.show');
+        Route::put('update/{id}', 'Almacenes\NotaSalidadArticuloController@update')->name('almacenes.nota_salidad_articulo.update');
+        Route::get('destroy/{id}', 'Almacenes\NotaSalidadArticuloController@destroy')->name('almacenes.nota_salidad_articulo.destroy');
+        Route::post('productos', 'Almacenes\NotaSalidadArticuloController@getProductos')->name('almacenes.nota_salidad_articulo.productos');
+        Route::get('getLot','Almacenes\NotaSalidadArticuloController@getLot')->name('almacenes.nota_salidad_articulo.getLot');
     });
 
     // Programacion de la Produccion

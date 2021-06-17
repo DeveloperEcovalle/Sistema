@@ -8,13 +8,18 @@ use App\Almacenes\Familia;
 use App\Almacenes\Producto;
 use App\Almacenes\ProductoDetalle;
 use App\Almacenes\SubFamilia;
+use App\Exports\ProductoTerminado\ErrorProductoTerminadoExport;
+use App\Exports\ProductoTerminado\ProductoTerminadoMultisheet;
+use App\Imports\ProductoTerminado\ProductoTerminadoImportMultiSheet;
+use App\Imports\ProductoTerminado\ProductoTerminadoSheet;
+use Exception;
 use Illuminate\Http\Request;
-use DataTables;
-use Carbon\Carbon;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-use Session;
-use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ComposicionController extends Controller
 {
@@ -163,7 +168,60 @@ class ComposicionController extends Controller
             'articulos' => $articulos
         ]);
     }
+    public function getDownload(){
+        ob_end_clean(); // this
+        ob_start();
+        return  Excel::download(new ProductoTerminadoMultisheet,'modelo_productoTerminado.xlsx');
+    }
+    public function upload(Request $request)
+    {
+        $data=array();
+        $file=$request->file();
+        $archivo=$file['files'][0];
+        $datos=array();
 
+        $objeto=new ProductoTerminadoSheet();
+        Excel::import($objeto,$archivo);
+        $datos= $objeto->get_data();
+        try
+        {
+            Excel::import(new ProductoTerminadoImportMultiSheet(),$archivo);
+        }
+        catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            foreach ($failures as $failure) {
+                array_push($data,array(
+                    "fila"=>$failure->row(),
+                    "atributo"=>$failure->attribute(),
+                    "error"=>$failure->errors()
+                ));
+            }
+            array_push($data,array("excel"=>$datos));
+        }
+        catch (Exception $er)
+        {
+
+        }
+        return json_encode($data);
+    }
+    public function getErrorExcel(Request $request)
+    {
+        ob_end_clean(); // this
+        ob_start();
+        $errores=array();
+        $datos=json_decode(($request->arregloerrores));
+        for($i=0;$i<count($datos)-1;$i++)
+        {
+            array_push($errores,array(
+                "fila"=>$datos[$i]->fila,
+                "atributo"=>$datos[$i]->atributo,
+                "error"=>$datos[$i]->error
+            ));
+        }
+         $data=$datos[count($datos)-1]->excel;
+
+        return  Excel::download(new ErrorProductoTerminadoExport($data,$errores),'excel_error.xlsx');
+    }
     public function update(Request $request, $id)
     {
         $data = $request->all();

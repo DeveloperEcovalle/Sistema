@@ -19,6 +19,9 @@
         <button id="btn_añadir_producto" class="btn btn-block btn-w-m btn-primary m-t-md">
             <i class="fa fa-plus-square"></i> Añadir nuevo
         </button>
+        <a class="btn btn-block btn-w-m btn-primary m-t-md" id="importar"    href="#">
+            <i class="fa fa-file-excel-o"></i> Importar
+        </a>
     </div>
 </div>
 
@@ -49,7 +52,7 @@
         </div>
     </div>
 </div>
-
+@include('produccion.composicion.modalfile')
 @stop
 @push('styles')
     <!-- DataTable -->
@@ -62,7 +65,9 @@
     <script src="{{asset('Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
 
     <script>
-
+        $(document).on('click','#importar',function (e){
+            $("#modal_file").modal('show');
+        });
         $(document).ready(function() {
 
             // DataTables
