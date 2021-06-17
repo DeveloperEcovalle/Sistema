@@ -42,12 +42,12 @@ class Programacion_produccionController extends Controller
     public function create()
     {
         $fecha_hoy = Carbon::now()->toDateString();
-        // $productos = Producto::where('estado','ACTIVO')->get();
+        $productos = Producto::where('estado','ACTIVO')->get();
 
 
         $productos = ProductoDetalle::where('estado','ACTIVO')->distinct()->get(['producto_id']);
         return view('produccion.programacion_produccion.create',[
-            'productos' => $productos, 
+            'productos' => $productos,
             'fecha_hoy' => $fecha_hoy,
         ]);
     }
@@ -60,23 +60,23 @@ class Programacion_produccionController extends Controller
 
         return view('produccion.programacion_produccion.edit',[
             'programacion_produccion' => $programacion_produccion,
-            'productos' => $productos, 
-            'fecha_hoy' => $fecha_hoy, 
+            'productos' => $productos,
+            'fecha_hoy' => $fecha_hoy,
         ]);
     }
-    
+
     public function show($id)
     {
         $programacion_produccion = Programacion_produccion::findOrFail($id);
         $productos = Producto::where('estado','ACTIVO')->get();
- 
+
         return view('produccion.programacion_produccion.show',[
             'programacion_produccion' => $programacion_produccion,
-            'productos' => $productos, 
+            'productos' => $productos,
         ]);
     }
     public function store(Request $request){
-    
+
 
         $data = $request->all();
         $rules = [
@@ -89,9 +89,9 @@ class Programacion_produccionController extends Controller
             'observacion' => 'nullable',
             // // 'usuario_id'=>'',
             // 'estado'=>'',
-            
+
         ];
-        
+
         $message = [
             'required.producto_id'=>'El campo Producto es obligatorio',
             // 'fecha_creacion'=>'El campo fecha_creacion es ...',
@@ -102,11 +102,11 @@ class Programacion_produccionController extends Controller
             // 'observacion'=>'El campo observacion es ...',
             // 'usuario_id'=>'El campo usuario_id es ...',
             // 'estado'=>'El campo estado es ...',
-            
+
         ];
 
         Validator::make($data, $rules, $message)->validate();
-    
+
         $programacion_produccion=new Programacion_produccion;
         $programacion_produccion->producto_id = $request->get('producto_id');
         // $programacion_produccion->fecha_creacion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_creacion'))->format('Y-m-d');
@@ -139,9 +139,9 @@ class Programacion_produccionController extends Controller
             'observacion' => 'nullable',
             // // 'usuario_id'=>'',
             // 'estado'=>'',
-            
+
         ];
-        
+
         $message = [
             'required.producto_id'=>'El campo Producto es obligatorio',
             // 'fecha_creacion'=>'El campo fecha_creacion es ...',
@@ -152,7 +152,7 @@ class Programacion_produccionController extends Controller
             // 'observacion'=>'El campo observacion es ...',
             // 'usuario_id'=>'El campo usuario_id es ...',
             // 'estado'=>'El campo estado es ...',
-            
+
         ];
 
         Validator::make($data, $rules, $message)->validate();
@@ -176,7 +176,7 @@ class Programacion_produccionController extends Controller
         return redirect()->route('produccion.programacion_produccion.index')->with('modificar', 'success');
     }
 
-    
+
     public function destroy(Request $request)
     {
         $programacion_produccion = Programacion_produccion::findOrFail($request->get('programacion_id'));
@@ -193,7 +193,7 @@ class Programacion_produccionController extends Controller
         return redirect()->route('produccion.programacion_produccion.index')->with('eliminar', 'success');
 
     }
-    
+
     public function approved()
     {
         return view('produccion.aprobada.index');
