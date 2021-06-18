@@ -1,7 +1,7 @@
     <?php
 
-    use App\UbicacionCliente;
-    use Illuminate\Http\Request;
+use App\Ventas\UbicacionCliente;
+use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Carbon;
     use Illuminate\Support\Facades\DB;
@@ -474,16 +474,17 @@
         return json_decode($json, true);
     });
     Route::get('clientes/direccion', function () {
-        return  DB::table('clientes as c')->
-                join('ubicacion_cliente as cl','cl.cliente_id','=','c.id')->
-        select('c.id','c.direccion','c.nombre','cl.ver','c.lat','c.lng','c.ruta_logo','c.celular_propietario')->get();
+        return  DB::table('cliente_tiendas as c')->
+                join('ubicacion_cliente as cl','cl.tienda_id','=','c.id')
+                ->join('clientes as cli','cli.id','=','c.cliente_id')->
+        select('c.id','c.direccion','c.nombre','cl.ver','c.lat','c.lng','c.ruta_logo','cli.celular_propietario')->get();
        // return DB::table('ubicacion_cliente as c')->select('c.direccion', 'c.nombre', 'c.ver', 'c.latitud', 'c.longitud')->get();
     });
     Route::post('posiciciones/clientes', function (Request $request) {
 
         $datos = json_decode($request->lista);
         for ($i = 0; $i < count($datos); $i++) {
-            $consulta=DB::table('ubicacion_cliente')->where('cliente_id',$datos[$i]->id)->first();
+            $consulta=DB::table('ubicacion_cliente')->where('tienda_id',$datos[$i]->id)->first();
             $ubicacion_cliente=UbicacionCliente::findOrFail($consulta->id);
 
                 if ($datos[$i]->checked) {

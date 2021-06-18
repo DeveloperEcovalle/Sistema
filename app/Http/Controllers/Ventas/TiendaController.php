@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Ventas\Cliente;
 use App\Ventas\Tienda;
+use App\Ventas\UbicacionCliente;
 use Carbon\Carbon;
-use Session;
-use DB;
-use DataTables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class TiendaController extends Controller
 {
@@ -34,7 +36,7 @@ class TiendaController extends Controller
                             'tipo_tienda' => $tienda->tipo_tienda,
                             'tipo_negocio' => $tienda->tipo_negocio,
                             'envio' => $condicion->descripcion
-        
+
                         ]);
                     }
                 }
@@ -67,7 +69,7 @@ class TiendaController extends Controller
 
     public function store(Request $request)
     {
-
+        return $request;
         $data = $request->all();
 
         $rules = [
@@ -121,7 +123,7 @@ class TiendaController extends Controller
         $tienda->contacto_credito_telefono = $request->get('telefono_credito');
         $tienda->contacto_credito_celular = $request->get('celular_credito');
 
-        
+
         $tienda->dni_contacto_vendedor = $request->get('dni_contacto_vendedor');
         $tienda->estado_dni_contacto_vendedor = $request->get('estado_dni_contacto_vendedor');
 
@@ -167,7 +169,23 @@ class TiendaController extends Controller
         $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
         $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
         $tienda->observacion_domicilio = $request->get('observacion_domicilio');
+        //latitud y longitud
+        $tienda->lat= $request->get('lat');
+        $tienda->lng= $request->get('lng');
+
+        //Img Gps
+        if($request->hasFile('logo')){
+            $file = $request->file('logo');
+            $name = $file->getClientOriginalName();
+            $tienda->nombre_logo = $name;
+            $tienda->ruta_logo = $request->file('logo')->store('public/tienda/logos');
+        }
         $tienda->save();
+        $ubicacionCliente=new UbicacionCliente();
+        $ubicacionCliente->ver="1";
+        $ubicacionCliente->tienda_id=$tienda->id;
+        $ubicacionCliente->save();
+
 
         //Registro de actividad
         $descripcion = "SE AGREGÓ LA TIENDA CON EL NOMBRE: ".  $tienda->nombre;
@@ -180,7 +198,7 @@ class TiendaController extends Controller
 
     public function destroy($id)
     {
-        
+
         $tienda = Tienda::findOrFail($id);
         $tienda->estado = 'ANULADO';
         $tienda->update();
@@ -195,11 +213,11 @@ class TiendaController extends Controller
 
     }
 
-    
+
     public function edit($id)
     {
         $tienda = Tienda::findOrFail($id);
-        
+
         return view('ventas.clientes.tiendas.edit', [
             'tienda' => $tienda,
         ]);
@@ -248,7 +266,7 @@ class TiendaController extends Controller
         $tienda->contacto_admin_telefono = $request->get('telefono_administrador');
         $tienda->contacto_admin_celular = $request->get('celular_administrador');
 
-        
+
         $tienda->dni_contacto_credito = $request->get('dni_contacto_credito');
         $tienda->estado_dni_contacto_credito = $request->get('estado_dni_contacto_credito');
 
@@ -261,7 +279,7 @@ class TiendaController extends Controller
 
         $tienda->dni_contacto_vendedor = $request->get('dni_contacto_vendedor');
         $tienda->estado_dni_contacto_vendedor = $request->get('estado_dni_contacto_vendedor');
-        
+
         $tienda->contacto_vendedor_nombre = $request->get('nombre_vendedor');
         $tienda->contacto_vendedor_cargo = $request->get('cargo_vendedor');
         $tienda->contacto_vendedor_fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_nacimiento_vendedor'))->format('Y-m-d');
@@ -269,16 +287,16 @@ class TiendaController extends Controller
         $tienda->contacto_vendedor_telefono = $request->get('telefono_vendedor');
         $tienda->contacto_vendedor_celular = $request->get('celular_vendedor');
 
-        
+
         $tienda->hora_inicio = $request->get('hora_inicio');
         $tienda->hora_fin = $request->get('hora_termino');
 
 
         $tienda->condicion_reparto = $request->get('condicion_reparto');
-        
+
         $tienda->ruc_transporte_oficina = $request->get('ruc_transporte_oficina');
         $tienda->estado_transporte_oficina = $request->get('estado_transporte_oficina');
-        
+
         $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
         $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');
         $tienda->responsable_pago_flete = $request->get('responsable_pago_flete');
@@ -298,11 +316,22 @@ class TiendaController extends Controller
 
         $tienda->dni_contacto_recoger = $request->get('dni_contacto_recoger');
         $tienda->estado_dni_contacto_recoger = $request->get('estado_dni_contacto_recoger');
-        
+
         $tienda->nombre_contacto_recoger = $request->get('nombre_contacto_recoger');
         $tienda->telefono_contacto_recoger = $request->get('telefono_contacto_recoger');
         $tienda->observacion_domicilio = $request->get('observacion_domicilio');
 
+        $tienda->lat= $request->get('lat');
+        $tienda->lng= $request->get('lng');
+
+        //Imagen cliente gps
+        if($request->hasFile('logo')){
+            Storage::delete($tienda->ruta_logo);
+            $file = $request->file('logo');
+            $name = $file->getClientOriginalName();
+            $tienda->nombre_logo = $name;
+            $tienda->ruta_logo = $request->file('logo')->store('public/tienda/logos');
+        }
         $tienda->update();
 
         //Registro de actividad
@@ -314,10 +343,10 @@ class TiendaController extends Controller
         return redirect()->route('clientes.tienda.index',$tienda->cliente_id)->with('modificar', 'success');
     }
 
-    
+
     public function show($id)
     {
-        
+
         $tienda = Tienda::findOrFail($id);
         return view('ventas.clientes.tiendas.show', [
             'tienda' => $tienda
@@ -326,5 +355,5 @@ class TiendaController extends Controller
     }
 
 
-    
+
 }
