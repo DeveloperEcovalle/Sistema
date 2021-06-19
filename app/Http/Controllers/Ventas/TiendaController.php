@@ -69,7 +69,6 @@ class TiendaController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
         $data = $request->all();
 
         $rules = [

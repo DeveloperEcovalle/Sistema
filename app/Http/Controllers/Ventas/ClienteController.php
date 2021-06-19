@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ventas;
 
 use App\Http\Controllers\Controller;
 use App\Ventas\Cliente;
+use App\Ventas\Tienda;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -24,6 +25,7 @@ class ClienteController extends Controller
         $clientes = Cliente::where('estado','ACTIVO')->orderBy('clientes.id', 'desc')->get();
         $coleccion = collect([]);
         foreach($clientes as $cliente) {
+            $ctiendas=Tienda::where('cliente_id',$cliente->id)->count();
             $coleccion->push([
                 'id' => $cliente->id,
                 'documento' => $cliente->getDocumento(),
@@ -34,6 +36,7 @@ class ClienteController extends Controller
                 'provincia' => $cliente->getProvincia(),
                 'distrito' => $cliente->getDistrito(),
                 'zona' => $cliente->getDepartamentoZona(),
+                'ctiendas'=>$ctiendas
                 ]);
         }
         return DataTables::of($coleccion)->toJson();
