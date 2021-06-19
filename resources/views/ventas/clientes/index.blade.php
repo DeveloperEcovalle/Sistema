@@ -144,8 +144,19 @@
                         className: "text-center letrapequeña"
                     },
                     {
-                        data: 'ctiendas',
-                        className: "text-center letrapequeña"
+                        data: null,
+                        className: "text-center letrapequeña",
+                        render:function(data){
+                            var html="";
+                            if(data.ctiendas==1)
+                            {
+                                html=data.ctiendas+" tienda <i class='fa fa-shopping-cart' style='font-size:13px;color:#1ab394;'></i>"
+                            }
+                            else{
+                                html=data.ctiendas+" tiendas <i class='fa fa-shopping-cart' style='font-size:13px;color:#1ab394;'></i>"
+                            }
+                            return html;
+                        }
                     },
                     {
                         data: null,
