@@ -146,7 +146,13 @@ class TiendaController extends Controller
         $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
         $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');
         $tienda->responsable_pago_flete = $request->get('responsable_pago_flete');
-        $tienda->responsable_pago = $request->get('responsable_pago');
+        if($request->get('condicion_reparto')!=7){
+            $tienda->responsable_pago = $request->get('responsable_pago');
+          }
+          else{
+            $tienda->responsable_pago = $request->get('responsable_pago_domicilio');
+          }
+
 
         $tienda->dni_responsable_recoger = $request->get('dni_responsable_recoger');
         $tienda->estado_responsable_recoger = $request->get('estado_responsable_recoger');
@@ -298,7 +304,13 @@ class TiendaController extends Controller
         $tienda->nombre_transporte_oficina = $request->get('nombre_transporte_oficina');
         $tienda->direccion_transporte_oficina = $request->get('direccion_transporte_oficina');
         $tienda->responsable_pago_flete = $request->get('responsable_pago_flete');
-        $tienda->responsable_pago = $request->get('responsable_pago');
+        if($request->get('condicion_reparto')!=7){
+            $tienda->responsable_pago = $request->get('responsable_pago');
+          }
+          else{
+            $tienda->responsable_pago = $request->get('responsable_pago_domicilio');
+          }
+
 
         $tienda->dni_responsable_recoger = $request->get('dni_responsable_recoger');
         $tienda->estado_responsable_recoger = $request->get('estado_responsable_recoger');
