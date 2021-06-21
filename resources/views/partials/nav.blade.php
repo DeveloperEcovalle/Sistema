@@ -214,11 +214,14 @@ auth()->user()->can('crud_ingreso_mercaderia'))
                         de Ingresos</a></li>
                 <li class="@yield('nota_salidad-active')"><a href="{{ route('almacenes.nota_salidad.index') }}">Notas
                         de Salidad</a></li>
-                <li class="@yield('nota_ingreso-active')"><a href="{{ route('almacenes.nota_ingreso_articulo.index') }}">Notas
+                <li class="@yield('nota_ingreso_articulo-active')"><a href="{{ route('almacenes.nota_ingreso_articulo.index') }}">Notas
                             de Ingresos de articulos </a></li>
-                <li class="@yield('nota_salidad-active')"><a href="{{ route('almacenes.nota_salidad_articulo.index') }}">Notas
+                <li class="@yield('nota_salidad_articulo-active')"><a href="{{ route('almacenes.nota_salidad_articulo.index') }}">Notas
                             de Salidad articulos</a></li>
             @endcan
+            <li class="@yield('almacen_programacion_produccion-active')"><a
+                href="{{ route('almacen.programacion_produccion.index') }}">Programación de la
+                Producción</a></li>
         </ul>
     </li>
 @endif

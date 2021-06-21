@@ -46,7 +46,7 @@ class NotaSalidadArticuloController extends Controller
         $fecha = str_replace(" ", "", $fecha);
         $fecha = str_replace(":", "", $fecha);
         $origenes =  General::find(28)->detalles;
-        $destinos =  General::find(29)->detalles;
+        $destinos =  General::find(30)->detalles;
         $lotes = DB::table('lote_articulos')->get();
         $ngenerado = $fecha . (DB::table('nota_salidad')->count() + 1);
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
@@ -154,7 +154,7 @@ class NotaSalidadArticuloController extends Controller
             ));
         }
         $origenes =  General::find(28)->detalles;
-        $destinos =  General::find(29)->detalles;
+        $destinos =  General::find(30)->detalles;
         $lotes = DB::table('lote_articulos')->get();
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
         return view('almacenes.nota_salidad_articulos.edit', [
@@ -253,7 +253,7 @@ class NotaSalidadArticuloController extends Controller
             DB::table('lote_articulos')
                 ->join('articulos', 'articulos.id', '=', 'lote_articulos.articulo_id')
                 ->join('categorias', 'categorias.id', '=', 'articulos.categoria_id')
-                ->select('lote_articulos.id', 'articulos.id as articulo_id', 'lote_articulos.lote', 'articulos.descripcion as nombre', 'articulos.codigo_fabrica', 'articulos.stock', 'articulos.precio_compra', 'articulos.presentacion', 'categorias.descripcion as categoria')
+                ->select('lote_articulos.id', 'articulos.id as articulo_id', 'lote_articulos.lote', 'articulos.descripcion as nombre', 'lote_articulos.cantidad', 'articulos.precio_compra', 'articulos.presentacion', 'categorias.descripcion as categoria')
                 ->where('lote_articulos.cantidad_logica', '>', 0)
                 ->where('lote_articulos.estado', '1')
                 ->orderBy('lote_articulos.id', 'ASC')

@@ -21,7 +21,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center"></th>
-                                    <th class="text-center">PRODUCTO</th>
+                                    <th class="text-center">ARTICULO</th>
                                     <th class="text-center">CODIGO FABRICA</th>
                                     <th class="text-center">STOCK</th>
                                     <th class="text-center">PREC.COMPRA</th>
@@ -146,11 +146,11 @@
                         className: "text-left"
                     },
                     {
-                        data: 'codigo_fabrica',
+                        data: 'lote',
                         className: "text-center"
                     },
                     {
-                        data: 'stock',
+                        data: 'cantidad',
                         className: "text-center"
                     },
                     {

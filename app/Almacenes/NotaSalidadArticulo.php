@@ -8,7 +8,6 @@ class NotaSalidadArticulo extends Model
 {
     protected $table = 'nota_salidad_articulo';
     protected $fillable = [
-        'id',
         'numero',
         'fecha',
         'origen',

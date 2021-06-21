@@ -22,7 +22,7 @@ class NotaArticuloList implements WithEvents,ShouldAutoSize,WithTitle,HasReferen
             BeforeWriting::class => [self::class, 'beforeWriting'],
             AfterSheet::class    => function (AfterSheet $event) {
                 $c_origenes =  General::find(28)->detalles;
-                $c_destinos =  General::find(29)->detalles;
+                $c_destinos =  General::find(30)->detalles;
                 $c_articulos = Articulo::where('estado', 'ACTIVO')->get();
                 $event->sheet->setCellValue('A1' , 'articulos');
                 $k = 2;

@@ -591,6 +591,12 @@ function(){
         Route::get('produccion/{id}','Produccion\Programacion_produccionController@production')->name('produccion.programacion_produccion.produccion')->middleware('permission:crud_programacion_produccion');
     });
 
+    Route::prefix('almacen/programacion_produccion')->group(function() {
+        Route::get('index', 'Produccion\Programacion_produccionController@indexProduccionAlmacen')->name('almacen.programacion_produccion.index');
+        Route::get('getProgramacionProduccion','Produccion\Programacion_produccionController@getProgramacionProduccionAlmacen')->name('almacen.getProgramacionProduccion');
+        Route::get('show/{id}','Produccion\Programacion_produccionController@showalmacen')->name('almacen.programacion_produccion.show');
+
+    });
     // Producciones aprobados
     Route::prefix('produccion/aprobados')->group(function() {
         Route::get('index','Produccion\Programacion_produccionController@approved')->name('produccion.programacion_produccion.orden.approved');

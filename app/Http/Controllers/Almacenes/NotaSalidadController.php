@@ -72,13 +72,13 @@ class NotaSalidadController extends Controller
         $data = $request->all();
 
         $rules = [
-     
+
             'fecha' => 'required',
             'destino' => 'required',
             'origen' => 'required',
             'notadetalle_tabla'=>'required',
-        
-            
+
+
         ];
         $message = [
             'fecha.required' => 'El campo fecha  es Obligatorio',
@@ -88,7 +88,7 @@ class NotaSalidadController extends Controller
         ];
 
         Validator::make($data, $rules, $message)->validate();
-    
+
         $notasalidad=new NotaSalidad();
         $notasalidad->numero=$request->get('numero');
         $notasalidad->fecha=$request->get('fecha');
@@ -123,13 +123,15 @@ class NotaSalidadController extends Controller
             $lote_productocantidad=$lote_producto->cantidad-$fila->cantidad;
             $lote_productocantidad_logica=$lote_producto->cantidad_logica-$fila->cantidad;
             DB::update('update lote_productos set cantidad= ?,cantidad_logica = ? where id = ?', [$lote_productocantidad,$lote_productocantidad_logica,$fila->lote_id]);
-            
-    
+
+            $productoU = Producto::findOrFail($fila->producto_id);
+            $productoU->stock = $productoU->stock - $fila->cantidad;
+            $productoU->update();
         }
         $descripcion = "SE AGREGÓ LA NOTA DE SALIDAD";
         $gestion = "ALMACEN / NOTA SALIDAD";
         crearRegistro($notasalidad, $descripcion , $gestion);
-        
+
 
         Session::flash('success','NOTA DE SALIDAD');
         return redirect()->route('almacenes.nota_salidad.index')->with('guardar', 'success');
@@ -154,7 +156,7 @@ class NotaSalidadController extends Controller
      */
     public function edit($id)
     {
-        
+
         $notasalidad=NotaSalidad::findOrFail($id);
         $data=array();
         $detallenotasalidad=DB::table('detalle_nota_salidad')->where('nota_salidad_id',$notasalidad->id)->get();
@@ -204,10 +206,10 @@ class NotaSalidadController extends Controller
              'origen.required' => 'El campo origen  es Obligatorio',
              'notadetalle_tabla.required'=>'No hay dispositivos',
          ];
- 
+
          Validator::make($data, $rules, $message)->validate();
-        
-         
+
+
          //$registro_sanitario = new RegistroSanitario();
          $notasalidad=NotaSalidad::findOrFail($id);
          $notasalidad->fecha=$request->get('fecha');
@@ -215,7 +217,7 @@ class NotaSalidadController extends Controller
          $notasalidad->destino=$destino->descripcion;
          $notasalidad->usuario=Auth()->user()->usuario;
          $notasalidad->update();
- 
+
          $articulosJSON = $request->get('notadetalle_tabla');
          $notatabla = json_decode($articulosJSON[0]);
          if($notatabla!="")
@@ -228,15 +230,19 @@ class NotaSalidadController extends Controller
                       'cantidad' => $fila->cantidad,
                       'producto_id'=> $fila->producto_id,
                   ]);
-                 
-      
+
+
                   $lote_producto=LoteProducto::findOrFail($fila->lote_id);
                   $cantidadmovimiento=DB::table("movimiento_nota")->where('lote_id',$fila->lote_id)->where('producto_id',$fila->producto_id)->where('nota_id',$id)->where('movimiento','SALIDA')->first()->cantidad;
                   $lote_productocantidad=$lote_producto->cantidad+$cantidadmovimiento;
                   $lote_productocantidad_logica=$lote_producto->cantidad+$cantidadmovimiento;
                   $lote_productocantidad=$lote_productocantidad-$fila->cantidad;
                   $lote_productocantidad_logica=$lote_productocantidad_logica-$fila->cantidad;
- 
+
+                    $productoU = Producto::findOrFail($fila->producto_id);
+                    $productoU->stock =($productoU->stock+$cantidadmovimiento) - $fila->cantidad;
+                    $productoU->update();
+
                   DB::update('update lote_productos set cantidad= ?,cantidad_logica = ? where id = ?', [$lote_productocantidad,$lote_productocantidad_logica,$fila->lote_id]);
                   MovimientoNota::where('lote_id',$fila->lote_id)->where('producto_id',$fila->producto_id)->where('nota_id',$id)->where('movimiento','SALIDA')->delete();
                   $producto=DB::table('productos')->where('id',$fila->producto_id)->first();
@@ -249,21 +255,21 @@ class NotaSalidadController extends Controller
                       'producto_id'=>$fila->producto_id,
                       'nota_id'=>$id,
                   ]);
-          
+
               }
          }
-     
-         
-       
- 
-        
- 
+
+
+
+
+
+
          //Registro de actividad
          $descripcion = "SE AGREGÓ LA NOTA DE SALIDAD ";
          $gestion = "ALMACEN / NOTA SALIDAD";
          crearRegistro($notasalidad, $descripcion , $gestion);
-         
- 
+
+
          Session::flash('success','NOTA DE SALIDAD');
          return redirect()->route('almacenes.nota_salidad.index')->with('guardar', 'success');
     }
@@ -287,16 +293,16 @@ class NotaSalidadController extends Controller
         return datatables()->query(
             DB::table('lote_productos')
             ->join('productos_clientes','productos_clientes.producto_id','=','lote_productos.producto_id')
-            ->join('productos','productos.id','=','lote_productos.producto_id') 
+            ->join('productos','productos.id','=','lote_productos.producto_id')
             ->join('familias','familias.id','=','productos.familia_id')
             ->join('tabladetalles','tabladetalles.id','=','productos.medida')
             ->select('lote_productos.*','productos.nombre','productos_clientes.cliente','productos_clientes.moneda','tabladetalles.simbolo as unidad_producto',
                     'productos_clientes.monto as precio_venta','familias.familia', DB::raw('DATE_FORMAT(lote_productos.fecha_vencimiento, "%d/%m/%Y") as fecha_venci'))
-            ->where('lote_productos.cantidad_logica','>',0) 
-            ->where('lote_productos.estado','1') 
+            ->where('lote_productos.cantidad_logica','>',0)
+            ->where('lote_productos.estado','1')
             ->where('productos_clientes.cliente','29') //TIPO DE CLIENTE CONSUMIDOR TABLA DETALLE (29)
             ->where('productos_clientes.moneda','4') // TABLA DETALLE SOLES(4)
-            ->orderBy('lote_productos.id','ASC')  
+            ->orderBy('lote_productos.id','ASC')
             ->where('productos_clientes.estado','ACTIVO')
         )->toJson();
     }

@@ -9,12 +9,11 @@ use App\Produccion\Programacion_produccion;
 use App\Almacenes\Producto;
 use App\Almacenes\ProductoDetalle;
 
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use DB;
-
+use Illuminate\Support\Facades\DB;
 class Programacion_produccionController extends Controller
 {
     public function index()
@@ -234,5 +233,36 @@ class Programacion_produccionController extends Controller
         Session::flash('success','Programacion de Produccion enviado a Producciones aprobadas.');
         return redirect()->route('produccion.programacion_produccion.index');
 
+    }
+    public function indexProduccionAlmacen()
+    {
+        return view('almacenes.programacion_produccion.index');
+    }
+    public function getProgramacionProduccionAlmacen(){
+        $produccion = Programacion_produccion::select('programacion_produccion.*')->where('estado','!=','VIGENTE')->orderBy('id', 'desc')->get();
+        $coleccion = collect([]);
+        foreach($produccion as $producto) {
+            $coleccion->push([
+                'id' => $producto->id,
+                'producto' => $producto->producto->nombre,
+                'fecha_termino'=> ($producto->fecha_termino)?Carbon::parse($producto->fecha_termino)->format( 'd/m/Y'):'-',
+                'fecha_programada'=> Carbon::parse($producto->fecha_produccion)->format( 'd/m/Y'),
+                'cantidad_programada' => $producto->cantidad_programada,
+                'observacion' => $producto->observacion,
+                'estado' => $producto->estado,
+            ]);
+        }
+        return DataTables::of($coleccion)->toJson();
+
+    }
+    public function showalmacen($id)
+    {
+        $programacion_produccion = Programacion_produccion::findOrFail($id);
+        $productos = Producto::where('estado','ACTIVO')->get();
+
+        return view('almacenes.programacion_produccion.show',[
+            'programacion_produccion' => $programacion_produccion,
+            'productos' => $productos,
+        ]);
     }
 }

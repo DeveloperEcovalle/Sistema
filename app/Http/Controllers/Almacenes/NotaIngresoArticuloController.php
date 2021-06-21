@@ -53,7 +53,7 @@ class NotaIngresoArticuloController extends Controller
         $fecha = str_replace(" ", "", $fecha);
         $fecha = str_replace(":", "", $fecha);
         $origenes =  General::find(28)->detalles;
-        $destinos =  General::find(29)->detalles;
+        $destinos =  General::find(30)->detalles;
         $ngenerado = $fecha . (DB::table('nota_ingreso')->count() + 1);
         $usuarios = User::get();
         $articulos = Articulo::where('estado', 'ACTIVO')->get();
@@ -116,6 +116,7 @@ class NotaIngresoArticuloController extends Controller
                 $lote_articulo->cantidad = $lote_articulo->cantidad + $fila->cantidad;
                 $lote_articulo->cantidad_logica = $lote_articulo->cantidad_logica + $fila->cantidad;
                 $lote_articulo->save();
+
             } else {
                 $articulo = Articulo::findOrFail($fila->articulo_id);
                 $lote_articulo = new LoteArticulo();
@@ -146,6 +147,9 @@ class NotaIngresoArticuloController extends Controller
                 'nota_id' => $notaingreso->id,
                 'articulo_id' => $fila->articulo_id,
             ]);
+            $articuloactualizacion = Articulo::findOrFail($fila->articulo_id);
+            $articuloactualizacion->stock =$articuloactualizacion->stock+ $fila->cantidad;
+            $articuloactualizacion->update();
         }
 
         //Registro de actividad
@@ -263,11 +267,17 @@ class NotaIngresoArticuloController extends Controller
                         $lote_articulo->cantidad = ($lote_articulo->cantidad - $cantidadmovimiento) + $fila->cantidad;
                         $lote_articulo->cantidad_logica = ($lote_articulo->cantidad_logica - $cantidadmovimiento) + $fila->cantidad;
                         $lote_articulo->save();
+                        $articuloactualizacion = Articulo::findOrFail($fila->articulo_id);
+                        $articuloactualizacion->stock =($articuloactualizacion->stock - $cantidadmovimiento)+ $fila->cantidad;
+                        $articuloactualizacion->update();
                     } else {
 
                         $lote_articulo->cantidad = $lote_articulo->cantidad + $fila->cantidad;
                         $lote_articulo->cantidad_logica = $lote_articulo->cantidad_logica + $fila->cantidad;
                         $lote_articulo->save();
+                        $articuloactualizacion = Articulo::findOrFail($fila->articulo_id);
+                        $articuloactualizacion->stock =$articuloactualizacion->stock+ $fila->cantidad;
+                        $articuloactualizacion->update();
                     }
                 } else {
                     $lote_articulo = new LoteArticulo();
@@ -281,6 +291,10 @@ class NotaIngresoArticuloController extends Controller
                     $lote_articulo->fecha_vencimiento = $fila->fechavencimiento;
                     $lote_articulo->estado = "1";
                     $lote_articulo->save();
+                    $articuloactualizacion = Articulo::findOrFail($fila->articulo_id);
+                        $articuloactualizacion->stock =$articuloactualizacion->stock+ $fila->cantidad;
+                        $articuloactualizacion->update();
+
                 }
                 DetalleNotaIngresoArticulo::create([
                     'nota_ingreso_articulo_id' => $id,
@@ -289,11 +303,6 @@ class NotaIngresoArticuloController extends Controller
                     'articulo_id' => $fila->articulo_id,
                     'fecha_vencimiento' => $fila->fechavencimiento
                 ]);
-
-                $articuloactualizacion = Articulo::findOrFail($fila->articulo_id);
-                $articuloactualizacion->stock = $fila->cantidad;
-                $articuloactualizacion->update();
-
 
                 MovimientoNotaArticulo::where('lote_id', $lote_articulo->id)->where('articulo_id', $fila->articulo_id)->where('nota_id', $id)->where('movimiento', 'INGRESO')->delete();
                 MovimientoNotaArticulo::create([
