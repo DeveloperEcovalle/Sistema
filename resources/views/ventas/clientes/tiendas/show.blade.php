@@ -99,7 +99,7 @@
                             </div>
 
                             
-                                @if($tienda->condicion_reparto == 68)
+                                @if($tienda->condicion_reparto == 6)
                                 <p>CONDICION DE REPARTO : OFICINA</p>
                                 <div class="row">
                                     <div class="col-md-6 b-r">

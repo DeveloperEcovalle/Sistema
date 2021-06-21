@@ -522,6 +522,21 @@
                                                                     <div class="invalid-feedback"><b><span id="error-direccion_domicilio"></span></b></div>
                                                                 </div>
                                                                 <div class="form-group">
+                                                                    <label class="required">Modo</label>
+                                                                    <select id="responsable_pago_domicilio" name="responsable_pago_domicilio" class="select2_form form-control {{ $errors->has('responsable_pago') ? ' is-invalid' : '' }}"  value="{{old('responsable_pago',$tienda->responsable_pago)}}" >
+                                                                        <option></option>
+                                                                        @foreach(modo_responsables() as $responsable)
+                                                                            <option value="{{ $responsable->id }}" {{ (old('responsable_pago',$tienda->responsable_pago) == $responsable->id ? "selected" : "") }} >{{ $responsable->descripcion }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @if ($errors->has('responsable_pago'))
+                                                                        <span class="invalid-feedback" role="alert">
+                                                                            <strong>{{ $errors->first('responsable_pago') }}</strong>
+                                                                        </span>
+                                                                    @endif
+                                                                    <div class="invalid-feedback"><b><span id="error-responsable_pago"></span></b></div>
+                                                                </div>
+                                                                <div class="form-group">
                                                                     <p>Registrar Contacto de recoger el envio:</p>
                                                                 </div>
                                                                 <div class="form-group row">
