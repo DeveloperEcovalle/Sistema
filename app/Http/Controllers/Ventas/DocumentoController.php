@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
-use DataTables;
+use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
-use Session;
-use PDF;
-use DB;
+use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\DB;
 use App\Mantenimiento\Empresa\Empresa;
 use App\Mantenimiento\Empresa\Numeracion;
 use App\Almacenes\Producto;
@@ -20,17 +20,10 @@ use App\Ventas\Cotizacion;
 use App\Ventas\CotizacionDetalle;
 use App\Ventas\Documento\Documento;
 use App\ventas\Documento\Detalle;
-
-use App\Ventas\Documento\Pago\PagoDetalle as PivotPago;
-use App\Ventas\Documento\Pago\Pago as PagoOtros;
 use App\Ventas\Documento\Pago\Transferencia;
-
-use App\Events\VentaRegistrada;
-use App\Events\DocumentoNumeracion;
 use App\Events\ComprobanteRegistrado;
 use App\Mantenimiento\Tabla\Detalle as TablaDetalle;
 use App\Almacenes\LoteProducto;
-use App\Almacenes\LoteDetalle;
 
 //CONVERTIR DE NUMEROS A LETRAS
 use Luecano\NumeroALetras\NumeroALetras;
@@ -51,17 +44,17 @@ class DocumentoController extends Controller
             $saldo = 0;
             $acuenta = 0;
 
-            //TIPO DE PAGO (OTROS) 
+            //TIPO DE PAGO (OTROS)
             $otros = calcularMontosAcuentaVentas($documento->id);
             $acuenta = calcularMontosAcuentaVentasTransferencia($documento->id);
 
-            
+
             if ($documento->tipo_pago == '1') {
                 $saldo = $documento->total - $acuenta;
             }else{
                 if ($documento->tipo_pago == '0') {
                     $saldo = $documento->total - $otros;
-                }   
+                }
             }
 
             $coleccion->push([
@@ -80,7 +73,7 @@ class DocumentoController extends Controller
                 'total' => 'S/. '.number_format($documento->total, 2, '.', ''),
             ]);
         }
-  
+
         return DataTables::of($coleccion)->toJson();
     }
 
@@ -98,14 +91,14 @@ class DocumentoController extends Controller
             $errores = collect();
             $devolucion = false;
             $cotizacion =  Cotizacion::findOrFail( $request->get('cotizacion') );
-            $detalles = CotizacionDetalle::where('cotizacion_id', $request->get('cotizacion'))->get(); 
+            $detalles = CotizacionDetalle::where('cotizacion_id', $request->get('cotizacion'))->get();
             $lotes = self::cotizacionLote($detalles);
             //COMPROBACION DE LOTES SI LAS CANTIDADES ENVIADAS SON IGUALES A LAS SOLICITADAS
             $nuevoDetalle = collect();
             foreach ($detalles as $detalle) {
                 $cantidadDetalle = $lotes->where('producto',$detalle->producto_id)->sum('cantidad');
                 if($cantidadDetalle != $detalle->cantidad){
-                    $devolucion = true; 
+                    $devolucion = true;
                     $devolucionLotes = $lotes->where('producto',$detalle->producto_id)->first();
                     //LLENAR ERROR CANTIDAD SOLICITADA MAYOR AL STOCK
                     $coll = new Collection();
@@ -136,18 +129,18 @@ class DocumentoController extends Controller
                 'cotizacion' => $cotizacion,
                 'empresas' => $empresas,
                 'clientes' => $clientes,
-                'productos' => $productos,  
+                'productos' => $productos,
                 'lotes' => $nuevoDetalle,
                 'errores' => $errores,
             ]);
 
         }
-        
+
         if (empty($cotizacion)) {
             return view('ventas.documentos.create',[
                 'empresas' => $empresas,
                 'clientes' => $clientes,
-                'productos' => $productos, 
+                'productos' => $productos,
                 'fecha_hoy' => $fecha_hoy,
             ]);
         }
@@ -165,7 +158,7 @@ class DocumentoController extends Controller
     }
 
     public function cotizacionLote($detalles)
-    {       
+    {
         $nuevoDetalle = collect();
         foreach ($detalles as $detalle) {
             $lotes = LoteProducto::where('producto_id',$detalle->producto_id)
@@ -175,7 +168,7 @@ class DocumentoController extends Controller
                     ->get();
             //INICIO CON LA CANTIDAD DEL DETALLE
             $cantidadSolicitada = $detalle->cantidad;
-       
+
             foreach ($lotes as $lote) {
                 //SE OBTUVO LA CANTIDAD SOLICITADA DEL LOTE
                 if ($cantidadSolicitada > 0) {
@@ -198,9 +191,9 @@ class DocumentoController extends Controller
                         $lote->cantidad_logica = $lote->cantidad_logica - $cantidadSolicitada;
                         //REDUCIMOS LA CANTIDAD SOLICITADA
                         $cantidadSolicitada = 0;
-                        $lote->update(); 
+                        $lote->update();
                     }else{
-                       
+
                         if ($lote->cantidad_logica < $cantidadSolicitada) {
                             //CREAMOS EL NUEVO DETALLE
                             $coll = new Collection();
@@ -218,7 +211,7 @@ class DocumentoController extends Controller
                             $cantidadSolicitada = $cantidadSolicitada - $lote->cantidad_logica;
                             //ACTUALIZAMOS EL LOTE
                             $lote->cantidad_logica = 0;
-                            $lote->update(); 
+                            $lote->update();
                         }else{
                             if ($lote->cantidad_logica > $cantidadSolicitada) {
                                  //CREAMOS EL NUEVO DETALLE
@@ -237,9 +230,9 @@ class DocumentoController extends Controller
                                 $lote->cantidad_logica = $lote->cantidad_logica - $cantidadSolicitada;
                                 //REDUCIMOS LA CANTIDAD SOLICITADA
                                 $cantidadSolicitada = 0;
-                                $lote->update(); 
+                                $lote->update();
                             }
-                            
+
                         }
 
                     }
@@ -249,13 +242,13 @@ class DocumentoController extends Controller
             }
         }
 
-       
+
         return $nuevoDetalle;
-  
+
     }
 
     public function store(Request $request){
-        
+
         $data = $request->all();
         $rules = [
             'fecha_documento'=> 'required',
@@ -265,7 +258,7 @@ class DocumentoController extends Controller
             'cliente_id'=> 'required',
             'observacion' => 'nullable',
             'igv' => 'required_if:igv_check,==,on|numeric|digits_between:1,3',
-            
+
         ];
         $message = [
             'fecha_documento.required' => 'El campo Fecha de Emisión es obligatorio.',
@@ -281,7 +274,7 @@ class DocumentoController extends Controller
         ];
         Validator::make($data, $rules, $message)->validate();
 
-        $documento = new Documento();        
+        $documento = new Documento();
         $documento->fecha_documento = Carbon::createFromFormat('d/m/Y', $request->get('fecha_documento'))->format('Y-m-d');
         $documento->fecha_atencion = Carbon::createFromFormat('d/m/Y', $request->get('fecha_atencion_campo'))->format('Y-m-d');
         //EMPRESA
@@ -289,10 +282,10 @@ class DocumentoController extends Controller
         $documento->ruc_empresa =  $empresa->ruc;
         $documento->empresa =  $empresa->razon_social;
         $documento->direccion_fiscal_empresa =  $empresa->direccion_fiscal;
-        $documento->empresa_id = $request->get('empresa_id'); //OBTENER NUMERACION DE LA EMPRESA 
+        $documento->empresa_id = $request->get('empresa_id'); //OBTENER NUMERACION DE LA EMPRESA
         //CLIENTE
         $cliente = Cliente::findOrFail($request->get('cliente_id'));
-       
+
         $documento->tipo_documento_cliente =  $cliente->tipo_documento;
         $documento->documento_cliente =  $cliente->documento;
         $documento->direccion_cliente =  $cliente->direccion;
@@ -311,7 +304,7 @@ class DocumentoController extends Controller
         if ($request->get('igv_check') == "on") {
             $documento->igv_check = "1";
         };
-    
+
         $documento->cotizacion_venta = $request->get('cotizacion_id');
         $documento->save();
 
@@ -324,9 +317,9 @@ class DocumentoController extends Controller
             Detalle::create([
                 'documento_id' => $documento->id,
                 'lote_id' => $producto->producto_id, //LOTE
-                'codigo_producto' => $lote->producto->codigo, 
-                'unidad' => $lote->producto->getMedida(), 
-                'nombre_producto' => $lote->producto->nombre, 
+                'codigo_producto' => $lote->producto->codigo,
+                'unidad' => $lote->producto->getMedida(),
+                'nombre_producto' => $lote->producto->nombre,
                 'codigo_lote' => $lote->codigo,
                 'cantidad' => $producto->cantidad,
                 'precio' => $producto->precio,
@@ -346,7 +339,7 @@ class DocumentoController extends Controller
         $descripcion = "SE AGREGÓ EL DOCUMENTO DE VENTA CON LA FECHA: ". Carbon::parse($documento->fecha_documento)->format('d/m/y');
         $gestion = "DOCUMENTO DE VENTA";
         crearRegistro($documento , $descripcion , $gestion);
-        
+
 
         Session::flash('success','Documento de Venta creada.');
         return redirect()->route('ventas.documento.index')->with('guardar', 'success');
@@ -354,7 +347,7 @@ class DocumentoController extends Controller
 
     public function destroy($id)
     {
-        
+
         $documento = Documento::findOrFail($id);
         $documento->estado = 'ANULADO';
         $documento->update();
@@ -378,15 +371,15 @@ class DocumentoController extends Controller
 
     public function show($id)
     {
-        
+
         $documento = Documento::findOrFail($id);
         $nombre_completo = $documento->user->empleado->persona->apellido_paterno.' '.$documento->user->empleado->persona->apellido_materno.' '.$documento->user->empleado->persona->nombres;
-        $detalles = Detalle::where('documento_id',$id)->get(); 
+        $detalles = Detalle::where('documento_id',$id)->get();
         //TOTAL EN LETRAS
         $formatter = new NumeroALetras();
         $convertir = $formatter->toInvoice($documento->total, 2, 'SOLES');
-        
-        
+
+
         return view('ventas.documentos.show', [
             'documento' => $documento,
             'detalles' => $detalles,
@@ -401,7 +394,7 @@ class DocumentoController extends Controller
         $documento = Documento::findOrFail($id);
         $nombre_completo = $documento->usuario->empleado->persona->apellido_paterno.' '.$documento->usuario->empleado->persona->apellido_materno.' '.$documento->usuario->empleado->persona->nombres;
         $detalles = Detalle::where('documento_id',$id)->get();
-        $subtotal = 0; 
+        $subtotal = 0;
         $igv = '';
         $tipo_moneda = '';
         foreach($detalles as $detalle){
@@ -419,19 +412,19 @@ class DocumentoController extends Controller
             $total = $subtotal + $igv;
             $decimal_subtotal = number_format($subtotal, 2, '.', '');
             $decimal_total = number_format($total, 2, '.', '');
-            $decimal_igv = number_format($igv, 2, '.', ''); 
+            $decimal_igv = number_format($igv, 2, '.', '');
         }else{
             $calcularIgv = $documento->igv/100;
             $base = $subtotal / (1 + $calcularIgv);
             $nuevo_igv = $subtotal - $base;
             $decimal_subtotal = number_format($base, 2, '.', '');
             $decimal_total = number_format($subtotal, 2, '.', '');
-            $decimal_igv = number_format($nuevo_igv, 2, '.', ''); 
+            $decimal_igv = number_format($nuevo_igv, 2, '.', '');
         }
 
 
 
-        $presentaciones = presentaciones();  
+        $presentaciones = presentaciones();
         $paper_size = array(0,0,360,360);
         $pdf = PDF::loadview('compras.documentos.reportes.detalle',[
             'documento' => $documento,
@@ -444,7 +437,7 @@ class DocumentoController extends Controller
             'total' => $decimal_total,
             ])->setPaper('a4')->setWarnings(false);
         return $pdf->stream();
-        
+
 
 
 
@@ -472,7 +465,7 @@ class DocumentoController extends Controller
         }
 
 
-        
+
         //TIPO DE DOCUMENTO
         $documento = Documento::findOrFail($id);
         $documento->tipo_pago = null;
@@ -490,7 +483,7 @@ class DocumentoController extends Controller
 
         //CREAR LEYENDA DEL COMPROBANTE
         $arrayLeyenda = Array();
-        $arrayLeyenda[] = array(  
+        $arrayLeyenda[] = array(
             "code" => "1000",
             "value" => $convertir
         );
@@ -510,7 +503,7 @@ class DocumentoController extends Controller
                 "cantidad" => $detalles[$i]->cantidad,
                 "mtoValorUnitario" => $detalles[$i]->precio / 1.18,
                 "mtoValorVenta" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
-                "mtoBaseIgv" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad, 
+                "mtoBaseIgv" => ($detalles[$i]->precio / 1.18) * $detalles[$i]->cantidad,
                 "porcentajeIgv" => 18,
                 "igv" => ($detalles[$i]->precio - ($detalles[$i]->precio / 1.18 )) * $detalles[$i]->cantidad,
                 "tipAfeIgv" => 10,
@@ -526,8 +519,8 @@ class DocumentoController extends Controller
     public function obtenerFecha($documento)
     {
         $date = strtotime($documento->fecha_documento);
-        $fecha_emision = date('Y-m-d', $date); 
-        $hora_emision = date('H:i:s', $date); 
+        $fecha_emision = date('Y-m-d', $date);
+        $hora_emision = date('H:i:s', $date);
         $fecha = $fecha_emision.'T'.$hora_emision.'-05:00';
 
         return $fecha;
@@ -535,7 +528,7 @@ class DocumentoController extends Controller
 
     public function voucher($id)
     {
-      
+
         $documento = Documento::findOrFail($id);
         if ($documento->sunat == '0' || $documento->sunat == '2' ) {
 
@@ -564,7 +557,7 @@ class DocumentoController extends Controller
                 "mtoOperGravadas" => $documento->sub_total,
                 "mtoOperExoneradas" => 0,
                 "mtoIGV" => $documento->total_igv,
-                
+
                 "valorVenta" => $documento->sub_total,
                 "totalImpuestos" => $documento->total_igv,
                 "mtoImpVenta" => $documento->total ,
@@ -584,7 +577,7 @@ class DocumentoController extends Controller
             return response()->file($pathToFile);
 
         }else{
-          
+
             //OBTENER CORRELATIVO DEL COMPROBANTE ELECTRONICO
             $comprobante = event(new ComprobanteRegistrado($documento,$documento->serie));
             //ENVIAR COMPROBANTE PARA LUEGO GENERAR PDF
@@ -610,16 +603,16 @@ class DocumentoController extends Controller
         $detalle = TablaDetalle::findOrFail($tipo);
         $empresa = Empresa::findOrFail($empresa_id);
         $resultado = (Numeracion::where('empresa_id',$empresa_id)->where('estado','ACTIVO')->where('tipo_comprobante',$tipo))->exists();
-      
+
         $enviar = [
                     'existe' => ($resultado == true) ? true : false,
                     'comprobante' => $detalle->descripcion,
                     'empresa' => $empresa->razon_social,
                 ];
 
-        return  response()->json($enviar); 
-        
-        
+        return  response()->json($enviar);
+
+
     }
 
     public function customers(Request $request)
@@ -627,7 +620,7 @@ class DocumentoController extends Controller
         $data = $request->all();
         $tipo = $data['tipo_id'];
         $pun_tipo = '';
-        
+
         if ($tipo=='131') {
             $clientes = Cliente::where('estado','!=','ANULADO')
             ->where('tipo_documento','RUC')
@@ -639,15 +632,15 @@ class DocumentoController extends Controller
             ->get();
             $pun_tipo = '0';
         }
-      
+
         $enviar = [
                     'clientes' => $clientes,
                     'tipo' => $pun_tipo,
                 ];
 
-        return  response()->json($enviar); 
-        
-        
+        return  response()->json($enviar);
+
+
     }
 
     //LOTES PARA BUSQUEDA
@@ -656,21 +649,21 @@ class DocumentoController extends Controller
         return datatables()->query(
             DB::table('lote_productos')
             ->join('productos_clientes','productos_clientes.producto_id','=','lote_productos.producto_id')
-            ->join('productos','productos.id','=','lote_productos.producto_id') 
+            ->join('productos','productos.id','=','lote_productos.producto_id')
             ->join('familias','familias.id','=','productos.familia_id')
             ->join('tabladetalles','tabladetalles.id','=','productos.medida')
             ->select('lote_productos.*','productos.nombre','productos_clientes.cliente','productos_clientes.moneda','tabladetalles.simbolo as unidad_producto',
                     'productos_clientes.monto as precio_venta','familias.familia', DB::raw('DATE_FORMAT(lote_productos.fecha_vencimiento, "%d/%m/%Y") as fecha_venci'))
-            ->where('lote_productos.cantidad_logica','>',0) 
-            ->where('lote_productos.estado','1') 
+            ->where('lote_productos.cantidad_logica','>',0)
+            ->where('lote_productos.estado','1')
             ->where('productos_clientes.cliente','29') //TIPO DE CLIENTE CONSUMIDOR TABLA DETALLE (29)
             ->where('productos_clientes.moneda','4') // TABLA DETALLE SOLES(4)
-            ->orderBy('lote_productos.id','ASC')  
+            ->orderBy('lote_productos.id','ASC')
             ->where('productos_clientes.estado','ACTIVO')
         )->toJson();
     }
 
-    //CAMBIAR CANTIDAD LOGICA DEL LOTE 
+    //CAMBIAR CANTIDAD LOGICA DEL LOTE
     public function quantity(Request $request)
     {
         $data = $request->all();
@@ -716,7 +709,7 @@ class DocumentoController extends Controller
         };
 
         return $mensaje;
-    
+
     }
 
 

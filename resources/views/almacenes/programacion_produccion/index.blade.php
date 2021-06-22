@@ -141,6 +141,7 @@ $(document).ready(function() {
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
 
                             "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                            "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
 
                         "</ul></div>"
 

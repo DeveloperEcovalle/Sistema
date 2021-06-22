@@ -239,7 +239,10 @@ class Programacion_produccionController extends Controller
         return view('almacenes.programacion_produccion.index');
     }
     public function getProgramacionProduccionAlmacen(){
-        $produccion = Programacion_produccion::select('programacion_produccion.*')->where('estado','!=','VIGENTE')->orderBy('id', 'desc')->get();
+        $produccion = Programacion_produccion::select('programacion_produccion.*')
+                    ->where('estado','=','TERMINADO')
+                    ->orWhere('estado','=','PRODUCCION')
+                    ->orderBy('id', 'desc')->get();
         $coleccion = collect([]);
         foreach($produccion as $producto) {
             $coleccion->push([

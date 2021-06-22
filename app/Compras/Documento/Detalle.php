@@ -44,11 +44,11 @@ class Detalle extends Model
         return $fecha;
     }
 
-    protected static function booted() 
+    protected static function booted()
     {
         static::created(function(Detalle $detalle){
             //CREAR LOTE ARTICULO
-            $lote = new LoteArticulo(); 
+            $lote = new LoteArticulo();
             $lote->detalle_id = $detalle->id;
             $lote->lote = $detalle->lote;
             $lote->articulo_id = $detalle->articulo_id;
@@ -62,7 +62,7 @@ class Detalle extends Model
 
             //MOVIMIENTO
             $articulo = Articulo::findOrFail($detalle->articulo->id);
-            $movimiento = new MovimientoAlmacen(); 
+            $movimiento = new MovimientoAlmacen();
             $movimiento->almacen_final_id = $detalle->articulo->almacen->id;
             $movimiento->cantidad = $detalle->cantidad;
             $movimiento->nota = 'COMPRA';
@@ -75,7 +75,7 @@ class Detalle extends Model
 
             //MOVIMIENTO DETALLE
             $detalleAlmacen = new MovimientoAlmacenDetalle();
-            $detalleAlmacen->movimiento_almacen_id = $movimiento->id; 
+            $detalleAlmacen->movimiento_almacen_id = $movimiento->id;
             $detalleAlmacen->articulo_id = $articulo->id;
             $detalleAlmacen->cantidad = $detalle->cantidad;
             $detalleAlmacen->lote = $detalle->lote;
@@ -87,9 +87,14 @@ class Detalle extends Model
 
         static::deleted(function(Detalle $detalle){
             //ANULAR LOTE ARTICULO
-            $lote = LoteArticulo::where('detalle_id', $detalle->id)->first(); 
-            $lote->estado = '0';
-            $lote->update();
+            $lote = LoteArticulo::where('detalle_id', $detalle->id)->first();
+            $articulo= Articulo::findOrFail($lote->articulo_id);
+            $articulo->stock=$articulo->stock-$lote->cantidad;
+            $articulo->save();
+            //$lote->estado = '0';
+            //$lote->update();
+            $lote->delete();
+
         });
 
 
