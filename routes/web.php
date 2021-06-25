@@ -595,6 +595,7 @@ function(){
         Route::get('index', 'Produccion\Programacion_produccionController@indexProduccionAlmacen')->name('almacen.programacion_produccion.index');
         Route::get('getProgramacionProduccion','Produccion\Programacion_produccionController@getProgramacionProduccionAlmacen')->name('almacen.getProgramacionProduccion');
         Route::get('show/{id}','Produccion\Programacion_produccionController@showalmacen')->name('almacen.programacion_produccion.show');
+        Route::get('detalleindex/{id}','Produccion\Programacion_produccionController@produccionProductoAlmacenindex')->name('almacen.programacion_produccion.detalle');
 
     });
     // Producciones aprobados

@@ -263,7 +263,7 @@
         timer: 2500
     })
     @endif
-    
+
     </script>
 
     <script>
@@ -279,7 +279,7 @@
             $('.loader-spinner').hide();
             $("#content-system").css("display", "");
         })
-        
+
 
     </script>
 

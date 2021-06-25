@@ -138,10 +138,13 @@ $(document).ready(function() {
                     var url_detalle = '{{ route("almacen.programacion_produccion.show", ":id")}}';
                     url_detalle = url_detalle.replace(':id', data.id);
 
+                    var url_produccioalmacen='{{ route("almacen.programacion_produccion.detalle",":id")}}';
+                    url_produccioalmacen = url_produccioalmacen.replace(':id', data.id);
+
                         return "<div class='btn-group' style='text-transform:capitalize;'><button data-toggle='dropdown' class='btn btn-primary btn-sm  dropdown-toggle'><i class='fa fa-bars'></i></button><ul class='dropdown-menu'>" +
 
                             "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
-                            "<li><a class='dropdown-item' href='" + url_detalle + "' title='Detalle'><b><i class='fa fa-eye'></i> Detalle</a></b></li>" +
+                            "<li><a class='dropdown-item' href='" + url_produccioalmacen+ "' title='Producir'><b><i class='fa fa-line-chart'></i>Producir</a></b></li>" +
 
                         "</ul></div>"
 

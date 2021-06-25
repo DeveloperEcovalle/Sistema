@@ -452,7 +452,6 @@ $(document).on('click', '.btn-edit', function(event) {
             $('#modal_editar_detalle #fechavencimiento').val(data[5]);
             $('#modal_editar_detalle').modal('show');
             $("#modal_editar_detalle #producto").val(data[0]).trigger('change');
-
             });
 
 

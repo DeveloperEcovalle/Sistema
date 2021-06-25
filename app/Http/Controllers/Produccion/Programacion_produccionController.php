@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use App\Produccion\Programacion_produccion;
 use App\Almacenes\Producto;
 use App\Almacenes\ProductoDetalle;
-
+use App\Compras\Articulo;
+use App\Mantenimiento\Tabla\Detalle;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -268,4 +269,66 @@ class Programacion_produccionController extends Controller
             'productos' => $productos,
         ]);
     }
+    public function produccionProductoAlmacenindex($id)
+    {
+        $programacion_produccion = Programacion_produccion::findOrFail($id);
+        $producto=Producto::findOrFail($programacion_produccion->producto_id);
+        $articulos=array();
+        $cantidad=$programacion_produccion->cantidad_programada;
+        $productonombre=$producto->nombre;
+        foreach($producto->detalles as $fila)
+        {
+            $articulo=Articulo::findOrFail($fila->articulo_id);
+            $lote_articulos=DB::table('lote_articulos')
+            ->where('articulo_id',$articulo->id)
+            ->whereDate('fecha_vencimiento','>=',date("Y-m-d"))
+            ->orderBy('fecha_vencimiento', 'asc')
+            ->get();
+            $cantidad_lote=0;
+            $lotes=array();
+            foreach($lote_articulos as $lote_articulo)
+            {
+                $cantidad_lote=$cantidad_lote+$lote_articulo->cantidad;
+                array_push($lotes,array(
+                    "idlote"=>$lote_articulo->id,
+                    "lote"=>$lote_articulo->lote,
+                    "cantidad"=>$lote_articulo->cantidad,
+                    "cantidadasignada"=>0,
+                    "fechavencimiento"=>$lote_articulo->fecha_vencimiento
+                ));
+            }
+            $cantidadtotal=$fila->cantidad*$cantidad;
+            $k=0;
+            if($cantidad_lote>=($cantidadtotal))
+            {
+                $k=1;
+                while($k<=$cantidadtotal){
+                    for ($i=0; $i < count($lotes); $i++) {
+                        if($lotes[$i]['cantidadasignada']<$lotes[$i]['cantidad'])
+                        {
+                            $lotes[$i]['cantidadasignada']=$lotes[$i]['cantidadasignada']+1;
+                            $k=$k+1;
+                        }
+                   }
+                }
+            }
+
+            $medida=Detalle::findOrFail($articulo->unidad_medida);
+           array_push($articulos,array(
+                "idarticulo"=>$articulo->id,
+                "descripcion"=>$articulo->descripcion,
+                "cantidad"=>$fila->cantidad,
+                "pesoRequerido"=>$fila->peso,
+                "cantidadLote"=>$cantidad_lote,
+                "lotes"=>$lotes,
+                "comentario"=>"",
+                "medida"=>$medida->descripcion
+            ));
+        }
+
+        return view('almacenes.programacion_produccion.detalle',[
+            "cantidad"=>$cantidad,"articulos"=>json_encode($articulos),"producto"=>$productonombre
+        ]);
+    }
+
 }
