@@ -900,7 +900,6 @@
                     },
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
-                    console.log(result);
                     if (result.value !== undefined && result.isConfirmed) {
                         $('#documento').removeClass('is-invalid')
                         if (tipo_documento === 'DNI')
@@ -1157,14 +1156,16 @@
                         if (!data.error) {
                             // Mostramos la información
                             if (data.provincias != null) {
-                                if (provincia_api !== '') {
+                                if (provincia_api != '') {
                                     $("#provincia").select2({
                                         data: data.provincias
                                     }).val(provincia_api).trigger('change');
+                                    provincia_api='';
                                 } else {
                                     $("#provincia").select2({
                                         data: data.provincias
                                     }).val($('#provincia').find(':selected').val()).trigger('change');
+
                                 }
                             }
                         } else {
@@ -1197,10 +1198,11 @@
                             // Mostramos la información
                             if (data.distritos != null) {
                                 var selected = $('#distrito').find(':selected').val();
-                                if (distrito_api !== '') {
+                                if (distrito_api != '') {
                                     $("#distrito").select2({
                                         data: data.distritos
                                     }).val(distrito_api).trigger('change');
+                                    distrito_api='';
                                 } else {
                                     $("#distrito").select2({
                                         data: data.distritos
@@ -1259,7 +1261,6 @@
         }
 
         function camposUbigeoApi(departamento, provincia, distrito) {
-
             departamento_api = '';
             provincia_api = '';
             distrito_api = '';
@@ -1286,10 +1287,10 @@
                             if (data.ubigeo != null) {
 
                                 departamento_api = data.ubigeo.departamento_id;
-                                provincia_api = data.ubigeo.provincia_id;
+                                provincia_api = parseInt(data.ubigeo.provincia_id);
                                 distrito_api = data.ubigeo.id;
 
-                                $("#departamento").val(departamento_api).trigger('change');
+                                $("#departamento").val(parseInt(departamento_api)).trigger('change');
                             }
                         } else {
                             toastr.error(data.message, 'Mensaje de Error', {
