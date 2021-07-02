@@ -323,7 +323,10 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="">Localizacion de la tienda:</label>
-                                                                <div id="map" style="width:350px;height:300px;"></div>
+                                                                <input id="pac-input" type="text" placeholder="Buscar"
+                                                                class="form-control"
+                                                                style="width:250px!important;border-radius:5px;margin-top:10px;" />
+                                                                <div id="map" style="width:100%;height:300px;"></div>
                                                                 <input type="hidden" name="lat" id="lat">
                                                                 <input type="hidden" name="lng" id="lng">
                                                             </div>
@@ -1266,11 +1269,12 @@
     <!-- Date range picker -->
     <script src="{{ asset('Inspinia/js/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS6qv64RYCHFJOygheJS7DvBDYB0iV2wI&libraries=geometry">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS6qv64RYCHFJOygheJS7DvBDYB0iV2wI&libraries=geometry&libraries=places">
     </script>
     <script>
         var map;
         var onemarker = 0;
+        var markers=[];
         $('#fecha_nacimiento_administrador_campo .input-group.date').datepicker({
             todayBtn: "linked",
             keyboardNavigation: false,
@@ -1645,6 +1649,13 @@
             $('#logo').val('')
         }
 
+        function limpiarmarcadores() {
+            markers.forEach((value, index, array) => {
+                value.setMap(null);
+            })
+            markers = [];
+        }
+
         function seleccionarimagen() {
             var fileInput = document.getElementById('logo');
             var filePath = fileInput.value;
@@ -1676,24 +1687,85 @@
                 zoomControl: false,
                 mapTypeControl: false,
                 streetViewControl: false,
-                fullscreenControl: false,
+                fullscreenControl: true,
+            });
+            const input = document.getElementById("pac-input");
+            //
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+            const cajadetexto = new google.maps.places.SearchBox(input);
+            map.addListener("bounds_changed", () => {
+                cajadetexto.setBounds(map.getBounds());
+            });
+            cajadetexto.addListener("places_changed", () => {
+                const places = cajadetexto.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+                console.log(places.length)
+                // Clear out the old markers.
+                markers.forEach((marker) => {
+                    marker.setMap(null);
+                });
+
+                // For each place, get the icon, name and location.
+                const bounds = new google.maps.LatLngBounds();
+                if (places.length == 1) {
+                    limpiarmarcadores()
+                    places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        // Create a marker for each place.
+                        var marker=  new google.maps.Marker({
+                                map,
+                                position: place.geometry.location,
+
+                    draggable: true
+                            });
+                        markers.push(
+                          marker
+                        );
+                        $("#lat").val(marker.getPosition().lat());
+                        $("#lng").val(marker.getPosition().lng());
+                        google.maps.event.addListener(marker, "dragend", function(event) {
+                            $("#lat").val(this.getPosition().lat());
+                            $("#lng").val(this.getPosition().lng());
+                            map.setCenter(this.getPosition())
+                    map.setZoom(18);
+                        });
+
+                        if (place.geometry.viewport) {
+                            // Only geocodes have viewport.
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                    });
+                }
+                map.fitBounds(bounds);
             });
             //
             google.maps.event.addListener(map, "click", function(event) {
-                if (onemarker == 0) {
+                limpiarmarcadores()
                     var marker = new google.maps.Marker({
                         position: event.latLng,
                         map: map,
                         draggable: true
                     });
+                    map.setCenter(event.latLng)
+                    map.setZoom(18);
+                    markers.push(marker);
                     $("#lat").val(marker.getPosition().lat());
                     $("#lng").val(marker.getPosition().lng());
                     google.maps.event.addListener(marker, "dragend", function(event) {
                         $("#lat").val(this.getPosition().lat());
                         $("#lng").val(this.getPosition().lng());
+                        map.setCenter(this.getPosition())
+                    map.setZoom(18);
                     });
-                    onemarker = 1;
-                }
+
             });
             switch ($('#condicion_reparto').val()) {
                 case "6":
