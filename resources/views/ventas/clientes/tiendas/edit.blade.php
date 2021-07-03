@@ -331,6 +331,15 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="">Localizacion de la tienda:</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" name="urlgps"
+                                                                        id="urlgps">
+                                                                    <span class="input-group-append"><a style="color:white"
+                                                                            onclick="consultarUrl()"
+                                                                            class="btn btn-primary"><i
+                                                                                class="fa fa-search"></i>Consultar</a></span>
+                                                                </div>
+                                                                <br>
                                                                 <input id="pac-input" type="text" placeholder="Buscar"
                                                                     class="form-control"
                                                                     style="width:250px!important;border-radius:5px;margin-top:10px;" />
@@ -1721,14 +1730,14 @@
                             return;
                         }
                         // Create a marker for each place.
-                        var marker=  new google.maps.Marker({
-                                map,
-                                position: place.geometry.location,
+                        var marker = new google.maps.Marker({
+                            map,
+                            position: place.geometry.location,
 
-                    draggable: true
-                            });
+                            draggable: true
+                        });
                         markers.push(
-                          marker
+                            marker
                         );
                         $("#lat").val(marker.getPosition().lat());
                         $("#lng").val(marker.getPosition().lng());
@@ -1736,7 +1745,7 @@
                             $("#lat").val(this.getPosition().lat());
                             $("#lng").val(this.getPosition().lng());
                             map.setCenter(this.getPosition())
-                    map.setZoom(18);
+                            map.setZoom(18);
                         });
 
                         if (place.geometry.viewport) {
@@ -1773,7 +1782,7 @@
                     lng: parseFloat($("#lng").val())
                 });
 
-                    map.setZoom(18);
+                map.setZoom(18);
             }
             google.maps.event.addListener(map, "click", function(event) {
                 limpiarmarcadores()
@@ -1783,7 +1792,7 @@
                     draggable: true
                 });
                 map.setCenter(event.latLng)
-                    map.setZoom(18);
+                map.setZoom(18);
                 markers.push(marker);
                 $("#lat").val(marker.getPosition().lat());
                 $("#lng").val(marker.getPosition().lng());
@@ -2106,6 +2115,34 @@
             } else {
                 toastr.error('El campo Ruc debe de contar con 11 dígitos', 'Error');
             }
+        }
+
+        function consultarUrl() {
+            var url = $("#urlgps").val();
+            var cadena = url.substring(url.search("/@") + 2, url.length - 1);
+            var lat = cadena.substring(0, cadena.search(","));
+            var cadena = cadena.substring(cadena.search(",") + 1, cadena.length - 1);
+            var lng = cadena.substring(0, cadena.search(","));
+            limpiarmarcadores()
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: parseFloat(lat),
+                        lng: parseFloat(lng)
+                    },
+                    map: map,
+                    draggable: true
+                });
+                markers.push(marker)
+                google.maps.event.addListener(marker, "dragend", function(event) {
+                    $("#lat").val(this.getPosition().lat());
+                    $("#lng").val(this.getPosition().lng());
+                    map.setCenter(this.getPosition())
+                    map.setZoom(18);
+                });
+                map.setCenter({
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng)
+                });
         }
 
         function camposRuc(objeto) {
